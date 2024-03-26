@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC
+"-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 
+		root-context.xml에서 mybatis-config.xml 파일의 위치와 데이터 소스를 설정해놓음
+		마이바티스는 sql 구문에 사용되는 값이 null 이면 에러 발생함,
+		null 을 사용할 수 있게 하려면 아래의 설정을 추가함
+	 -->
+	 <settings>
+		 <!-- SQL 구문에서 사용되는 값이 NULL일 때의 JDBC 타입을 지정, 여기서는 NULL로 설정하여 NULL 값을 사용가능 -->
+	 	<setting name="jdbcTypeForNull" value="NULL" /> 
+	 	<!-- 캐시 사용 여부를 설정. 여기서는 캐시를 사용하지 않도록 false로 설정 -->
+	 	<setting name="cacheEnabled" value="false" />
+	 </settings>
+
+	<!-- 존재하지 않는 클래스와 매퍼파일을 먼저 등록 설정하면 톰켓 구동 안함 : 에러 발생 -->
+	<!-- Java 클래스에 대한 별칭을 정의, 이를 통해 MyBatis 매퍼에서 사용되는 클래스의 전체 경로명을 간단한 별칭으로 대체 -->
+	<typeAliases>		
+		
+	</typeAliases>
+	
+	<mappers> <!-- resouce에 적힌 파일을 MyBatis 매퍼로 등록 -->
+		
+	</mappers>
+</configuration>

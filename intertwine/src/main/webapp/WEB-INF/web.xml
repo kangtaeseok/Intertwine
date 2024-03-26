@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+<!-- 
+	web.xml(WAS 설정파일임,  Spring 프레임워크에 의해 알아서 읽혀지는 파일?)
+	WAS(Web Application Server) -> Tomcat 이 최초로 구성될 때, 
+	WEB-INF 폴더에 존재하는 web.xml 파일을 읽고, 그에 해당하는 웹 애플리케이션을 설정
+	주로 DispatcherServlet과 ContextLoaderListener 설정
+	위치 : webapp/WEB-INF/web.xml 
+-->
+
+
+	<!-- 웰컴파일 설정 -->
+	<!-- 
+	
+	<welcome-file-list>
+    	<welcome-file>index.jsp</welcome-file>
+    	<welcome-file>index.html</welcome-file>
+    	<welcome-file>index.htm</welcome-file>
+	</welcome-file-list> 
+	
+	라고 설정이 되어있다면,
+	index.jsp를 가장 먼저 찾아서 응답한다. 그런데 index.jsp를 못 찾으면
+	index.html을 찾아서 응답하고, 그런데 또 파일을 못 찾는다면
+	index.html을 찾아서 응답한다. 
+	
+	-->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- The definition of the Root Spring Container shared by all Servlets  and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:root-context.xml</param-value>
+	</context-param>
+	
+	<!-- 세션 자동 타임아웃 시간 설정 : 분단위  -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- The definition of the Root Spring Container shared by all Servlets  and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:root-context.xml
+								<!-- 스프링 시큐리티 설정 파일 추가 등록  -->
+								/WEB-INF/spring/appServlet/spring-security.xml
+		</param-value>
+	</context-param>
+
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- 
+		전송방식이 post로 전송오는 한글데이터는 인코딩 처리를 위한 필터(Filter) 클래스 등록 설정 
+		원래 요청 처리 방식 : post 요청 - 디스패처서블릿 - 컨트롤러 - 한글인코딩처리
+		변경 : post 요청 - 인코딩처리필터 - 디스패처서블릿 - (인터셉터) - 컨트롤러  
+	-->
+	<filter>
+    	<filter-name>encodingFilter</filter-name>
+    	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    	<init-param>
+        	<param-name>encoding</param-name>
+        	<param-value>utf-8</param-value>
+        </init-param>
+   </filter>
+   <filter-mapping>
+      <filter-name>encodingFilter</filter-name>
+      <url-pattern>*.do</url-pattern> <!-- 필터를 적용할 URL 패턴을 지정, 확장자가 ".do"로 끝나는 URL 요청에 대해 UTF-8 문자 인코딩 필터를 적용함 -->
+   </filter-mapping>
+   
+	<!-- Processes application requests -->
+	<servlet> <!-- DispatcherServlet의 설정파일 경로, URL 패턴을 DispatcherServlet에 매핑 -->
+		<servlet-name>appServlet</servlet-name> <!-- 서블릿의 이름을 지정 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> <!-- 서블릿에 대한 클래스를 지정, DispatcherServlet으로 설정 -->
+		<!-- 내장된 핸들러매핑(HandlerMapping) 기능을 통해 요청을 처리할 Controller를 검색함,
+			 	 @RequestMapping에 등록된 .do의 controller를 실행하여 요청을 처리함 -->
+		<init-param> <!-- 서블릿의 초기 매개변수 설정  -->
+			<param-name>contextConfigLocation</param-name> <!-- 서블릿의 매개변수의 이름을 지정 -->
+			<!-- 매개변수의 값으로 Spring MVC 설정 파일의 경로를 지정, DispatcherServlet 설정 파일 경로 -->
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value> 
+		</init-param>
+		<!-- 서블릿이 언제 로드될지를 지정. 여기서는 1로 지정되어 있으므로 웹 애플리케이션 시작 시 즉시 로드됨. -->
+		<!-- DispatcherServlet은 가장 상위에 있는 서블릿 중 하나, Spring MVC 프레임워크의 핵심이며, 클라이언트의 요청을 받아들이고 처리하는 역할을 담당 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name> <!-- 위에 정의한 appServlet(DispatcherServlet) 에 대한 설정하겠다는 것 -->
+		<!-- 서블릿을 어떤 URL 패턴에 매핑할지를 지정합니다. 여기서는 "*.do"로 지정되어 있으므로 확장자가 ".do"로 끝나는 URL 요청이 해당 서블릿으로 매핑됩니다.  -->
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+</web-app>
