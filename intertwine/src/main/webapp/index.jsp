@@ -16,7 +16,7 @@
  	//스프링에서는 뷰페이지 내보내기도 모두 컨트롤러를 거쳐야 함
  	view.forward(request, response);
  %> --%>
-<%-- <jsp:forward page="main.do" />  --%>
+<jsp:forward page="main.do" /> 
 <h1>인터트와인 인덱스 페이지 입니다</h1>
 <h1>이그노어파일 테스트용 수정입니다.</h1>
 </body>
