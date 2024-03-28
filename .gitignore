@@ -36,6 +36,9 @@ buildNumber.properties
 
 # 모든 xml 파일
 *.xml
-
-
+*.xml/
+*.MF
+*.MF/
+*.class
+*.class/
 
