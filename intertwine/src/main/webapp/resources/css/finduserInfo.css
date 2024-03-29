@@ -1,0 +1,54 @@
+@charset "UTF-8";
+header {
+	margin: 0 20px;
+	align-items: center;
+}
+
+header > img {
+	width: 180px;
+	height: 40px;
+	position: relative;
+}
+
+.body-div {
+	width: 100%;
+	height: 90vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.id-find-box, .pwd-find-box {
+	border: none;
+	padding:20px;
+	border-radius: 6px;
+	position: relatvive;
+	background: #fcd1d1;
+}
+.id-find-phone {
+	display: none;
+}
+.pwd-find-phone {
+	display: none;
+}
+
+.button{
+	border: none;
+	background: #fcd1d1;
+	cursor: pointer;
+	border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+}
+
+input {
+	
+}
+
+.auth-email{
+	display: none;
+}
+
+.auth-phone {
+	display: none;	
+}

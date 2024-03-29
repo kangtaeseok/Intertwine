@@ -19,8 +19,8 @@ footer {
 </head>
 <body>
 <footer>
-copyright@ict.org &nbsp; 지능형 도우미 서비스 융합 웹 개발자과정 <br>
-서울시 서초구 신논현동 ict기술협회, TEL : 02-1234-5678, FAX : 02-1234-5679
+<!-- copyright@ict.org &nbsp; 지능형 도우미 서비스 융합 웹 개발자과정 <br>
+서울시 서초구 신논현동 ict기술협회, TEL : 02-1234-5678, FAX : 02-1234-5679 -->
 </footer>
 </body>
 </html>
