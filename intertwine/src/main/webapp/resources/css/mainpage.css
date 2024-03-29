@@ -189,7 +189,6 @@ main {
 }
 
 
-
 #bottom_right_contents {
 	top: 0;
 	position: relative;
@@ -211,18 +210,60 @@ main {
     justify-content: space-around;
     width: calc(100% - var(--side-bar-width)); /* .side-bar의 너비를 제외한 너비로 설정 */
     margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
-	left: 0px;
+	/*left: 0px;*/
 }
 
+
+
+#mypage_sub_menu {
+	left: 240px;
+	transition: left 1s ease;
+}
+
+#chatting_sub_menu {
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#alarm_sub_menu {
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#settings_sub_menu {
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#mypage_sub_menu.on {
+	left: 0;
+	transition: left 0s ease;
+}
+
+#chatting_sub_menu.on {
+	left: 0;
+	transition: left 0s ease;
+}
+
+#alarm_sub_menu.on {
+	left: 0;
+	transition: left 0s ease;
+}
+
+#settings_sub_menu.on {
+	left: 0;
+	transition: left 0s ease;
+}
 
 
 .sub_menu {
 
 	min-height: var(--side-bar-height);
 	width: var(--side-bar-width);
-	background-color: violet;
+	background-color: rgb(205, 79, 132);
 	z-index: 0;
-	position: sticky; /* 변경: position을 sticky로 설정 */
+	/*position: sticky;*/ /* 변경: position을 sticky로 설정 */
+	position: absolute;
     top: 0;
 	transition: opacity 1s ease;
 	opacity: 0;
@@ -230,13 +271,8 @@ main {
 
 .sub_menu.on {
 
-	min-height: var(--side-bar-height);
-	width: var(--side-bar-width);
-	background-color: violet;
-	z-index: 0;
 	position: sticky; /* 변경: position을 sticky로 설정 */
-    top: 0;
-	opacity: 0.5;
+	opacity: 0.55;
 }
 
 .feed {
@@ -246,6 +282,7 @@ main {
 	background-color: blue;
 	margin: 1rem;
 }
+
 
 /* 반응형 웹, 미디어 쿼리, 웹 페이지의 가로 크기에 맞춰 UI 변경 */
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/
@@ -285,6 +322,28 @@ main {
 		border-radius: 10px;
 		transition: background-color 0.8s ease;
 	}
+	#mypage_sub_menu {
+		left: 240px;
+		opacity: 0;
+		top: 0;
+		transition: left 1s ease;
+	}
+	
+	#chatting_sub_menu {
+		left: -240px;
+		transition: left 1s ease;
+	}
+	
+	#alarm_sub_menu {
+		left: -240px;
+		transition: left 1s ease;
+	}
+	
+	#settings_sub_menu {
+		left: -240px;
+		transition: left 1s ease;
+	}
+	
 }
 
 /* 테블릿 가로 (해상도 768px ~ 1023px)*/

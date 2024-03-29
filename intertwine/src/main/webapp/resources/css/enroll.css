@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+.box {
+      margin: 0 auto;
+      position: relative;
+      height: 100vh;
+}
+
+
+	.logo-box {
+	display: flex;
+	justify-content: center;
+	}
+    .enroll-box {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .outer {
+      margin: 0 auto;
+      position: relative;
+      border-collapse: separate;
+      border-spacing: 10px 10px;
+
+    }
+
+
+ .alertEmail {	
+	/* display: none; */	
+}
+
+
+#extraAddress {
+	display: none;
+}
+
+.outer td {
+	text-align: left;
+	height: 30px;
+	
+}
+
+.outer td input {
+      height: 30px;
+      width: 250px;
+      padding: 0 10px;
+      background-color: #F8F8F8;
+      border: none;
+      outline: #F9F9F9;
+}
+
+ .outer td input[type="button"] {
+   outline: none;
+   background: #f99d9d;
+   border-radius: 6px;
+   border: none;
+   color: white;
+   font-weight: bold;
+   cursor: pointer;
+	width: 100px;
+     }
+
+.id-check-box {
+	hight: 30px;
+  	display: flex;
+	justify-content: flex-start;
+  	align-items: center;
+  	font-size: 12px;
+}
+
+.id-check-container input[type="text"] {
+	flex-grow: 1;
+  	margin-right: 20px;
+}
+
+.pwd-check-box {
+	border: 1px solid #f4f4f4;
+	font-size: 12px;
+	display: none;
+	position: absolute;
+	border-radius: 6px;
+	padding: 10px;
+	background: #fbfdaa;
+	opacity: 0.8;
+	font-weight: bold;
+ }
+
+ 
+ 
+ .pwd2-check-box {
+ 	display: none;
+ }
+
+.alertEmail {
+	font-size: 12px;
+} 
+	
+.timer {
+	display: flex;
+	justify-content: flex-start;
+}	
+	
+	
+#timerbtn {
+	width: 50px;
+}
+
+ .submit-box {
+ 	margin: 10px;
+   	height: 30px;
+
+ }
+ 
+ #userchk {
+ display: none;
+ }
+
+.submit-box input[type="submit"] {
+      outline: none;
+      background: #f99d9d;
+      border-radius: 6px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px;
+      width: 100px;
+       cursor: pointer;
+}
+ .submit-box input[type="reset"] {
+      outline: none;
+      background: #f99d9d;
+      border-radius: 6px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px;
+      width: 100px;
+       cursor: pointer;
+}
+ 
