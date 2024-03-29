@@ -6,40 +6,46 @@ public class Faq implements java.io.Serializable  {
 
 	private static final long serialVersionUID = 4069609867868027068L;
 	
-	private String faqId;
+	private int faqNum;
+	private String adminId;
 	private String faqType;
 	private String faqTitle;
 	private String faqWriter;
 	private String faqContent;
-	private java.sql.Date enrollDate;
-	private java.sql.Date lastModified;
-	private int faqReadCnt;
-	private String adminId;
+	private java.sql.Date faqDate;
+	private int faqReadCount;
 	
 	public Faq() {
 		super();
 	}
 
-	public Faq(String faqId, String faqType, String faqTitle, String faqWriter, String faqContent, Date enrollDate,
-			Date lastModified, int faqReadCnt, String adminId) {
+	public Faq(int faqNum, String adminId, String faqType, String faqTitle, String faqWriter, String faqContent,
+			Date faqDate, int faqReadCount) {
 		super();
-		this.faqId = faqId;
+		this.faqNum = faqNum;
+		this.adminId = adminId;
 		this.faqType = faqType;
 		this.faqTitle = faqTitle;
 		this.faqWriter = faqWriter;
 		this.faqContent = faqContent;
-		this.enrollDate = enrollDate;
-		this.lastModified = lastModified;
-		this.faqReadCnt = faqReadCnt;
+		this.faqDate = faqDate;
+		this.faqReadCount = faqReadCount;
+	}
+
+	public int getFaqNum() {
+		return faqNum;
+	}
+
+	public void setFaqNum(int faqNum) {
+		this.faqNum = faqNum;
+	}
+
+	public String getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(String adminId) {
 		this.adminId = adminId;
-	}
-
-	public String getFaqId() {
-		return faqId;
-	}
-
-	public void setFaqId(String faqId) {
-		this.faqId = faqId;
 	}
 
 	public String getFaqType() {
@@ -74,36 +80,20 @@ public class Faq implements java.io.Serializable  {
 		this.faqContent = faqContent;
 	}
 
-	public java.sql.Date getEnrollDate() {
-		return enrollDate;
+	public java.sql.Date getFaqDate() {
+		return faqDate;
 	}
 
-	public void setEnrollDate(java.sql.Date enrollDate) {
-		this.enrollDate = enrollDate;
+	public void setFaqDate(java.sql.Date faqDate) {
+		this.faqDate = faqDate;
 	}
 
-	public java.sql.Date getLastModified() {
-		return lastModified;
+	public int getFaqReadCount() {
+		return faqReadCount;
 	}
 
-	public void setLastModified(java.sql.Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	public int getFaqReadCnt() {
-		return faqReadCnt;
-	}
-
-	public void setFaqReadCnt(int faqReadCnt) {
-		this.faqReadCnt = faqReadCnt;
-	}
-
-	public String getAdminId() {
-		return adminId;
-	}
-
-	public void setAdminId(String adminId) {
-		this.adminId = adminId;
+	public void setFaqReadCount(int faqReadCount) {
+		this.faqReadCount = faqReadCount;
 	}
 
 	public static long getSerialversionuid() {
@@ -112,11 +102,13 @@ public class Faq implements java.io.Serializable  {
 
 	@Override
 	public String toString() {
-		return "Faq [faqId=" + faqId + ", faqType=" + faqType + ", faqTitle=" + faqTitle + ", faqWriter=" + faqWriter
-				+ ", faqContent=" + faqContent + ", enrollDate=" + enrollDate + ", lastModified=" + lastModified
-				+ ", faqReadCnt=" + faqReadCnt + ", adminId=" + adminId + "]";
+		return "Faq [faqNum=" + faqNum + ", adminId=" + adminId + ", faqType=" + faqType + ", faqTitle=" + faqTitle
+				+ ", faqWriter=" + faqWriter + ", faqContent=" + faqContent + ", faqDate=" + faqDate + ", faqReadCount="
+				+ faqReadCount + "]";
 	}
+
 	
+
 	
 	
 	

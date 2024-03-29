@@ -3,11 +3,19 @@
    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+
+
+<c:set var="nowpage" value="1" />
+<c:if test="${ !empty requestScope.currentPage }">
+	<c:set var="nowpage" value="${ requestScope.currentPage }" />
+</c:if>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자주묻는질문(FAQ)</title>
+<title>faqListView</title>
+<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <style>
 body, html {
     height: 100%;
@@ -80,58 +88,72 @@ hr {
             <!-- 초기 FAQ 내용 -->
             <h1>자주묻는질문(FAQ)</h1>
             <hr>
-            <p>자주 묻는 질문 내용입니다.</p>
-        </div>
+            <p>자주 묻는 질문 내용입니다.
+            <%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
+			<%-- <c:if test="${ !empty sessionScope.loginMember }"> --%>
+				<div style="align:center;text-align:right;">
+	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">글쓰기</button>
+					<!-- <button onclick="showWriteForm();">글쓰기</button> -->
+				</div>
+			<%-- </c:if> --%>
+			<br>
+
+            
+            </p>
+        
+		   <br>
+
+	    	<table align="center" border="1" cellspacing="0" width="700">
+	    		<tr>
+	    			<th>번호</th>
+	    			<th>제목</th>
+	    			<th>작성자</th>
+	    			<th>날짜</th>
+	    			<th>조회수</th>
+	    		</tr>
+	    		<c:forEach items="${ requestScope.list }" var="f">
+	    			<tr>
+	    				<td align="center">${ f.faqNum }</td>
+	    				<td>
+	    				<c:url var="fd" value="fdetail.do">
+	    					<c:param name="fnum" value="${ f.faqNum }"/>
+	    					<c:param name="page" value="${ nowpage }"/>
+	    				</c:url>
+	    				<a href="${ fd }">${ f.faqTitle }</a>
+	    				</td>
+	    				<td align="center">${ f.faqWriter }</td>
+	    				<td align="center">${ f.faqDate }</td>
+	    				<td align="center">${ f.faqReadCount }</td>
+	    			</tr>
+	    		</c:forEach>
+	    	</table>
+	    	<br>
+        
+    		<%-- 페이징 처리 뷰 포함 처리 --%>
+			<c:import url="/WEB-INF/views/common/pagingView.jsp" />
+
+			
+		</div>
+		
+		
     </main>
 
 </div>
 
 <script>
+
 document.getElementById("faq").addEventListener("click", function() {
     // 자주묻는질문(FAQ) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-    <a href="${ pageContext.servletContext.contextPath }/flist.do?page=1"></a>
-    document.getElementById("faqContent").innerHTML = `
-        <h1>자주묻는질문(FAQ)</h1>
-        <hr>
-        <p>자주 묻는 질문 내용입니다.</p>
-        
-    	<%-- 조회된 게시글 목록 출력 --%>
-    	<table align="center" border="1" cellspacing="0" width="700">
-    		<tr>
-    			<th>번호</th>
-    			<th>제목</th>
-    			<th>작성자</th>
-    			<th>날짜</th>
-    			<th>조회수</th>
-    		</tr>
-    		<c:forEach items="${ requestScope.list }" var="f">
-    			<tr>
-    				<td align="center">${ f.faqNo }</td>
-    				<td>
-    				<c:url var="fd" value="fdetail.do">
-    					<c:param name="fnum" value="${ f.faqNo }"/>
-    					<c:param name="page" value="${ nowpage }"/>
-    				</c:url>
-    				<a href="${ fd }">${ f.faqTitle }</a>
-    				</td>
-    				<td align="center">${ f.faqWriter }</td>
-    				<td align="center">${ f.faqDate }</td>
-    				<td align="center">
-    				</td>
-    				<td align="center">${ f.faqReadCount }</td>
-    			</tr>
-    		</c:forEach>
-    	</table>
-    	<br>
-        
-        
-        
-        
-        `;
-        
+	<c:url var="fl" value="flist.do">
+	 	<c:param name="page" value="${ currentPage }" /> 
+	 </c:url>   
+	location.href='${ fl }'; 
 
+    //location.href="${pageContext.servletContext.contextPath}/flist.do?page=1";
         
 });
+
+
 
 document.getElementById("qna").addEventListener("click", function() {
     // 문의하기(Q&A) 클릭 시 오른쪽 창의 내용이 변경됩니다.
@@ -140,8 +162,16 @@ document.getElementById("qna").addEventListener("click", function() {
         <hr>
         <p>문의하기(Q&A) 내용입니다.</p>`;
 });
+
+
+function showWriteForm(){
+	//게시글 원글 쓰기 페이지로 이동 요청
+	location.href = "${ pageContext.servletContext.contextPath}/fwform.do";
+}
 </script>
 
+
+<br>
 
 
 
