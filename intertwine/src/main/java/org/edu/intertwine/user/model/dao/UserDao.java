@@ -38,5 +38,9 @@ public class UserDao {
 		return sqlSessionTemplate.selectOne("userMapper.selectEmailCount", email);
 	}
 
+	public int updatePwd(User user) {
+		return sqlSessionTemplate.update("userMapper.updatePwd", user);
+	}
+
 	
 }

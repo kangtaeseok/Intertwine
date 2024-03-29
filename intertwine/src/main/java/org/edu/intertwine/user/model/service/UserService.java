@@ -16,6 +16,8 @@ public interface UserService {
 
 	int selectEmailCount(String email);
 
+	int updatePwd(User user);
+
 
 
 }
