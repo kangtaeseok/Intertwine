@@ -25,5 +25,28 @@ public class FaqServiceImpl implements FaqService{
 		// TODO Auto-generated method stub
 		return faqDao.selectList(paging);
 	}
+	
+	@Override
+	public int selectListCount() {
+		// TODO Auto-generated method stub
+		return faqDao.selectListCount();
+	}
+
+	@Override
+	public void updateAddReadCount(int faqNum) {
+		faqDao.updateAddReadCount(faqNum);
+	}
+
+	@Override
+	public Faq selectFaq(int faqNum) {
+		// TODO Auto-generated method stub
+		return faqDao.selectFaq(faqNum);
+	}
+
+	@Override
+	public int insertOriginFaq(Faq faq) {
+		// TODO Auto-generated method stub
+		return faqDao.insertOriginFaq(faq);
+	}
 
 }
