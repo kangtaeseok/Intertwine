@@ -71,7 +71,9 @@
                 </ul>
             </aside>
             <div id="bottom_right_contents">
-            
+                <div id="dummy_sub_menu" class="sub_menu">
+                    더미 서브메뉴
+                </div>
                 <div id="mypage_sub_menu" class="sub_menu">
                     마이페이지 서브메뉴
                 </div>
@@ -87,9 +89,10 @@
                 
                
                 
-                <div class="feed">
+                <!--<div class="feed">
                     피드창
-                </div>
+                </div>-->
+                
             </div>
         </div>
     </main>
