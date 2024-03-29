@@ -153,8 +153,10 @@ function changePwd() {
 			url: "changePwd.do",
             data: {pemail: pemail, pwd: pwd},
             success: function(data) {
-            	alert("성공함");
-            	location:href='login.do';
+            	if(data == "ok"){
+            		alert("성공함");
+                	location:href='login.do';
+            	}
             },
             error: function(xhr, status, error) {
             	alert("오류 발생: " + error + "다시 한번 시도해주세요.");

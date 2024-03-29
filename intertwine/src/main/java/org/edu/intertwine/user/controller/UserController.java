@@ -205,7 +205,6 @@ public class UserController {
 		 
 		 if(result > 0) {
 			 str = "ok";
-			 logger.info(str);
 		 } else {
 			 str = "dup";
 		 }

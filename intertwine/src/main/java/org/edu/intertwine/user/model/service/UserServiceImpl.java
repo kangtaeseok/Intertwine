@@ -1,14 +1,18 @@
 package org.edu.intertwine.user.model.service;
 
 
+import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.dao.UserDao;
 import org.edu.intertwine.user.model.vo.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
-
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	private UserDao userDao;
 
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int updatePwd(User user) {
+		logger.info(user.toString());
 		return userDao.updatePwd(user);
 	}
 
