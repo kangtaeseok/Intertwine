@@ -47,7 +47,7 @@ function checkId() {
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
-			
+			 
 		}
 	});
 	return false;
