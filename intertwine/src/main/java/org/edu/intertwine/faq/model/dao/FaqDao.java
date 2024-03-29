@@ -28,7 +28,32 @@ public class FaqDao {
 		List<Faq> list = sqlSessionTemplate.selectList("faqMapper.selectList", paging);
 		return (ArrayList<Faq>) list;
 	}
+
+
+	public int selectListCount() {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("faqMapper.selectListCount");
+	}
+
+
+	public Faq selectFaq(int faqNum) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("faqMapper.selectFaq", faqNum);
+	}
+
+
+	public void updateAddReadCount(int faqNum) {
+		sqlSessionTemplate.update("faqMapper.updateAddReadCount", faqNum);
 	
+		
+	}
+
+
+	public int insertOriginFaq(Faq faq) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.insert("faqMapper.insertOriginFaq", faq);
+	}
 	
+
 
 }
