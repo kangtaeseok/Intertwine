@@ -41,8 +41,8 @@ header > img {
 	border-top-left-radius: 6px;
 }
 
-input {
-	
+.pwd-inner-box {
+	display: none;
 }
 
 .auth-email{
@@ -51,4 +51,8 @@ input {
 
 .auth-phone {
 	display: none;	
+}
+
+.pwd-check-box {
+	display: none;
 }

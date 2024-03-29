@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectuserPwd(userPwd);
 	}
 
+	@Override
+	public int updatePwd(User user) {
+		return userDao.updatePwd(user);
+	}
+
 
 	
 	

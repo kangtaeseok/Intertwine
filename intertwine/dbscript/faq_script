@@ -1,0 +1,51 @@
+-- 자주 묻는 질문 테이블 (확인요망)
+DROP TABLE TB_FAQ CASCADE CONSTRAINTS;
+DROP SEQUENCE SEQ_FAQ;
+CREATE TABLE TB_FAQ (
+    FAQ_NUM NUMBER CONSTRAINT PK_FAQ_NO PRIMARY KEY,
+    ADMIN_ID VARCHAR2(50),
+    FAQ_TYPE CHAR(3) CONSTRAINT NN_FAQ_TYPE NOT NULL, 
+    FAQ_TITLE VARCHAR2(60),
+    FAQ_WRITER VARCHAR2(20),
+    FAQ_CONTENT VARCHAR2(600),
+    FAQ_DATE DATE,
+    FAQ_READCOUNT NUMBER DEFAULT 0
+);
+COMMENT ON COLUMN TB_FAQ.FAQ_NUM IS 'FAQ 번호';
+COMMENT ON COLUMN TB_FAQ.ADMIN_ID IS '관리자ID';
+COMMENT ON COLUMN TB_FAQ.FAQ_TYPE IS 'FAQ 분류';
+COMMENT ON COLUMN TB_FAQ.FAQ_TITLE IS 'FAQ 제목';
+COMMENT ON COLUMN TB_FAQ.FAQ_WRITER IS 'FAQ 작성자';
+COMMENT ON COLUMN TB_FAQ.FAQ_CONTENT IS 'FAQ 내용';
+COMMENT ON COLUMN TB_FAQ.FAQ_DATE IS 'FAQ 작성날짜';
+COMMENT ON COLUMN TB_FAQ.FAQ_READCOUNT IS 'FAQ 조회수';
+
+CREATE SEQUENCE SEQ_FAQ
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCACHE
+NOCYCLE;
+
+
+INSERT INTO TB_FAQ VALUES (001, '010', '010', '계정만들기', '관리자', '계정은 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (002, '010', '020', '아바타만들기', '관리자', '아바타만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (003, '010', '030', '개인방만들기', '관리자', '개인방만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (004, '010', '040', '광장만들기', '관리자', '광장만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (005, '010', '050', '게임하는방법', '관리자', '게임방법은 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (006, '010', '010', '계정만들기', '관리자', '계정은 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (007, '010', '020', '아바타만들기', '관리자', '아바타만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (008, '010', '030', '개인방만들기', '관리자', '개인방만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (009, '010', '040', '광장만들기', '관리자', '광장만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (010, '010', '050', '게임하는방법', '관리자', '게임방법은 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (011, '010', '010', '계정만들기', '관리자', '계정은 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (012, '010', '020', '아바타만들기', '관리자', '아바타만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (013, '010', '030', '개인방만들기', '관리자', '개인방만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (014, '010', '040', '광장만들기', '관리자', '광장만들기는 관리자에게 문의 후 만들기', SYSDATE, 0);
+INSERT INTO TB_FAQ VALUES (015, '010', '050', '게임하는방법', '관리자', '게임방법은 관리자에게 문의 후 만들기', SYSDATE, 0);
+
+
+
+COMMIT;
+
+SELECT * FROM TB_FAQ;

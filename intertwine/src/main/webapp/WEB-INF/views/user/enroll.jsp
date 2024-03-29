@@ -61,7 +61,7 @@ function checkEmail() {
 		success: function(data){
 			console.log("success : " + data);
 			if(data == "ok"){
-				 sendEmail()
+				 sendEmail(data)
 			} else {
 				alert("중복된 이메일 입니다. 다른 이메일을 입력하세요.")
 			}
@@ -89,7 +89,7 @@ function regExpPwd() {
 	
 }
 
-
+//암호일치여부
 function validate() {
 	var pwdValue = $('#userpwd').val();
 	var pwdValue2 = $('#userpwd2').val();
@@ -228,7 +228,7 @@ function daumPostcode() {
 	<div class="enroll-box">
 		<form method="post" action="uinsert.do" id="enroll-form" onsubmit="return validate();">
 				<table class="outer" cellspacing="12" cellpadding="0">
-					<tr><td width=120;>아이디</td>
+					<tr><td width=120;>*아이디</td>
 						<td>
 							<input type="text" name="userId" id="userid" oninput="return regExpId();" required>
 							<div class="id-check-box"></div>
@@ -239,26 +239,26 @@ function daumPostcode() {
 					</tr>
 					
 					<tr class="alertId">
-						<tr><td>이 름</td>	
+						<tr><td>*이 름</td>	
 						<td>
 						<input type="text" name="userName" id="username" required>
 						</td>
 					</tr>
 					
-					<tr><td>비밀번호</td>
+					<tr><td>*비밀번호</td>
 						<td><input type="password" name="userPwd" id="userpwd" maxlength="14" oninput="regExpPwd();" required>
 							<div class="pwd-check-box"></div>
 						</td>
 						<td></td>
 					</tr>
 					
-					<tr><td>비밀번호 확인</td>
+					<tr><td>*비밀번호 확인</td>
 						<td><input type="password" name="userpwd2" id="userpwd2" required maxlength="14">
 						<div class="pwd2-check-box"></div>
 						</td>
 					</tr>
 					
-					<tr><td>이메일</td>
+					<tr><td>*이메일</td>
 						<td><input type="email" id="mail" name="email" required>
 						</td><td>
 							<input type="button" value="인증" onclick="checkEmail();"> &nbsp;

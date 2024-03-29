@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,30 +32,162 @@ function changePhone2() {
 	$(".pwd-find-phone").show();
 	$(".pwd-find-email").hide();
 }
+//비번 정규표현식
+function regExpPwd() {
+	const regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+	const pwd = $('#userpwd').val();
+	
+	if(!regExp.test(pwd)) {	
+		$(".pwd-check-box").html("비밀번호는 특수기호(!@#$%^*+=-), 숫자 포함 <br> 8자리 이상 15자리 미만으로 입력해주세요").css('color', 'blue');
+		return;
+	} else {
+		$(".pwd-check-box").hide();
+	}
+	
+}
 
 
+
+
+//이메일 아이디체크
 function checkEmail() {
 	$.ajax({
 		url: "idsearch.do",
 		type: "post",
 		data: {email : $("#femail").val()},
 		success: function(data){
-			$(".id-find-email").html(data);
+			$(".id-find-email").html("회원님의 아이디는 " + data + " 입니다." );
 			
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
 		}
-		
-
 	});
+}
+//이메일 비번체크
+function checkEmail2() {
+	$.ajax({
+		url: "pwdsearch.do",
+		type: "post",
+		data: {email : $("#femail").val()},
+		success: function(data){
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});
+}
 
+var timeLeft = 180;
+
+function timer() {
+	var countdownTimer = setInterval(function() {
+        // 분과 초로 나누어 표시
+        var minutes = parseInt(timeLeft / 60, 10);
+        var seconds = parseInt(timeLeft % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        // 타이머 표시 업데이트
+        $(".timer").html(minutes + ":" + seconds);
+
+        // 타이머 종료 검사
+        if (--timeLeft < 0) {
+            clearInterval(countdownTimer);
+            $(".timer").html("시간 만료!");
+        }
+    }, 1000); // 매 초마다 실행
+}
+
+//비번용 이메일 보내기
+function sendEmail() {
+	var email = $("#pmail").val();
+	if(email) {
+		$.ajax({
+			type: "post",
+			url: "postEmail.do",
+            data: {email: email},
+            success: function(data) {
+            	alert("인증번호가 전송되었습니다. 이메일을 확인해주세요.");  	
+            	$(".pwd-find-email").hide();
+    			$(".auth-email").show();
+            	timer()
+            },
+            error: function(xhr, status, error) {
+            	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
+            }
+		});
+	}
+}
+//비번 이메일 인증확인
+function pwdevalidate() {
+	$(".timer").remove();
+	var auth = $("#pwdemail").val();
+	if(auth) {
+		$.ajax({
+			type: "post",
+			url: "emailAuth.do",
+            data: {auth: auth},
+            success: function(data) {
+            	$(".pwd-find-email").hide();
+            	$(".auth-email").hide();
+            	$(".pwd-inner-box").show();
+            },
+            error: function(xhr, status, error) {
+            	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
+            	document.getElementById("mail").select();
+            }
+		});
+	}
+}
+
+//비번 변경 처리
+function changePwd() {
+	var pemail = $("#pmail").val();
+	var pwd = $("#userpwd").val();
+	if(pemail) {
+		$.ajax({
+			type: "post",
+			url: "changePwd.do",
+            data: {pemail: pemail, pwd: pwd},
+            success: function(data) {
+            	alert("성공함");
+            	location:href='login.do';
+            },
+            error: function(xhr, status, error) {
+            	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
+            }
+		});
+	}
+	
 }
 
 
+//비번 전화번호 인증확인
+function pwdpvalidate() {
+	$(".timer").remove();
+	var auth = $("#pwdemail").val();
+	if(auth) {
+		$.ajax({
+			type: "post",
+			url: "emailAuth.do",
+            data: {auth: auth},
+            success: function(data) {
+            	
+            },
+            error: function(xhr, status, error) {
+            	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
+            	document.getElementById("mail").select();
+            }
+		});
+	}
+}
 </script>
 </head>
 <body>
+
 <header><img src="/intertwine/resources/images/intertwinelogo.png"></header>
 <div class="body-div">
 	<div class="id-box">
@@ -78,17 +211,26 @@ function checkEmail() {
 		<button class="button" onclick="changePhone2();">전화번호</button>
 	<div class="pwd-find-box">
 			<div class="pwd-find-email">
-				<input type="text" name="email" id="femail" placeholder="이메일 입력">
-				<button>인증</button>
+				<input type="text" name="email" id="pmail" placeholder="이메일 입력">
+				<button onclick="sendEmail();">인증</button>
+				
 			</div>
 			<div class="auth-email">
 				<input type="text" id="pwdemail" placeholder="인증번호 입력">
-				<button>확인</button>
+				<div class="timer"></div>
+				<button onclick="pwdevalidate();">확인</button>
+			</div>
+			
+			<div class="pwd-inner-box">
+			<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd" maxlength="14" oninput="regExpPwd();" required></label>
+			<div class="pwd-check-box"></div><br>
+        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd2" maxlength="14" required></label>  &nbsp; <button onclick="changePwd();">확인</button>
+        		
 			</div>
 			
 			<div class="pwd-find-phone">
-				<input type="text" name="phone" id="fphone" placeholder="휴대번호 입력">
-				<button onclick="">인증</button>
+				<input type="text" name="phone" id="pphone" placeholder="휴대번호 입력">
+				<button onclick="pwdpvalidate();">인증</button>
 			</div>
 			<div class="auth-phone">
 				<input type="text" id="pwdphone" placeholder="인증번호 입력">
