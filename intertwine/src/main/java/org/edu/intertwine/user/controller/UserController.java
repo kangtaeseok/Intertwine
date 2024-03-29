@@ -51,10 +51,11 @@ public class UserController {
 	return "user/enroll";
 	}
 	
-	@RequestMapping("findInfo.do") public String moveMainPage() {
+	@RequestMapping("findInfo.do")
+	public String moveMainPage() {
 		return "user/finduserInfo"; 
 	}
-	 
+	
 	
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
@@ -143,14 +144,6 @@ public class UserController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	private static int random;
 	
 	//이메일 보내기
@@ -189,7 +182,7 @@ public class UserController {
 		 logger.info(user.toString());
 		 String returnStr = null;
 		 if(user != null) {
-			 returnStr = "유저아이디명은 : '" + user.getUserId() + "' 입니다.";
+			 returnStr = user.getUserId();
 		 } else {
 			 returnStr ="none";
 		 }
@@ -200,13 +193,27 @@ public class UserController {
 		out.flush();
 		}
 	 
-	//비번변경처리
-	 @RequestMapping("pwdchange.do")
-		public void userchangePwd(@RequestParam("userpwd") String userPwd, HttpServletResponse response) throws IOException {
-		 
-			/* bcryptPasswordEncoder.matches(user.getUserPwd(),userId)); */
-		}
 	 
+	//비번찾기처리
+	 @RequestMapping("changePwd.do")
+		public void userchangePwd(@RequestParam("pemail") String email, 
+				@RequestParam("pwd") String pwd, HttpServletResponse response) throws IOException {
+		 User user = userService.selectEmail(email);
+		 user.setUserPwd(bcryptPasswordEncoder.encode(pwd));
+		 String str = null;
+		 int result = userService.updatePwd(user);
+		 
+		 if(result > 0) {
+			 str = "ok";
+			 logger.info(str);
+		 } else {
+			 str = "dup";
+		 }
+		 response.setContentType("text/html' charSet=utf-8");
+		PrintWriter out = response.getWriter();
+		out.append(str);
+		out.flush();
+	 }
 	 
 	/*
 	 * udetail.do
