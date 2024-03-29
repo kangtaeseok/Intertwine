@@ -14,10 +14,11 @@ public class Video implements Serializable {
 		super();
 	}
 
-	public Video(int videoId, int postId) {
+	
+	public Video(int postId, String videoURL) {
 		super();
-		this.videoId = videoId;
 		this.postId = postId;
+		this.videoURL = videoURL;
 	}
 
 	public int getVideoId() {
