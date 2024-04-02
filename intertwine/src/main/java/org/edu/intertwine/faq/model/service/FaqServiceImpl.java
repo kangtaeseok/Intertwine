@@ -8,7 +8,7 @@ import org.edu.intertwine.faq.model.vo.Faq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("boardService")
+@Service("faqService")
 public class FaqServiceImpl implements FaqService{
 	
 	@Autowired
@@ -47,6 +47,18 @@ public class FaqServiceImpl implements FaqService{
 	public int insertOriginFaq(Faq faq) {
 		// TODO Auto-generated method stub
 		return faqDao.insertOriginFaq(faq);
+	}
+
+	@Override
+	public int updateOrigin(Faq faq) {
+		// TODO Auto-generated method stub
+		return faqDao.updateOrigin(faq);
+	}
+
+	@Override
+	public int deleteFaq(Faq faq) {
+		// TODO Auto-generated method stub
+		return faqDao.deleteFaq(faq);
 	}
 
 }
