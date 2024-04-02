@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자주묻는질문(FAQ)</title>
+<title>qnaTopView</title>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <style>
 body, html {
@@ -67,40 +67,82 @@ hr {
 
 </head>
 <body>
-
+<c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
 <hr>
 <br>
 <div class="container">
-    <header>Header</header>
-    <c:import url="/WEB-INF/views/common/menubar.jsp" />
-    <br>
+<script type="text/javascript">
+document.getElementById("qnaContent").innerHTML = `
+
+    <!-- 초기 FAQ 내용 -->
+    <h1>인기 게시판</h1>
+    <hr>
+    <p>문의하기 내용입니다.</p>
+
+   <br>
     <main>
-        <div class="left">
-            <h1>고객센터</h1>
-            <hr>
-            <ul>
-                <!-- 문의하기(Q&A)와 자주묻는질문(FAQ)에 ID 추가 -->
-                <li><h2 id="faq">자주묻는질문(FAQ)</h2></li>
-                <li><h2 id="qna">문의하기(Q&A)</h2></li>
-            </ul>           
-        </div>
-        <div class="right" id="faqContent">
+		<%-- 조회수 많은 인기게시글 3개 출력 : ajax --%>
+			<div style="float:left;border:1px solid navy;padding:5px;margin:5px;margin-left:50px;">
+				<h4>인기 게시글</h4>
+				<table id="toplist" border="1" cellspacing="0" width="350">
+					<tr><th>번호</th><th>제목</th><th>조회수</th></tr>
+				</table>
+			</div>
+			
 		</div>
     </main>
+`;
+</script>
 
 </div>
+
+
 <script>
+$(function(){
 
-document.getElementById("faq").addEventListener("click", function() {
-    location.href="${pageContext.servletContext.contextPath}/flist.do?page=1";
-});
+	
+	//조회수 많은 인기 게시글 상위 3개 조회 출력 처리
+	$.ajax({
+		url: "qtop3.do",
+		type: "post",
+		dataType: "json",
+		success: function(data){
+			console.log("success : " + data);
+			
+			//object --> string
+			var str = JSON.stringify(data);
+			
+			//string --> json
+			var json = JSON.parse(str);
+			
+			values = "";			
+			for(var i in json.list){
+				values += "<tr><td>" + json.list[i].fnum 
+						+ "</td><td><a href='qdetail.do?qnum=" 
+						+ json.list[i].qnum + "'>"
+						+ decodeURIComponent(json.list[i].qtitle).replace(/\+/gi, " ") 
+						+ "</a></td><td>"
+						+ json.list[i].fcount + "</td></tr>";
+			}
+			
+			$('#toplist').html($('#toplist').html() + values);
+			//$('#toplist').append(values);
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});  //ajax
+	
+});  //document ready
 
-document.getElementById("qna").addEventListener("click", function() {
-    location.href="${pageContext.servletContext.contextPath}/qlist.do?page=1";
-});
-        
 
 </script>
+
+
+
+
+
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>
