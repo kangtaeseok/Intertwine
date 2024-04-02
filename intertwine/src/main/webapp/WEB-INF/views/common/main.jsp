@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
 </head>
 <body>
-	<header> <!-- 페이지 상단 -->
+    <header> <!-- 페이지 상단 -->
         <div> <!-- 홈 버튼 -->
             <nav class="homebutton_nav">
                 <ul>
@@ -37,64 +37,61 @@
     </header>
 
     <main>
-        <div>
-            <aside class="side-bar">
-                <ul>
-                    <li id="a">
-                        <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
-                        <ul>
-                            <li><a href="#">text1</a></li>
-                            <li><a href="#">text2</a></li>
-                            <li><a href="#">text3</a></li>
-                            <li><a href="#">text4</a></li>
-                        </ul>
-                    </li>
-                    <li id="mypage">
-                        <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
-                        <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
-                    </li>
-                    <li id="c">
-                        <a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>
-                    </li>
-                    <li id="chatting">
-                        <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
-                    </li>
-                    <li id="alarm">
-                        <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
-                    </li>
-                    <li id="f">
-                        <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
-                    </li>
-                    <li id="settings">
-                        <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-                    </li>
-                </ul>
-            </aside>
-            <div id="bottom_right_contents">
-                <div id="dummy_sub_menu" class="sub_menu">
-                    더미 서브메뉴
-                </div>
-                <div id="mypage_sub_menu" class="sub_menu">
-                    마이페이지 서브메뉴
-                </div>
-                <div id="chatting_sub_menu" class="sub_menu">
-                    채팅 서브메뉴
-                </div>
-                <div id="alarm_sub_menu" class="sub_menu">
-                    알림 서브메뉴
-                </div>
-                <div id="settings_sub_menu" class="sub_menu">
-                    설정 서브메뉴
-                </div>
-                
-               
-                
-                <!--<div class="feed">
+        <aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                </li>
+                <li id="mypage">
+                    <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                    <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                </li>
+                <li id="friend">
+                    <a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                </li>
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+                마이페이지 서브메뉴
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+                설정 서브메뉴
+            </div>
+
+        </div>
+        <div id="bottom_right_contents">
+            <div id="abc">
+                <!-- <div class="feed">
                     피드창
-                </div>-->
-                
+                </div> -->
+                <div class="squerediv">
+                     스퀘어 나올 화면
+                </div>
             </div>
         </div>
     </main>
 </body>
+
 </html>
