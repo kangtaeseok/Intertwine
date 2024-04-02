@@ -3,8 +3,12 @@ package org.edu.intertwine.friend.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.friend.model.vo.Friend;
+import org.edu.intertwine.user.model.service.UserService;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,69 +30,71 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	@Autowired
 	private FriendService friendService;
 
+	@Autowired
+	private UserService UserService;
+
 	// 친구페이지 뷰 내보내기
 	@RequestMapping(value = "friendPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String movefriendPage() {
+	public String movefriendPage(/* HttpSession session */) {
+		/* String userId = (String) session.getAttribute("userId"); */
+		/*
+		 * String userId = (String) session.getAttribute("userId");
+		 * logger.info("Current userId: {}", userId); // Log the userId if (userId ==
+		 * null) {
+		 */
 		return "friend/friendMainView";
+
 	}
-	
-	//차단 페이지 뷰 내보내기blockedPage.do
+
+	// 로그인 세션 동작 확인 테스트용
+	@PostMapping("test.do")
+	@ResponseBody // HTTP 응답 바디에 직접 데이터를 작성하기 위해 사용
+	public String receiveUserId(@RequestParam("userId") String userId) {
+		System.out.println("Received userId: " + userId);
+
+		// 비즈니스 로직 처리...
+
+		return "Received userId: " + userId; // 클라이언트로 응답 보내기
+	}
+
+	// 차단 페이지 뷰 내보내기blockedPage.do
 	@RequestMapping(value = "blockedPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-	    public String blockedPage() {
-	        return "friend/blockedViewPage"; 
-	    }
+	public String blockedPage() {
+		return "friend/blockedViewPage";
+	}
 
 	// 팔로잉 추가 메소드
 	@PostMapping("insertF.do")
 	@ResponseBody
-	public ResponseEntity<String> addFollowing(@RequestParam("userId") String userId,
+	public String addFollowing(@RequestParam("userId") String userId, 
 			@RequestParam("friendId") String friendId) {
-		try {
 			// vo 객체 생성 및 객체 변수에 들어온 유저 정보로 수정
-			Friend friend = new Friend();
-			friend.setUserId(userId);
-			friend.setFriendId(friendId);
+		Friend friend = new Friend();
+        friend.setUserId(userId);
+        friend.setFriendId(friendId);
+			System.out.println("userId : " + friend.getUserId() + "friendId : " + friend.getFriendId());
 			friendService.insertFollowing(friend);
-			return ResponseEntity.ok().body("팔로잉 성공");
-		} catch (Exception e) {
+			return "팔로잉 성공!";
 
-			return ResponseEntity.badRequest().body("팔로잉 실패");
-		}
 	}
-
-	/*
-	 * @RequestMapping(value="insertF.do", method=RequestMethod.POST) public String
-	 * addFollowing(@RequestParam("userId") String userId, @RequestParam("friendId")
-	 * String friendId) { logger.info("팔로잉 추가 : User {} -> Friend {}", userId,
-	 * friendId);
-	 * 
-	 * Friend friend = new Friend(); friend.setUserId(userId);
-	 * friend.setFriendId(friendId); friend.setStatus("accepted");
-	 * friendService.insertFollowing(friend); return "redirect:/friendPage.do";
-	 * 
-	 * 
-	 * }
-	 */
 
 	// 팔로잉 취소 메소드
 	@PostMapping("unfollowing.do")
 	@ResponseBody
-	public ResponseEntity<String> unfollowing(@RequestParam("userId") String userId,
+	public String unfollowing(@RequestParam("userId") String userId,
 			@RequestParam("friendId") String friendId) {
-
-		try {
-			Friend friend = new Friend();
-			friend.setUserId(userId);
-			friend.setFriendId(friendId);
-			// 언팔로잉 서비스 메소드 호출
-			friendService.deleteFollowing(friend);
-			// 성공 응답
-			return ResponseEntity.ok().body("팔로잉 취소하였습니다.");
-		} catch (Exception e) {
-			// 실패 응답
-			return ResponseEntity.badRequest().body("팔로잉 취소를 실패하였습니다.");
-		}
+		Friend friend = new Friend();
+		friend.setUserId(userId);
+        friend.setFriendId(friendId);
+        System.out.println("userId : " + friend.getUserId() + "friendId : " + friend.getFriendId());
+		friendService.deleteFollowing(friend);
+		String cansle = "팔로잉 취소";
+		return cansle;
 	}
+	
+	//차단계정 목록 조회
+	
+	
 
 	// 팔로잉 차단 메소드
 	@PostMapping("blockFollowing.do")
@@ -110,7 +116,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	// 팔로워 차단 메소드
 	/*
 	 * @PostMapping("unfollow.do")
-
+	 * 
 	 * 
 	 * @RequestMapping public ResponseEntity<String>
 	 * blockFollower(@RequestParam("userId") String
@@ -120,18 +126,27 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	 */
 
 	// 팔로잉 수
+	/*
+	 * @GetMapping("countFollowing.do")
+	 * 
+	 * @ResponseBody public int countFollowing(@RequestParam("userId") String
+	 * userId) {
+	 * 
+	 * return friendService.countFollowing(userId); }
+	 */
 	@GetMapping("countFollowing.do")
 	@ResponseBody
-	public int countFollowing(@RequestParam("userId") String userId) {
-
-		return friendService.countFollowing(userId);
+	public String countFollowing(@RequestParam("userId") String userId) {
+		int followeringCount = friendService.countFollowing(userId);
+		return String.valueOf(followeringCount);
 	}
 
 	// 팔로워 수
 	@GetMapping("countFollowers.do")
 	@ResponseBody
-	public int countFollowers(@RequestParam("userId") String userId) {
-		return friendService.countFollowers(userId);
+	public String countFollowers(@RequestParam("userId") String userId) {
+		int followersCount = friendService.countFollowers(userId);
+		return String.valueOf(followersCount);
 	}
 
 	/*
@@ -141,17 +156,53 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	 * 
 	 * @ResponseBody public ArrayList<Friend>
 	 * selectFollowingList(@RequestParam("userId") String userId) {
+	 * ArrayList<Friend> flist = friendService.FollowingList(userId);
+	 * ArrayList<Friend> fflist = friendService.friendProfile(Follow profile);
+	 * for(Friend list : flist) { JSONObject job = new JSONObject();
+	 * 
+	 * job.put("profile", flist) }
+	 * 
+	 * return flist;
+	 * 
 	 * 
 	 * }
+	 */
+
+	// 팔로잉 중인 계정 검색
+
+	@RequestMapping("searchFollowing.do")
+
+	@ResponseBody
+	public ResponseEntity<ArrayList<Friend>> searchFollowingMethod(HttpServletRequest request,
+
+			@RequestParam("userId") String userId, @RequestParam("friendId") String friendId) {
+		String requestContentType = request.getContentType();
+		System.out.println("Request Content-Type: " + requestContentType);
+		System.out.println("userId: " + userId + ", friendId: " + friendId);
+		System.out.println("Accept Header: " + request.getHeader("Accept"));
+		Friend friend = new Friend();
+		friend.setUserId(userId);
+		friend.setFriendId(friendId);
+
+		ArrayList<Friend> searchResults = friendService.searchFollowing(friend);
+
+		return ResponseEntity.ok(searchResults);
+	}
+
+	/*
+	 * // 팔로우 중인 계정 검색2
 	 * 
-	 * // 팔로워 목록 불러오기
+	 * @RequestMapping("searchFollowing.do")
 	 * 
-	 * @PostMapping("FollowerList.do")
+	 * @ResponseBody public List<Friend> searchFollowingMethod(@RequestBody
+	 * searchFriend friend) { System.out.println("userId: " + friend.getUserId() +
+	 * ", friendId: " + friend.getFriendId());
 	 * 
-	 * @ResponseBody public ArrayList<Friend>
-	 * selectFollowerList(@RequestParam("userId") String userId) {
+	 * List<Friend> searchResults = new List<Friend>();
 	 * 
-	 * }
+	 * List<Friend> searchResults = friendService.searchFollowing(friend);
+	 * 
+	 * return searchResults; }
 	 */
 
 }
