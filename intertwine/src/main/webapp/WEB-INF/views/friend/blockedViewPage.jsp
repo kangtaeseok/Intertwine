@@ -7,10 +7,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intertwine Friends Management</title>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"
+	crossorigin="anonymous"></script>
+<!-- 폰트어썸 가져오기 -->
 <!-- 이 jsp파일의 css파일 연결 -->
 <style>
-
 .content {
 	display: flex;
 	flex-direction: row;
@@ -36,73 +37,71 @@ h2 {
 }
 
 .list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
 }
 
 .blockFollowingList, .blockFollowerList {
-   left: 240px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 500px;
-    height: 600px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 1rem;
-    border-radius: 10px;
-    padding: 10px; /* 여백 추가 */
+	left: 240px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 500px;
+	height: 600px;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin: 1rem;
+	border-radius: 10px;
+	padding: 10px; /* 여백 추가 */
 }
 
 .searchFollowing, .searchFollow {
-    flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
-    margin-right: 10px; /* 오른쪽 마진 조정 */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+	flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
+	margin-right: 10px; /* 오른쪽 마진 조정 */
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 20px;
 }
 
 h2 {
-    margin: 0; /* 상하 마진 제거 */
-    color: #cc2e72;
+	margin: 0; /* 상하 마진 제거 */
+	color: #cc2e72;
 }
 /* 검색창과 버튼 컨테이너 스타일 */
 #followingbSearch, #followingbSearch {
-    display: flex;
-    margin-top: 10px; /* 상단 여백 추가 */
-    align-items: center; /* 내용을 세로 중앙 정렬 */
+	display: flex;
+	margin-top: 10px; /* 상단 여백 추가 */
+	align-items: center; /* 내용을 세로 중앙 정렬 */
 }
 
 /* 검색 입력 필드 스타일 */
 .searchBlockedFollowing, #followerSearchQuery {
-    flex-grow: 1;
-    padding: 8px 12px;
-    border: 2px solid #dcdcdc; /* 경계선 스타일 */
-    border-radius: 25px; /* 둥근 모서리 */
-    margin-right: 10px; /* 오른쪽 여백 */
-    outline: none; /* 선택 시 테두리 제거 */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* 내부 그림자 */
+	flex-grow: 1;
+	padding: 8px 12px;
+	border: 2px solid #dcdcdc; /* 경계선 스타일 */
+	border-radius: 25px; /* 둥근 모서리 */
+	margin-right: 10px; /* 오른쪽 여백 */
+	outline: none; /* 선택 시 테두리 제거 */
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
 }
 
 /* 검색 버튼 스타일 */
 #followingbSearch button, #followerbSearch button {
-    padding: 8px 16px;
-    background-color: #cc2e72; /* 배경 색상 */
-    color: white; /* 텍스트 색상 */
-    border: none; /* 경계선 제거 */
-    border-radius: 25px; /* 둥근 모서리 */
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-    transition: background-color 0.2s; /* 배경 색상 변화 효과 */
+	padding: 8px 16px;
+	background-color: #cc2e72; /* 배경 색상 */
+	color: white; /* 텍스트 색상 */
+	border: none; /* 경계선 제거 */
+	border-radius: 25px; /* 둥근 모서리 */
+	cursor: pointer; /* 마우스 오버 시 커서 변경 */
+	transition: background-color 0.2s; /* 배경 색상 변화 효과 */
 }
 
 /* 검색 버튼 호버 스타일 */
 #followingbSearch button:hover, #followerbSearch button:hover {
-    background-color: #f8c6ce; /* 호버 시 배경 색상 변경 */
+	background-color: #f8c6ce; /* 호버 시 배경 색상 변경 */
 }
-
-
 </style>
 </head>
 <body>
@@ -119,70 +118,143 @@ h2 {
 					<!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
 				</ol>
 				<script>
-                    // jQuery를 사용하여 미디어 쿼리를 적용
-                    $(document).ready(function () {
-                        var originalContents = {  // 원래 속성을 변수에 저장
-                            a: '<a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>',
-                            b: '<a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>',
-                            c: '<a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>',
-                            d: '<a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>',
-                            e: '<a href="#"><i class="fa-solid fa-bell"></i> 알림</a>',
-                            f: '<a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>',
-                            g: '<a href="#"><i class="fa-solid fa-gear"></i> 설정</a>'
-                        };
+					// jQuery를 사용하여 미디어 쿼리를 적용
+					$(document)
+							.ready(
+									function() {
+										var originalContents = { // 원래 속성을 변수에 저장
+											a : '<a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>',
+											b : '<a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>',
+											c : '<a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>',
+											d : '<a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>',
+											e : '<a href="#"><i class="fa-solid fa-bell"></i> 알림</a>',
+											f : '<a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>',
+											g : '<a href="#"><i class="fa-solid fa-gear"></i> 설정</a>'
+										};
 
-                        // 페이지 크기가 1279px 이하일 때 '스퀘어' 텍스트를 지우고 아이콘만 남깁니다.
-                        /*  JavaScript 코드와 CSS의 미디어 쿼리 사이에 일치하지 않는 부분이 있을 수 있습니다. 이는 화면 너비를 검사하는 방식의 차이 때문에 발생할 수 있습니다. 조정이 필요할 수 있습니다.*/
-                        if ($(window).width() <= 1262) {
-                            // 사이드 바 메뉴 아이콘 변경
-                            $('.side-bar > ul > li > a').each(function () {
-                                // 해당 메뉴의 아이콘 클래스를 가져와서 변경
-                                var iconClass = $(this).children('i').attr('class');
-                                $(this).html('<i class="' + iconClass + '"></i>');
-                            });
-                        } else {
-                            // 페이지 크기가 축소되지 않으면 아이콘을 원래 텍스트로 변경
-                            $('.side-bar > ul > li > a').each(function () {
-                                var originalText = $(this).parent().attr('original-text');
-                                $(this).html(originalText);
-                            });
-                        }
+										// 페이지 크기가 1279px 이하일 때 '스퀘어' 텍스트를 지우고 아이콘만 남깁니다.
+										/*  JavaScript 코드와 CSS의 미디어 쿼리 사이에 일치하지 않는 부분이 있을 수 있습니다. 이는 화면 너비를 검사하는 방식의 차이 때문에 발생할 수 있습니다. 조정이 필요할 수 있습니다.*/
+										if ($(window).width() <= 1262) {
+											// 사이드 바 메뉴 아이콘 변경
+											$('.side-bar > ul > li > a')
+													.each(
+															function() {
+																// 해당 메뉴의 아이콘 클래스를 가져와서 변경
+																var iconClass = $(
+																		this)
+																		.children(
+																				'i')
+																		.attr(
+																				'class');
+																$(this)
+																		.html(
+																				'<i class="' + iconClass + '"></i>');
+															});
+										} else {
+											// 페이지 크기가 축소되지 않으면 아이콘을 원래 텍스트로 변경
+											$('.side-bar > ul > li > a')
+													.each(
+															function() {
+																var originalText = $(
+																		this)
+																		.parent()
+																		.attr(
+																				'original-text');
+																$(this)
+																		.html(
+																				originalText);
+															});
+										}
 
-                        $(window).resize(function () {
-                            if ($(window).width() <= 1262) {
-                                $('.side-bar > ul > li#a > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-gamepad"></i>');
-                                });
-                                $('.side-bar > ul > li#b > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-circle-user"></i>');
-                                });
-                                $('.side-bar > ul > li#c > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-user-group"></i>');
-                                });
-                                $('.side-bar > ul > li#d > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-comment"></i>');
-                                });
-                                $('.side-bar > ul > li#e > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-bell">');
-                                });
-                                $('.side-bar > ul > li#f > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-bookmark"></i>');
-                                });
-                                $('.side-bar > ul > li#g > a').each(function () {
-                                    $(this).html('<i class="fa-solid fa-gear"></i>');
-                                });
+										$(window)
+												.resize(
+														function() {
+															if ($(window)
+																	.width() <= 1262) {
+																$(
+																		'.side-bar > ul > li#a > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-gamepad"></i>');
+																				});
+																$(
+																		'.side-bar > ul > li#b > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-circle-user"></i>');
+																				});
+																$(
+																		'.side-bar > ul > li#c > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-user-group"></i>');
+																				});
+																$(
+																		'.side-bar > ul > li#d > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-comment"></i>');
+																				});
+																$(
+																		'.side-bar > ul > li#e > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-bell">');
+																				});
+																$(
+																		'.side-bar > ul > li#f > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-bookmark"></i>');
+																				});
+																$(
+																		'.side-bar > ul > li#g > a')
+																		.each(
+																				function() {
+																					$(
+																							this)
+																							.html(
+																									'<i class="fa-solid fa-gear"></i>');
+																				});
 
-                            } else {
+															} else {
 
-                                $('.side-bar > ul > li').each(function () {
-                                    var id = $(this).attr('id');
-                                    $(this).html(originalContents[id]);
-                                });
+																$(
+																		'.side-bar > ul > li')
+																		.each(
+																				function() {
+																					var id = $(
+																							this)
+																							.attr(
+																									'id');
+																					$(
+																							this)
+																							.html(
+																									originalContents[id]);
+																				});
 
-                            }
-                        });
-                    });
-                </script>
+															}
+														});
+									});
+				</script>
 			</nav>
 		</div>
 
@@ -210,9 +282,48 @@ h2 {
 					<li id="b"><a href="#"><i class="fa-solid fa-circle-user"></i>
 							마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
 						<!-- 색칠된 아이콘 --></li>
-					<li id="c"><a
-						href="${ pageContext.servletContext.contextPath }/friendPage.do"><i
+					<li id="c"><a href="#"
+						onclick="showFriendPopup(); return false;"><i
 							class="fa-solid fa-user-group"></i> 친구</a></li>
+					<div id="friendPopup"
+						style="display: none; position: absolute; z-index: 1000; left: 100px; top: 70px; width: 150px; height: auto; background-color: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #888;">
+						<div style="margin: auto;">
+							<a href="${pageContext.servletContext.contextPath}/friendPage.do"
+								class="popup-link">팔로우 목록</a><br> <a
+								href="${pageContext.servletContext.contextPath}/blockedPage.do"
+								class="popup-link">차단 목록</a>
+						</div>
+					</div>
+					<script>
+						function showFriendPopup() {
+							document.getElementById('friendPopup').style.display = 'block';
+						}
+
+						// Clicking anywhere outside of the popup closes it
+						window.onclick = function(event) {
+							var popup = document.getElementById('friendPopup');
+							if (event.target == popup) {
+								popup.style.display = "none";
+							}
+						}
+					</script>
+
+					<style>
+.popup-link {
+	color: black;
+	text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+.popup-link:hover {
+	color: pink; /* 호버 시 색상 변경 */
+}
+
+.divider {
+	height: 1px;
+	background-color: #888;
+	margin: 5px 0; /* 구분선 상하 여백 추가 */
+}
+</style>
 					<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
 							채팅</a></li>
 					<li id="e"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
@@ -223,46 +334,51 @@ h2 {
 					</li>
 				</ul>
 			</aside>
-		
-		 <div class="blockFollowingList">
-    <div class="list-header">
-        <h2>Your BlockedFollowing</h2>
-        <div id="followingbSearch">
-            <input type="text" placeholder="차단 계정 검색" class="searchBlockedFollowing">
-            <button onclick="searchbFollowing()">Search</button>
-        </div>
-    </div>
-    <!-- 팔로잉 차단 리스트 내용 -->
-    
-</div>
-<!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
-<script>
-$(document).ready(function() {
-    const userId = "${userId}"; //세션에 로그인한 유저ID를 받아옴
 
-    // Fetch and display the following count
-    $.get("countFollowing.do", { userId: userId }, function(data) {
-        $("#followingCount").text(data);
-    });
+			<div class="blockFollowingList">
+				<div class="list-header">
+					<h2>Your BlockedFollowing</h2>
+					<div id="followingbSearch">
+						<input type="text" placeholder="차단 계정 검색"
+							class="searchBlockedFollowing">
+						<button onclick="searchbFollowing()">Search</button>
+					</div>
+				</div>
+				<!-- 팔로잉 차단 리스트 내용 -->
 
-    // Fetch and display the followers count
-    $.get("countFollowers.do", { userId: userId }, function(data) {
-        $("#followersCount").text(data);
-    });
-});
-</script>
-<div class="blockFollowerList">
-    <div class="list-header">
-        <h2>Your BlockedFollower</h2>
-        <div id="followerbSearch">
-            <input type="text" id="followerSearchQuery" placeholder="차단 계정 검색">
-            <button onclick="searchbFollower()">Search</button>
-        </div>
-    </div>
-    <!-- 팔로워 차단 리스트 내용 -->
+			</div>
+			<!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
+			<script>
+				$(document).ready(function() {
+					const userId = "${userId}"; //세션에 로그인한 유저ID를 받아옴
 
-</div>
-</div>
+					// Fetch and display the following count
+					$.get("countFollowing.do", {
+						userId : userId
+					}, function(data) {
+						$("#followingCount").text(data);
+					});
+
+					// Fetch and display the followers count
+					$.get("countFollowers.do", {
+						userId : userId
+					}, function(data) {
+						$("#followersCount").text(data);
+					});
+				});
+			</script>
+			<div class="blockFollowerList">
+				<div class="list-header">
+					<h2>Your BlockedFollower</h2>
+					<div id="followerbSearch">
+						<input type="text" id="followerSearchQuery" placeholder="차단 계정 검색">
+						<button onclick="searchbFollower()">Search</button>
+					</div>
+				</div>
+				<!-- 팔로워 차단 리스트 내용 -->
+
+			</div>
+		</div>
 	</main>
 
 
