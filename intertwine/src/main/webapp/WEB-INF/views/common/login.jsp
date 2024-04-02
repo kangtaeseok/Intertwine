@@ -12,44 +12,8 @@
  Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
  console.log(Kakao.isInitialized());
  
- 
-function kakaoLogin() {
-	Kakao.Auth.login({
-		success : function(response) {
-			Kakao.Auth.setAccessToken(response.access_token);
-			Kakao.API.request({
-				url : '/v2/user/me',
-				data: {
-					property_keys: ['kakao_account.email', 'response.id'],
-				},
-				success : function(response) {
-					fetch('kakao_login.do', {
-                        method: 'POST', 
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(response), // 서버로 보낼 데이터
-                    })
-                    .then(response => response.json())
-                    .then(data => console.log('Success:', data))
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+ Kakao.Auth.setAccessToken('${accessToken.getAccess_token()}');
 
-					
-					alert(JSON.stringify(response));
-					console.log(response)
-				},
-				fail : function(error) {
-					console.log(error)
-				},
-			})
-		},
-		fail : function(error) {
-			console.log(error);				
-		},
-	})
-}
 	
 
 
