@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="org.edu.intertwine.user.model.vo.User"%>
+<%@ page session="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,105 +11,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intertwine Friends Management</title>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"
+	crossorigin="anonymous"></script>
+<!-- 폰트어썸 가져오기 -->
+<script type="text/javascript"
+	src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <!-- 이 jsp파일의 css파일 연결 -->
-<style>
-
-.content {
-	display: flex;
-	flex-direction: row;
-	flex-flow: nowrap;
-	align-items: flex-start;
-}
-
-.followList {
-	left: 240px;
-	display: flex;
-	position: relative;
-	width: 600px;
-	height: 600px;
-	background-color: #f9f9f9;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	margin: 1rem;
-	border-radius: 10px; /* 테두리 둥글게 처리 */
-}
-
-h2 {
-	color: #cc2e72;
-	margin-bottom: 20px;
-}
-
-.list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-.followingList, .followList {
-   left: 240px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 500px;
-    height: 600px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 1rem;
-    border-radius: 10px;
-    padding: 10px; /* 여백 추가 */
-}
-
-.searchFollowing, .searchFollow {
-    flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
-    margin-right: 10px; /* 오른쪽 마진 조정 */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-}
-
-h2 {
-    margin: 0; /* 상하 마진 제거 */
-    color: #cc2e72;
-}
-/* 검색창과 버튼 컨테이너 스타일 */
-#followingSearch, #followerSearch {
-    display: flex;
-    margin-top: 10px; /* 상단 여백 추가 */
-    align-items: center; /* 내용을 세로 중앙 정렬 */
-}
-
-/* 검색 입력 필드 스타일 */
-.searchFollowing, #followerSearchQuery {
-    flex-grow: 1;
-    padding: 8px 12px;
-    border: 2px solid #dcdcdc; /* 경계선 스타일 */
-    border-radius: 25px; /* 둥근 모서리 */
-    margin-right: 10px; /* 오른쪽 여백 */
-    outline: none; /* 선택 시 테두리 제거 */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* 내부 그림자 */
-}
-
-/* 검색 버튼 스타일 */
-#followingSearch button, #followerSearch button {
-    padding: 8px 16px;
-    background-color: #cc2e72; /* 배경 색상 */
-    color: white; /* 텍스트 색상 */
-    border: none; /* 경계선 제거 */
-    border-radius: 25px; /* 둥근 모서리 */
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-    transition: background-color 0.2s; /* 배경 색상 변화 효과 */
-}
-
-/* 검색 버튼 호버 스타일 */
-#followingSearch button:hover, #followerSearch button:hover {
-    background-color: #f8c6ce; /* 호버 시 배경 색상 변경 */
-}
-
-
-</style>
+<link rel="stylesheet" href="/intertwine/resources/css/friend.css">
 </head>
 <body>
+
+	<%-- 사용자 세션 확인 --%>
+	<c:choose>
+		<c:when test="${not empty sessionScope.loginUser}">
+			<%-- 로그인한 사용자의 userId 표시 --%>
+			<%-- <h2>Welcome, ${sessionScope.loginUser.userId}!</h2> --%>
+		</c:when>
+		<c:otherwise>
+			<h2>Please login.</h2>
+		</c:otherwise>
+	</c:choose>
 	<header>
 		<!-- 페이지 상단 -->
 		<div>
@@ -196,93 +121,410 @@ h2 {
 		<!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
 	</header>
 	<main>
+		<aside class="side-bar">
+			<ul>
+				<li id="a"><a href="#"><i class="fa-solid fa-gamepad"></i>
+						스퀘어</a>
+					<ul>
+						<li><a href="#">text1</a></li>
+						<li><a href="#">text2</a></li>
+						<li><a href="#">text3</a></li>
+						<li><a href="#">text4</a></li>
+					</ul></li>
+				<li id="b"><a href="#"><i class="fa-solid fa-circle-user"></i>
+						마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
+					<!-- 색칠된 아이콘 --></li>
+				<li id="c"><a href="#"
+					onclick="showFriendPopup(); return false;"><i
+						class="fa-solid fa-user-group"></i> 친구</a></li>
+				<div id="friendPopup"
+					style="display: none; position: absolute; z-index: 1000; left: 100px; top: 70px; width: 150px; height: auto; background-color: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #888;">
+					<div style="margin: auto;">
+						<a href="${pageContext.servletContext.contextPath}/friendPage.do"
+							class="popup-link">팔로우 목록</a><br> <a
+							href="${pageContext.servletContext.contextPath}/blockedPage.do"
+							class="popup-link">차단 목록</a>
+					</div>
+				</div>
+
+				<script>
+	function showFriendPopup() {
+		document.getElementById('friendPopup').style.display = 'block';
+	}
+
+	// Clicking anywhere outside of the popup closes it
+	window.onclick = function(event) {
+		var popup = document.getElementById('friendPopup');
+		if (event.target == popup) {
+			popup.style.display = "none";
+		}
+	}
+</script>
+
+
+				<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
+						채팅</a></li>
+				<li id="e"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+				</li>
+				<li id="f"><a href="#"><i class="fa-solid fa-bookmark"></i>
+						북마크</a></li>
+				<li id="g"><a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+				</li>
+			</ul>
+		</aside>
 		<div class="content">
-			<aside class="side-bar">
-				<ul>
-					<li id="a"><a href="#"><i class="fa-solid fa-gamepad"></i>
-							스퀘어</a>
-						<ul>
-							<li><a href="#">text1</a></li>
-							<li><a href="#">text2</a></li>
-							<li><a href="#">text3</a></li>
-							<li><a href="#">text4</a></li>
-						</ul></li>
-					<li id="b"><a href="#"><i class="fa-solid fa-circle-user"></i>
-							마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
-						<!-- 색칠된 아이콘 --></li>
-					<li id="c"><a
-						href="${ pageContext.servletContext.contextPath }/friendPage.do"><i
-							class="fa-solid fa-user-group"></i> 친구</a></li>
-					<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
-							채팅</a></li>
-					<li id="e"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
-					</li>
-					<li id="f"><a href="#"><i class="fa-solid fa-bookmark"></i>
-							북마크</a></li>
-					<li id="g"><a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-					</li>
-				</ul>
-			</aside>
-			<!-- <div id="followingSearch">
-				<input type="text" placeholder="팔로잉 계정 검색"
-					class="searchFollowing">
-				<button onclick="searchFollowing()">Search</button>
-			</div>
 
-			<div id="followerSearch">
-				<input type="text" id="followerSearchQuery"
-					placeholder="팔로워 계정 검색">
-				<button onclick="searchFollower()">Search</button>
-			</div>
-			
+
 			<div class="followingList">
-				<h2>Your Following</h2>
-			</div>
-			<div class="followList">
-				<h2>Your Follow</h2>
-			</div>
-
-		</div> -->
-		
-		<!-- </div> -->
-		 <div class="followingList">
-    <div class="list-header">
-        <h2>Your Following <span id="followingCount"></span></h2>
-        <div id="followingSearch">
+				<div class="list-header">
+					<h2>
+						Your Following <br>팔로잉 수 : <span id="followingCount"></span>
+					</h2>
+					<!-- <div id="followingSearch">
             <input type="text" placeholder="팔로잉 계정 검색" class="searchFollowing">
             <button onclick="searchFollowing()">Search</button>
-        </div>
-    </div>
-    <!-- 팔로잉 리스트 내용 -->
-    
-</div>
-<!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
-<script>
-$(document).ready(function() {
-    const userId = "${userId}"; //세션에 로그인한 유저ID를 받아옴
+        </div> -->
+					<div id="followingSearch">
+						<input type="text" id="keywordInput" placeholder="팔로잉 계정 검색"
+							class="searchFollowing">
+						<button onclick="searchFollowing()">Search</button>
+					</div>
 
-    // Fetch and display the following count
-    $.get("countFollowing.do", { userId: userId }, function(data) {
-        $("#followingCount").text(data);
+					<script>
+
+function searchFollowing() {
+    var userId = '${sessionScope.loginUser.userId}';
+    var friendId = document.getElementById('keywordInput').value;
+
+    if (!friendId) {
+        alert("Please enter a friend ID to search.");
+        return;
+    }
+
+    $.ajax({
+        url: "searchFollowing.do",
+        type: "gets",
+        contentType: "application/json",
+        data: JSON.stringify({
+            userId: userId,
+            friendId: friendId
+        }),
+        dataType: 'json',
+        success: function(searchResults) {
+            displaySearchResults(searchResults);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred: " + error);
+        }
     });
+}
 
-    // Fetch and display the followers count
-    $.get("countFollowers.do", { userId: userId }, function(data) {
-        $("#followersCount").text(data);
+function displaySearchResults(searchResults) {
+    var resultsDiv = document.getElementById('searchResults');
+    resultsDiv.innerHTML = ''; // Clear previous results
+    if (searchResults.length > 0) {
+        searchResults.forEach(function(friend) {
+            var div = document.createElement('div');
+            div.textContent = friend.friendId; // Assuming your JSON objects have a friendId property
+            resultsDiv.appendChild(div);
+        });
+    } else {
+        resultsDiv.textContent = "No search results found.";
+    }
+}
+</script>
+					<div id="searchResults"></div>
+					<!-- 검색 결과를 표시할 영역 -->
+				</div>
+				<!-- 팔로잉 리스트 내용 -->
+				<!--  <div class="list-content">
+        반복되는 리스트 아이템 예시
+        <div class="list-item">
+            <img src="profile_picture_url" alt="Profile Image" class="profile-img">
+            <div class="user-id">username</div>
+            <div class="action-buttons">
+                <button class="unfollow-btn">Unfollow</button>
+                <button class="block-btn">Block</button>
+                <button class="chat-btn">Chat</button>
+            </div>
+        </div>
+    </div> -->
+				<table class="followingList-table">
+					<thead>
+						<tr>
+							<th>Profile</th>
+							<th>Username</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Repeat this TR for each following entry -->
+						<tr>
+							<td><img
+								src="https://static.cdn.soomgo.com/upload/portfolio/ddace5e6-3c38-4cf0-af4e-2c18ef269eda.jpg?webp=1"
+								alt="Profile Image" class="profile-img"></td>
+							<td>username</td>
+							<td>
+								<button class="follow-btn">follow</button>
+								<button class="block-btn">Block</button>
+								<button class="chat-btn">Chat</button>
+							</td>
+						</tr>
+						<tr>
+							<td><img
+								src="https://www.icreta.com/files/attach/images/319/275/055/8e2c1590a474a9afb78c4cb23a9af5b2.jpg"
+								alt="Profile Image" class="profile-img"></td>
+							<td>username</td>
+							<td>
+								<button class="follow-btn">follow</button>
+								<button class="block-btn">Block</button>
+								<button class="chat-btn">Chat</button>
+							</td>
+						</tr>
+						<tr>
+							<td><img
+								src="https://dnvefa72aowie.cloudfront.net/business-profile/bizPlatform/profile/40388181/1674021254765/MWJlMWNjOGNiMDMzMzE0ZTUwM2ZiZTllZjJkOTZiMGViYTgzNDQxNTE0YWY4ZDU0ZWI3MWQ1N2MzMWU5ZTdmYS5qcGc=.jpeg?q=95&s=1440x1440&t=inside"
+								alt="Profile Image" class="profile-img"></td>
+							<td>username</td>
+							<td>
+								<button class="follow-btn">follow</button>
+								<button class="block-btn">Block</button>
+								<button class="chat-btn">Chat</button>
+							</td>
+						</tr>
+						<tr>
+							<td><img src="profile_picture_url" alt="Profile Image"
+								class="profile-img"></td>
+							<td>username</td>
+							<td>
+								<button class="follow-btn">follow</button>
+								<button class="block-btn">Block</button>
+								<button class="chat-btn">Chat</button>
+							</td>
+						</tr>
+						<tr>
+							<td><img src="profile_picture_url" alt="Profile Image"
+								class="profile-img"></td>
+							<td>username</td>
+							<td>
+								<button class="follow-btn">follow</button>
+								<button class="block-btn">Block</button>
+								<button class="chat-btn">Chat</button>
+							</td>
+						</tr>
+						<!-- End of repeated TR -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
+		<script>
+// 팔로잉, 팔로워 수 불러오는 ajax 통신 코드 ---------------------------------------------------------------------------------
+ $(document).ready(function() {
+    // 로그인한 사용자의 ID 가져오기
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+
+    // AJAX 요청으로 userID 컨트롤러로 보내기
+    $.ajax({
+        url: 'countFollowing.do', // 컨트롤러의 경로
+        type: 'GET',
+        data: { userId: userId },
+        success: function(response) {
+        	$("#followingCount").text(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
     });
 });
-</script>
-<div class="followList">
-    <div class="list-header">
-        <h2>Your Follower <span id="followersCount" style="color: black;">123명</span></h2>
-        <div id="followerSearch">
-            <input type="text" id="followerSearchQuery" placeholder="팔로워 계정 검색">
-            <button onclick="searchFollower()">Search</button>
-        </div>
-    </div>
-    <!-- 팔로워 리스트 내용 -->
 
-</div>
+$(document).ready(function() {
+    // 로그인한 사용자의 ID 가져오기
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+
+    // AJAX 요청으로 userID 컨트롤러로 보내기
+    $.ajax({
+        url: 'countFollowers.do', // 컨트롤러의 경로
+        type: 'GET',
+        data: { userId: userId },
+        success: function(response) {
+        	  $("#followersCount").text(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+//팔로우 버튼 클릭 시 코드
+$(document).on('click', '.follow-btn', function() {
+    var userId = '${sessionScope.loginUser.userId}'; // 로그인한 사용자의 ID
+    var friendId = 'doha123'; // 팔로우할 사용자의 ID, 실제 구현에서는 동적으로 구현
+
+    // AJAX 요청으로 서버에 팔로우 정보 전송
+    $.ajax({
+        url: 'insertF.do', // 서버의 URL
+        type: 'POST',
+        data: {
+            userId: userId,
+            friendId: friendId
+        },
+        success: function(response) {
+            // 팔로잉 성공 시 처리
+            alert('팔로잉하였습니다.'); // 팝업창 표시
+            // 팔로잉 리스트에 새로운 행 추가
+            var newRow = `<tr>
+                            <td><img src="https://flexible.img.hani.co.kr/flexible/normal/400/500/imgdb/original/2023/0503/20230503501277.jpg" alt="Profile Image" class="profile-img"></td>
+                            <td>${response.username}</td> <!-- 서버로부터 받은 유저네임 사용 -->
+                            <td>
+                                <button class="unfollow-btn">Unfollow</button>
+                                <button class="block-btn">Block</button>
+                                <button class="chat-btn">Chat</button>
+                            </td>
+                          </tr>`;
+            $('.followingList-table tbody').append(newRow); // 테이블에 행 추가
+        },
+        error: function(xhr, status, error) {
+            console.error('팔로잉 실패: ' + error);
+            alert('팔로잉 실패하였습니다.');
+        }
+    });
+});
+//팔로우 취소 
+$(document).on('click', '.unfollow-btn', function() {
+    var userId = '${sessionScope.loginUser.userId}';
+    var friendId = 'doha123'; // 팔로우 취소 사용자의 ID, 실제 구현에서는 동적으로 구현
+
+    $.ajax({
+        url: 'unfollowing.do',
+        type: 'POST',
+        data: {
+            userId: userId,
+            friendId: friendId
+        },
+        success: function(cansle) {
+            alert("팔로우 취소하였습니다"); // "팔로잉 취소" 알림
+            loadFollowingList(userId); // 팔로잉 목록 다시 로드
+        },
+        error: function(xhr, status, error) {
+            console.error('팔로잉 취소 실패: ' + error);
+        }
+    });
+});
+
+
+
+// 팔로잉 목록 불러오기 
+/* $(document).ready(function() {
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+    loadFollowingList(userId);
+});
+
+function loadFollowingList(userId) {
+    $.ajax({
+        url: 'FollowingList.do',
+        type: 'POST',
+        data: { userId: userId },
+        success: function(followingList) {
+            var tableBody = $('.followingList-table tbody');
+            tableBody.empty(); // 테이블 내용을 비웁니다.
+            followingList.forEach(function(following) {
+                var row = `<tr>
+                            <td><img src="${following.profile}" alt="Profile Image" class="profile-img"></td>
+                            <td>${following.friendId}</td>
+                            <td>
+                                <button class="unfollow-btn">Unfollow</button>
+                                <button class="block-btn">Block</button>
+                                <button class="chat-btn">Chat</button>
+                            </td>
+                          </tr>`;
+                tableBody.append(row);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('팔로잉 목록 로드 실패: ' + error);
+        }
+    });
+} */
+</script>
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"></script>
+		<div class="followList">
+			<div class="list-header">
+				<h2>
+					Your Follower<br> 팔로워 수 : <span id="followersCount"></span>
+				</h2>
+				<div id="followerSearch">
+					<input type="text" id="followerSearchQuery" placeholder="팔로워 계정 검색">
+					<button onclick="searchFollower()">Search</button>
+				</div>
+			</div>
+
+	
+			<table class="followerList-table">
+				<thead>
+					<tr>
+						<th>Profile</th>
+						<th>Username</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Repeat this TR for each following entry -->
+					<tr>
+						<td><img
+							src="https://flexible.img.hani.co.kr/flexible/normal/400/500/imgdb/original/2023/0503/20230503501277.jpg"
+							alt="Profile Image" class="profile-img"></td>
+						<td>username</td>
+						<td>
+							<button class="unfollow-btn">Unfollow</button>
+							<button class="block-btn">Block</button>
+							<button class="chat-btn">Chat</button>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="profile_picture_url" alt="Profile Image"
+							class="profile-img"></td>
+						<td>username</td>
+						<td>
+							<button class="unfollow-btn">Unfollow</button>
+							<button class="block-btn">Block</button>
+							<button class="chat-btn">Chat</button>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="profile_picture_url" alt="Profile Image"
+							class="profile-img"></td>
+						<td>username</td>
+						<td>
+							<button class="unfollow-btn">Unfollow</button>
+							<button class="block-btn">Block</button>
+							<button class="chat-btn">Chat</button>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="profile_picture_url" alt="Profile Image"
+							class="profile-img"></td>
+						<td>username</td>
+						<td>
+							<button class="unfollow-btn">Unfollow</button>
+							<button class="block-btn">Block</button>
+							<button class="chat-btn">Chat</button>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="profile_picture_url" alt="Profile Image"
+							class="profile-img"></td>
+						<td>username</td>
+						<td>
+							<button class="unfollow-btn">Unfollow</button>
+							<button class="block-btn">Block</button>
+							<button class="chat-btn">Chat</button>
+						</td>
+					</tr>
+					<!-- End of repeated TR -->
+				</tbody>
+			</table>
+		</div>
 	</main>
 
 

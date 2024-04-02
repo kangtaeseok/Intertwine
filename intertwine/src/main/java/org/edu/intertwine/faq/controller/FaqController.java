@@ -53,7 +53,7 @@ public class FaqController {
 		
 		//총페이지수 계산을 위해 게시글 전체 갯수 조회해 옴
 		int listCount = faqService.selectListCount();
-		faqService.selectListCount();
+
 		
 		// 페이징 계산 처리 실행
 		Paging paging = new Paging(listCount, currentPage, limit, "flist.do");
@@ -156,48 +156,12 @@ public class FaqController {
 
 	//새 게시원글 등록 요청 처리용 (첨부파일 업로드 기능 추가됨)
 	@RequestMapping(value="finsert.do", method=RequestMethod.POST)
-	public String faqInsertMethod(Faq faq, Model model, HttpServletRequest request, 
-		@RequestParam(name="upfile", required=false) MultipartFile mfile) {
-		logger.info("finsert.do : " + faq);
-		
-		//게시글 첨부파일 저장용 폴더 지정 : 톰캣(WAS)이 구동하고 있는 애플리케이션 프로젝트 안의 폴더 지정
-		//el 절대경로 표기인 ${ pageContext.servletContext.contextPath } 와 같은 의미의 코드임
-		String savePath = request.getSession().getServletContext().getRealPath(
-				"/resources/faq_upfiles"); //디렉토리에 저장시 "C:\\upfiles"
-		
-		//첨부파일이 있을 때 
-		if(!mfile.isEmpty()) {
-			//전송온 첨부파일명 추출함
-			String fileName = mfile.getOriginalFilename();
-			String renameFileName = null;
-			
-			//저장 폴더에는 변경된 파일이름으로 파일을 저장함
-			//파일 이름 바꾸기함 => 년월일시분초.확장자
-			if(fileName != null && fileName.length() > 0) {
-				//바꿀 파일명에 대한 문자열 포맷 만들기
-				//renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
-				logger.info("첨부파일명 변경 확인 : " + fileName + "," + renameFileName);
-				
-				try {
-					//지정한 저장 폴더에 파일명 바꾸기 처리함
-					mfile.transferTo(new File(savePath + "\\" + renameFileName));
-					
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-					model.addAttribute("message", "첨부 파일 저장 실패!");
-					return "common/error";
-				}
-			}//파일명 바꾸기
-			//faq 에 첨부파일 정보 저장 처리
-			//faq.setFaqOriginalFileName(fileName);
-			//faq.setFaqRenameFileName(renameFileName);
-			
-		}//첨부 파일 있을 때
+	public String faqInsertMethod(Faq faq, Model model) {
+
 		
 		if(faqService.insertOriginFaq(faq) > 0) {
 			//게시슬 등록 성공시 목록 보기 페이지로 이동
-			return "redirect:blist.do";
+			return "redirect:flist.do";
 		}else {
 			model.addAttribute("message", "새 게시 원들 등록 실패 !");
 			return "common/error";
@@ -205,6 +169,69 @@ public class FaqController {
 		
 	}
 	
+	//게시글(원글, 댓글, 대댓글) 수정페이지로 이동 처리용
+	@RequestMapping("fupview.do")
+	public String moveBoardUpdatePage(
+			@RequestParam("fnum") int faqNum,
+			@RequestParam("page") int currentPage,
+			Model model) {
+		//수정 페이지에 전달해서 출력할 faq 정보 조회
+		Faq faq = faqService.selectFaq(faqNum);
+		
+		if(faq != null) {
+			model.addAttribute("faq", faq);
+			model.addAttribute("page", currentPage);
+			
+			return "faq/faqUpdateView";
+		}else {
+			model.addAttribute("message", faqNum + "번 게시글 수정페이지 이동 실패!");
+			return "common/error";
+		}
+	}
+
+	//원글 수정 처리용
+	@RequestMapping(value="foriginupdate.do", method=RequestMethod.POST)
+	public String originUdateMethod(
+			Faq faq,
+			HttpServletRequest request,
+			@RequestParam(name="page", required=false) String page,
+			Model model) {
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		if(faqService.updateOrigin(faq) > 0) {
+			model.addAttribute("fnum", faq.getFaqNum());
+			model.addAttribute("page", currentPage);
+			
+			return "redirect:fdetail.do";
+		} else {
+			model.addAttribute("message", faq.getFaqNum() + "번 글 수정 실패!");
+			return "common/error";
+		}
+	
+	}	
+	
+
+	//게시글(원들, 댓글, 대댓글) 삭제 요청 처리용
+	@RequestMapping("fdelete.do")
+	public String faqDeleteMethod(
+			Faq faq, 
+			Model model, 
+			HttpServletRequest request) {
+		
+		if(faqService.deleteFaq(faq) > 0) {
+			//게시글 삭제 성공시 저장 폴더에 있는 첨부파일도 삭제함
+			
+			return "redirect:flist.do";			
+		}else {
+			model.addAttribute("message", faq.getFaqNum()+ "번 게시글 삭제 실패!");
+			return "common/error";
+		}
+		
+	}
 	
 	
 }

@@ -53,6 +53,18 @@ public class FaqDao {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.insert("faqMapper.insertOriginFaq", faq);
 	}
+
+
+	public int updateOrigin(Faq faq) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("faqMapper.updateOrigin", faq);
+	}
+
+
+	public int deleteFaq(Faq faq) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("faqMapper.deleteFaq", faq);
+	}
 	
 
 

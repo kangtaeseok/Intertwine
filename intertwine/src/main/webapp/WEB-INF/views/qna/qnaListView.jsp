@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>faqListView</title>
+<title>qnaListView</title>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <style>
 body, html {
@@ -84,15 +84,15 @@ hr {
                 <li><h2 id="qna">문의하기(Q&A)</h2></li>
             </ul>           
         </div>
-        <div class="right" id="faqContent">
+        <div class="right" id="qnaContent">
             <!-- 초기 FAQ 내용 -->
-            <h1>자주묻는질문(FAQ)</h1>
+            <h1>문의하기(Q&A)</h1>
             <hr>
-            <p>자주 묻는 질문 내용입니다.
+            <p>문의하기 내용입니다.
             <%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
 			<%-- <c:if test="${ !empty sessionScope.loginMember }"> --%>
 				<div style="align:center;text-align:right;">
-	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">글쓰기</button>
+	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">작성하기</button>
 					<!-- <button onclick="showWriteForm();">글쓰기</button> -->
 				</div>
 			<%-- </c:if> --%>
@@ -102,6 +102,11 @@ hr {
             </p>
         
 		   <br>
+		   
+		   
+		   
+		   
+		   
 
 	    	<table align="center" border="1" cellspacing="0" width="700">
 	    		<tr>
@@ -109,24 +114,41 @@ hr {
 	    			<th>제목</th>
 	    			<th>작성자</th>
 	    			<th>날짜</th>
+	    			<th>첨부파일</th>
 	    			<th>조회수</th>
 	    		</tr>
-	    		<c:forEach items="${ requestScope.list }" var="f">
+	    		<c:forEach items="${ requestScope.list }" var="q">
 	    			<tr>
-	    				<td align="center">${ f.faqNum }</td>
+	    				<td align="center">${ q.qnaNum }</td>
 	    				<td>
-	    				<c:url var="fd" value="fdetail.do">
-	    					<c:param name="fnum" value="${ f.faqNum }"/>
+	    				<c:url var="qd" value="qdetail.do">
+	    					<c:param name="qnum" value="${ q.qnaNum }"/>
 	    					<c:param name="page" value="${ nowpage }"/>
 	    				</c:url>
-	    				<a href="${ fd }">${ f.faqTitle }</a>
+	    				<a href="${ qd }">${ q.qnaTitle }</a>
 	    				</td>
-	    				<td align="center">${ f.faqWriter }</td>
-	    				<td align="center">${ f.faqDate }</td>
-	    				<td align="center">${ f.faqReadCount }</td>
+	    				<td align="center">${ q.qnaWriter }</td>
+	    				<td align="center">${ q.qnaDate }</td>
+	    							<td align="center">
+			<%-- <% if(b.getBoardOriginalFileName() != null){ %> --%>
+			
+			<c:if test="${ !empty q.qnaOriginalFileName }">
+				◎
+			</c:if>
+			<%-- <% }else{ %> --%>
+			<c:if test="${ empty q.qnaOriginalFileName }">
+				&nbsp;
+			</c:if>
+			<%-- <% } %> --%>
+			</td>
+	    				<td align="center">${ q.qnaReadCount }</td>
 	    			</tr>
 	    		</c:forEach>
 	    	</table>
+	    	
+	    	
+	    	
+	    	
 	    	<br>
         
     		<%-- 페이징 처리 뷰 포함 처리 --%>
@@ -161,13 +183,12 @@ document.getElementById("qna").addEventListener("click", function() {
  	<c:param name="page" value="${ currentPage }" /> 
  	</c:url>   
 	location.href='${ ql }'; 
-
 });
 
 
 function showWriteForm(){
 	//게시글 원글 쓰기 페이지로 이동 요청
-	location.href = "${ pageContext.servletContext.contextPath}/fwform.do";
+	location.href = "${ pageContext.servletContext.contextPath}/qwform.do";
 }
 </script>
 
