@@ -154,41 +154,91 @@ public class UserController {
 	}
 	
 	
-	
-	@ResponseBody
 	@RequestMapping("kakao_login.do")
-	public String kakaoLogin(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws Exception {
-		logger.info("request 에 담아서 온 파라매터 이름들 : " + request.getParameterNames());
-		logger.info("response 에 담긴 정보 : " + response.getContentType());
-	
+	public String kakaoLogin(@RequestParam("code") String code,HttpSession session, Model model) throws Exception {
+RestTemplate rt = new RestTemplate(); 
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.add("Content-type","application/x-www-form-urlencoded;charset=utf-8");
+		
+		MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+		params.add("grant_type", "authorization_code");
+		params.add("client_id", "40ec0da7a298d729eab6f57f66aad7f8");
+		params.add("redirect_uri", "http://localhost:8080/intertwine/kakao_login.do");
+		params.add("code", code);
+		
+		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = 
+		new HttpEntity<>(params, headers);
+
+		ResponseEntity<String> response =rt.exchange(
+	    	"https://kauth.kakao.com/oauth/token",
+	   	 HttpMethod.POST,
+	   	 kakaoTokenRequest,
+	  	  String.class
+		);
+		
+		 JSONParser jp = new JSONParser();
+		 OAuthToken oauthToken = new OAuthToken();
+		JSONObject jsonObject = (JSONObject) jp.parse(response.getBody());
+
+	    oauthToken.setAccess_token((String) jsonObject.get("access_token"));
+	    oauthToken.setToken_type((String) jsonObject.get("token_type"));
+	    oauthToken.setRefresh_token((String) jsonObject.get("refresh_token"));
+	    oauthToken.setExpires_in((int)((long) jsonObject.get("expires_in")));
+		 
+	    HttpHeaders headers2 = new HttpHeaders();
+	    headers2.add("Authorization", "Bearer " + oauthToken.getAccess_token());
+	    headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		    
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
+
+		ResponseEntity<String> response2 = rt.exchange(
+	        "https://kapi.kakao.com/v2/user/me",
+	        HttpMethod.GET,
+	        kakaoProfileRequest,
+	        String.class
+		);
+		
+		JSONObject jsonObject2 = (JSONObject) jp.parse(response2.getBody());
+		
+		String userId = String.valueOf(jsonObject2.get("id")); 
+
+		// kakao_account에서 email 추출
+		JSONObject kakaoAccount = (JSONObject) jsonObject2.get("kakao_account");
+		String email = null;
+		
+		if (kakaoAccount != null && (Boolean) kakaoAccount.get("has_email")) {
+		    email = (String) kakaoAccount.get("email");
+		}
+		
+		logger.info(email);
+		
+		model.addAttribute("accessToken", oauthToken);
+		
+		User user = null;
+		if(userService.selectEmailCount(email) > 0) {
+			session.setAttribute("loginUser", userService.selectUser(userId));
+			return "common/main";
+			
+		} else {
+			user = new User();
+			user.setUserId(userId);
+			user.setEmail(email);
+			
+			SocialLogin social = new SocialLogin();
+			social.setUserId(userId);
+	    	social.setType("kakao");
+	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
+	    	
+	    	session.setAttribute("loginUser", userService.insertUser(user));
 			
 
-//		User user = null;
-//		if(userService.selectEmailCount(email) > 0) {
-//			session.setAttribute("loginUser", userService.selectUser(userId));
-//			return "common/main";
-//			
-//		} else {
-//			user = new User();
-//			user.setUserId(userId);
-//			user.setEmail(email);
-//			
-//			SocialLogin social = new SocialLogin();
-//			social.setUserId(userId);
-//	    	social.setType("kakao");
-//	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
-//	    	
-//	    	session.setAttribute("loginUser", userService.insertUser(user));
-//			
-//
-//		return "common/main";
-//		}
-		return "" + response;
-	
-    }
+		return "common/main";
+		}
+		
 	
 	
-	
+	}
 	
 	@RequestMapping("naver_login.do")
 	public String naverLogin(@RequestParam("code") String code, HttpSession session
