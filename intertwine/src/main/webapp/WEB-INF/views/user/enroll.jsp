@@ -38,7 +38,7 @@ function checkId() {
 			if(data == "ok"){
 				$(".id-check-box").show();
 				$('.id-check-box').text('사용가능한 아이디입니다').css('color', 'blue');
-				$('#userpwd').focus();
+				$('#username').focus();
 			}else{
 				$('#userid').select();
 				$(".id-check-box").show();

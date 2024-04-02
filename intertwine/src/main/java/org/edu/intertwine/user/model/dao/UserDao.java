@@ -46,5 +46,9 @@ public class UserDao {
 		return sqlSessionTemplate.update("userMapper.updatePwd", user);
 	}
 
+	public User selectPhone(String phone) {
+		return sqlSessionTemplate.selectOne("userMapper.selectPhone", phone);
+	}
+
 	
 }

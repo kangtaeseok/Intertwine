@@ -66,7 +66,7 @@
                         <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
                     </li>
                     <li id="settings">
-                        <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                        <a href="${pageContext.servletContext.contextPath }/userInfo.do""><i class="fa-solid fa-gear"></i> 설정</a>
                     </li>
                 </ul>
             </aside>

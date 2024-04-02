@@ -4,17 +4,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <script src="/intertwine/resources/js/kakao.min.js"></script>
-<script>
-Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
-console.log(Kakao.isInitialized()); // sdk초기화여부판단
-//카카오로그인
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<script type="text/javascript">
+ // sdk초기화여부판단
+ Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
+ console.log(Kakao.isInitialized());
+ 
+ 
 function kakaoLogin() {
 	Kakao.Auth.login({
-		success : function(response) {				
+		success : function(response) {
+			Kakao.Auth.setAccessToken(response.access_token);
 			Kakao.API.request({
 				url : '/v2/user/me',
+				data: {
+					property_keys: ['kakao_account.email', 'response.id'],
+				},
 				success : function(response) {
+					fetch('kakao_login.do', {
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(response), // 서버로 보낼 데이터
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+					
+					alert(JSON.stringify(response));
 					console.log(response)
 				},
 				fail : function(error) {
@@ -27,8 +50,12 @@ function kakaoLogin() {
 		},
 	})
 }
+	
+
 
 </script>
+
+
 <link rel="stylesheet" href="/intertwine/resources/css/login.css" />
 <title>intertwine</title>
 </head>
@@ -49,13 +76,17 @@ function kakaoLogin() {
 	            <div class="line-box">
 	            	또는
 	            </div>  
-	        </form> 
+	        </form>
+	       
 	        <div class="social-box">
-	        	<a href="https://kauth.kakao.com/oauth/authorize?client_id=40ec0da7a298d729eab6f57f66aad7f8&
-redirect_uri=http://localhost:8080/intertwine/kakao_login.do&response_type=code"><img src="/intertwine/resources/images/kakao_login.png"></a>
-	        	<a href=""><img src="/intertwine/resources/images/naver_login.png"></a>
-	        </div>
+				<a href="https://kauth.kakao.com/oauth/authorize?client_id=40ec0da7a298d729eab6f57f66aad7f8&redirect_uri=http://localhost:8080/intertwine/kakao_login.do&response_type=code">
+				<img src="/intertwine/resources/images/kakao_login.png"></a>
+	        	
+	        	<a href="https://kauth.kakao.com/oauth/authorize?client_id=40ec0da7a298d729eab6f57f66aad7f8&redirect_uri=http://localhost:8080/intertwine/kakao_login.do&response_type=code">
+				<img src="/intertwine/resources/images/naver_login.png"></a>
+	      </div>   
     </div>
 </div>
+
 </body>
 </html>

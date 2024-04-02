@@ -48,8 +48,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int updatePwd(User user) {
-		logger.info(user.toString());
 		return userDao.updatePwd(user);
+	}
+
+	@Override
+	public User selectPhone(String phone) {
+		return userDao.selectPhone(phone);
 	}
 
 

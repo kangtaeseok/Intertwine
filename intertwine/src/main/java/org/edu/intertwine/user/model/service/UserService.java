@@ -10,13 +10,15 @@ public interface UserService {
 
 	int insertUser(User user);
 
-	User selectEmail(String email);
-
 	int selectuserPwd(String userPwd);
 
 	int selectEmailCount(String email);
 
 	int updatePwd(User user);
+	
+	User selectEmail(String email);
+
+	User selectPhone(String phone);
 
 
 
