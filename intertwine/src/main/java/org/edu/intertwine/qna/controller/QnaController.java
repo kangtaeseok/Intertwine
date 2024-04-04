@@ -607,4 +607,23 @@ public class QnaController {
 		
 	}	
 	
+	
+	@RequestMapping("moveAPI.do")
+	public String moveAPIPage() {
+		return "redirect:moveExam01.do";
+	}
+	
+    @RequestMapping("moveExam01.do")
+    public String moveMapExample01Page() {
+	   return "qna/mapExample01";
+	  // return "qna/kakaoMessage";
+    }
+    
+	@RequestMapping("kakaoMessage.do")
+	public String kakaoMessageMethod() {
+		return "qna/kakaoMessage";
+	}
+	
+
+	
 }
