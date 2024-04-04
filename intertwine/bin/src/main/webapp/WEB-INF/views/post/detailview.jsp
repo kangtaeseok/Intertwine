@@ -375,33 +375,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="owner-info">
                          <div class="dummy">
-                              <div><b onclick="" style="cursor:pointer;">${post.userId}</b></div> &nbsp;
+                              <div><b onclick="" style="cursor:pointer;">${postUser.userId}</b></div> &nbsp;
                               
-                              <c:if test="${ post.userId ne viewingUser.userId }">
-                              <!--  친구중인지 확인하는 태그 추가 -->
+                              <c:if test="${ postUser.userId ne viewingUser.userId }">
                               <a href="#">팔로우</a> &nbsp;
-                             
-                             
+                              <!-- c태그로 확인 -->
                               <a href="#">언팔로우</a> &nbsp;
-                              
+                              </c:if>
+
                               <!-- 항상 보임 -->
-                              
                               <a href="#">차단</a> &nbsp;
                               <i class="fa-solid fa-ellipsis settings-button" ></i>
-                              
                               <!-- c:if 태그로 확인 남의 글 -->
                                    <ul class="settings-menu">
                                         <li><button>신고하기</button></li>
                                    </ul>
-                                   
-                             </c:if>
-                             <c:if test="${ post.userId eq viewingUser.userId }">
-                           
+                              <!--
                                    <ul class="settings-menu">
                                         <li><button>핀하기</button></li>
                                         <li><button>삭제하기</button></li>
-                          
-                              </c:if>
+                              -->
                          </div>
                          
                          <!-- 주소가 없으면 안나타남 -->
@@ -503,60 +496,17 @@ document.addEventListener('DOMContentLoaded', function() {
               
                <div class="commentbox">
                     <!-- 반복 -->
-			<c:if test="${!empty comments}">
-			    <c:forEach var="comment" items="${comments}">
-						<c:if test="${ comment.commentLevel eq '1' }">
-						<div class="reply">
-                              <i class="fa-solid fa-angle-right"></i>
-                         </div>
-                         </c:if>
- 						<div class="left-2">
-                              <div class="pic-2">
-                                   <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="" style="cursor: pointer;">
-                              </div>
-                         </div>
-                         <div class="right-2">
-                              <a href="#" style="cursor: pointer;"><b>${ comment.userId }</b></a>&nbsp;
-                              ${ comment.commentContent }
-                              <div class="commenttime">
-                                   ${ comment.commentTime }
-                                   <c:if test="${ comment.commentLevel ne '1' }">
-                                   <a class="commentagain" style="cursor:pointer;">답글달기</a>
-                                   </c:if>
-                                   <!-- 답글달기 누르면 나옴 -->
-                                        <form action="addComment2.do" method="POST" class="add-comment2">
-                                             <input type="hidden" name="userId" value="${ viewingUser.userId }">
-                                             <input type="hidden" name="postId" value="${ post.postId }">
-                                             <input type="hidden" name="parentCommentId" value="${ comment.commentId }">
-                                             <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요">
-                                             <input type="submit" class="submit" value="등록">
-                                        </form>
-                              </div>
-                         </div>
-                         <div class="commentreport">
-                              <i class="fa-solid fa-ellipsis settings-button" ></i> &nbsp;
-                              <c:if test="${ comment.userId ne viewingUser.userId }">
-                              <ul class="settings-menu">
-                                   <li><button>신고하기</button></li>
-                              </ul>
-                              </c:if>
-                           <c:if test="${ comment.userId eq viewingUser.userId }">
-                              <ul class="settings-menu">
-                                   <li><a href="#">삭제하기</a></li>
-                              </ul>
-                          </c:if>
-                         </div>
-						</c:forEach>
-					</c:if>
+
+
+
                </div>
           </div>
           <div>
-               <form action="addComment1.do" method="POST" class="add-comment">
-                    <input type="hidden" name="userId" value="${ viewingUser.userId }">
-                    <input type="hidden" name="postId" value="${ post.postId }">
+               <form action="addComment1.do" method="POST" class="add-comment" return>
+                    <input type="hidden" name="userId" data-value="${ viewingUser.userId }">
+                    <input type="hidden" name="postId" data-value="${ post.postId }">
                     <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요">
                     <input type="submit" class="submit" value="등록">
-                    ${ post.postId }
                 </form>
           </div>
      </div>
@@ -565,6 +515,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </div>
 <!-- 댓글 숨기기용 -->
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+    const commentAgainLink = document.querySelector('.commentagain');
+    const commentForm = document.querySelector('.add-comment2');
+    
+    commentAgainLink.addEventListener('click', function(event) {
+        //폼 전송 방지 =
+    	event.preventDefault(); 
+        // 폼 토글 
+        if (commentForm.style.display === 'none' || commentForm.style.display === '') {
+            commentForm.style.display = 'block';
+        } else {
+            commentForm.style.display = 'none';
+        }
+    });
+});
+</script>
 
 <!-- 숫자 파싱-->
 <script>
