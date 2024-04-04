@@ -61,6 +61,8 @@ public class UserServiceImpl implements UserService {
 		userDao.updateSocial(loginUser);
 	}
 
+	
+
 
 	
 	
