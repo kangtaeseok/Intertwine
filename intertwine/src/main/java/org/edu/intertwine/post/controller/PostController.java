@@ -1,229 +1,391 @@
-//package org.edu.intertwine.post.controller;
-//
-//import java.io.UnsupportedEncodingException;
-//
-//import org.edu.intertwine.post.model.vo.Like;
-//import org.edu.intertwine.post.model.vo.Post;
-//import org.edu.intertwine.post.model.vo.Tag;
-//import org.edu.intertwine.post.service.PostService;
-//import org.json.simple.JSONArray;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//@Controller
-//public class PostController {
-//
-//	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
-//	@Autowired
-//	private PostService postService; // 다형성 이용 (동적바인딩)
-//
-//	// 게시글 공감 추가 및 업데이트 **완료**
-//	// Ajax 비동기 통신 비동기 통신은 @ResponseBody 태그 추가
-//	@RequestMapping(value = "######################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	@ResponseBody
-//	public String updateLike(Like like, Model model) {
-//
-//		// 먼저 이 포스트에 이 유저가 공감을 표시한 적이 있는 지 확인
-//		// 1은 있음 0은 없음 0의 경우 insert 1의 경우 업데이트 / 또는 제거
-//		if (postService.selectLikeCount(like) > 0) {
-//			// 이 유저가 이 포스트에 공감한 적이 있는 지 체크
-//			
-//			if (postService.selectSameLikeCount(like) > 0) {
-//				// 그럼 같은 공감을 클릭한건지 아닌지 확인
-//				// 같은 공감이 한 번 더 클릭됨 -> 삭제조치
-//				int check = postService.deleteLike(like);
-//				if (check > 0) {
-//					// 성공 시 일어날 이벤트 기술 미정**************************************
-//					return "";
-//				} else {
-//					// 실패 시 에러 메시지
-//					model.addAttribute("message", "문제가 발생하였습니다.");
-//					return "common/error";
-//				}
-//			} else {
-//				// 다른 공감이 클릭됨 -> 업데이트
-//				int check = postService.updateLike(like);
-//				if (check > 0) {
-//					// 성공 시 일어날 이벤트 기술 미정**************************************
-//					return "";
-//				} else {
-//					// 실패 시 에러 메시지
-//					model.addAttribute("message", "문제가 발생하였습니다.");
-//					return "common/error";
-//				}
-//			}
-//
-//		} else {
-//			// 공감한 적이 없다면 공감 추가
-//			int check = postService.insertLike(like);
-//			if (check > 0) {
-//				// 성공 시 일어날 이벤트 기술 미정**************************************
-//				return "";
-//			} else {
-//				// 실패 시 에러 메시지
-//				model.addAttribute("message", "문제가 발생하였습니다.");
-//				return "common/error";
-//			}
-//
-//		}
-//
-//	}//updatelike 메소드 끝
-//
-//	// 마이 페이지에 포스트 불러오기 **수정필요**
-//	// 인피니트 로딩의 경우
-//	@RequestMapping(value = "######################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	public ModelAndView getPostsForMyPage(Post post, ModelAndView mv) throws UnsupportedEncodingException {
-//		
-//		//포스트 카운트를 확인 함
-//		int postCount = postService.selectPostsCountForMyPage(post);
-//		if( postCount > 0 ) {
-//			//모든걸 불러오진 않고 항상 15개씩 최신순 불러옴
-//			//불러올 정보 : 포스트/사진/공감/댓글
-//			JSONArray jarr = new JSONArray();
-//			
-//			
-//			
-//			
-//		} else {
-//			mv.addObject("message", "아직 작성된 포스트가 없습니다.");
-//			
-//		}
-//		
-//	}
-//	
-//	//피드에 포스트 불러오기 **수정필요**
-//	@RequestMapping(value = "#####################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	@ResponseBody
-//	public ModelAndView getPostsForFeed(Post post, ModelAndView mv, @RequestParam("checked")int checked) {
-//		//JS에서 넘겨받은 변수로 확인한 포스트 갯수 확인 JS에서 계속 합쳐서 보내야함
-//		int postCount = postService.selectPostsCountForFeed(post);
-//		
-//		//포스트 갯수 확인
-//		if(postCount > 0) {
-//			int leftCount = postCount - checked;
-//			//포스트가 1개 이상 있을 시
-//			//JS에서 갯수를 받아서 남은 볼 수 있는 포스트 갯수 설정
-//			//JS에서 계속 갯수를 합산해야함
-//			if(leftCount > 0) {
-//				
-//			} else {
-//				//더 이상 확인하지 않은 포스트가 없을 경우
-//				mv.addObject("message", "확인 가능한 모든 포스트를 확인했어요");
-//			}
-//		}else {
-//			//어떤 포스트도 없을 경우
-//			mv.addObject("message", "아직 포스트가 없습니다.");
-//			mv.setViewName("common/error");
-//		}
-//		
-//		return mv;
-//	}//getPostsForFeed 끝
-//	
-//	//포스트 개별 프라이버시 설정 업데이트 **완료**
-//	public String updatePrivacy(Post post, Model model) {
-//		//뷰에서 포스트 아이디와 게시물 아이디 확인 및 값 얻어옴
-//		//뷰에서 본인인지 아닌지 확인하므로 여기선 그냥 업데이트만 수행
-//		
-//		//업데이트 수행 및 리턴 확인
-//		int check = postService.updatePrivacy(post);
-//		if(check > 0) {
-//			//성공 시 수행할 것 정의
-//			return "";
-//		} else {
-//			// 실패 시 에러 메시지
-//			model.addAttribute("message", "문제가 발생하였습니다.");
-//			return "common/error";
-//		}		
-//	}//updatePrivacy
-//	
-//	@RequestMapping(value="***.do", method=RequestMethod.POST)
-//	public String addTag(Tag tag, Model model) {
-//		//포스트에서 태그를 추가함 이미 포스트에 대한 아이디가 발급됨
-//		//거기서 태그가 추가됨 포스트 아이디 태그네임 전달받음
-//		//전달받은 두 컴비네이션이 존재하는지 확인
-//		int check1 = postService.selectTagCount(tag);
-//		
-//		//0일 시 추가
-//		if(check1 == 0) {
-//			int check2 = postService.insertTag(tag);
-//			if(check2 == 1) {
-//				//성공시 수행할 작업
-//				return "";
-//			}else {
-//				model.addAttribute("message", "태그 추가에 문제가 발생했습니다.");
-//				return "common/error";
-//			}
-//		} else {
-//			//1일 시 에러
-//			model.addAttribute("message", "이미 있는 태그입니다.");
-//			return "common/error";
-//		}
-//		
-//
-//	}
-//	
-//	public String removeTag(Tag tag, Model model) {
-//		//포스트에서 태그를 제거
-//		//거기서 태그가 제거됨 포스트 아이디 태그네임 전달받음
-//		//전달받은 두 컴비네이션이 존재하는지 확인
-//		//없으면 제거 불가
-//		int check1 = postService.selectTagCount(tag);
-//		
-//		//1일 시 확인된 태그 제거함
-//		if(check1 == 1) {
-//			int check2 = postService.deleteTag(tag);
-//			if(check2 == 1) {
-//				//성공시 수행할 작업
-//				return "";
-//			}else {
-//				model.addAttribute("message", "태그 제거에 문제가 발생했습니다.");
-//				return "common/error";
-//			}
-//			
-//		} else {
-//			//0일 시 없는 태그를 찾음 
-//			model.addAttribute("message", "존재하지 않는 태그입니다.");
-//			return "common/error";
-//		}
-//	}
-//	
-//	//최근 공감 3개 불러오기 (개별 포스트 카드에서 사용)
-//	@RequestMapping(value = "######################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	public String getLastest3Likes() {
-//		//불러와야 하는 것 최근 공감 3개 타입과 사진, 닉네임 
-//		//또한 이들은 클릭 가능해야함
-//	}//getLastest3Likes
-//
-//	
-//	//포스트 제거
-//	@RequestMapping(value = "######################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	public String removePost(Post post, Model model) {
-//		//아마도 그냥 세션 확인해서 사용자 id와 지우려는 포스트의 사용자 id확인은 c태그로 할듯
-//		//그래야 관리자 역시 지울 수 있음 그 포스트를 만든 사용자가 아닐 경우 그냥 삭제버튼을 가려버림
-//		//지울 수 있는 사람의 경우 지울 postId 넘겨받아 지워버림
-//		int check = postService.deletePost(post);
-//		
-//		if(check == 1) {
-//			//성공시 수행할 작업
-//			return "";
-//		}else {
-//			model.addAttribute("message", "포스트 제거에 문제가 발생했습니다.");
-//			return "common/error";
-//		}
-//		//하지만 같이 딸린 공감, 댓글, 태그 지워짐 -> 트리거로 해결함
-//		
-//
-//	}
-//	
-//	@RequestMapping(value = "######################미완성############################.do", method = { RequestMethod.POST, RequestMethod.GET })
-//	public 
-//
-//}
+package org.edu.intertwine.post.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.edu.intertwine.bookmark.model.service.BookmarkService;
+import org.edu.intertwine.bookmark.model.vo.Bookmark;
+import org.edu.intertwine.comment.model.service.CommentService;
+import org.edu.intertwine.comment.model.vo.Comment;
+import org.edu.intertwine.common.FileNameChange;
+import org.edu.intertwine.common.GPS;
+import org.edu.intertwine.friend.model.service.FriendService;
+import org.edu.intertwine.post.model.service.PostService;
+import org.edu.intertwine.post.model.vo.Gallery;
+import org.edu.intertwine.post.model.vo.Image;
+import org.edu.intertwine.post.model.vo.Like;
+import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.Tag;
+import org.edu.intertwine.post.model.vo.Video;
+import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.User;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.drew.imaging.ImageProcessingException;
+
+@Controller
+public class PostController {
+
+	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+	@Autowired
+	private PostService postService; // 다형성 이용 (동적바인딩)
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private BookmarkService bookmarkService;
+	@Autowired
+	private FriendService friendService;
+	@Autowired
+	private CommentService commentService;
+
+	@RequestMapping("create.do")
+	public String moveCreate() {
+		return "post/write";
+	}
+	
+	
+	//내가 나의 페이지 들어갈 때
+	@RequestMapping(value = "mypage.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView moveMyPage(HttpSession session, HttpServletResponse response, HttpServletRequest request, ModelAndView mv) {
+		
+		User user = (User) session.getAttribute("loginUser");
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		ArrayList<Post> posts = postService.selectPostsById(user.getUserId());
+		
+		for (Post post : posts) {
+	        Gallery gallery = new Gallery();
+	        gallery.setPost(post);
+	        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+	        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+	        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+	        gallery.setImage(postService.selectOneImage(post.getPostId()));
+	        gallery.setTags(postService.selectTags(post.getPostId()));
+	        logger.info(gallery.toString());
+	        
+	        galleries.add(gallery);
+	        
+	    }
+		
+		int followingCount = friendService.countFollowing(user.getUserId());
+		int followerCount = friendService.countFollowers(user.getUserId());
+		
+		mv.addObject("galleries", galleries);
+		mv.addObject("user", user);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/mypage");
+		
+		return mv;
+	}
+	
+
+	
+	@RequestMapping(value = "posting.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView createPost(HttpServletRequest request, HttpServletResponse response, Post post,
+			@RequestParam(name = "files", required = false) List<MultipartFile> files,
+			@RequestParam(name = "tagName", required = false) String[] tags, ModelAndView mv)
+			throws IllegalStateException, IOException, ImageProcessingException {
+
+		logger.info("files : " + files.toString());
+		logger.info("UserId : " + post.getUserId());
+		logger.info("PostContent : " + post.getPostContent());
+		logger.info("PostVisible : " + post.getPostVisible());
+		logger.info(post.getUserId());
+		// 세션에서 들고온 userid post객체에 저장
+		// 포스트 저장 우선 그다음 포스트 아이디 필요
+		postService.insertPost(post);
+		// 가장 최신의 포스트 아이디 찾아옴 거기서 postId 가져옴
+		Post p = postService.selectLatestPostId();
+		logger.info(p.toString());
+
+		// 태그가 널이 아니라면
+		if (tags != null && tags.length > 0) {
+
+			for (String s : tags) {
+				Tag tag = new Tag();
+				tag.setPostId(p.getPostId());
+				tag.setTagName(s);
+				postService.insertTag(tag);
+			}
+
+		}
+		// 사진 저장 및 동영상 저장 필요
+		if (files != null && files.size() > 0) {
+			for (MultipartFile mf : files) {
+				String uniqueSuffix = UUID.randomUUID().toString();
+				// 업로드된 파일이 사진인지 동영상인지 확장자로 판별
+				String originalFileName = mf.getOriginalFilename();
+				logger.info("파일 이름: " + mf.getOriginalFilename());
+				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+
+				if ("jpg".equals(fileExtension) || "png".equals(fileExtension)) {
+					String renameFileName = null;
+					if (originalFileName != null && originalFileName.length() > 0) {
+						renameFileName = FileNameChange.change(originalFileName, "yyyyMMddHHmmss");
+						logger.info("첨부파일명 변경 확인: " + originalFileName + ", " + uniqueSuffix + renameFileName);
+						// 지정한 저장 폴더에 파일명 변경 처리
+						String savePath = request.getSession().getServletContext().getRealPath("resources/postimage");
+						logger.info("저장위치 확인: " + savePath);
+						mf.transferTo(new File(savePath + "\\" + uniqueSuffix +renameFileName));
+
+						GPS gps = new GPS(); // 이거 확정아님
+						double[] gpsdata = gps.getGPS(savePath + "\\" + uniqueSuffix +renameFileName);
+
+						if (gpsdata == null) {
+							// 위도 경도 없을 시
+							Image image = new Image(p.getPostId(), "resources/postimage" + "\\" + uniqueSuffix +renameFileName);
+							postService.insertImage2(image);
+
+						} else { // 위도 경도 있을 시
+							double lon = gpsdata[0];
+							double lat = gpsdata[1];
+							Image image = new Image(p.getPostId(), lon, lat, "resources/postimage" + "\\" + uniqueSuffix + renameFileName);
+							postService.insertImage1(image);
+
+						}
+
+					} // if
+				} // 사진확장자
+
+				if ("mp4".equals(fileExtension)) {
+					String renameFileName2 = null;
+					if (originalFileName != null && originalFileName.length() > 0) {
+						renameFileName2 = FileNameChange.change(originalFileName, "yyyyMMddHHmmss");
+						logger.info("첨부파일명 변경 확인: " + originalFileName + ", " + uniqueSuffix + renameFileName2 );
+						// 지정한 저장 폴더에 파일명 변경 처리
+						String savePath = request.getSession().getServletContext().getRealPath("resources/postvideo");
+						logger.info(savePath);
+						mf.transferTo(new File(savePath + "\\" + uniqueSuffix +renameFileName2 ));
+						Video video = new Video(p.getPostId(), "resources/postimage" + "\\" + uniqueSuffix + renameFileName2);
+						postService.insertVideo(video);
+
+					} // if
+
+				} // 동영상확장자
+				
+			} // 파일foreach문
+			
+		} // 파일이 있다면
+
+		mv.addObject("포스트가 생성되었습니다.");
+		mv.setViewName("common/main");
+
+		return mv;
+
+	}// 메소드
+
+	@RequestMapping(value = "feed.do", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public String getFeed(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody FeedRequest feedRequest, HttpSession session, Model model)
+			throws UnsupportedEncodingException {
+		
+		  int startIndex = feedRequest.getStartIndex();
+		  int count = feedRequest.getCount();
+		  int loadCount = feedRequest.getLoadCount();
+		
+		
+		response.setContentType("application/json");
+		
+		
+		User loginUser = (User) session.getAttribute("loginUser");
+		logger.info("loginUser:" + loginUser);
+		// 일단 자신을 제외한 모든 유저아이디를 받아옴
+		ArrayList<String> userIds = postService.selectUserIds(loginUser.getUserId());
+
+		// 먼저 유저아이디 받아와서 차단 리스트 받아옴
+		// ArrayList<String> userIds = friendService.()(loginuser.getUserId());
+
+		ArrayList<Integer> postIds = new ArrayList<Integer>();
+		// 만약 사이즈가 0이면 다른 쿼리문 작동
+		if (userIds.size() > 0) {
+			// 그걸로 포스트 아이디들을 쭉 받아옴
+			postIds = postService.selectPostIds(userIds);
+
+		} else {
+
+			postIds = postService.selectPostIdsforZero();
+		}
+		logger.info("postIds: " + postIds.size());
+		logger.info("postIds: " + postIds.toString());
+		// 피드 아이템 선언 이것들이 사용될 예정
+
+		// 다음 받아온 아이디로 모든걸 가져옴
+
+		// 포스트 아이디 갯수 셈
+		if (postIds.size() > 0) {
+
+			JSONArray jarr = new JSONArray();
+			int endIndex = Math.min(startIndex + count, postIds.size());
+
+			for (int i = startIndex; i < endIndex; i++) {
+
+				int eachPostId = postIds.get(i);
+				JSONObject feedJson = new JSONObject();
+
+				// 포스트 아이디로 유저 아이디 찾아옴
+				String findUserId = postService.selectUserId(eachPostId);
+				
+				String path = request.getSession().getServletContext().getRealPath("resources/profile/default.png");
+				feedJson.put("path", path);
+				// Mypage mypage = userService.(무언가)
+				
+				// 유저정보 담음
+				User user = userService.selectUser(findUserId);
+				feedJson.put("userid", user.getUserId());
+				feedJson.put("username", URLEncoder.encode(user.getUserName(), "UTF-8"));
+				feedJson.put("nickname", URLEncoder.encode(user.getNickname(), "UTF-8"));
+				feedJson.put("registertime", user.getRegisterTime().toString());
+				feedJson.put("accountstatus", user.getAccoutStatus());
+				feedJson.put("visible", user.getVisible());
+				feedJson.put("userstop", user.getUserStop());
+
+				// 포스트 정보 담음
+				Post post = postService.selectOnePost(eachPostId);
+				feedJson.put("postid", post.getPostId());
+				feedJson.put("postcontent", URLEncoder.encode(post.getPostContent(), "UTF-8"));
+				feedJson.put("postvisible", post.getPostVisible());
+				feedJson.put("posttime", post.getPostTime().toString());
+				feedJson.put("postview", post.getPostView());
+				feedJson.put("postpin", post.getPostPin());
+
+				// 이미지 정보 담음
+				Image image = postService.selectOneImage(eachPostId);
+				feedJson.put("imageid", image.getImageId());
+				feedJson.put("imagelon", image.getImageLon());
+				feedJson.put("imagelat", image.getImageLat());
+				feedJson.put("imageurl", image.getImageURL());
+
+				// 동영상 정보 담음
+				Video video = postService.selectOneVideo(eachPostId);
+				feedJson.put("videoid", video.getVideoId());
+				feedJson.put("videourl", video.getVideoURL());
+
+				// 좋아요 수 정보 담음
+				int likes = postService.selectLikeCounts(eachPostId);
+				feedJson.put("likes", likes);
+
+				// 추가로 필요한 정보
+				// Friend friend = new Friend(loginUser.getUserId(), findUserId);
+				// int isFollowed = friendService.selectIsFollowed(friend);
+				// 1이면 팔로우중 즉 언팔로우 버튼 필요 0이면 팔로우 안하고 있음 팔로우 버튼 만들어야함
+
+				Like like = new Like(loginUser.getUserId(), eachPostId);
+				int isLiked = postService.selectIsLiked(like);
+				int whatIsLiked = postService.selectWhatIsLiked(like);
+				// 1이면 이미 공감중 0이면 공감안하고 있음
+
+				Bookmark bookmark = new Bookmark(loginUser.getUserId(), eachPostId);
+				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
+				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
+
+				// feedJson.put("isFollowed", isFollowed);
+				feedJson.put("isLiked", isLiked);
+				// feedJson.put("isBookmarked", isBookmarked);
+				feedJson.put("whatIsLiked", whatIsLiked);
+
+				jarr.add(feedJson);
+
+			}
+
+			JSONObject sendJson = new JSONObject();
+			sendJson.put("list", jarr);
+			return sendJson.toJSONString();
+
+		} else {
+
+			JSONObject noFeedJson = new JSONObject();
+			noFeedJson.put("message", "현재 볼 수 있는 피드가 없습니다.");
+			return noFeedJson.toJSONString();
+
+		} // else
+
+	}
+
+	@RequestMapping(value = "detail.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView showDetailView(@RequestParam("postId")int postId, ModelAndView mv, HttpSession session) {
+	    
+		ArrayList<Image> images = postService.selectImagesByPostId(postId);
+		logger.info("images" + images.toString());
+		Video video = postService.selectOneVideo(postId);
+		//logger.info("video" + video.toString());
+		//String postUserId = postService.selectUserId(postId);
+		//logger.info("postUserId" + postUserId.toString());
+		//User postUser = userService.selectUser(postUserId);
+		//logger.info("postUser" + postUser.toString());
+		User viewingUser = (User) session.getAttribute("loginUser");
+		logger.info("viewingUser" + viewingUser.toString());
+		Post post = postService.selectOnePost(postId);
+		logger.info("post" + post.toString());
+		ArrayList<Tag> tags = postService.selectTags(postId);
+		logger.info("tags" + tags.toString());
+		ArrayList<Comment> comments = commentService.selectComments(postId);
+		logger.info("comments" + comments.toString());
+		int likeCount = postService.selectLikeCounts(postId);
+		logger.info("likeCount" + likeCount);
+		
+	    mv.addObject("images", images);
+	    mv.addObject("video", video);
+	   // mv.addObject("postUser", postUser);
+	    mv.addObject("viewingUser", viewingUser);
+	    mv.addObject("post", post);
+	    mv.addObject("tags", tags);
+		mv.addObject("comments", comments);
+	    mv.addObject("likeCount", likeCount);
+		mv.setViewName("post/detailview");
+		
+	    return mv;
+	}
+
+	
+	//코멘트 삽입
+	@RequestMapping(value="addComment1.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView addComment(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("commentContent")String commentContent, ModelAndView mv) {
+		
+		//아이디와 포스트를 받아서 코멘트 저장처리
+		//이 폼에서 저장한 코멘트는 무조건 1번 (부모댓글임)
+		
+		
+		
+		
+		Comment comment = new Comment (postId, userId, commentContent);
+		
+		
+		int result = commentService.insertComment1(comment);
+		
+		if(result == 1) {
+			
+			mv.setViewName("post/detailview?postId=" + comment.getPostId());
+		}else {
+			
+			mv.addObject("message", "댓글 추가에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
+	
+	
+	
+}// 클래스
