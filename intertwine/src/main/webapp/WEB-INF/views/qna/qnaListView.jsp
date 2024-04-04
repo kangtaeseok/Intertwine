@@ -1,189 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 
 <c:set var="nowpage" value="1" />
 <c:if test="${ !empty requestScope.currentPage }">
 	<c:set var="nowpage" value="${ requestScope.currentPage }" />
 </c:if>
-
+ 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>qnaListView</title>
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
-<style>
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+<style type="text/css">
+fieldset#ss {
+	width: 600px;
+	position: relative;
+	left: 450px;
 }
-
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+form fieldset {
+	width: 600px;	
 }
-
-header, footer {
-    background-color: #666;
-    color: white;
-    padding: 10px;
-}
-
-main {
-    flex: 1;
-    display: flex;
-}
-
-.left {
-    flex: 1; /* 왼쪽 요소를 오른쪽 요소의 1/4 크기로 설정 */
-    padding: 20px;
-    border: 1px solid #333;
-}
-
-.right {
-    flex: 3; /* 오른쪽 요소를 왼쪽 요소의 4배 크기로 설정 */
-    padding: 20px;
-    border: 1px solid #333;
-}
-
-hr {
-    border: none;
-    height: 4px;
-    background-color: black;
-}
-
-/* 마우스를 올릴 때 밑줄 효과 */
-#faq:hover, #qna:hover {
-    text-decoration: underline;
-    cursor: pointer;
+form.sform {
+	background: lightgray;
+	width: 630px;
+	position: relative;
+	left: 400px;
+	display: none;  /* 안 보이게 함 */
 }
 </style>
-
-</head>
-<body>
-
-<hr>
-<br>
-<div class="container">
-    <header>Header</header>
-    <c:import url="/WEB-INF/views/common/menubar.jsp" />
-    <br>
-    <main>
-        <div class="left">
-            <h1>고객센터</h1>
-            <hr>
-            <ul>
-                <!-- 문의하기(Q&A)와 자주묻는질문(FAQ)에 ID 추가 -->
-                <li><h2 id="faq">자주묻는질문(FAQ)</h2></li>
-                <li><h2 id="qna">문의하기(Q&A)</h2></li>
-            </ul>           
-        </div>
-        <div class="right" id="qnaContent">
-            <!-- 초기 FAQ 내용 -->
-            <h1>문의하기(Q&A)</h1>
-            <hr>
-            <p>문의하기 내용입니다.
-            <%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
-			<%-- <c:if test="${ !empty sessionScope.loginMember }"> --%>
-				<div style="align:center;text-align:right;">
-	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">작성하기</button>
-					<!-- <button onclick="showWriteForm();">글쓰기</button> -->
-				</div>
-			<%-- </c:if> --%>
-			<br>
-
-            
-            </p>
-        
-		   <br>
-		   
-		   
-		   
-		   
-		   
-
-	    	<table align="center" border="1" cellspacing="0" width="700">
-	    		<tr>
-	    			<th>번호</th>
-	    			<th>제목</th>
-	    			<th>작성자</th>
-	    			<th>날짜</th>
-	    			<th>첨부파일</th>
-	    			<th>조회수</th>
-	    		</tr>
-	    		<c:forEach items="${ requestScope.list }" var="q">
-	    			<tr>
-	    				<td align="center">${ q.qnaNum }</td>
-	    				<td>
-	    				<c:url var="qd" value="qdetail.do">
-	    					<c:param name="qnum" value="${ q.qnaNum }"/>
-	    					<c:param name="page" value="${ nowpage }"/>
-	    				</c:url>
-	    				<a href="${ qd }">${ q.qnaTitle }</a>
-	    				</td>
-	    				<td align="center">${ q.qnaWriter }</td>
-	    				<td align="center">${ q.qnaDate }</td>
-	    							<td align="center">
-			<%-- <% if(b.getBoardOriginalFileName() != null){ %> --%>
-			
-			<c:if test="${ !empty q.qnaOriginalFileName }">
-				◎
-			</c:if>
-			<%-- <% }else{ %> --%>
-			<c:if test="${ empty q.qnaOriginalFileName }">
-				&nbsp;
-			</c:if>
-			<%-- <% } %> --%>
-			</td>
-	    				<td align="center">${ q.qnaReadCount }</td>
-	    			</tr>
-	    		</c:forEach>
-	    	</table>
-	    	
-	    	
-	    	
-	    	
-	    	<br>
-        
-    		<%-- 페이징 처리 뷰 포함 처리 --%>
-			<c:import url="/WEB-INF/views/common/pagingView.jsp" />
-
-			
-		</div>
-		
-		
-    </main>
-
-</div>
-
-<script>
-
-document.getElementById("faq").addEventListener("click", function() {
-    // 자주묻는질문(FAQ) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-	<c:url var="fl" value="flist.do">
-	 	<c:param name="page" value="${ currentPage }" /> 
-	 </c:url>   
-	location.href='${ fl }'; 
-
-    //location.href="${pageContext.servletContext.contextPath}/flist.do?page=1";
-        
-});
-
-
-
-document.getElementById("qna").addEventListener("click", function() {
-    // 문의하기(Q&A) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-	<c:url var="ql" value="qlist.do">
- 	<c:param name="page" value="${ currentPage }" /> 
- 	</c:url>   
-	location.href='${ ql }'; 
-});
+<script type="text/javascript" src="/first/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
 
 
 function showWriteForm(){
@@ -191,14 +40,190 @@ function showWriteForm(){
 	location.href = "${ pageContext.servletContext.contextPath}/qwform.do";
 }
 </script>
+</head>
+<body>
+<c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
+<script>
+$(function(){
+	
+	document.getElementById("faqContent").innerHTML = `
+
+		
+		
+		<h1>문의하기(Q&A)</h1>
+		<hr>
+		<br>
+		<%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
+		<%-- <% if(loginMember != null){ %> --%>
+		<c:if test="${ !empty sessionScope.loginMember }">
+			<div style="align:center;text-align:center;">
+				<button onclick="showWriteForm();">글쓰기</button>
+			</div>
+		</c:if>
+		<%-- <% } %> --%>
+		<br>
+		
+		<center>
+				<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/qlist.do?page=1';">목록</button>
+		</center>
+		<br>
+		<br>
+		
+
+		
+		<%-- 항목별 검색 기능 추가 --%>
+		<fieldset id="ss" style="display: left;">
+			<legend>검색할 항목을 선택하세요.</legend>
+			<input type="radio" name="item" id="title"> 제목 &nbsp;
+			<input type="radio" name="item" id="writer"> 작성자 &nbsp;	
+			<input type="radio" name="item" id="date"> 등록날짜 &nbsp;	
+		</fieldset>
+		<br>
+		
+		<%-- 검색 항목별 값 입력 전송용 폼 만들기 --%>
+		<%-- 제목 검색 폼 --%>
+		<form id="titleform" class="sform" action="qsearchTitle.do" method="post">
+			<input type="hidden" name="action" value="title">	
+		<fieldset>
+			<legend>검색할 제목을 입력하세요.</legend>
+			<input type="search" name="keyword"> &nbsp;
+			한 페이지에 출력할 목록 갯수 :
+			<select name="limit">
+				<option value="10" selected>10</option>	
+				<option value="15">15</option>	
+				<option value="20">20</option>	
+			</select> &nbsp;
+			<input type="submit" value="검색">
+		</fieldset>
+		</form>
+		
+		<%-- 작성자 검색 폼 --%>
+		<form id="writerform" class="sform" action="qsearchWriter.do" method="post">
+			<input type="hidden" name="action" value="writer">	
+		<fieldset>
+			<legend>검색할 작성자를 입력하세요.</legend>
+			<input type="search" name="keyword"> &nbsp;
+				한 페이지에 출력할 목록 갯수 :
+			<select name="limit">
+				<option value="10" selected>10</option>	
+				<option value="15">15</option>	
+				<option value="20">20</option>	
+			</select> &nbsp;
+			<input type="submit" value="검색">
+		</fieldset>
+		</form>
+		
+		<%-- 등록날짜 검색 폼 --%>
+		<form id="dateform" class="sform" action="qsearchDate.do" method="post">
+			<input type="hidden" name="action" value="date">	
+		<fieldset>
+			<legend>검색할 등록날짜를 선택하세요.</legend>
+			<input type="date" name="begin"> ~ <input type="date" name="end"> &nbsp;
+				한 페이지에 출력할 목록 갯수 :
+			<select name="limit">
+				<option value="10" selected>10</option>	
+				<option value="15">15</option>	
+				<option value="20">20</option>	
+			</select> &nbsp;
+			<input type="submit" value="검색">
+		</fieldset>
+		</form>
+		
+		
+		<%-- 조회된 게시글 목록 출력 --%>
+		<table align="center" border="1" cellspacing="0" width="700">
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>날짜</th>
+				<th>첨부파일</th>
+				<th>조회수</th>
+			</tr>
+			<%-- <% for(Board b : list){ %> --%>
+			<c:forEach items="${ requestScope.list }" var="q">
+				<tr>
+					<td align="center">${ q.qnaNum }</td>
+					<td>
+					<%-- <% if(b.getBoardLev() == 2){  //원글의 댓글일 때 %> --%>
+					<c:if test="${ q.qnaLev eq 2 }">
+					&nbsp; &nbsp; ▶ 
+					</c:if>
+					<%-- <% }else if(b.getBoardLev() == 3){  //댓글의 댓글일 때 %> --%>
+					<c:if test="${ q.qnaLev eq 3 }">
+					&nbsp; &nbsp; &nbsp; &nbsp; ▶▶
+					</c:if>
+					<%-- <% } %> --%>
+					
+					
+					<c:url var="qd" value="qdetail.do">
+						<c:param name="qnum" value="${ q.qnaNum }"/>
+						<c:param name="page" value="${ nowpage }"/>
+					</c:url>
+					<a href="${ qd }">${ q.qnaTitle }</a>
+					</td>
+					<td align="center">${ q.qnaWriter }</td>
+					<td align="center">${ q.qnaDate }</td>
+					<td align="center">
+					<%-- <% if(b.getBoardOriginalFileName() != null){ %> --%>
+					
+					<c:if test="${ !empty q.qnaOriginalFileName }">
+						◎
+					</c:if>
+					<%-- <% }else{ %> --%>
+					<c:if test="${ empty q.qnaOriginalFileName }">
+						&nbsp;
+					</c:if>
+					<%-- <% } %> --%>
+					</td>
+					<td align="center">${ q.qnaReadCount }</td>
+				</tr>
+			</c:forEach>
+			<%-- <% } %> --%>
+		</table>
+		<br>
+		
+		<%-- 페이징 처리 뷰 포함 처리 --%>
+		<c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
 
-<br>
 
-
+	`; 
+	});
+	
+	
+$(function(){
+	//input 태그의 name 이 item 의 값이 바뀌면(change) 작동되는 이벤트 핸들러 작성
+	$('input[name=item]').on('change', function(){
+		//여러 개의 태그 중에서 체크표시가 된 태그를 선택
+		$('input[name=item]').each(function(index){
+			//선택된 radio 순번대로 하나씩 checked 인지 확인함
+			if($(this).is(':checked')){
+				//체크 표시된 아이템에 대한 폼이 보여지게 처리함
+				$('form.sform').eq(index).css('display', 'block');
+			}else{
+				//체크 표시 안된 아이템의 폼은 안 보이게 처리함
+				$('form.sform').eq(index).css('display', 'none');
+			}
+		});  //each
+	});  //on
+});  //document ready	
+	
+	
+	</script>
 
 
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
+
+
+
+
+
+
 </body>
 </html>
+
+
+
+

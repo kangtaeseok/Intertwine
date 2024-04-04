@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>문의하기(Q&A)</title>
+<title>자주묻는질문(FAQ)</title>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <style>
 body, html {
@@ -43,13 +43,13 @@ main {
 .left {
     flex: 1; /* 왼쪽 요소를 오른쪽 요소의 1/4 크기로 설정 */
     padding: 20px;
-    border: 1px solid #333;
+    border: 0px solid #333;
 }
 
 .right {
     flex: 3; /* 오른쪽 요소를 왼쪽 요소의 4배 크기로 설정 */
     padding: 20px;
-    border: 1px solid #333;
+    border: 0px solid #333;
 }
 
 hr {
@@ -71,7 +71,7 @@ hr {
 <hr>
 <br>
 <div class="container">
-    <header>Header</header>
+    <header>INTERTWINE</header>
     <c:import url="/WEB-INF/views/common/menubar.jsp" />
     <br>
     <main>
@@ -84,7 +84,7 @@ hr {
                 <li><h2 id="qna">문의하기(Q&A)</h2></li>
             </ul>           
         </div>
-        <div class="right" id="qnaContent">
+        <div class="right" id="faqContent" alin>
 		</div>
     </main>
 
@@ -92,25 +92,12 @@ hr {
 <script>
 
 document.getElementById("faq").addEventListener("click", function() {
-   // 문의하기(Q&A) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-/*    	<c:url var="fl" value="flist.do">
-	 	<c:param name="page" value="${ currentPage }" /> 
-	 </c:url>   
-	location.href='${ fl }';  */
     location.href="${pageContext.servletContext.contextPath}/flist.do?page=1";
-   //document.getElementById("faqContent").innerHTML = ` `;
 });
 
-
 document.getElementById("qna").addEventListener("click", function() {
-	   // 문의하기(Q&A) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-	/*    	<c:url var="fl" value="flist.do">
-		 	<c:param name="page" value="${ currentPage }" /> 
-		 </c:url>   
-		location.href='${ fl }';  */
-	    location.href="${pageContext.servletContext.contextPath}/qlist.do?page=1";
-	   //document.getElementById("faqContent").innerHTML = ` `;
-	});
+    location.href="${pageContext.servletContext.contextPath}/qlist.do?page=1";
+});
         
 
 </script>

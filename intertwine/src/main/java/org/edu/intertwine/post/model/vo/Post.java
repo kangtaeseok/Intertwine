@@ -12,15 +12,24 @@ public class Post implements Serializable {
 	private String postVisible;
 	private Date postTime;
 	private int postView;
-	private int postDraft;
-	private int postLikeCounts;
+	private String postPin;
 	
 	public Post() {
 		super();
 	}
 
+	public Post(String userId, String postContent, String postVisible, Date postTime, int postView, String postPin) {
+		super();
+		this.userId = userId;
+		this.postContent = postContent;
+		this.postVisible = postVisible;
+		this.postTime = postTime;
+		this.postView = postView;
+		this.postPin = postPin;
+	}
+
 	public Post(int postId, String userId, String postContent, String postVisible, Date postTime, int postView,
-			int postDraft, int postLikeCounts) {
+			String postPin) {
 		super();
 		this.postId = postId;
 		this.userId = userId;
@@ -28,8 +37,7 @@ public class Post implements Serializable {
 		this.postVisible = postVisible;
 		this.postTime = postTime;
 		this.postView = postView;
-		this.postDraft = postDraft;
-		this.postLikeCounts = postLikeCounts;
+		this.postPin = postPin;
 	}
 
 	public int getPostId() {
@@ -80,20 +88,12 @@ public class Post implements Serializable {
 		this.postView = postView;
 	}
 
-	public int getPostDraft() {
-		return postDraft;
+	public String getPostPin() {
+		return postPin;
 	}
 
-	public void setPostDraft(int postDraft) {
-		this.postDraft = postDraft;
-	}
-
-	public int getPostLikeCounts() {
-		return postLikeCounts;
-	}
-
-	public void setPostLikeCounts(int postLikeCounts) {
-		this.postLikeCounts = postLikeCounts;
+	public void setPostPin(String postPin) {
+		this.postPin = postPin;
 	}
 
 	public static long getSerialversionuid() {
@@ -103,11 +103,8 @@ public class Post implements Serializable {
 	@Override
 	public String toString() {
 		return "Post [postId=" + postId + ", userId=" + userId + ", postContent=" + postContent + ", postVisible="
-				+ postVisible + ", postTime=" + postTime + ", postView=" + postView + ", postDraft=" + postDraft
-				+ ", postLikeCounts=" + postLikeCounts + "]";
+				+ postVisible + ", postTime=" + postTime + ", postView=" + postView + ", postPin=" + postPin + "]";
 	}
-	
-	
 	
 	
 }

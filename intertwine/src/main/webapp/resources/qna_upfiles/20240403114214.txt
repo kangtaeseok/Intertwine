@@ -1,0 +1,13 @@
+각 조별로 컴파트먼트 만들기
+
+각 조별로 IP 대역 구상해서 설계
+
+VM 2대 생성 --> 이중화 구성
+
+VM에 mysql yum 명령어로 생성 셋팅
+
+
+참고 : private vm 으로 생성할 경우 public 에  Bastion 점프 게이트웨이를 통해서 접속
+
+ssh -i "/home/opc/ssh-key-2024-03-35.key" opc@10.0.x.x
+
