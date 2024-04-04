@@ -8,14 +8,22 @@ public class Like implements Serializable{
 	private static final long serialVersionUID = -7812062885074141844L;
 	private String userId;
 	private int postId;
-	private int likeType; //0: 좋아요 1: 하트 2: 웃겨요 3:슬퍼요 4: 화나요
+	private String likeType; //0: 좋아요 1: 하트 2: 웃겨요 3:슬퍼요 4: 화나요
 	private Date likeTime;
 	
 	public Like() {
 		super();
 	}
 
-	public Like(String userId, int postId, int likeType, Date likeTime) {
+	//포스트에 공감했나 안했나 확인용
+	public Like(String userId, int postId) {
+		super();
+		this.userId = userId;
+		this.postId = postId;
+	}
+
+
+	public Like(String userId, int postId, String likeType, Date likeTime) {
 		super();
 		this.userId = userId;
 		this.postId = postId;
@@ -39,11 +47,11 @@ public class Like implements Serializable{
 		this.postId = postId;
 	}
 
-	public int getLikeType() {
+	public String getLikeType() {
 		return likeType;
 	}
 
-	public void setLikeType(int likeType) {
+	public void setLikeType(String likeType) {
 		this.likeType = likeType;
 	}
 

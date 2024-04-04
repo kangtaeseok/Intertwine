@@ -5,30 +5,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Q&A WForm</title>
+<title>first</title>
 </head>
 <body>
+
 <c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
 <script>
 $(function(){
 	
-	document.getElementById("qnaContent").innerHTML = `
-	
+	document.getElementById("faqContent").innerHTML = `
+
+		
+		
 		<h1>문의하기(Q&A)</h1>
 		<hr>
-		<br>	
-		<h2 align="center">Q&A 원글 등록 페이지</h2>	
-
-
 		<br>
 
-
+		
+		<h1 align="center">QnA 원글 등록 페이지</h1>
+		<br>
+		
 		<!-- form  에서 입력값들과 파일을 함께 전송하려면 반드시 속성 추가해야 함 :
 		     enctype="multipart/form-data"
 		 -->
 		<form action="qinsert.do" method="post" enctype="multipart/form-data">
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
-
+		
 			<tr>
 			    <th>제목</th>
 			    <td><input type="text" name="qnaTitle"></td>
@@ -36,8 +38,6 @@ $(function(){
 			<tr>
 			    <th>작성자</th>
 			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginMember.userId }"></td>
-	
-			    
 			</tr>
 			<tr>
 			    <th>첨부파일</th>
@@ -60,11 +60,12 @@ $(function(){
 			</tr>
 		</table>
 		</form>
+		
+		<br>
 
-		<br>	
-	
-	
-		`; 
+
+
+`; 
 });
 </script>
 

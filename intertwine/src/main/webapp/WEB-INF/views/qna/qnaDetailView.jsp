@@ -21,6 +21,8 @@
 
 <c:url var="qdel" value="qdelete.do">
 	<c:param name = "qnaNum" value="${ qna.qnaNum }" />
+	<c:param name = "qnaLev" value="${ qna.qnaLev }"/>
+	<c:param name = "qnaRenameFileName" value="${ qna.qnaRenameFileName }"/>
 </c:url>
 
 <c:url var="qup" value="qupview.do">
@@ -31,7 +33,7 @@
 <script type="text/javascript">
 function requestReply(){
 	//댓글달기 요청 함수
-	location.href="${ replyq }";
+	location.href="${ replyf }";
 }
 
 function requestDelete(){
@@ -43,11 +45,7 @@ function requestDelete(){
 function moveUpdatePage(){
 	//게시글 (원글, 댓글, 대댓글) 수정 페이지로 이동 처리 함수
 	location.href = "${ qup }";
-
 }
-
-
-
 </script>
 </head>
 <body>
@@ -55,18 +53,14 @@ function moveUpdatePage(){
 <script>
 $(function(){
 	
-	document.getElementById("qnaContent").innerHTML = `
-	
-        <!-- 초기 FAQ 내용 -->
-        <h1>자주묻는질문(FAQ)</h1>
-        <hr>
-        <p>자주 묻는 질문 내용입니다.</p>
-   
-	   <br>
-	
-		<h2 align="center">${ qna.qnaNum } 번 게시글 상세보기</h2>
-		<br>
+	document.getElementById("faqContent").innerHTML = `
 
+		<h1>문의하기(Q&A)</h1>
+		<hr>
+		
+		<h1 align="center">${ qna.qnaNum } 번 게시글 상세보기</h1>
+		<br>
+		
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
 			<tr>
 				<th width="120">제 목</th>
@@ -81,17 +75,38 @@ $(function(){
 				<td><fmt:formatDate value="${ qna.qnaDate }" pattern="yyyy-MM-hh"/></td>
 			</tr>
 			<tr>
+				<th width="120">첨부파일</th>
+				<td>
+		<%-- 		<% if(qna.getBoardOriginalFileName() != null){ %>
+					<a href="/first/bfdown?ofile=<%= qna.getBoardOriginalFileName() %>&rfile=<%= qna.getBoardRenameFileName() %>">
+					<%= qna.getBoardOriginalFileName() %></a>
+				<% }else{ %>
+					&nbsp;
+				<% } %> --%>
+				<c:if test="${ !empty qna.qnaOriginalFileName }">
+					<c:url var="qdown" value="qdown.do">
+						<c:param name="ofile" value="${ qna.qnaOriginalFileName }" />
+						<c:param name="rfile" value="${ qna.qnaRenameFileName }"/>			
+					</c:url>
+					<a href="${ bdown }" > ${ qna.qnaOriginalFileName }</a>
+				</c:if>
+				<c:if test="${ empty qna.qnaOriginalFileName }">
+				&nbsp;
+				</c:if>
+				</td>
+			</tr>
+			<tr>
 				<th width="120">내 용</th>
 				<td>${ qna.qnaContent }</td>
 			</tr>
 			<tr>
 				<th colspan="2">
 					<%-- 로그인한 경우 : 본인 글 상세보기 일때는 수정페이지로 이동과 삭제 버튼 표시함 --%>
-					<%--<c:if test="${ !empty loginMember }">--%>	
-						<%--<c:if test="${ loginMember.userId eq qna.qnaWriter }">--%>
+					<c:if test="${ !empty loginMember }">	
+						<c:if test="${ loginMember.userId eq qna.qnaWriter }">
 							<button onclick="moveUpdatePage(); return false;">수정페이지로 이동</button>&nbsp;
 							<button onclick="requestDelete(); return false;">글삭제</button>&nbsp;
-						<%--</c:if>--%>
+						</c:if>
 					
 						<%-- 로그인한 경우 : 관리자인 경우 글삭제 버튼과 댓글달기 버튼 표시함 --%>
 						<c:if test="${ loginMember.adminYN eq 'Y' and loginMember.userId ne qna.qnaWriter  }">
@@ -107,7 +122,7 @@ $(function(){
 								<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;
 							</c:if>
 						</c:if>
-					<%-- </c:if> --%>
+					</c:if>
 					
 					<%-- <% if(loginMember != null){ //로그인한 상태이면
 							if(loginMember.getUserId().equals(qna.getBoardWriter())){
@@ -136,21 +151,10 @@ $(function(){
 				</th>		
 			</tr>
 		</table>
-		<br>	
-	
-	
-	
-	
-	
-	`; 
+		<br>
+`; 
 });
 </script>
-<hr>
-
-      
-
-
-
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

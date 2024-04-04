@@ -128,7 +128,7 @@ a {
 	margin-top: 10px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 
 .social-box a img {

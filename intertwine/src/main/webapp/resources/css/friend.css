@@ -1,6 +1,11 @@
 @charset "UTF-8";
 
-
+.content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* 추가: 컨텐츠가 넘칠 경우 다음 줄로 넘어감 */
+    padding: 20px;
+}
 .followerList-table, .followingList-table {
    /*  width: 100%; Make the table use the full width of its container
     border-collapse: collapse; */ /* Remove space between borders */
@@ -101,7 +106,7 @@ h2 {
     
 }
 
-.searchFollowing, .searchFollow {
+.searchFollowing, .searchFollower {
     flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
     margin-right: 10px; /* 오른쪽 마진 조정 */
     padding: 10px;
@@ -122,7 +127,7 @@ h2 {
 }
 
 /* 검색 입력 필드 스타일 */
-.searchFollowing, #followerSearchQuery {
+.searchFollowing, .searchFollower {
     flex-grow: 1;
     padding: 8px 12px;
     border: 2px solid #dcdcdc; /* 경계선 스타일 */

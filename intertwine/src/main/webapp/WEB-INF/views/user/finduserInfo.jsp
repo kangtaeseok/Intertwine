@@ -32,6 +32,11 @@ function changePhone2() {
 	$(".pwd-find-phone").show();
 	$(".pwd-find-email").hide();
 }
+//전화번호 정규표현식
+function ph(target) {
+	target.value = target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+} 
+
 //비번 정규표현식
 function regExpPwd() {
 	const regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
@@ -52,7 +57,7 @@ function regExpPwd() {
 //이메일 아이디체크
 function checkEmail() {
 	$.ajax({
-		url: "idsearch.do",
+		url: "emailsearch.do",
 		type: "post",
 		data: {email : $("#femail").val()},
 		success: function(data){
@@ -60,6 +65,7 @@ function checkEmail() {
 			
 		},
 		error: function(jqXHR, textStatus, errorThrown){
+			
 			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
 		}
 	});
@@ -137,7 +143,7 @@ function pwdevalidate() {
             },
             error: function(xhr, status, error) {
             	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
-            	document.getElementById("mail").select();
+            	history.back(-1);
             }
 		});
 	}
@@ -153,8 +159,9 @@ function changePwd() {
 			url: "changePwd.do",
             data: {pemail: pemail, pwd: pwd},
             success: function(data) {
-            	alert("성공함");
-            	location:href='login.do';
+            	if(data == "ok"){
+            		location.href="login.do";
+            	}
             },
             error: function(xhr, status, error) {
             	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
@@ -164,26 +171,73 @@ function changePwd() {
 	
 }
 
+//전화번호 아이디체크
+function checkPhone() {
+	var phone = $("#fphone").val();
+	$.ajax({
+		url: "phonesearch.do",
+		type: "post",
+		data: {phone : phone},
+		success: function(data){
+			$(".id-find-phone").html("회원님의 아이디는 " + data + " 입니다." );
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			alert("잘못된 전화번호입니다. 다시 입력해주세요.");
+			history.back();
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});
+}
 
-//비번 전화번호 인증확인
+//비번 전화번호 인증
 function pwdpvalidate() {
-	$(".timer").remove();
-	var auth = $("#pwdemail").val();
-	if(auth) {
+	var phone = $("#pphone").val();
+	if(phone){
 		$.ajax({
 			type: "post",
-			url: "emailAuth.do",
-            data: {auth: auth},
+			url: "phonesearchpwd.do",
+            data: {phone: phone},
             success: function(data) {
-            	
+            	$(".pwd-find-phone").hide();
+            	$(".auth-phone").show();
+            	code = data;
+            	console.log(data);
             },
             error: function(xhr, status, error) {
+            	$(".auth-phone").hide();
+            	$(".pwd-find-phone").show();
             	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
-            	document.getElementById("mail").select();
+            	
             }
 		});
 	}
 }
+
+
+
+function changePwd2() {
+	$(".pwd-inner-box2").show();
+	$(".auth-phone").hide();
+}
+var phone = $("#pphone").val();
+
+
+function updatePwd2() {
+	$("#hidePhone").val($("#pphone").val());
+	document.cpwdp.submit();
+	
+}
+//인증번호 대조
+function phonepwdchk() {
+	if($("#pwdphone").val() == code) {
+		changePwd2();
+	}
+	
+	
+}
+
+
 </script>
 </head>
 <body>
@@ -200,7 +254,7 @@ function pwdpvalidate() {
 			</div>
 
 			<div class="id-find-phone">
-				<input type="text" name="phone" id="fphone" placeholder="휴대번호 입력">
+				<input type="text" name="phone" id="fphone" placeholder="휴대번호 입력" oninput="ph(this)">
 				<button onclick="checkPhone();">확인</button>
 			</div>
 		</div>
@@ -221,12 +275,13 @@ function pwdpvalidate() {
 				<button onclick="pwdevalidate();">확인</button>
 			</div>
 			
-			<div class="pwd-inner-box">
-			<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd" maxlength="14" oninput="regExpPwd();" required></label>
-			<div class="pwd-check-box"></div><br>
-        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd2" maxlength="14" required></label>  &nbsp; <button onclick="changePwd();">확인</button>
-        		
-			</div>
+			<form action="changePwd.do" method="post">
+				<div class="pwd-inner-box">
+				<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd" maxlength="14" oninput="regExpPwd();" required></label>
+				<div class="pwd-check-box"></div><br>
+	        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd2" maxlength="14" required></label>  &nbsp; <button onclick="changePwd(); return false;">확인</button>	
+				</div>
+			</form>
 			
 			<div class="pwd-find-phone">
 				<input type="text" name="phone" id="pphone" placeholder="휴대번호 입력">
@@ -234,8 +289,17 @@ function pwdpvalidate() {
 			</div>
 			<div class="auth-phone">
 				<input type="text" id="pwdphone" placeholder="인증번호 입력">
-				<button>확인</button>
+				<button onclick="phonepwdchk();">확인</button>
 			</div>
+			
+			<form action="updatePwd.do" method="post" id="cpwdp">
+				<div class="pwd-inner-box2">
+				<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd3" maxlength="14" oninput="regExpPwd();" required></label>
+				<div class="pwd-inner-box2"></div><br>
+	        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd4" maxlength="14" required></label>  &nbsp; <button onclick="updatePwd2();">확인</button>
+	        	<input type="hidden" name="phone" id="hidePhone"/>
+				</div>
+			</form>
 		</div>	
 	</div>
 </div>
