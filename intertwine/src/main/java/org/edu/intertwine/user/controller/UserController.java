@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.edu.intertwine.admin.model.service.AdminService;
+import org.edu.intertwine.admin.model.vo.UserCount;
 import org.edu.intertwine.user.model.service.UserService;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.edu.intertwine.user.model.vo.SocialLogin;
@@ -59,6 +61,9 @@ public class UserController {
 	private JavaMailSenderImpl mailSender;
 	
 	@Autowired
+	private AdminService adminService;
+	
+	@Autowired
 	private UserService userService;
 	
 	@Autowired
@@ -94,14 +99,22 @@ public class UserController {
 	@RequestMapping(value="ulogin.do", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session, SessionStatus status,
 			HttpServletResponse response, Model model) throws IOException {
-		
+			
 	User loginUser = userService.selectUser(user.getUserId());
 
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
+		if(adminService.selectVisitCount() != null) {
+			adminService.updateVisitCount();
+		} else {
+			adminService.insertVisitCount();
+		}
+			
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
+		
+		
 		  return "common/main";
 	} else {
 		model.addAttribute("msg", "암호나 아이디가 일치하지 않습니다. 다시 확인해주세요.");
@@ -199,6 +212,11 @@ public class UserController {
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
 				status.setComplete();
+				if(adminService.selectVisitCount() != null) {
+	    			adminService.updateVisitCount();
+	    		} else {
+	    			adminService.insertVisitCount();
+	    		}
 			return "common/main";
 			} else {
 				model.addAttribute("msg", "로그인에 실패했습니다. 관리자에게 문의하세요");
@@ -218,6 +236,12 @@ public class UserController {
 	    	if(userService.insertUser(user) > 0) {
 	    		loginUser = user;
 	    		session.setAttribute("loginUser", loginUser );
+	    		status.setComplete();
+	    		if(adminService.selectVisitCount() != null) {
+	    			adminService.updateVisitCount();
+	    		} else {
+	    			adminService.insertVisitCount();
+	    		}
 	    	}
 		return "redirect:socialPage.do";
 		}
@@ -251,6 +275,11 @@ public class UserController {
         if(userService.selectEmailCount(email) > 0) {
         	session.setAttribute("loginUser", loginUser);
 			status.setComplete();
+			if(adminService.selectVisitCount() != null) {
+    			adminService.insertVisitCount();
+    		} else {
+    			adminService.updateVisitCount();
+    		}
 			return "common/main";
         	
         } else {
@@ -270,6 +299,11 @@ public class UserController {
         	if (loginUser != null) {
     			session.setAttribute("loginUser", loginUser);
     			status.setComplete();
+    			if(adminService.selectVisitCount() != null) {
+	    			adminService.updateVisitCount();
+	    		} else {
+	    			adminService.insertVisitCount();
+	    		}
     			return "redirect:socialPage.do";
         	} else {
         		return "user/login.do";
