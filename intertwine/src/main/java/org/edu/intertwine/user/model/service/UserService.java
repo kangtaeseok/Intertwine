@@ -20,6 +20,8 @@ public interface UserService {
 
 	User selectPhone(String phone);
 
+	void updateSocial(User loginUser);
+
 
 
 }

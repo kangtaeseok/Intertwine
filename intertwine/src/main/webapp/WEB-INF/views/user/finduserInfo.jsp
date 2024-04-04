@@ -202,9 +202,11 @@ function pwdpvalidate() {
             	$(".pwd-find-phone").hide();
             	$(".auth-phone").show();
             	code = data;
-            	console.log(code);
+            	console.log(data);
             },
             error: function(xhr, status, error) {
+            	$(".auth-phone").hide();
+            	$(".pwd-find-phone").show();
             	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
             	
             }
@@ -212,22 +214,18 @@ function pwdpvalidate() {
 	}
 }
 
-function changePwd2() {	
-	var phone = $("#pphone").val();
-	var pwd = $("#userpwd3").val();
-		$.ajax({
-			type: "post",
-			url: "changePwdP.do",
-            data: {phone: phone, pwd: pwd},
-            success: function(data) {
-            	if(data == "ok"){
-            		location.href="login.do";
-            	}
-            },
-            error: function(xhr, status, error) {
-            	alert("오류 발생: " + error + "다시 한번 시도해주세요.");
-            }
-		});
+
+
+function changePwd2() {
+	$(".pwd-inner-box2").show();
+	$(".auth-phone").hide();
+}
+var phone = $("#pphone").val();
+
+
+function updatePwd2() {
+	$("#hidePhone").val($("#pphone").val());
+	document.cpwdp.submit();
 	
 }
 //인증번호 대조
@@ -277,7 +275,7 @@ function phonepwdchk() {
 				<button onclick="pwdevalidate();">확인</button>
 			</div>
 			
-			<form action="" method="post">
+			<form action="changePwd.do" method="post">
 				<div class="pwd-inner-box">
 				<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd" maxlength="14" oninput="regExpPwd();" required></label>
 				<div class="pwd-check-box"></div><br>
@@ -294,11 +292,12 @@ function phonepwdchk() {
 				<button onclick="phonepwdchk();">확인</button>
 			</div>
 			
-			<form action="" method="post">
+			<form action="updatePwd.do" method="post" id="cpwdp">
 				<div class="pwd-inner-box2">
 				<label>수정할 비밀번호 <input type="password" name="userPwd" id="userpwd3" maxlength="14" oninput="regExpPwd();" required></label>
-				<div class="pwd-check-box2"></div><br>
-	        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd4" maxlength="14" required></label>  &nbsp; <button onclick="changePwd2(); return false;">확인</button>	
+				<div class="pwd-inner-box2"></div><br>
+	        	<label>비밀번호 확인 &nbsp; <input type="password" id="userpwd4" maxlength="14" required></label>  &nbsp; <button onclick="updatePwd2();">확인</button>
+	        	<input type="hidden" name="phone" id="hidePhone"/>
 				</div>
 			</form>
 		</div>	

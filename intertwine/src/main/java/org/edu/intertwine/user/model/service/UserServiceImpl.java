@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectPhone(phone);
 	}
 
+	@Override
+	public void updateSocial(User loginUser) {
+		userDao.updateSocial(loginUser);
+	}
+
 
 	
 	

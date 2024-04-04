@@ -50,5 +50,9 @@ public class UserDao {
 		return sqlSessionTemplate.selectOne("userMapper.selectPhone", phone);
 	}
 
+	public void updateSocial(User loginUser) {
+		sqlSessionTemplate.update("userMapper.updateSocial", loginUser);
+	}
+
 	
 }

@@ -259,7 +259,7 @@ function daumPostcode() {
 					</tr>
 					
 					<tr><td>*이메일</td>
-						<td><input type="email" id="mail" name="email" required>
+						<td><input type="email" id="mail" name="email" >
 						</td><td>
 							<input type="button" value="인증" onclick="checkEmail();"> &nbsp;
 						</td>
@@ -268,7 +268,7 @@ function daumPostcode() {
 					<tr class="alertEmail">
 						<td></td>
 						<td>
-							<input id="auth" placeholder="인증번호를 입력하세요." required> &nbsp;
+							<input id="auth" placeholder="인증번호를 입력하세요."> &nbsp;
 						</td>
 						<td>
 							<input class="timerbtn" type="button" value="확인" onclick="validate2();">
