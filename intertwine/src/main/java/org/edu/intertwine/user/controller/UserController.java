@@ -3,7 +3,6 @@ package org.edu.intertwine.user.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Random;
 
 import javax.mail.Message;
@@ -14,7 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.NaverLoginAuth;
+import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+
+
+
+
+
+
+
 @Controller
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -44,6 +61,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private NaverLoginAuth naverLoginAuth;
+	
 	//뷰페이지 이동
 	
 	@RequestMapping("enrollPage.do")
@@ -56,12 +76,25 @@ public class UserController {
 		return "user/finduserInfo"; 
 	}
 	
+	@RequestMapping("userInfo.do")
+	public String moveUserInfoPage() {
+		return "user/userInfo"; 
+	}
+	
+	@RequestMapping("socialPage.do")
+	public String moveSocialPage() {
+		return "user/socialPage"; 
+	}
+	
+	
+	
 	
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
 	@RequestMapping(value="ulogin.do", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session, SessionStatus status,
 			HttpServletResponse response, Model model) throws IOException {
+		
 	User loginUser = userService.selectUser(user.getUserId());
 
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
@@ -77,11 +110,20 @@ public class UserController {
 	 } 
 	}
 	
+	
+	
+	
+	
+	
+	
 	//로그아웃
 	@RequestMapping("ulogout.do")
 	public String userLogout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if(session != null) {
+			if(naverLoginAuth.getAccessToken().toString() != null) {
+				naverLoginAuth.logOut(naverLoginAuth.getAccessToken().toString());
+			}
 			session.invalidate();
 			return "common/login";
 		}
@@ -89,7 +131,7 @@ public class UserController {
 	}
 	
 	//아이디체크
-	@RequestMapping("idchk.do")
+	@RequestMapping(value="idchk.do", method=RequestMethod.POST)
 	public void userCheckId(@RequestParam("userid") String userId, HttpServletResponse response) throws IOException {
 	int idCount = userService.selectUserCount(userId);
 	String returnStr = null;
@@ -107,7 +149,7 @@ public class UserController {
 	}
 	
 	//이메일 체크
-	@RequestMapping("emailchk.do")
+	@RequestMapping(value="emailchk.do", method=RequestMethod.POST)
 	public void userCheckEmail(@RequestParam("email") String email, HttpServletResponse response) throws IOException {
 	int idCount = userService.selectEmailCount(email);
 	String returnStr = null;
@@ -137,13 +179,107 @@ public class UserController {
 		return "user/enroll";
 	}
 	
-	@RequestMapping(value="kakao_login.do", method=RequestMethod.POST)
-	public String kakaoLogin() {
-		return "";
+	
+	@RequestMapping("kakao_login.do")
+	public String kakaoLogin(HttpServletRequest request) throws Exception {
+		
+		
+		return "commom/main";
 	}
+		
 	
 	
+	@RequestMapping("kakao_loginP.do")
+	public String kakaoLoginMethod(HttpSession session, @RequestParam("kakaomail") String email, 
+			@RequestParam("kakaoId") String userId,  SessionStatus status, Model model) throws Exception {
+		User loginUser = null;
+		User user = null;
+		if(userService.selectEmailCount(email) > 0) {
+			loginUser = userService.selectEmail(email);
+			if(loginUser != null) {
+				session.setAttribute("loginUser", loginUser);
+				status.setComplete();
+			return "common/main";
+			} else {
+				model.addAttribute("msg", "로그인에 실패했습니다. 관리자에게 문의하세요");
+				model.addAttribute("url", "login.do");
+				return "common/alert";
+			}
+		} else {
+			user = new User();
+			user.setUserId(userId);
+			user.setEmail(email);
+			
+			SocialLogin social = new SocialLogin();
+			social.setUserId(userId);
+	    	social.setType("kakao");
+	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
+	    	
+	    	if(userService.insertUser(user) > 0) {
+	    		loginUser = user;
+	    		session.setAttribute("loginUser", loginUser );
+	    	}
+		return "redirect:socialPage.do";
+		}
+		
 	
+	}
+	private String result = null;
+	//네이버 로그인 구현 ------------------------------------------------------------------------------------------
+	@RequestMapping(value ="naver_login.do", produces = "application/json", method = { RequestMethod.GET, 	RequestMethod.POST })
+	public String naverLogin(@RequestParam String code, SessionStatus status, Model model, 
+			HttpSession session, @RequestParam String state) throws Exception{
+		
+		OAuth2AccessToken oauthToken;
+		oauthToken = naverLoginAuth.getAccessToken(session, code, state);
+		result = naverLoginAuth.getUserProfile(oauthToken);
+		
+		logger.info(result);
+		JSONParser jsonParser = new JSONParser();
+        JSONObject json;
+        
+        json = (JSONObject) jsonParser.parse(result);
+        JSONObject response = (JSONObject)json.get("response");
+        
+        String email = String.valueOf(response.get("email"));
+        String name = String.valueOf(response.get("name"));
+        String userId = String.valueOf(response.get("id"));
+        String phone = String.valueOf(response.get("mobile"));
+        logger.info("email : " + email);
+        User loginUser = null;
+        
+        if(userService.selectEmailCount(email) > 0) {
+        	session.setAttribute("loginUser", loginUser);
+			status.setComplete();
+			return "common/main";
+        	
+        } else {
+        	loginUser = new User();
+        	loginUser.setUserId(userId);
+        	loginUser.setEmail(email);
+        	loginUser.setPhone(phone);
+        	loginUser.setUserName(name);
+        	userService.insertUser(loginUser);
+        	
+    		SocialLogin social = new SocialLogin();
+        	social.setUserId(userId);
+        	social.setType("naver");
+        	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
+      
+        	logger.info(loginUser.toString());
+        	if (loginUser != null) {
+    			session.setAttribute("loginUser", loginUser);
+    			status.setComplete();
+    			return "redirect:socialPage.do";
+        	} else {
+        		return "user/login.do";
+        	}
+        	 
+		} 
+       
+
+     }
+
 	private static int random;
 	
 	//이메일 보내기
@@ -166,7 +302,7 @@ public class UserController {
 	}
 	
 	//이메일 인증 성공여부
-	 @RequestMapping("emailAuth.do")
+	 @RequestMapping(value="emailAuth.do", method=RequestMethod.POST)
 	 public ResponseEntity<String> sendAuth(@RequestParam("auth") String authNum) {
 		 if(Integer.parseInt(authNum) == random) { 
 			  return new ResponseEntity<String>("이메일 인증 성공!", HttpStatus.OK);
@@ -175,11 +311,11 @@ public class UserController {
 		 } 
 	}
 	 
-	 //아이디 찾기
-	 @RequestMapping("idsearch.do")
-		public void userSearchId(@RequestParam("email") String email, HttpServletResponse response) throws IOException {
+	 //아이디 찾기(이메일)
+	 @RequestMapping(value="emailsearch.do", method=RequestMethod.POST)
+		public void userSearchIdEmail(@RequestParam("email") String email, HttpServletResponse response) throws IOException {
 		 User user = userService.selectEmail(email);
-		 logger.info(user.toString());
+
 		 String returnStr = null;
 		 if(user != null) {
 			 returnStr = user.getUserId();
@@ -187,15 +323,19 @@ public class UserController {
 			 returnStr ="none";
 		 }
 
-		response.setContentType("text/html' charSet=utf-8");
+		response.setContentType("text/html; charSet=utf-8");
 		PrintWriter out = response.getWriter();
 		out.append(returnStr);
 		out.flush();
+		out.close();
 		}
 	 
+	
 	 
-	//비번찾기처리
-	 @RequestMapping("changePwd.do")
+	 
+	 
+	//비번찾기처리(email)
+	 @RequestMapping(value="changePwd.do", method=RequestMethod.POST)
 		public void userchangePwd(@RequestParam("pemail") String email, 
 				@RequestParam("pwd") String pwd, HttpServletResponse response) throws IOException {
 		 User user = userService.selectEmail(email);
@@ -205,22 +345,160 @@ public class UserController {
 		 
 		 if(result > 0) {
 			 str = "ok";
-			 logger.info(str);
 		 } else {
 			 str = "dup";
 		 }
-		 response.setContentType("text/html' charSet=utf-8");
+		 response.setContentType("text/html; charSet=utf-8");
 		PrintWriter out = response.getWriter();
 		out.append(str);
 		out.flush();
+		out.close();
 	 }
 	 
-	/*
-	 * udetail.do
-	 * 
-	 * userDetail()
-	 */
+	//비번찾기처리(phone)
+	 @RequestMapping(value="changePwdP.do", method=RequestMethod.POST)
+		public String userchangePwdP(@RequestParam("phone") String phone, Model model) throws IOException {
+		 
+		 if (phone.startsWith("02")) {
+	            if (phone.length() == 9) {
+	              phone = phone.replaceAll("(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3");
+	            } else if (phone.length() == 10) {
+	            	phone = phone.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
+	            }
+	        } else if (phone.length() == 10) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+	        } else if (phone.length() == 11) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+	        }
+		 User user = userService.selectPhone(phone);
+		 
+		 return "user/finduserInfo";
+	 }
 	 
-}
+	 @RequestMapping(value="updatePwd.do", method=RequestMethod.POST)
+	 public String userchangePwdP(@RequestParam("userPwd") String pwd, @RequestParam("phone") String phone,
+			 HttpServletResponse response) throws IOException {
+		 if (phone.startsWith("02")) {
+	            if (phone.length() == 9) {
+	              phone = phone.replaceAll("(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3");
+	            } else if (phone.length() == 10) {
+	            	phone = phone.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
+	            }
+	        } else if (phone.length() == 10) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+	        } else if (phone.length() == 11) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+	        }
+		 User user = userService.selectPhone(phone);
+		 
+		 String str = null;
+		 user.setUserPwd(bcryptPasswordEncoder.encode(pwd));
+		 int result = userService.updatePwd(user);
+	 
+		return "common/login";
+	 }
+
+	 //전화번호로 id 찾기
+	 @RequestMapping(value="phonesearch.do", method=RequestMethod.POST)
+		public void userSearchIdPhone(@RequestParam("phone") String phone, HttpServletResponse response) throws IOException {
+		 User user = userService.selectPhone(phone);
+		 String returnStr = null;
+		 if(user.getUserId() != null) {
+			 returnStr = user.getUserId();
+		 } else {
+			 returnStr = "none";
+		 }
+
+		response.setContentType("text/html; charSet=utf-8");
+		PrintWriter out = response.getWriter();
+		out.append(returnStr);
+		out.flush();
+		out.close();
+		}
+	 
+	//전화번호로 pwd 찾기
+	 @ResponseBody
+	 @RequestMapping(value="phonesearchpwd.do", method=RequestMethod.POST)
+	 public String sendSMS(HttpServletResponse response, @RequestParam("phone") String phone) throws Exception { // 휴대폰 문자보내기
+		 String key = String.valueOf(new Random().nextInt(1000000));
+		
+		DefaultMessageService messageService = NurigoApp.INSTANCE.initialize("NCS8OAISM6A6JWFI", "ZT4MPBGAQUWJAMUJZHQNMPSVEGQXNJLN", "https://api.coolsms.co.kr");
+		
+	    net.nurigo.sdk.message.model.Message message1 = new net.nurigo.sdk.message.model.Message();
+		message1.setFrom("01022037375");
+		message1.setTo(phone);
+		message1.setText("인증번호는 " + key + " 입니다.");
+		
+		SingleMessageSentResponse response2 = messageService.sendOne(new SingleMessageSendingRequest(message1));
+		
+		if(response2 != null) { 
+		if (phone.startsWith("02")) {
+	            if (phone.length() == 9) {
+	              phone = phone.replaceAll("(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3");
+	            } else if (phone.length() == 10) {
+	            	phone = phone.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
+	            }
+	        } else if (phone.length() == 10) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+	        } else if (phone.length() == 11) {
+	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+	        }
+		 
+		User user = userService.selectPhone(phone);
+		if(user != null) {
+			return key;
+		} 
+		
+	 }
+		 return "user/findInfo.do";
+	 
+		
+	 }  
+
+
+//유저 상세정보 조회
+//	 @RequestMapping(value="udetail.do", method=RequestMethod.POST)
+//	 public void userDetail(User user) {
+//		 
+//		 
+//		 
+//		 
+//		 
+//	 }
+	 
+	 @RequestMapping(value="uupdate.do", method=RequestMethod.POST)
+	 public String userInfoUpdate(User user, HttpSession session) {
+		 User loginUser = (User) session.getAttribute("loginUser");
+		 
+		 if(user != null) {
+			 loginUser.setNickname(user.getNickname());
+			 loginUser.setPhone(user.getPhone());
+			 loginUser.setAddress(user.getAddress());
+			 loginUser.setUserName(user.getUserName());
+		 }
+		userService.updateSocial(loginUser);
+		 return "common/main";
+	 }
+	 
+//	 
+//	 
+//	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
+//	 public String userDisabled() {}
+//	 
+//	 
+//	 
+//	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
+//	 public String publicMypagesetting() {}
+//	 
+//	 
+//	 
+//	 
+//	 @RequestMapping(value="ustopdel.do", method=RequestMethod.POST)
+//	 public String userUpdate() {}
+	
+} 
+	 
+	 
+
 
 
