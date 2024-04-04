@@ -14,7 +14,7 @@ public interface FriendService {
 
 	int deleteFollowing(Friend friend);
 
-	void blockFollowing(Friend friend);
+	int blockFollowing(Friend friend);
 
 	ArrayList<Friend> searchFollowing(Friend friend);
 
@@ -23,6 +23,12 @@ public interface FriendService {
 	ArrayList<Friend> FollowerList(String userId);
 
 	ArrayList<Friend> searchFollower(Friend friend);
+
+	ArrayList<Friend> blockedList(String userId);
+
+	int countBlocks(String userId);
+
+	int blockFollower(Friend friend);
 
 	/*
 	 * //나를 차단한/내가 차단한 차단계정 목록(팔로잉) ArrayList<String> blockedAllList(String userId);
