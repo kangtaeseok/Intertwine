@@ -33,8 +33,8 @@ public class FriendDao {
 		return sqlSessionTemplate.delete("friendMapper.deleteFollowing", friend);
 	}
 
-	public void blockFollowing(Friend friend) {
-		sqlSessionTemplate.update("friendMapper.blockFollowing", friend);
+	public int blockFollowing(Friend friend) {
+		return sqlSessionTemplate.update("friendMapper.blockFollowing", friend);
 
 	}
 
@@ -56,6 +56,19 @@ public class FriendDao {
 	public ArrayList<Friend> searchFollower(Friend friend) {
 		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.searchFollower", friend);
 		return (ArrayList<Friend>) list;
+	}
+
+	public ArrayList<Friend> blockedList(String userId) {
+		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.blockedList", userId);
+		return (ArrayList<Friend>) list;
+	}
+
+	public int countBlocks(String userId) {
+		return sqlSessionTemplate.selectOne("friendMapper.countBlocks", userId);
+	}
+
+	public int blockFollower(Friend friend) {
+		return sqlSessionTemplate.update("friendMapper.blockFollower", friend);
 	}
 
 }

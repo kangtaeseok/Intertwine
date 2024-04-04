@@ -54,5 +54,8 @@ public class UserDao {
 		sqlSessionTemplate.update("userMapper.updateSocial", loginUser);
 	}
 
+
+	
+
 	
 }

@@ -36,8 +36,9 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public void blockFollowing(Friend friend) {
-		friendDao.blockFollowing(friend);
+	public int blockFollowing(Friend friend) {
+		return friendDao.blockFollowing(friend);
+		
 
 	}
 
@@ -61,6 +62,23 @@ public class FriendServiceImpl implements FriendService {
 	public ArrayList<Friend> searchFollower(Friend friend) {
 		return friendDao.searchFollower(friend);
 	}
+
+	@Override
+	public ArrayList<Friend> blockedList(String userId) {
+		return friendDao.blockedList(userId);
+	}
+
+	@Override
+	public int countBlocks(String userId) {
+		return  friendDao.countBlocks(userId);
+	}
+
+	@Override
+	public int blockFollower(Friend friend) {
+		return friendDao.blockFollower(friend);
+	}
+	
+	
 	
 	
 	 

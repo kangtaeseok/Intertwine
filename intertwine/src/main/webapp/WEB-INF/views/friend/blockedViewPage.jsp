@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ page import="org.edu.intertwine.user.model.vo.User"%>
+<%@ page session="true"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,102 +10,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intertwine Friends Management</title>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+<link rel="stylesheet" href="/intertwine/resources/css/block.css">
 <script src="https://kit.fontawesome.com/4b2098cb2a.js"
 	crossorigin="anonymous"></script>
+	<script type="text/javascript"
+	src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <!-- 폰트어썸 가져오기 -->
 <!-- 이 jsp파일의 css파일 연결 -->
-<style>
-.content {
-	display: flex;
-	flex-direction: row;
-	flex-flow: nowrap;
-	align-items: flex-start;
-}
 
-.followList {
-	left: 240px;
-	display: flex;
-	position: relative;
-	width: 600px;
-	height: 600px;
-	background-color: #f9f9f9;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	margin: 1rem;
-	border-radius: 10px; /* 테두리 둥글게 처리 */
-}
-
-h2 {
-	color: #cc2e72;
-	margin-bottom: 20px;
-}
-
-.list-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 10px;
-}
-
-.blockFollowingList, .blockFollowerList {
-	left: 240px;
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	width: 500px;
-	height: 600px;
-	background-color: #f9f9f9;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	margin: 1rem;
-	border-radius: 10px;
-	padding: 10px; /* 여백 추가 */
-}
-
-.searchFollowing, .searchFollow {
-	flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
-	margin-right: 10px; /* 오른쪽 마진 조정 */
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 20px;
-}
-
-h2 {
-	margin: 0; /* 상하 마진 제거 */
-	color: #cc2e72;
-}
-/* 검색창과 버튼 컨테이너 스타일 */
-#followingbSearch, #followingbSearch {
-	display: flex;
-	margin-top: 10px; /* 상단 여백 추가 */
-	align-items: center; /* 내용을 세로 중앙 정렬 */
-}
-
-/* 검색 입력 필드 스타일 */
-.searchBlockedFollowing, #followerSearchQuery {
-	flex-grow: 1;
-	padding: 8px 12px;
-	border: 2px solid #dcdcdc; /* 경계선 스타일 */
-	border-radius: 25px; /* 둥근 모서리 */
-	margin-right: 10px; /* 오른쪽 여백 */
-	outline: none; /* 선택 시 테두리 제거 */
-	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
-}
-
-/* 검색 버튼 스타일 */
-#followingbSearch button, #followerbSearch button {
-	padding: 8px 16px;
-	background-color: #cc2e72; /* 배경 색상 */
-	color: white; /* 텍스트 색상 */
-	border: none; /* 경계선 제거 */
-	border-radius: 25px; /* 둥근 모서리 */
-	cursor: pointer; /* 마우스 오버 시 커서 변경 */
-	transition: background-color 0.2s; /* 배경 색상 변화 효과 */
-}
-
-/* 검색 버튼 호버 스타일 */
-#followingbSearch button:hover, #followerbSearch button:hover {
-	background-color: #f8c6ce; /* 호버 시 배경 색상 변경 */
-}
-</style>
 </head>
 <body>
 	<header>
@@ -308,22 +223,7 @@ h2 {
 						}
 					</script>
 
-					<style>
-.popup-link {
-	color: black;
-	text-decoration: none; /* 링크 밑줄 제거 */
-}
 
-.popup-link:hover {
-	color: pink; /* 호버 시 색상 변경 */
-}
-
-.divider {
-	height: 1px;
-	background-color: #888;
-	margin: 5px 0; /* 구분선 상하 여백 추가 */
-}
-</style>
 					<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
 							채팅</a></li>
 					<li id="e"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
@@ -335,50 +235,82 @@ h2 {
 				</ul>
 			</aside>
 
-			<div class="blockFollowingList">
-				<div class="list-header">
-					<h2>Your BlockedFollowing</h2>
-					<div id="followingbSearch">
-						<input type="text" placeholder="차단 계정 검색"
-							class="searchBlockedFollowing">
-						<button onclick="searchbFollowing()">Search</button>
-					</div>
-				</div>
-				<!-- 팔로잉 차단 리스트 내용 -->
+<!-- 차단 계정을 담는 영역 -->
+<div class="content">
 
+			<!-- 차단한 계정을 보낼 공간 -->
+			<div class="blockAllList">
+			
+			<!-- 리스트 상단 공간(검색창 및 차단한 수 출력) -->
+				<div class="list-header">
+					<h2>Your Blocked User <br>차단 수 : <span id="blockedCount"></span></h2>
+					<form action="searchBlocked.do" method="get">
+						<div id="blockedSearch">
+							<input type="text" name="keyword" id="keywordInput"
+								placeholder="차단 계정 검색" class="searchBlocked">
+							<button type="submit">Search</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- 차단 리스트 내용 -->
+				<table class="blockList-table">
+					<thead>
+						<tr>
+							<th>Profile</th>
+							<th>Username</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${blockedAllList}" var="block">
+							<tr>
+								<td><img src="${response.profileImageUrl}"
+									alt="Profile Image" class="profile-img"></td>
+								<td>${block.friendId}</td>
+								<!-- Assuming friendId is what you want to display -->
+								<td>
+									<form action="unfollowing.do" method="post">
+										<input type="hidden" name="userId"
+											value="${sessionScope.loginUser.userId}"> <input
+											type="hidden" name="friendId" value="${block.friendId}">
+										<button class="unblock-btn"
+											data-friend-id="${block.friendId}">차단해제</button>
+									</form>
+									<%-- <button class="block-btn"
+										onclick="location.href='blockFollowing.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.friendId}'">Block</button>
+									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
+								</td>
+							</tr>
+
+						</c:forEach>
+					</tbody>
+				</table>
 			</div>
 			<!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
-			<script>
-				$(document).ready(function() {
-					const userId = "${userId}"; //세션에 로그인한 유저ID를 받아옴
 
-					// Fetch and display the following count
-					$.get("countFollowing.do", {
-						userId : userId
-					}, function(data) {
-						$("#followingCount").text(data);
-					});
-
-					// Fetch and display the followers count
-					$.get("countFollowers.do", {
-						userId : userId
-					}, function(data) {
-						$("#followersCount").text(data);
-					});
-				});
-			</script>
-			<div class="blockFollowerList">
-				<div class="list-header">
-					<h2>Your BlockedFollower</h2>
-					<div id="followerbSearch">
-						<input type="text" id="followerSearchQuery" placeholder="차단 계정 검색">
-						<button onclick="searchbFollower()">Search</button>
-					</div>
-				</div>
-				<!-- 팔로워 차단 리스트 내용 -->
-
-			</div>
 		</div>
+		<script>
+$(document).ready(function() {
+    // 로그인한 사용자의 ID 가져오기
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+
+    // AJAX 요청으로 userID 컨트롤러로 보내기
+    $.ajax({
+        url: 'countBlock.do', // 컨트롤러의 경로
+        type: 'GET',
+        data: {
+            userId: userId
+        },
+        success: function(response) {
+            $("#blockedCount").text(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+</script>
 	</main>
 
 
