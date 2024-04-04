@@ -30,8 +30,8 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public void deleteFollowing(Friend friend) {
-		friendDao.deleteFollowing(friend);
+	public int deleteFollowing(Friend friend) {
+		return friendDao.deleteFollowing(friend);
 
 	}
 
@@ -50,6 +50,16 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public ArrayList<Friend> FollowingList(String userId) {
 		return friendDao.FollowingList(userId);
+	}
+
+	@Override
+	public ArrayList<Friend> FollowerList(String userId) {
+		return friendDao.FollowerList(userId);
+	}
+
+	@Override
+	public ArrayList<Friend> searchFollower(Friend friend) {
+		return friendDao.searchFollower(friend);
 	}
 	
 	
