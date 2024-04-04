@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8" errorPage="error.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -88,28 +89,42 @@
                 	
                 	<div id="loadingview">
                 		<img src="/intertwine/resources/images/loading/loading3.gif" alt="로딩 중...">
-          
+                		<div id="squaretip">알고 계셨나요? 팀 세미콜론은 8명의 멤버로 이루어져 있답니다.</div>
                 	</div>
-                	<div id="squaretip">알고 계셨나요? 팀 세미콜론은 8명의 멤버로 이루어져 있답니다.</div>
-                	<div>
-                		${userRoom.userId}
-                		${userRoom.roomColor}
-                		${userRoom.guestBookOpen}
-                		<c:forEach var="roomResource" items="${userRoom.rList}">
-						    <div>Resource ID: ${roomResource.resourceId}</div>
-						    <div>Resource Name: ${roomResource.resourceName}</div>
-						    <div>Resource URL: ${roomResource.resourceURL}</div>
-						    <div>Position X: ${roomResource.resourcePositionX}</div>
-						    <div>Position Y: ${roomResource.resourcePositionY}</div>
-						    <div>Rotation: ${roomResource.resourceRotation}</div>
-						    <div>Scale: ${roomResource.resourceScale}</div>
-						    
-						    <img src="${roomResource.resourceURL}" alt="Room Resource Image"/>
-						</c:forEach>
+                	<div id="userroom" style="background-color:${userRoom.roomColor}">
+	                	<c:forEach var="roomResource" items="${userRoom.rList}">
+		                	
+		             			<img src="${roomResource.resourceURL}"
+									     alt="Room Resource Image"   
+									     class="userroomresource"
+									     style="position: absolute; 
+									            left: ${roomResource.resourcePositionX}px; 
+									            top: ${roomResource.resourcePositionY}px; 
+									            transform: rotate(${roomResource.resourceRotation}deg) scale(${roomResource.resourceScale});" />
+		               
+	                	</c:forEach>
+	                	<div id="mycharacter" style="width: 50px; height: 50px; position: absolute; top: 200px; left: 670px;"></div>
+	                		<div id="mycharacterhair"></div>
+	                		<div id="mycharacterhat"></div>
+	                		<div id="mycharactertop"></div>
+	                		<div id="mycharacterbottom"></div>
+	                	</div>
+	                		
+	                	
+                	 </div><%-- userroom --%>
+                		<div>
+						    	<%-- 
+							    	${userRoom.guestBookOpen}
+							    	Resource ID: ${roomResource.resourceId}
+							    	Resource Name: ${roomResource.resourceName}
+							    	Position X: ${roomResource.resourcePositionX}
+							    	Position Y: ${roomResource.resourcePositionY} 
+						    	--%>
+						    	
+						</div>
                 	</div>
                 </div>
             </div>
-        </div>
     </main>
 </body>
 

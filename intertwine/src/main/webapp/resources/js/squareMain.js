@@ -310,3 +310,40 @@ window.addEventListener('load', function() {
         document.getElementById('squaretip').classList.add('hidden');
     }, 7000); // 1000ms = 1초
 });
+
+
+(function () {
+
+    document.addEventListener("keydown", function (e) {
+    const character = document.getElementById("mycharacter");
+    const room = document.getElementById("userroom");
+    
+    // `#userroom`의 크기와 위치를 얻음
+    const roomRect = room.getBoundingClientRect();
+    
+    // `#mycharacter`의 현재 위치를 얻음
+    let x = parseInt(character.style.left || 0, 10);
+    let y = parseInt(character.style.top || 0, 10);
+
+    // 키보드 입력에 따른 캐릭터의 이동 거리
+    const step = 5;
+
+    // 키 입력에 따라 x, y 위치 업데이트
+    if (e.key === "ArrowLeft") { x -= step; }
+    if (e.key === "ArrowRight") { x += step; }
+    if (e.key === "ArrowUp") { y -= step; }
+    if (e.key === "ArrowDown") { y += step; }
+    
+    // 캐릭터가 `#userroom` 영역 안에 있는지 확인
+    // 캐릭터의 크기를 고려하지 않았음. 필요시 캐릭터 크기를 고려하여 조정
+    if (x < 0) x = 0;
+    if (x > roomRect.width - character.offsetWidth) x = roomRect.width - character.offsetWidth;
+    if (y < 0) y = 0;
+    if (y > roomRect.height - character.offsetHeight) y = roomRect.height - character.offsetHeight;
+
+    // 업데이트된 위치를 적용
+    character.style.left = x + "px";
+    character.style.top = y + "px";
+});
+
+})();
