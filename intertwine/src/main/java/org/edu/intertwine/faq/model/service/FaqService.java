@@ -12,5 +12,7 @@ public interface FaqService {
 	void updateAddReadCount(int faqNum);
 	Faq selectFaq(int faqNum);
 	int insertOriginFaq(Faq faq);
+	int updateOrigin(Faq faq);
+	int deleteFaq(Faq faq);
 	
 }

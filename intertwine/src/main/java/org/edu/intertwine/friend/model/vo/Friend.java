@@ -1,5 +1,7 @@
 package org.edu.intertwine.friend.model.vo;
 
+import java.util.ArrayList;
+
 public class Friend implements java.io.Serializable{
 	private static final long serialVersionUID = -6396073550074695676L;
 	
@@ -8,18 +10,29 @@ public class Friend implements java.io.Serializable{
 	private String friendId;
 	private int notificationStatus;
 	private String status;
+	private String keyword;
+	
 	
 	public Friend() {
 		super();
 	}
 
-	public Friend(String userId, String blockId, String friendId, int notificationStatus, String status) {
+	public Friend(String userId, String blockId, String friendId, int notificationStatus, String status, String keyword) {
 		super();
 		this.userId = userId;
 		this.blockId = blockId;
 		this.friendId = friendId;
 		this.notificationStatus = notificationStatus;
 		this.status = status;
+		this.keyword = keyword;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	public String getUserId() {
@@ -68,7 +81,7 @@ public class Friend implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "Friend [userId=" + userId + ", blockId=" + blockId + ", friendId=" + friendId + ", notificationStatus="
+		return "Friend [userId=" + userId + ", blockId=" + blockId + ", friendId=" + friendId + ", keyword=" + keyword + ", notificationStatus="
 				+ notificationStatus + ", status=" + status + "]";
 	}
 	
