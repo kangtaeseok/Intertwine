@@ -68,7 +68,10 @@
                 더미 서브메뉴
             </div>
             <div id="mypage_sub_menu" class="sub_menu">
-                마이페이지 서브메뉴
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a>
+				</ul>
             </div>
             <div id="chatting_sub_menu" class="sub_menu">
                 채팅 서브메뉴
