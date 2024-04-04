@@ -70,7 +70,7 @@
             <div id="mypage_sub_menu" class="sub_menu">
                	<ul>
 					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
-					<li><a href="mypage.do">마이 페이지 확인</a>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
 				</ul>
             </div>
             <div id="chatting_sub_menu" class="sub_menu">
@@ -80,7 +80,10 @@
                 알림 서브메뉴
             </div>
             <div id="settings_sub_menu" class="sub_menu">
-                설정 서브메뉴
+             	 <ul>
+	             	<li><a href="userTime.do">이용시간<i class="fa-solid fa-clock"></i></a></li>
+	                <li><a href="userInfo.do">개인정보수정<i class="fa-solid fa-user-pen"></i></a></li>
+                </ul>
             </div>
 
         </div>
