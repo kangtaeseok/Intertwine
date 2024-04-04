@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="owner-info">
                          <div class="dummy">
                               <div><b onclick="" style="cursor:pointer;">${postUser.userId}</b></div> &nbsp;
-								${ postUser.postId }
+                              
                               <c:if test="${ postUser.userId ne viewingUser.userId }">
                               <a href="#">팔로우</a> &nbsp;
                               <!-- c태그로 확인 -->
