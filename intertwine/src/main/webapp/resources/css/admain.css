@@ -13,6 +13,7 @@ ul,ol,li {
     list-style: none;
     margin: 0;
 	padding: 0;
+	width: 200px;
 }
 
 a {
@@ -39,81 +40,326 @@ a {
 	padding: 10px;
 	margin: 10px;
 }
-.body-div {
-	/* argin: 1rem; */
-	/* position: absolute; */
+
+main {
 	display: flex;
 	flex-direction: row;
-	/* margin: 0 auto; */
+	flex-wrap: wrap; /* 필요하다면 flex-wrap 속성 추가하여 여러 줄로 배치되도록 설정 */
+	justify-content: flex-start;
+	align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
+	width: 100%;
 }
 
-
-.navi-div{
-	margin: 0 auto;
-	height: 100vh;
-	width: 10rem;
-	background: white;
+/* 사이드 메뉴 바 */
+.side-bar {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: fixed; /* 스크롤을 따라오도록 지정, 스크롤을 내려도 위치 고정 */
+	background-color: #ffffff;
+	z-index: 1;
+	/* border-radius: 20px; */
+	/* 가져온 코드라 이해 잘 안감... */
+	/* 사이드바의 높이를 전체 화면 높이의 90%로 지정 */
+	/* margin-top: calc((100vh - var(--side-bar-height)) / 2); */
+	/* 사이드바 위와 아래의 마진을 동일하게 지정 */
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	/* 너비를 고정 */
+	flex: 0;
+	margin-right: 250px;
 }
 
-.navi-div nav ul {
-	margin-top: 10px;
-	margin-left: 10px;
-	flex-direction: column;
-	align-items: center;
+/* 자식의 position이 absolute일 때 자식을 영역 안에 가두어 준다 */
+.side-bar > ul > li {
+	white-space: nowrap;
+	position: relative;
+	border-radius: 10px;
+	background-color: #fff; /* 배경 추가 */
 }
 
-.navi-div nav ul li {
-	padding: 10px;
-	align-items: center;
-	text-align: left;
-}
-
-li a:link {
+/* 모든 메뉴의 a에 속성값 부여 */
+.side-bar ul > li > a {
 	display: block;
+	color: rgb(205, 79, 132);
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 0.8rem;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	transition: background-color 0.8s ease;
 }
 
-ul li:hover {
-	font-weight:bold;
-	background: #f4f4f4;
-	color: white;
+/* 사이드바 각 메뉴에 마우스 올렸을 때 background 회색 효과 */
+.side-bar ul > li:hover > a {
+	background-color: #f2f2f2;
 }
 
-ul li:focus {
-	font-weight:bold;
-	background: #f4f4f4;
+.side-bar ul > li > a > i {
+	font-size: 1.2rem; /* 메뉴 아이콘 초기 크기 */
+	transition: font-size 0.3s ease; /* 메뉴 아이콘(글자) 크기가 서서히 변하도록 */
+}
+/* 사이드바 각 메뉴에 마우스 올렸을 때 메뉴 아이콘 크기 변화 */
+.side-bar ul > li:hover > a > i {
+	font-size: 1.5rem;
+}
+
+#bottom_right_contents {
+	top: 0;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#bottom_right_contents.on {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	/*left: 0px;*/
+}
+
+#dummy_sub_menu {
+	visibility: hidden;
+}
+
+#mypage_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: Pink;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#chatting_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSkyBlue;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#alarm_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSalmon;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#settings_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: GreenYellow;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#mypage_sub_menu.on,
+#chatting_sub_menu.on,
+#alarm_sub_menu.on,
+#settings_sub_menu.on {
+	top: 60px;
+	opacity: 1;
+	left: 240px;
+	position: fixed;
+	z-index: 1;
+	align-items: center;
+	text-align: center;
+}
+
+.sub_menu {
+	min-height: var(--side-bar-height);
+	width: var(--side-bar-width);
+	/* background-color: Pink; */
+	z-index: 0;
+	position: absolute;
+	top: 0; /* 부모 요소에 상대적으로 위치 설정 */
+	transition: left 0.5s ease; /* left 속성으로 변경 */
+	left: -100%; /* 초기에 왼쪽으로 숨겨둠 */
+}
+
+.sub_menu.on {
+	position: sticky; /* 고정된 위치에 유지 */
+	top: 0; /* 스크롤 시 상단에 고정 */
+	left: 0; /* 슬라이딩되어 나타나도록 설정 */
+}
+
+#bottom_right_contents {
+	left: var(--side-bar-width)+240px;
+	width: calc(100% - var(--side-bar-width) - 240px);
+	display: flex;
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#abc {
+	width: inherit;
+	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.feed {
+	position: relative;
+	width: 600px;
+	height: 5000px;
+	background-color: Aquamarine;
+	display: flex;
+	justify-content: center;
+	padding-top: 10px;
 }
 
 .content-div {
-	/* padding-left: 160px; */
-	width: 82%;
-	height: 100vh;
-	margin: 10px;
-	/* float: left; */
-	/* align-items: center; */
-	/* background: #f4f4f4; */
+	margin-top: 100px;
+	position: relative;
+	/* background-color: Aquamarine; */
 	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-around;
+	justify-content: center;
+	padding-top: 10px;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+.body-div {
+	display: flex;
+	flex-direction: row;
+}
+
+.content-first-div {
+	margin-left: 250px;
+	display: flex;
+	flex-direction: row;
+	align-items: space-between; 
+}
+
+.time-box {
+	display: flex;
+	flex-direction: column;
+  	justify-content: center;
+  	font-weight: bold;
+  	align-items: center;
+  	
+}
+
+#time {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+h3 {
+	text-align: center;
+	margin: 10px;
 }
 
 .stat-div {
-	width: 400px;
-	height: 400px;
-	background: gray;	
+	
+	background: #f4f4f4;
+	width: 30vw;
+	height: 100px;
+	border-radius: 6px;
+	text-align: center;
+	display: inline-block;
+  	vertical-align: middle;
+  	color: rgb(15, 57, 105);
+  	font-size: 25px;
 }
+.stat-div-2 {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	text-align: center;
+	margin-top: 30px;
+	width: 100%;
+	height: 50%;
+	background: #f4f4f4;
+	border-radius: 6px;
+}
+
+h4 {
+
+ 
+}
+
 .noti-div {
-	width: 400px;
-	height: 400px;
-	background: gray;
-		
+	margin-left: 30px;
+	width: 550px;
+	height: 300px;
+	background: #f4f4f4;
+	margin-botton: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: space-evenly;
+	justify-content: center;
+	border-radius: 6px;
 }
+
+.notice{
+	width: 78vh;
+	height: 80px;
+	background: white;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 6px;
+}
+.stat-div-3 {
+	margin-left: 230px;
+	align-items: space-between; 
+	display: flex;
+	flex-direction: row;	
+}
+
 .stat-div2 {
-	width: 400px;
+	margin: 20px;
+	width: 30vw;
 	height: 400px;
-	background: gray;	
+	background: #f4f4f4;
+	border-radius: 6px;
 }
 .noti-div2 {
-	width: 400px;
-	height: 400px;
-	background: gray;
+	margin: 20px;
+	width: 550px;
+	height: 330px;
+	background: #f4f4f4;
+	border-radius: 6px;
 }

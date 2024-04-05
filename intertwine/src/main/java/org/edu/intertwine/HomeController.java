@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import org.edu.intertwine.admin.model.service.AdminService;
+import org.edu.intertwine.user.model.service.UserService;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private NaverLoginAuth naverLoginAuth;

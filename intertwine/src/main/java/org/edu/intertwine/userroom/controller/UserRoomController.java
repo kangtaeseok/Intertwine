@@ -56,20 +56,25 @@ public class UserRoomController {
 			}
 		}
 
-		UserRoom userRoom = userRoomService.selectUserRoom(userId);
+		UserRoom userRoom = userRoomService.selectUserRoomFirst(userId);
 
 		System.out.println("내가 출력하는거임" + userRoom);
 
 		// 받은 결과로 성공/실패 페이지 내보냄
-		if (userRoom != null) {
-			model.addAttribute("userRoom", userRoom);
-
-			return "square/squareMain";
-		} else {
-			model.addAttribute("message", userRoom + " 페이지 목록 조회 실패 !");
-			return "common/error";
+		if (userRoom != null) { // 처음 접속은 아닌 경우
+			userRoom = userRoomService.selectUserRoom(userId);
+			if(userRoom != null) { // 방이 꾸며져있는 유저의 경우
+				model.addAttribute("userRoom", userRoom);		
+			} else { // 방이 안 꾸며져있는 유저의 경우
+				userRoom = userRoomService.selectUserRoomFirst(userId);
+				model.addAttribute("userRoom", userRoom);
+			}
+		} else { // 처음 접속하는 유저의 경우
+			userRoomService.insertUserRoomFirst(userId);
+			userRoom = userRoomService.selectUserRoomFirst(userId);
+			model.addAttribute("userRoom", userRoom);				
 		}
-
+		return "square/squareMain";
 	}
 
 }
