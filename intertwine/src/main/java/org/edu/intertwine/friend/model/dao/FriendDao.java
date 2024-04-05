@@ -71,4 +71,20 @@ public class FriendDao {
 		return sqlSessionTemplate.update("friendMapper.blockFollower", friend);
 	}
 
+	public int selectFollowing(Friend friend) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectFollowing", friend);
+	}
+	
+	public int selectFollower(Friend friend) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectFollower", friend);
+	}
+
+	public String selectFollowingId(Friend friend) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectFollowingId", friend);
+	}
+
+	public String selectFollowerId(Friend friend) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectFollowerId", friend);
+	}
+
 }

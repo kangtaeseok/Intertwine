@@ -40,7 +40,7 @@
         <aside class="side-bar">
             <ul>
                 <li id="square">
-                    <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                    <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
                 </li>
                 <li id="mypage">
                     <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
@@ -71,6 +71,7 @@
                	<ul>
 					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
 					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
 				</ul>
             </div>
             <div id="chatting_sub_menu" class="sub_menu">
@@ -81,8 +82,22 @@
             </div>
             <div id="settings_sub_menu" class="sub_menu">
              	 <ul>
-	             	<li><a href="userTime.do">이용시간<i class="fa-solid fa-clock"></i></a></li>
-	                <li><a href="userInfo.do">개인정보수정<i class="fa-solid fa-user-pen"></i></a></li>
+	             	<li><a href="${pageContext.servletContext.contextPath}/userTime.do">이용시간<i class="fa-solid fa-clock"></i></a></li>
+	                <c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+                       	</li>
+                        </c:if>
+                        <c:if test="${type eq 'kakao'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+						</li>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+						</li>
+					</c:if>
                 </ul>
             </div>
 

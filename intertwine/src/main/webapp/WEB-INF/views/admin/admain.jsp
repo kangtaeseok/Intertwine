@@ -64,10 +64,10 @@
                     <li><a href="#"><i class="fa-solid fa-user"></i> 사용자 관리</a></li>
       
                 <li id="mypage">
-                    <li><a href="#"><i class="fa-solid fa-flag"></i> 신고현황</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/userRptPage.do"><i class="fa-solid fa-flag"></i> 신고현황</a></li>
              
                 <li id="friend">
-                    <li><a href="#"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/RptPage.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
                 
                 <li id="chatting">
                     <li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
@@ -143,10 +143,10 @@ const ctx = document.getElementById('myChart');
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jun'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr','Mar', 'Jun'],
     datasets: [{
       label: '# of Votes',
-      data: ['${visitCount.visitCount}',1 ,'${visitCount.visitCount}' , '${visitCount.visitCount}', '${visitCount.visitCount}', '${visitCount.visitCount}'],
+      data: ['${Jan}','${Feb}', '${Mar}', '${Apr}','${Mar}', '${Jun}'],
       borderWidth: 1
     }]
   },

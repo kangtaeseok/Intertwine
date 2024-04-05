@@ -16,6 +16,11 @@ public class Friend implements java.io.Serializable{
 	public Friend() {
 		super();
 	}
+	
+	public Friend(String userId, String friendId) {
+		this.userId = userId;
+		this.friendId = friendId;
+	}
 
 	public Friend(String userId, String blockId, String friendId, int notificationStatus, String status, String keyword) {
 		super();

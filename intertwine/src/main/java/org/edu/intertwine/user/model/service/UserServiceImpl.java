@@ -3,6 +3,7 @@ package org.edu.intertwine.user.model.service;
 
 import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.dao.UserDao;
+import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateSocial(User loginUser) {
 		userDao.updateSocial(loginUser);
+	}
+
+	@Override
+	public String selectSocialType(String userId) {
+		return userDao.selectSocialType(userId);
+	}
+
+	@Override
+	public void insertSocial(SocialLogin social) {
+		userDao.insertSocial(social);
+		
+	}
+
+	@Override
+	public int updateUser(User user) {
+		return userDao.updateUser(user);
 	}
 
 	

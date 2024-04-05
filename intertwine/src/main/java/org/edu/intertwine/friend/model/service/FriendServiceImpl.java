@@ -78,6 +78,26 @@ public class FriendServiceImpl implements FriendService {
 		return friendDao.blockFollower(friend);
 	}
 	
+	@Override
+	public int selectFollowing(Friend friend) {
+		return friendDao.selectFollowing(friend);
+	}
+	
+	@Override
+	public int selectFollower(Friend friend) {
+		return friendDao.selectFollowing(friend);
+	}
+
+	@Override
+	public String selectFollowingId(Friend friend) {
+		return friendDao.selectFollowingId(friend);
+	}
+
+	@Override
+	public String selectFollowerId(Friend friend) {
+		return friendDao.selectFollowerId(friend);
+	}
+	
 	
 	
 	

@@ -207,32 +207,9 @@
 				<li id="b"><a href="#"><i class="fa-solid fa-circle-user"></i>
 						마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
 					<!-- 색칠된 아이콘 --></li>
-				<li id="c"><a href="#"
-					onclick="showFriendPopup(); return false;"><i
-						class="fa-solid fa-user-group"></i> 친구</a></li>
-				<div id="friendPopup"
-					style="display: none; position: absolute; z-index: 1000; left: 100px; top: 70px; width: 150px; height: auto; background-color: #fefefe; padding: 20px; border-radius: 10px; border: 1px solid #888;">
-					<div style="margin: auto;">
-						<a href="${pageContext.servletContext.contextPath}/friendPage.do"
-							class="popup-link">팔로우 목록</a><br> <a
-							href="${pageContext.servletContext.contextPath}/blockedPage.do"
-							class="popup-link">차단 목록</a>
-					</div>
-				</div>
-
-				<script>
-					function showFriendPopup() {
-						document.getElementById('friendPopup').style.display = 'block';
-					}
-
-					// Clicking anywhere outside of the popup closes it
-					window.onclick = function(event) {
-						var popup = document.getElementById('friendPopup');
-						if (event.target == popup) {
-							popup.style.display = "none";
-						}
-					}
-				</script>
+				<li id="c"> <a href="${pageContext.servletContext.contextPath}/friendPage.do">
+				<i class="fa-solid fa-user-group"></i> 친구</a></li>
+				
 
 
 				<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
@@ -279,7 +256,7 @@
 						<c:forEach items="${followingList}" var="friend">
 							
 							<tr>
-								<td> <a href="${pageContext.request.contextPath}/page.do?otherUserId=${sessionScope.loginUser.userId}">
+								<td> <a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
 								<img src="resources/profile/images.jpg"
 									alt="Profile Image" class="profile-img"></a></td>
 									
@@ -293,6 +270,7 @@
 									<button class="unfollow-btn"
 										data-friend-id="${friend.friendId}">Unfollow</button>
 										</form>
+										<a href="${pageContext.request.contextPath}/chatView.do?friendId=${friend.friendId}" >chat</a>
 								<%-- 	<button class="block-btn" onclick="javascript:location.href='blockFollowing.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.friendId}'">Block</button>
 									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
 								</td>
@@ -324,23 +302,24 @@ document.addEventListener("DOMContentLoaded", function() {
 				<div id="searchResults">
 
 				<c:forEach items="${searchF}" var="friend">
-					<form action="unfollowing.do" method="post">
-						<input type="hidden" name="userId"
-							value="${sessionScope.loginUser.userId}"> <input
-							type="hidden" name="friendId" value="${friend.friendId}">
+					
 						<tr>
-							<td><img src="resources/profile/images.jpg"
-								alt="Profile Image" class="profile-img"></td>
+							<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+							<img src="resources/profile/images.jpg"
+								alt="Profile Image" class="profile-img"></a></td>
 							<td>${friend.friendId}</td>
 							<!-- Assuming friendId is what you want to display -->
 							<td>
+							<form action="unfollowing.do" method="post">
+						<input type="hidden" name="userId"
+							value="${sessionScope.loginUser.userId}"> <input
+							type="hidden" name="friendId" value="${friend.friendId}">
 								<button class="unfollow-btn" data-friend-id="${friend.friendId}">Unfollow</button>
-								<%-- <button class="block-btn" data-friend-id="${friend.friendId}">Block</button>
-								<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
+								</form>
 							</td>
 						</tr>
 						
-					</form>
+					
 				</c:forEach>
 				
 				<!-- 검색 결과를 표시할 영역 -->
@@ -377,8 +356,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					<tbody>
 						<c:forEach items="${followerList}" var="friend">
 								<tr>
-									<td><img src="resources/profile/images.jpg"
-										alt="Profile Image" class="profile-img"></td>
+									<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
+									<img src="resources/profile/images.jpg"
+										alt="Profile Image" class="profile-img"></a></td>
 									<td>${friend.userId}</td>
 									<td>
 									<form action="insertF.do" method="post">
@@ -421,21 +401,22 @@ document.addEventListener("DOMContentLoaded", function() {
 		<c:forEach items="${searchFwer}" var="friend">
 		
 		<!-- 검색 결과에 대한 화면 출력 및 팔로우 버튼 기능 -->
-			<form action="insertF.do" method="post">
+			
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
+					<img src="resources/profile/images.jpg" alt="Profile Image"
+						class="profile-img"></a></td>
+					<td>${friend.userId}</td>
+					<td>
+					<form action="insertF.do" method="post">
 				<input type="hidden" name="userId"
 					value="${sessionScope.loginUser.userId}"> <input
 					type="hidden" name="friendId" value="${friend.userId}">
-				<tr>
-					<td><img src="resources/profile/images.jpg" alt="Profile Image"
-						class="profile-img"></td>
-					<td>${friend.userId}</td>
-					<td>
 						<button type="submit" class="follow-btn" data-friend-id="${friend.userId}">Follow</button>
-						<%-- <button class="block-btn" data-friend-id="${friend.userId}">Block</button>
-						<button class="chat-btn" data-friend-id="${friend.userId}">Chat</button> --%>
+						</form>
 					</td>
 				</tr>
-			</form>
+			
 		</c:forEach>
 		</div>
 		</div>
