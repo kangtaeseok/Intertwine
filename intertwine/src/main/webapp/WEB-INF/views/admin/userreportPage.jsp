@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>reportPage</title>
-<link rel="stylesheet" href="/first/resources/css/reportPage.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/userreportPage.css" />
 </head>
 <body>
 <h2>신고현황</h2>
