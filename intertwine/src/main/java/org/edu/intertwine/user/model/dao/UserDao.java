@@ -2,6 +2,7 @@ package org.edu.intertwine.user.model.dao;
 
 
 import org.edu.intertwine.user.controller.UserController;
+import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -52,6 +53,19 @@ public class UserDao {
 
 	public void updateSocial(User loginUser) {
 		sqlSessionTemplate.update("userMapper.updateSocial", loginUser);
+	}
+
+	public String selectSocialType(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectSocialType", userId);
+	}
+
+	public void insertSocial(SocialLogin social) {
+		sqlSessionTemplate.insert("userMapper.insertSocial", social);
+		
+	}
+
+	public int updateUser(User user) {
+		return sqlSessionTemplate.update("userMapper.updateUser", user);
 	}
 
 

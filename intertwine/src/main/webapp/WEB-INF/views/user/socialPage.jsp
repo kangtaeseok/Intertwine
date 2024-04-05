@@ -72,7 +72,7 @@ function daumPostcode() {
 			</div>	
 			
 	<div class="info-box">
-		<form method="post" action="uupdate.do" id="info-form">
+		<form method="post" action="usocialupdate.do" id="info-form">
 				<table class="outer" cellspacing="12" cellpadding="0">
 			
 					

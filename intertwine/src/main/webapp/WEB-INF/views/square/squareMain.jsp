@@ -71,6 +71,9 @@
 						<!-- <div id="squaretip">알고 계셨나요? 알고 계셨군요.</div> -->
 					</div>
 					<div id="userroom" style="background-color:${userRoom.roomColor}">
+					<button id="btnupdateroom" class="bubbly-button">방 꾸미기</button>
+					<button id="btnselectalbum" class="bubbly-button">앨범 보기</button>
+					<button id="btnselectguestbook" class="bubbly-button">방명록 보기</button>
 						<c:forEach var="roomResource" items="${userRoom.rList}">
 							<img src="${roomResource.resourceURL}" 
 									 alt="Room Resource Image"
@@ -80,22 +83,24 @@
 									            top: ${roomResource.resourcePositionY}px; 
 									            transform: rotate(${roomResource.resourceRotation}deg) scale(${roomResource.resourceScale});" />
 						</c:forEach>
-						<div id="mycharacter" style="width: 50px; height: 50px; position: absolute; top: 200px; left: 670px;"></div>
-							<div id="mycharacterhair"></div>
-							<div id="mycharacterhat"></div>
-							<div id="mycharactertop"></div>
-							<div id="mycharacterbottom"></div>
+						<div id="mycharacter" style="width: 70px; height: 100px; position: absolute; top: 200px; left: 670px;">
+							<div id="mycharacternickname" style="position: absolute; bottom: 100%; width: 100%; text-align: center; margin-bottom:4px;">닉네임</div>
+						    <div id="mycharacterhair" style="position: absolute; width: 70px; height: 30px; top: 0px; left: 0; background-color: silver; /* 예시 색상 */"></div>
+						    <div id="mycharacterhat" style="position: absolute; width: 50px; height: 20px;  background-color: skyblue;/* 위치와 크기 지정 */"></div>
+						    <div id="mycharactertop" style="position: absolute; width: 70px; height: 30px; top: 30px; left: 0; background-color: pink;/* 위치와 크기 지정 */"></div>
+						    <div id="mycharacterbottom" style="position: absolute; width: 70px; height: 40px; top: 60px; left: 0; background-color: orange;/* 위치와 크기 지정 */"></div>
 						</div>
-				</div>
-				<%-- userroom --%>
-				<div>
-					<%--
-						${userRoom.guestBookOpen}
-						Resource ID: ${roomResource.resourceId}
-						Resource Name: ${roomResource.resourceName}
-						Position X: ${roomResource.resourcePositionX}
-						Position Y: ${roomResource.resourcePositionY} 
-					--%>
+					</div>
+					<%-- userroom --%>
+					<div>
+						<%--
+							${userRoom.guestBookOpen}
+							Resource ID: ${roomResource.resourceId}
+							Resource Name: ${roomResource.resourceName}
+							Position X: ${roomResource.resourcePositionX}
+							Position Y: ${roomResource.resourcePositionY} 
+						--%>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -38,4 +38,9 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectVisitCountAll();
 	}
 
+	@Override
+	public int selectVisitCountMonth(String string) {
+		return adminDao.selectVisitCountMonth(string);
+	}
+
 }

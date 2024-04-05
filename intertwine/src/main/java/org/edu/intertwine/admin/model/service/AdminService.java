@@ -15,4 +15,6 @@ public interface AdminService {
 	 VisitCount selectVisitCount();
 
 	 int selectVisitCountAll();
+
+	int selectVisitCountMonth(String string);
 }

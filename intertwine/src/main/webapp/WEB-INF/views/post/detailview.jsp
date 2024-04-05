@@ -39,50 +39,50 @@
     
 }
 </style>
-
-
-
 </head>
 <body>
-     <!-- 이 페이지에서 필요한 정보 정리 
-          게시물 만든 유저 ID 포스트 ID 닉네임 주소 최근 공감 3개 
-          게시물 보는 사람 ID 닉네임 공감여부 북마크 여부 
-          댓글 쓴 사람 ID들 
-     즉 이 페이지를 열땐 model에 담아서 여기로 토스하는 정보들임
-
-SELECT IMAGE_LON, IMAGE_LAT, IMAGE_URL
-FROM TB_IMAGE
-WHERE POST_ID = ?
-
-SELECT VIDEO_URL
-FROM TB_VIDEO
-WHERE POST_ID = ?
-
--->
-<div class="container-detail">
-     <div class="left">
+<div class="container-detail" style="display: flex; padding-top: 5vw; padding-left: 10vw;">
+     <div class="left" style="max-width: 800px; height: 800px; width: 35vw; border: 1px grey solid; position: relative; background-color: black; display: flex; align-items: center; justify-content: center;">
             <!-- this part will be repeated  -->
 			<c:if test="${!empty images}">
 			    <c:forEach var="image" items="${images}">
 			        <c:if test="${!empty image.imageURL}">
-			            <img src="${image.imageURL}">
+			        <div class="mySlides fade" style="display: none;">
+			            <img src="${image.imageURL}" style="width: 100%">
+			         </div>
 			        </c:if>
 			    </c:forEach>
 			</c:if>
 
-			<c:if test="${!empty video.videoURL and empty images}">
+<%-- 			<c:if test="${!empty video.videoURL and empty images}">
 			    <video controls>
 			        <source src="${video.videoURL}" type="video/mp4">
 			    </video>
-			</c:if>
+			</c:if> --%>
 
-          <c:if test="${empty images && empty video.videoURL }">
-         	 <img src="resources/postimage/noimage.png" alt="Gallery Image">
+          <c:if test="${empty images}">
+          		<div class="mySlides fade" style="display: none;">
+			            <img src="resources/postimage/noimage.jpg" style="width: 100%">
+			    </div>
           </c:if>
           
           <!-- Next and previous buttons -->
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          <a class="prev" onclick="plusSlides(-1)"style="cursor: pointer; position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: auto; padding: 16px; color: white; font-weight: bold; font-size: 18px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none;">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)" style="cursor: pointer; position: absolute; top: 50%; right: 0; transform: translateY(-50%); width: auto; padding: 16px; color: white; font-weight: bold; font-size: 18px; transition: 0.6s ease; border-radius: 3px 0 0 3px; user-select: none;">&#10095;</a>
+     	<style>
+     	.prev:hover, .next:hover {
+			  background-color: rgba(0,0,0,0.8);
+			}
+			.fade {
+			  animation-name: fade;
+			  animation-duration: 1.5s;
+			}
+			@keyframes fade {
+			  from {opacity: .4}
+			  to {opacity: 1}
+			}
+     	</style>
+     	
      </div>
 <script>
 
@@ -134,26 +134,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-     <div class="right">
-          <div class="scroll">
-               <div class="owner"> 
-                    <div class="pic">
-                         <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="">
+     <div class="right" style="width: 35vw; max-height: 800px;">
+          <div class="scroll" style="height: 776px; overflow: auto;">
+               <div class="owner" style="display: flex; border-bottom: 1px black solid; padding-bottom: 5px;"> 
+                    <div class="pic" style="margin-left: 5px;">
+                         <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;">
                     </div>
-                    <div class="owner-info">
-                         <div class="dummy">
-                              <div><b onclick="" style="cursor:pointer;">${post.userId}</b></div> &nbsp;
+                    <div class="owner-info" style="padding-left: 5px;">
+                         <div class="dummy" style="display: flex; margin-top: 5px; margin-bottom: 3px;">
+                              <div style="font-size: 18px; padding-left: 7px;"><b onclick="" style="cursor:pointer;">${post.userId}</b></div> &nbsp;
                               
                               <c:if test="${ post.userId ne viewingUser.userId }">
                               <!--  친구중인지 확인하는 태그 추가 -->
-                              <a href="#">팔로우</a> &nbsp;
-                             
-                             
-                              <a href="#">언팔로우</a> &nbsp;
-                              
+                              <a href="#"  style="text-decoration: none; color: black;">팔로우</a> &nbsp;
+                              <a href="#"  style="text-decoration: none; color: black;">언팔로우</a> &nbsp;
                               <!-- 항상 보임 -->
-                              
-                              <a href="#">차단</a> &nbsp;
+                              <a href="#"  style="text-decoration: none; color: black;">차단</a> &nbsp;
                               <i class="fa-solid fa-ellipsis settings-button" ></i>
                               
                               <!-- c:if 태그로 확인 남의 글 -->
@@ -164,83 +160,71 @@ document.addEventListener('DOMContentLoaded', function() {
                              </c:if>
                              <c:if test="${ post.userId eq viewingUser.userId }">
                            
-                                   <ul class="settings-menu">
-                                        <li><button>핀하기</button></li>
+                                   <ul class="settings-menu" style="display:flex;">
+                                        <li><button>핀하기</button></li>&nbsp;
                                         <li><button>삭제하기</button></li>
                           
                               </c:if>
                          </div>
                          
                          <!-- 주소가 없으면 안나타남 -->
-                         <a href="" class="owner-address">주소</a>
+                         <a href="" class="owner-address"  style="text-decoration: none; color: black;font-size: 12px;">주소</a>
                          <!-- 주소가 있으면 안나타남 -->
-                         <a href="" class="owner-id"><b><%-- ${postUser.userId} --%></b></a>
+                         <a href="" class="owner-id"  style="text-decoration: none; color: black; font-size: 12px;"><b><%-- ${postUser.userId} --%></b></a>
                     </div>
                     &nbsp;
                </div>
 
-               <div class="content">      
-                    <div class="box">
-                         <div class="reaction" id="reaction">
+               <div class="content" style="border-bottom: grey 1px solid;">      
+                    <div class="box"style="display: flex;margin-top: 5px;margin-bottom: 3px;">
+                         <div class="reaction" id="reaction" style=" position: relative;cursor: pointer;">
                               <!-- 반응을 남긴적 없을 경우-->
-                              <i class="fa-regular fa-face-smile"></i>
+                              <i class="fa-regular fa-face-smile"style="font-size: 30px;padding-left: 7px;"></i>
                               <!-- 반응을 남긴 적 있을 경우-->
-                              <i class="fa-solid fa-face-smile"></i>
-                              <div class="reaction-box" id="reaction-box">
-                                   <i class="fa-regular fa-thumbs-up reaction-icon" name="likeType" id="like" data-value="0" onclick=""></i>
-                                   <i class="fa-regular fa-heart reaction-icon" name="likeType" id="love" data-value="1" onclick=""></i>
-                                   <i class="fa-regular fa-face-sad-tear reaction-icon" name="likeType" id="sad" data-value="2" onclick=""></i>
-                                   <i class="fa-regular fa-face-angry reaction-icon" name="likeType" id="angry" data-value="3" onclick=""></i>
-                                   <i class="fa-regular fa-face-smile reaction-icon" name="likeType" id="haha" data-value="4" onclick=""></i>
+                              <i class="fa-solid fa-face-smile"style="font-size: 30px;padding-left: 7px;"></i>
+                              <div class="reaction-box" id="reaction-box" 
+                              style="
+                              display: none; 
+                              position: absolute;
+                              top: 150%;
+                              left: 25%;
+                              transform: translateX(-50%); 
+                              background-color: #fff;
+                              border-radius: 5px; 
+                              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                              padding: 10px;
+                              z-index: 5; 
+                              flex-direction: row;
+                              align-items: center; 
+                              justify-content: center;
+                              width: auto;
+                              flex-wrap: wrap;">
+                                   <i class="fa-regular fa-thumbs-up reaction-icon" name="likeType" id="like" data-value="0" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
+                                   <i class="fa-regular fa-heart reaction-icon" name="likeType" id="love" data-value="1" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
+                                   <i class="fa-regular fa-face-sad-tear reaction-icon" name="likeType" id="sad" data-value="2" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
+                                   <i class="fa-regular fa-face-angry reaction-icon" name="likeType" id="angry" data-value="3" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
+                                   <i class="fa-regular fa-face-smile reaction-icon" name="likeType" id="haha" data-value="4" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
                               </div>
                          </div> 
-                         <style>
-                              .reaction {
-                              position: relative; /* Enables absolute positioning for child elements like reaction-box */
-                              cursor: pointer;
-                              }
-
-                              .reaction-box {
-                              display: none; /* Initially hide the reaction-box */
-                              position: absolute; /* Make the reaction-box absolutely positioned */
-                              top: 150%;
-                              left: 25%; /* Center the box relative to the reaction icon */
-                              transform: translateX(-50%); /* Adjust horizontal positioning */
-                              background-color: #fff; /* Background color of the box */
-                              border-radius: 5px; /* Rounded corners for the box */
-                              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-                              padding: 10px; /* Padding inside the box */
-                              z-index: 5; /* Ensure the box appears above other elements */
-                              flex-direction: row;
-                              align-items: center; /* Center the reaction icons */
-                              justify-content: center; /* Center the icons horizontally */
-                              width: auto; /* Auto width based on content */
-                              flex-wrap: wrap; /* Allow the icons to wrap if space is limited */
-                              }
-                         </style>
-                         <script>
-                         document.addEventListener('DOMContentLoaded', function() {
-                         document.getElementById('reaction').addEventListener('click', function(event) {
-                              //폼전송 방지
-                              event.stopPropagation();
-                              
-                              var reactionBox = document.getElementById('reaction-box');
-                              // 디스플레이 토글
-                              reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
-                         });
-                         
-                         // 리액션 박스 닫기 =
-                         window.addEventListener('click', function(event) {
-                              var reactionBox = document.getElementById('reaction-box');
-                              if (!event.target.closest('.reaction')) {
-                                   reactionBox.style.display = 'none';
-                              }
-                         });
-                         });
-                         </script>
-
+                     <script>
+						document.addEventListener('DOMContentLoaded', function() {
+						    document.getElementById('reaction').addEventListener('click', function(event) {
+						        var reactionBox = document.getElementById('reaction-box');
+						        // 디스플레이 토글
+						        reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
+						    });
+						
+						    // 리액션 박스 닫기
+						    window.addEventListener('click', function(event) {
+						        var reactionBox = document.getElementById('reaction-box');
+						        if (!event.target.closest('.reaction')) {
+						            reactionBox.style.display = 'none';
+						        }
+						    });
+						});
+						</script>
                          <div class="share">
-                              <i class="fa-solid fa-share-nodes"></i>
+                              <a class="url" href=javascript:getLink()><i class="fa-solid fa-share-nodes"></i></a>
                          </div>
                          <div class="bookmark">
                               <!-- 북마크를 안했을 경우 c:if-->
@@ -252,10 +236,9 @@ document.addEventListener('DOMContentLoaded', function() {
                          </div>
                     </div>
 
-                    <a href="#" class="reactioncount">공감 ${ likeCount }개</a><br>
-                    <a href="#"><b><%-- ${ postUser.userName } --%></b></a> &nbsp; 
-                    <!-- 여기에 쓴 글이 들어감-->
-                   <%--  ${ post.postContent } --%>
+                    <a href="#" class="reactioncount"  style="text-decoration: none; color: black;">공감 ${ likeCount }개</a><br>
+                    <a href="#"  style="text-decoration: none; color: black;"><b>${post.userId}</b></a> &nbsp; 
+                    	${ post.postContent }
                </div>
                <div class="tags">
 				<c:if test="${!empty tags}">
@@ -264,54 +247,53 @@ document.addEventListener('DOMContentLoaded', function() {
 				    </c:forEach>
 				</c:if>
                </div>
-               <div class="time">
-                    ${ post.postTime }
+               <div class="time" style="font-size: 13px; color: grey;">
+                    ${ post.postTime}
                </div>
               
-               <div class="commentbox">
+         <div class="commentbox" style="height: 100%; border-top: gray 1px solid;">
                     <!-- 반복 -->
+                  
 			<c:if test="${!empty comments}">
 			    <c:forEach var="comment" items="${comments}">
+			    <div class="comment"style=" display: flex;padding-top: 5px;padding-bottom: 5px;">
 						<c:if test="${ comment.commentLevel eq '1' }">
-						<div class="reply">
+						<div class="reply" style="margin-left: 10px;margin-right: 10px;font-size: 20px;">
                               <i class="fa-solid fa-angle-right"></i>
                          </div>
                          </c:if>
  						<div class="left-2">
-                              <div class="pic-2">
-                                   <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="" style="cursor: pointer;">
+                              <div class="pic-2" style="width: 30px; height: 30px;border-radius: 50%;border: 0px solid black;overflow: hidden;margin-left: 5px;">
+                                   <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;">
                               </div>
                          </div>
-                         <div class="right-2">
-                              <a href="#" style="cursor: pointer;"><b>${ comment.userId }</b></a>&nbsp;
+                         <div class="right-2"style="flex-grow: 1;flex-shrink: 1;padding-left: 5px;">
+                              <a href="#"  style="text-decoration: none; color: black;"><b>${ comment.userId }</b></a>&nbsp;
                               ${ comment.commentContent }
-                              <div class="commenttime">
+                              <div class="commenttime" style="font-size: 12px;">
                                    ${ comment.commentTime }
-                                   <c:if test="${ comment.commentLevel ne '1' }">
-                                   <a class="commentagain" style="cursor:pointer;">답글달기</a>
-                                   </c:if>
                                    <!-- 답글달기 누르면 나옴 -->
                                         <form action="addComment2.do" method="POST" class="add-comment2">
                                              <input type="hidden" name="userId" value="${ viewingUser.userId }">
                                              <input type="hidden" name="postId" value="${ post.postId }">
                                              <input type="hidden" name="parentCommentId" value="${ comment.commentId }">
-                                             <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요">
-                                             <input type="submit" class="submit" value="등록">
+                                             <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요" style="margin-bottom: 10px;border: none;box-sizing: border-box;background-color: white;width: 88%">
+                                             <input type="submit" class="submit" value="등록" style="margin-bottom: 10px;border: none;box-sizing: border-box;border-radius: 5px;background-color: plum; color: white;font-weight: bold; cursor: pointer;transition: background-color 0.3s, border-color 0.3s">
                                         </form>
                               </div>
                          </div>
-                         <div class="commentreport">
-                              <i class="fa-solid fa-ellipsis settings-button" ></i> &nbsp;
+                         <div class="commentreport" style="padding: 5px;">
                               <c:if test="${ comment.userId ne viewingUser.userId }">
                               <ul class="settings-menu">
-                                   <li><button>신고하기</button></li>
+                                   <li><button>신고</button></li>
                               </ul>
                               </c:if>
                            <c:if test="${ comment.userId eq viewingUser.userId }">
                               <ul class="settings-menu">
-                                   <li><a href="#">삭제하기</a></li>
+                                   <li><a href="#"  style="text-decoration: none; color: black;">삭제</a></li>
                               </ul>
                           </c:if>
+                         </div>
                          </div>
 						</c:forEach>
 					</c:if>
@@ -321,8 +303,8 @@ document.addEventListener('DOMContentLoaded', function() {
                <form action="addComment1.do" method="POST" class="add-comment">
                     <input type="hidden" name="userId" value="${ viewingUser.userId }">
                     <input type="hidden" name="postId" value="${ post.postId }">
-                    <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요">
-                    <input type="submit" class="submit" value="등록">
+                    <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요" style="margin-bottom: 10px; border: none; box-sizing: border-box; background-color: white; width: 88%;">
+                    <input type="submit" class="submit" value="등록" style="margin-bottom: 10px;border: none;box-sizing: border-box;border-radius: 5px;background-color: plum; color: white;font-weight: bold; cursor: pointer;transition: background-color 0.3s, border-color 0.3s"">
                     ${ post.postId }
                 </form>
           </div>
@@ -375,22 +357,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 li{
      list-style-type: none;
-}
-.container-detail{
-     display: flex;
-     padding-top: 5vw;
-     padding-left: 10vw;
-}
-.left{
-     max-width: 800px;
-     height: 800px;
-     width: 35vw;
-     border: 1px grey solid;
-     position: relative;
-     background-color: black;
-    display: flex; /* Use flexbox */
-    align-items: center; /* Center children vertically */
-    justify-content: center; /* Center children horizontally */
 }
 
 /*여기 확인 */

@@ -77,20 +77,45 @@ public class UserController {
 	}
 	
 	@RequestMapping("findInfo.do")
-	public String moveMainPage() {
+	public String moveFindInfoPage() {
 		return "user/finduserInfo"; 
 	}
 	
 	@RequestMapping("userInfo.do")
-	public String moveUserInfoPage() {
+	public String moveUserInfoPage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
 		return "user/userInfo"; 
 	}
-	
+	//회원가입시 이동페이지
 	@RequestMapping("socialPage.do")
 	public String moveSocialPage() {
 		return "user/socialPage"; 
 	}
 	
+	//메인화면이동
+	@RequestMapping("main.do")
+	public String moveMainPage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
+		return "common/main";
+	}
+	
+	
+	//회원가입후 이동페이지
+	
+	@RequestMapping("socialUpdatePage.do")
+	public String moveSocialUpdatePage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
+		return "user/socialUpPage"; 
+	}
 	
 	
 	
@@ -101,7 +126,7 @@ public class UserController {
 			HttpServletResponse response, Model model) throws IOException {
 			
 	User loginUser = userService.selectUser(user.getUserId());
-
+	
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
@@ -113,8 +138,6 @@ public class UserController {
 			
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
-		
-		
 		  return "common/main";
 	} else {
 		model.addAttribute("msg", "암호나 아이디가 일치하지 않습니다. 다시 확인해주세요.");
@@ -133,11 +156,14 @@ public class UserController {
 	@RequestMapping("ulogout.do")
 	public String userLogout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
+		logger.info(session.getAttribute("loginUser").toString());
 		if(session != null) {
 			if(naverLoginAuth.getAccessToken().toString() != null) {
 				naverLoginAuth.logOut(naverLoginAuth.getAccessToken().toString());
+				session.invalidate();
+			} else {
+				session.invalidate();
 			}
-			session.invalidate();
 			return "common/login";
 		}
 		return "common/main";
@@ -217,6 +243,9 @@ public class UserController {
 	    		} else {
 	    			adminService.insertVisitCount();
 	    		}
+				String result = "";
+				result = userService.selectSocialType(loginUser.getUserId());
+				model.addAttribute("type", result);
 			return "common/main";
 			} else {
 				model.addAttribute("msg", "로그인에 실패했습니다. 관리자에게 문의하세요");
@@ -224,16 +253,20 @@ public class UserController {
 				return "common/alert";
 			}
 		} else {
+			int result = 0;
 			user = new User();
 			user.setUserId(userId);
 			user.setEmail(email);
+			result = userService.insertUser(user);
 			
 			SocialLogin social = new SocialLogin();
 			social.setUserId(userId);
 	    	social.setType("kakao");
 	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
+	    	userService.insertSocial(social);
 	    	
-	    	if(userService.insertUser(user) > 0) {
+	    	
+	    	if(result > 0) {
 	    		loginUser = user;
 	    		session.setAttribute("loginUser", loginUser );
 	    		status.setComplete();
@@ -270,33 +303,37 @@ public class UserController {
         String userId = String.valueOf(response.get("id"));
         String phone = String.valueOf(response.get("mobile"));
         logger.info("email : " + email);
-        User loginUser = null;
+        User user = null;
         
         if(userService.selectEmailCount(email) > 0) {
+        	User loginUser = userService.selectEmail(email);
         	session.setAttribute("loginUser", loginUser);
 			status.setComplete();
+			logger.info(loginUser.toString());
 			if(adminService.selectVisitCount() != null) {
-    			adminService.insertVisitCount();
-    		} else {
     			adminService.updateVisitCount();
+    		} else {
+    			adminService.insertVisitCount();
     		}
 			return "common/main";
         	
         } else {
-        	loginUser = new User();
-        	loginUser.setUserId(userId);
-        	loginUser.setEmail(email);
-        	loginUser.setPhone(phone);
-        	loginUser.setUserName(name);
-        	userService.insertUser(loginUser);
-        	
-    		SocialLogin social = new SocialLogin();
-        	social.setUserId(userId);
-        	social.setType("naver");
-        	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
-      
-        	logger.info(loginUser.toString());
-        	if (loginUser != null) {
+        	int result = 0;
+        	user = new User();
+        	user.setUserId(userId);
+        	user.setEmail(email);
+        	user.setPhone(phone);
+        	user.setUserName(name);
+        	result = userService.insertUser(user);
+	    	
+	    	if(result > 0) {
+	    		SocialLogin social = new SocialLogin();
+	        	social.setUserId(userId);
+	        	social.setType("naver");
+	        	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
+	        	userService.insertSocial(social);
+	        	
+        		User loginUser = user;
     			session.setAttribute("loginUser", loginUser);
     			status.setComplete();
     			if(adminService.selectVisitCount() != null) {
@@ -308,9 +345,7 @@ public class UserController {
         	} else {
         		return "user/login.do";
         	}
-        	 
-		} 
-       
+	    }
 
      }
 
@@ -490,18 +525,36 @@ public class UserController {
 	 }  
 
 
-//유저 상세정보 조회
-//	 @RequestMapping(value="udetail.do", method=RequestMethod.POST)
-//	 public void userDetail(User user) {
-//		 
-//		 
-//		 
-//		 
-//		 
-//	 }
-	 
+	 //유저 상세정보 조회및 업데이트
 	 @RequestMapping(value="uupdate.do", method=RequestMethod.POST)
-	 public String userInfoUpdate(User user, HttpSession session) {
+	 public String userInfoUpdate(User user, HttpSession session, Model model) {
+		 User loginUser = (User) session.getAttribute("loginUser");
+		 if(user != null) {
+			 loginUser.setNickname(user.getNickname());
+			 loginUser.setUserName(user.getUserName());
+			 loginUser.setUserPwd(bcryptPasswordEncoder.encode(user.getUserPwd()));
+			 loginUser.setPhone(user.getPhone());
+			 loginUser.setAddress(user.getAddress());
+			 
+			 int result = userService.updateUser(loginUser);
+			 if(result > 0) {
+				 model.addAttribute("msg", "수정 성공!!");
+				 model.addAttribute("url", "userInfo.do");
+				return "common/alert";
+			 } else {
+				 model.addAttribute("msg", "수정 실패 관리자에게 문의하세요.");
+				 model.addAttribute("url", "userInfo.do");
+				 return "common/alert";
+			 }
+		 }
+		 
+		 return "common/main";
+	 }
+	 
+	 
+	 
+	 @RequestMapping(value="usocialupdate.do", method=RequestMethod.POST)
+	 public String userSocialInfoUpdate(User user, HttpSession session) {
 		 User loginUser = (User) session.getAttribute("loginUser");
 		 
 		 if(user != null) {
@@ -509,6 +562,7 @@ public class UserController {
 			 loginUser.setPhone(user.getPhone());
 			 loginUser.setAddress(user.getAddress());
 			 loginUser.setUserName(user.getUserName());
+
 		 }
 		userService.updateSocial(loginUser);
 		 return "common/main";

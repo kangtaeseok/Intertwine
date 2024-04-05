@@ -44,7 +44,6 @@ public class UserRoomController {
 		while (attributeNames.hasMoreElements()) {
 			String attributeName = attributeNames.nextElement();
 			Object attributeValue = session.getAttribute(attributeName);
-
 			// "loginUser" 속성일 경우에만 처리
 			if ("loginUser".equals(attributeName) && attributeValue instanceof User) {
 				// 세션에 저장된 User 객체를 가져와서 캐스팅
