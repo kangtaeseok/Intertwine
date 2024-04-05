@@ -71,6 +71,7 @@
                	<ul>
 					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
 					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
 				</ul>
             </div>
             <div id="chatting_sub_menu" class="sub_menu">
