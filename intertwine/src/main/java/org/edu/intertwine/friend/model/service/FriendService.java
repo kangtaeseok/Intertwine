@@ -29,6 +29,14 @@ public interface FriendService {
 	int countBlocks(String userId);
 
 	int blockFollower(Friend friend);
+	
+	int selectFollowing(Friend friend);
+	
+	int selectFollower(Friend friend);
+
+	String selectFollowingId(Friend friend);
+
+	String selectFollowerId(Friend friend);
 
 	/*
 	 * //나를 차단한/내가 차단한 차단계정 목록(팔로잉) ArrayList<String> blockedAllList(String userId);

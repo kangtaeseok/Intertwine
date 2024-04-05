@@ -19,13 +19,33 @@ public class FeedItem implements Serializable{
     private int isLiked; // 공감아님(0) 공감중임(1)
     private int whatIsLiked; // 어떤걸 공감중?(0~4)
     private int isBookmarked; //북마크 아님(0) 북마크임 (1)
+    private int isFollowing;
+    private int isFollower;
 	
-    public FeedItem() {
+    
+
+	public int getIsFollowing() {
+		return isFollowing;
+	}
+
+	public void setIsFollowing(int isFollowing) {
+		this.isFollowing = isFollowing;
+	}
+
+	public int getIsFollower() {
+		return isFollower;
+	}
+
+	public void setIsFollower(int isFollower) {
+		this.isFollower = isFollower;
+	}
+
+	public FeedItem() {
 		super();
 	}
 
 	public FeedItem(User user, Post post, Image image, Video video, int likeCount, int isLiked, int whatIsLiked,
-			int isBookmarked) {
+			int isBookmarked, int isFollowing, int isFollower) {
 		super();
 		this.user = user;
 		this.post = post;
@@ -35,6 +55,8 @@ public class FeedItem implements Serializable{
 		this.isLiked = isLiked;
 		this.whatIsLiked = whatIsLiked;
 		this.isBookmarked = isBookmarked;
+		this.isFollowing = isFollowing;
+		this.isFollower = isFollower;
 	}
 
 	public User getUser() {
