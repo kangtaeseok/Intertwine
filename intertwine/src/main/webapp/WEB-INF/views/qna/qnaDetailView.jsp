@@ -102,14 +102,14 @@ $(function(){
 			<tr>
 				<th colspan="2">
 					<%-- 로그인한 경우 : 본인 글 상세보기 일때는 수정페이지로 이동과 삭제 버튼 표시함 --%>
-					<c:if test="${ !empty loginMember }">	
-						<c:if test="${ loginMember.userId eq qna.qnaWriter }">
+					<c:if test="${ !empty loginUser }">	
+						<c:if test="${ loginUser.userId eq qna.qnaWriter }">
 							<button onclick="moveUpdatePage(); return false;">수정페이지로 이동</button>&nbsp;
 							<button onclick="requestDelete(); return false;">글삭제</button>&nbsp;
 						</c:if>
 					
 						<%-- 로그인한 경우 : 관리자인 경우 글삭제 버튼과 댓글달기 버튼 표시함 --%>
-						<c:if test="${ loginMember.adminYN eq 'Y' and loginMember.userId ne qna.qnaWriter  }">
+						<c:if test="${ loginUser.userId ne qna.qnaWriter  }">
 							<button onclick="requestDelete(); return false;">글삭제</button> &nbsp;
 							<c:if test="${ qna.qnaLev < 3 }">
 								<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;
@@ -117,20 +117,20 @@ $(function(){
 						</c:if>
 						
 						<%-- 로그인한 경우 : 본인 글이 아니고, 레벨이 3보다 작은 경우에만 댓글달기 버튼 표시함 --%>
-						<c:if test="${ loginMember.adminYN eq 'N' and loginMember.userId ne qna.qnaWriter }">
+						<c:if test="${ loginUser.userId ne qna.qnaWriter }">
 							<c:if test="${ qna.qnaLev < 3 }">
 								<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;
 							</c:if>
 						</c:if>
 					</c:if>
 					
-					<%-- <% if(loginMember != null){ //로그인한 상태이면
-							if(loginMember.getUserId().equals(qna.getBoardWriter())){
+					<%-- <% if(loginUser != null){ //로그인한 상태이면
+							if(loginUser.getUserId().equals(qna.getBoardWriter())){
 								//로그인한 회원 아이디와 글작성자가 같다면 (본인이 올린 글이면)
 					%>
 						<button onclick="moveUpdatePage(); return false;">수정페이지로 이동</button> &nbsp;
 						<button onclick="requestDelete(); return false;">글삭제</button> &nbsp;
-					<%      }else if(loginMember.getAdminYN().equals("Y")){  //관리자이면 %>
+					<%      }else if(loginUser.getAdminYN().equals("Y")){  //관리자이면 %>
 						<button onclick="requestDelete(); return false;">글삭제</button> &nbsp;
 					<%               if(qna.getBoardLev() < 3){ %>
 						<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;

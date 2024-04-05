@@ -16,12 +16,13 @@
 					<div class="userDetails">
 						<div class="profile_img">
 							<div class="image">
-								<img src="${ item.defaultImage }">
+								<img src="${pageContext.servletContext.contextPath}/src/main/webapp/resources/profile/images.jpg">
+							
 							</div>
 						</div>
 						<h3>
 							<!-- 여기를 누르면 친구 상태페이지 연결-->
-							<a href="#">${ item.postuser.userId }</a> &nbsp;
+							<a href="#">${ user.userId }</a> &nbsp;
 							<!-- 친구여부 여기서 확인 c:if 넘겨야 할 정보 내아이디 정보 상대 아이디 정보-->
 							<!-- 친구가 아닐 시-->
 							<a class="friend" href="#">팔로우</a>
@@ -114,18 +115,19 @@
 										d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
 								</c:if>
 								
-								<c:if test="${item.isBookmarked == 1}">
+									<c:if test="${item.isBookmarked == 1}">
                                         <svg  aria-label="Saved" class="_8-yf5" color="#262626" fill="#262626" height="24" role="img" width="24" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg>
                                    </c:if>
 							</span>
 						</div>
 					</div>
 					<!-- 여기서 가장 최근 3명의 공감 보여줌 -->
-					<a href="#"><p class="likes">공감 132개</p></a>
+					<a href="#"><p class="likes">공감 ${ item.isLiked }개</p></a>
 					<!-- 누를 시 그 사람의 상세 페이지로 들어감 카드 상단 닉네임부분과 역할이 같음 -->
-					<a href="#"><b>${ item.postuser.userId }</b></a> &nbsp;
+					<a href="#"><b>${ item.user.userId }</b></a> &nbsp;
 					<!-- 여기에 쓴 글이 들어감-->
 					 ${ item.post.postContent }
+								${pageContext.servletContext.contextPath}/src/main/webapp/resources/profile
 					<!-- 누를 시 포스트 상세보기 페이지로 들어감-->
 					<h5 class="comments">
 						<a href="javascript:callFunction(pagedetil());">전체 댓글 보기</a>

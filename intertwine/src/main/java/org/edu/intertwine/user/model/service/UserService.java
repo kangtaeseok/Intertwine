@@ -1,5 +1,6 @@
 package org.edu.intertwine.user.model.service;
 
+import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 
 public interface UserService {
@@ -21,6 +22,12 @@ public interface UserService {
 	User selectPhone(String phone);
 
 	void updateSocial(User loginUser);
+
+	String selectSocialType(String userId);
+
+	void insertSocial(SocialLogin social);
+
+	int updateUser(User user);
 
 
 
