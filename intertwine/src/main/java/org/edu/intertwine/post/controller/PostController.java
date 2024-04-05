@@ -94,9 +94,17 @@ public class PostController {
 		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
 		String FollowingId = friendService.selectFollowingId(friend);
 	    String FollowerId = friendService.selectFollowerId(friend);
+	    int isFollowing = friendService.selectFollowing(friend);
+	    int isFollower = friendService.selectFollower(friend);
+	    if(isFollowing > 0) {
+	         mv.addObject("isFollowing", isFollowing);
+	      }
+	      if(isFollower > 0) {
+	         mv.addObject("isFollower", isFollower);
+	      }
+	    
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
-		
 		mv.addObject("galleries", galleries);
 		mv.addObject("otheruser", otherUser);
 		mv.addObject("user", loginUser);

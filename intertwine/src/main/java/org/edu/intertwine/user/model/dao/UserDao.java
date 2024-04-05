@@ -68,6 +68,10 @@ public class UserDao {
 		return sqlSessionTemplate.update("userMapper.updateUser", user);
 	}
 
+	public void updateUserTime(String userId) {
+		sqlSessionTemplate.update("userMapper.updateUserTime", userId);
+	}
+
 
 	
 
