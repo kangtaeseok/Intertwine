@@ -91,7 +91,11 @@ public class PostDao {
 	}
 	public int selectWhatIsLiked(Like like) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectOne("postMapper.selectWhatIsLiked", like);
+		if(sqlSessionTemplate.selectOne("postMapper.selectWhatIsLiked", like) != null) {
+			return sqlSessionTemplate.selectOne("postMapper.selectWhatIsLiked", like);
+		}else {
+			return 0;
+		}
 	}
 	/*
 	 * public User selectUser(String findUserId) { // TODO Auto-generated method
@@ -112,6 +116,10 @@ public class PostDao {
 		// TODO Auto-generated method stub
 		List<Image> list = sqlSessionTemplate.selectList("postMapper.selectImagesByPostId", postId);
 		return (ArrayList<Image>)list;
+	}
+	public String selectFindUserId(int each) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("postMapper.selectFindUserId", each);
 	}
 
 }
