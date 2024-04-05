@@ -29,6 +29,8 @@ public interface UserService {
 
 	int updateUser(User user);
 
+	void updateUserTime(String userId);
+
 
 
 

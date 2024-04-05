@@ -78,6 +78,12 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateUser(user);
 	}
 
+	@Override
+	public void updateUserTime(String userId) {
+		userDao.updateUserTime(userId);
+		
+	}
+
 	
 
 
