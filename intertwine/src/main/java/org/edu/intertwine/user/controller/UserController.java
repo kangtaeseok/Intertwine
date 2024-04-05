@@ -45,11 +45,6 @@ import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 
-
-
-
-
-
 @Controller
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -107,7 +102,6 @@ public class UserController {
 	
 	
 	//회원가입후 이동페이지
-	
 	@RequestMapping("socialUpdatePage.do")
 	public String moveSocialUpdatePage(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
@@ -116,9 +110,7 @@ public class UserController {
 		model.addAttribute("type", result);
 		return "user/socialUpPage"; 
 	}
-	
-	
-	
+
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
 	@RequestMapping(value="ulogin.do", method=RequestMethod.POST)
@@ -130,14 +122,17 @@ public class UserController {
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
+			
+		session.setAttribute("loginUser", loginUser);
+		status.setComplete();
+		
 		if(adminService.selectVisitCount() != null) {
 			adminService.updateVisitCount();
 		} else {
 			adminService.insertVisitCount();
 		}
-			
-		session.setAttribute("loginUser", loginUser);
-		status.setComplete();
+		userService.updateUserTime(loginUser.getUserId());
+		
 		  return "common/main";
 	} else {
 		model.addAttribute("msg", "암호나 아이디가 일치하지 않습니다. 다시 확인해주세요.");
@@ -146,12 +141,7 @@ public class UserController {
 	 } 
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	//로그아웃
 	@RequestMapping("ulogout.do")
 	public String userLogout(HttpServletRequest request) {
@@ -220,14 +210,10 @@ public class UserController {
 	
 	
 	@RequestMapping("kakao_login.do")
-	public String kakaoLogin(HttpServletRequest request) throws Exception {
-		
-		
+	public String kakaoLogin(HttpServletRequest request) throws Exception {	
 		return "commom/main";
 	}
-		
-	
-	
+			
 	@RequestMapping("kakao_loginP.do")
 	public String kakaoLoginMethod(HttpSession session, @RequestParam("kakaomail") String email, 
 			@RequestParam("kakaoId") String userId,  SessionStatus status, Model model) throws Exception {
@@ -568,22 +554,22 @@ public class UserController {
 		 return "common/main";
 	 }
 	 
-//	 
-//	 
+	 //마이페이지 시간 설정
+	 
+	 
+ 
 //	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
 //	 public String userDisabled() {}
-//	 
-//	 
-//	 
+	 
 //	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
 //	 public String publicMypagesetting() {}
-//	 
-//	 
-//	 
-//	 
+
+	 
 //	 @RequestMapping(value="ustopdel.do", method=RequestMethod.POST)
 //	 public String userUpdate() {}
 	
+	 
+	 
 } 
 	 
 	 

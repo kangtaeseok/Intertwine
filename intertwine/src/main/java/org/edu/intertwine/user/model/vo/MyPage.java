@@ -8,6 +8,7 @@ public class MyPage {
 	private String statusMessage;
 	private String profile;
 	private String profileDraft;
+	
 	public String getUserId() {
 		return userId;
 	}
