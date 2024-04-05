@@ -3,7 +3,6 @@ package org.edu.intertwine.post.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +19,7 @@ import org.edu.intertwine.common.FileNameChange;
 import org.edu.intertwine.common.GPS;
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.post.model.service.PostService;
+import org.edu.intertwine.post.model.vo.FeedItem;
 import org.edu.intertwine.post.model.vo.Gallery;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
@@ -28,18 +28,14 @@ import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.service.UserService;
 import org.edu.intertwine.user.model.vo.User;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -65,6 +61,50 @@ public class PostController {
 		return "post/write";
 	}
 	
+	
+	@RequestMapping("page.do")
+	public ModelAndView moveOthersMyPage(String otherUserId, HttpSession session, ModelAndView mv) {
+
+		//남의 아이디를 받음
+		User otherUser = userService.selectUser(otherUserId);
+		//로그인 유저
+		User loginUser = (User) session.getAttribute("loginUser");
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		//그걸로 포스트 받아옴
+		
+			ArrayList<Post> posts = postService.selectPostsById(otherUserId);
+		
+	
+		//그 포스트를 담음
+		for (Post post : posts) {
+	        Gallery gallery = new Gallery();
+	        gallery.setPost(post);
+	        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+	        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+	        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+	        gallery.setImage(postService.selectOneImage(post.getPostId()));
+	        gallery.setTags(postService.selectTags(post.getPostId()));
+	        logger.info(gallery.toString());
+	        
+	        galleries.add(gallery);
+	        
+	    }
+		//팔로잉 팔로워 횟수 셈
+		int followingCount = friendService.countFollowing(otherUserId);
+		int followerCount = friendService.countFollowers(otherUserId);
+		//Friend friend = new Friend(loginUser.getUserId(), findUserId);
+		//int isFollow = friendService.(friend);
+		//mv.addObject("isFollow", isFollow);
+		
+		mv.addObject("galleries", galleries);
+		mv.addObject("otheruser", otherUser);
+		mv.addObject("user", loginUser);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/othermypage");
+		
+		return mv;
+	}
 	
 	//내가 나의 페이지 들어갈 때
 	@RequestMapping(value = "mypage.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -99,8 +139,6 @@ public class PostController {
 		
 		return mv;
 	}
-	
-
 	
 	@RequestMapping(value = "posting.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView createPost(HttpServletRequest request, HttpServletResponse response, Post post,
@@ -196,38 +234,33 @@ public class PostController {
 
 	}// 메소드
 
-	@RequestMapping(value = "feed.do", method = { RequestMethod.POST, RequestMethod.GET })
-	@ResponseBody
-	public String getFeed(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody FeedRequest feedRequest, HttpSession session, Model model)
-			throws UnsupportedEncodingException {
-		
-		  int startIndex = feedRequest.getStartIndex();
-		  int count = feedRequest.getCount();
-		  int loadCount = feedRequest.getLoadCount();
-		
-		
-		response.setContentType("application/json");
-		
-		
+	//피드
+	@RequestMapping(value = "feed.do", method = {RequestMethod.GET })
+	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
+			
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
 		// 일단 자신을 제외한 모든 유저아이디를 받아옴
 		ArrayList<String> userIds = postService.selectUserIds(loginUser.getUserId());
-
+		
+		
 		// 먼저 유저아이디 받아와서 차단 리스트 받아옴
-		// ArrayList<String> userIds = friendService.()(loginuser.getUserId());
+		// ArrayList<String> userIds = friendService.(loginuser.getUserId());
+		
 
 		ArrayList<Integer> postIds = new ArrayList<Integer>();
 		// 만약 사이즈가 0이면 다른 쿼리문 작동
 		if (userIds.size() > 0) {
 			// 그걸로 포스트 아이디들을 쭉 받아옴
+			logger.info(userIds.toString());
 			postIds = postService.selectPostIds(userIds);
+			logger.info(postIds.toString());
 
 		} else {
 
 			postIds = postService.selectPostIdsforZero();
 		}
+		
 		logger.info("postIds: " + postIds.size());
 		logger.info("postIds: " + postIds.toString());
 		// 피드 아이템 선언 이것들이 사용될 예정
@@ -236,89 +269,59 @@ public class PostController {
 
 		// 포스트 아이디 갯수 셈
 		if (postIds.size() > 0) {
-
-			JSONArray jarr = new JSONArray();
-			int endIndex = Math.min(startIndex + count, postIds.size());
-
-			for (int i = startIndex; i < endIndex; i++) {
-
+		  	//피드 변수들 여러개 담을거 선언
+			ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
+			//프로필 사진이 없는 경우 이것을 사용
+			String defaultImage = request.getSession().getServletContext().getRealPath("resources/profile/default.png");
+			
+			for (int i = 0; i < postIds.size(); i++) {
+				
+				//리스트로 유저아이디 하나씩 꺼냄
 				int eachPostId = postIds.get(i);
-				JSONObject feedJson = new JSONObject();
-
+				
 				// 포스트 아이디로 유저 아이디 찾아옴
-				String findUserId = postService.selectUserId(eachPostId);
-				
-				String path = request.getSession().getServletContext().getRealPath("resources/profile/default.png");
-				feedJson.put("path", path);
+				//String findUserId = postService.selectUserId(eachPostId);
+	       
 				// Mypage mypage = userService.(무언가)
-				
 				// 유저정보 담음
-				User user = userService.selectUser(findUserId);
-				feedJson.put("userid", user.getUserId());
-				feedJson.put("username", URLEncoder.encode(user.getUserName(), "UTF-8"));
-				feedJson.put("nickname", URLEncoder.encode(user.getNickname(), "UTF-8"));
-				feedJson.put("registertime", user.getRegisterTime().toString());
-				feedJson.put("accountstatus", user.getAccoutStatus());
-				feedJson.put("visible", user.getVisible());
-				feedJson.put("userstop", user.getUserStop());
-
+				//User postuser = userService.selectUser(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(eachPostId);
-				feedJson.put("postid", post.getPostId());
-				feedJson.put("postcontent", URLEncoder.encode(post.getPostContent(), "UTF-8"));
-				feedJson.put("postvisible", post.getPostVisible());
-				feedJson.put("posttime", post.getPostTime().toString());
-				feedJson.put("postview", post.getPostView());
-				feedJson.put("postpin", post.getPostPin());
-
 				// 이미지 정보 담음
 				Image image = postService.selectOneImage(eachPostId);
-				feedJson.put("imageid", image.getImageId());
-				feedJson.put("imagelon", image.getImageLon());
-				feedJson.put("imagelat", image.getImageLat());
-				feedJson.put("imageurl", image.getImageURL());
-
 				// 동영상 정보 담음
 				Video video = postService.selectOneVideo(eachPostId);
-				feedJson.put("videoid", video.getVideoId());
-				feedJson.put("videourl", video.getVideoURL());
-
+				
 				// 좋아요 수 정보 담음
-				int likes = postService.selectLikeCounts(eachPostId);
-				feedJson.put("likes", likes);
+				int likeCount = postService.selectLikeCounts(eachPostId);
 
-				// 추가로 필요한 정보
-				// Friend friend = new Friend(loginUser.getUserId(), findUserId);
-				// int isFollowed = friendService.selectIsFollowed(friend);
+				//Friend friend = new Friend(loginUser.getUserId(), findUserId);
+				//int isFollowed = friendService.selectFollowingUser(friend);
 				// 1이면 팔로우중 즉 언팔로우 버튼 필요 0이면 팔로우 안하고 있음 팔로우 버튼 만들어야함
 
 				Like like = new Like(loginUser.getUserId(), eachPostId);
 				int isLiked = postService.selectIsLiked(like);
-				int whatIsLiked = postService.selectWhatIsLiked(like);
+				//int whatIsLiked = postService.selectWhatIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
 
 				Bookmark bookmark = new Bookmark(loginUser.getUserId(), eachPostId);
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
-
-				// feedJson.put("isFollowed", isFollowed);
-				feedJson.put("isLiked", isLiked);
-				// feedJson.put("isBookmarked", isBookmarked);
-				feedJson.put("whatIsLiked", whatIsLiked);
-
-				jarr.add(feedJson);
-
+				
+				//FeedItem feedItem = new FeedItem(postuser, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked);
+				//feedItems.add(feedItem);
+				
 			}
-
-			JSONObject sendJson = new JSONObject();
-			sendJson.put("list", jarr);
-			return sendJson.toJSONString();
+			
+			//mv.addObject("feedItems", feedItems);
+			mv.addObject("defaultImage", defaultImage);
+			mv.setViewName("post/feed");
+			return mv;
 
 		} else {
-
-			JSONObject noFeedJson = new JSONObject();
-			noFeedJson.put("message", "현재 볼 수 있는 피드가 없습니다.");
-			return noFeedJson.toJSONString();
+			mv.addObject("message", "보여줄 피드가 없습니다.");
+			mv.setViewName("common/main");
+			return mv;
 
 		} // else
 
@@ -346,9 +349,9 @@ public class PostController {
 		int likeCount = postService.selectLikeCounts(postId);
 		logger.info("likeCount" + likeCount);
 		
+		
 	    mv.addObject("images", images);
 	    mv.addObject("video", video);
-	   // mv.addObject("postUser", postUser);
 	    mv.addObject("viewingUser", viewingUser);
 	    mv.addObject("post", post);
 	    mv.addObject("tags", tags);
@@ -360,31 +363,6 @@ public class PostController {
 	}
 
 	
-	//코멘트 삽입
-	@RequestMapping(value="addComment1.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public ModelAndView addComment(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("commentContent")String commentContent, ModelAndView mv) {
-		
-		//아이디와 포스트를 받아서 코멘트 저장처리
-		//이 폼에서 저장한 코멘트는 무조건 1번 (부모댓글임)
-		
-		
-		
-		
-		Comment comment = new Comment (postId, userId, commentContent);
-		
-		
-		int result = commentService.insertComment1(comment);
-		
-		if(result == 1) {
-			
-			mv.setViewName("post/detailview?postId=" + comment.getPostId());
-		}else {
-			
-			mv.addObject("message", "댓글 추가에 실패하였습니다.");
-		}
-		
-		return mv;
-	}
 	
 	
 	
