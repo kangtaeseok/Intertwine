@@ -10,240 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post Viewer</title>
 <!--슬라이드 쇼-->
-<style>
 
-li{
-     list-style-type: none;
-}
-.container-detail{
-     display: flex;
-     padding-top: 5vw;
-     padding-left: 10vw;
-}
-.left{
-     max-width: 800px;
-     height: 800px;
-     width: 35vw;
-     border: 1px grey solid;
-     position: relative;
-     background-color: black;
-    display: flex; /* Use flexbox */
-    align-items: center; /* Center children vertically */
-    justify-content: center; /* Center children horizontally */
-}
-
-/*여기 확인 */
-.mySlides {
-  display: none;
-}
-
-.prev {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  left: 0; /* Align to the left side */
-  transform: translateY(-50%); /* Adjust vertical alignment */
-  width: auto;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-}
-
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  right: 0; /* Align to the right side */
-  transform: translateY(-50%); /* Adjust vertical alignment */
-  width: auto;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 3px 0 0 3px; /* Adjusted for right side */
-  user-select: none;
-}
-
-.prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
-}
-.fade {
-  animation-name: fade;
-  animation-duration: 1.5s;
-}
-
-@keyframes fade {
-  from {opacity: .4}
-  to {opacity: 1}
-}
-
-
-.right{
-     width: 35vw;
-     max-height: 800px;
-}
-.scroll{
-     height: 776px;
-     overflow: auto;
-}
-.owner{
-     display:flex;
-     border-bottom: 1px black solid;
-}
-.pic{
-     width: 60px; /* Adjust width as needed */
-     height: 60px; /* Adjust height as needed */
-     border-radius: 50%;
-     border: 0px solid black;
-     overflow: hidden;
-}
-.pic img {
-     width: 100%;
-     height: 100%;
-     object-fit: cover; /* Ensures image fills container */
-     cursor: pointer;
-}
-
-.pic video {
-     width: 100%;
-     height: 100%;
-     object-fit: cover; /* Ensures image fills container */
-}
-
-a {
-     text-decoration: none;
-     color: black;
-}
-.scroll{
-     max-height: 780px;
-     overflow: auto;
-}
-.owner{
-     padding-bottom: 5px;
-}
-.owner .pic{
-     margin-left: 5px;
-}
-.owner-info{
-     padding-left: 5px;
-}
-.owner-deatil, .owner-address{
-     font-size: 12px;
-}
-
-.dummy,
-.box{
-     display: flex;
-     margin-top: 5px;
-     margin-bottom: 3px;
-}
-
-.box div i{
- font-size: 30px;
- padding-left: 7px;
-}
-
-.content{
-     border-bottom: grey 1px solid;
-}
-.time{
-     font-size: 13px;
-     color: grey;
-}
-.commentbox{
-     height: 100%;
-     border-top: gray 1px solid;
-
-}
-.comment{
-     display: flex;
-     padding-top: 5px;
-     padding-bottom: 5px;
-}
-.commenttime{
-     font-size: 12px;
-}
-.commmentreport{
-     padding: 5px;
-}
-
-.pic-2{
-     width: 30px; /* Adjust width as needed */
-     height: 30px; /* Adjust height as needed */
-     border-radius: 50%;
-     border: 0px solid black;
-     overflow: hidden;
-     margin-left: 5px;
-}
-.pic-2 img {
-     width: 100%;
-     height: 100%;
-     object-fit: cover; /* Ensures image fills container */
-}
-
-.right-2{
-     flex-grow: 1;
-     flex-shrink: 1;
-     padding-left: 5px;
-}
-
-.commentagain{
-     font-size: 12px;
-}
-.reply{
-     margin-left: 10px;
-     margin-right: 10px;
-     font-size: 20px;
-}
-.left div img{
-     width: 100%
-}
-.text, .submit {
-    margin-bottom: 10px; /* Add some space between the input and the button */
-    border: none; /* A light border for some depth */
-    box-sizing: border-box; /* Include padding and border in the element's total width */
-}
-.text {
-     height: px;
-     background-color: white; /* A light background for the text input */
-     width: 88%
-}
-.submit {
-    border-radius: 5px; /* Rounded corners */
-    background-color: plum; /* A green background for the submit button */
-    color: white; /* White text color */
-    font-weight: bold; /* Make the button text bold */
-    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
-    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
-}
-
-.submit:hover {
-    background-color: pink; /* Darken the button on hover for feedback */
-}
-
-.hidden{
-     display: none;
-}
-
-button {
-    appearance: none; /* Removes platform-native styling */
-    -webkit-appearance: none; /* Safari */
-    -moz-appearance: none; /* Firefox */
-    background: none; /* No background */
-    color: inherit; /* Inherits the text color from its parent */
-    border: none; /* No border */
-    padding: 0; /* No padding */
-    margin: 0; /* No margin */
-    font: inherit; /* Inherits the font style from its parent */
-    cursor: pointer; /* Maintains the cursor indicating it's clickable */
-    outline: inherit; /* Inherits the outline style (useful for accessibility) */
-}
-</style>
 
 <!--스크롤바 디자인 -->
 
@@ -604,5 +371,239 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+<style>
+
+li{
+     list-style-type: none;
+}
+.container-detail{
+     display: flex;
+     padding-top: 5vw;
+     padding-left: 10vw;
+}
+.left{
+     max-width: 800px;
+     height: 800px;
+     width: 35vw;
+     border: 1px grey solid;
+     position: relative;
+     background-color: black;
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center children vertically */
+    justify-content: center; /* Center children horizontally */
+}
+
+/*여기 확인 */
+.mySlides {
+  display: none;
+}
+
+.prev {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 0; /* Align to the left side */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0; /* Align to the right side */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 3px 0 0 3px; /* Adjusted for right side */
+  user-select: none;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+
+.right{
+     width: 35vw;
+     max-height: 800px;
+}
+.scroll{
+     height: 776px;
+     overflow: auto;
+}
+.owner{
+     display:flex;
+     border-bottom: 1px black solid;
+}
+.pic{
+     width: 60px; /* Adjust width as needed */
+     height: 60px; /* Adjust height as needed */
+     border-radius: 50%;
+     border: 0px solid black;
+     overflow: hidden;
+}
+.pic img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover; /* Ensures image fills container */
+     cursor: pointer;
+}
+
+.pic video {
+     width: 100%;
+     height: 100%;
+     object-fit: cover; /* Ensures image fills container */
+}
+
+a {
+     text-decoration: none;
+     color: black;
+}
+.scroll{
+     max-height: 780px;
+     overflow: auto;
+}
+.owner{
+     padding-bottom: 5px;
+}
+.owner .pic{
+     margin-left: 5px;
+}
+.owner-info{
+     padding-left: 5px;
+}
+.owner-deatil, .owner-address{
+     font-size: 12px;
+}
+
+.dummy,
+.box{
+     display: flex;
+     margin-top: 5px;
+     margin-bottom: 3px;
+}
+
+.box div i{
+ font-size: 30px;
+ padding-left: 7px;
+}
+
+.content{
+     border-bottom: grey 1px solid;
+}
+.time{
+     font-size: 13px;
+     color: grey;
+}
+.commentbox{
+     height: 100%;
+     border-top: gray 1px solid;
+
+}
+.comment{
+     display: flex;
+     padding-top: 5px;
+     padding-bottom: 5px;
+}
+.commenttime{
+     font-size: 12px;
+}
+.commmentreport{
+     padding: 5px;
+}
+
+.pic-2{
+     width: 30px; /* Adjust width as needed */
+     height: 30px; /* Adjust height as needed */
+     border-radius: 50%;
+     border: 0px solid black;
+     overflow: hidden;
+     margin-left: 5px;
+}
+.pic-2 img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover; /* Ensures image fills container */
+}
+
+.right-2{
+     flex-grow: 1;
+     flex-shrink: 1;
+     padding-left: 5px;
+}
+
+.commentagain{
+     font-size: 12px;
+}
+.reply{
+     margin-left: 10px;
+     margin-right: 10px;
+     font-size: 20px;
+}
+.left div img{
+     width: 100%
+}
+.text, .submit {
+    margin-bottom: 10px; /* Add some space between the input and the button */
+    border: none; /* A light border for some depth */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+.text {
+     height: px;
+     background-color: white; /* A light background for the text input */
+     width: 88%
+}
+.submit {
+    border-radius: 5px; /* Rounded corners */
+    background-color: plum; /* A green background for the submit button */
+    color: white; /* White text color */
+    font-weight: bold; /* Make the button text bold */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
+}
+
+.submit:hover {
+    background-color: pink; /* Darken the button on hover for feedback */
+}
+
+.hidden{
+     display: none;
+}
+
+button {
+    appearance: none; /* Removes platform-native styling */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+    background: none; /* No background */
+    color: inherit; /* Inherits the text color from its parent */
+    border: none; /* No border */
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    font: inherit; /* Inherits the font style from its parent */
+    cursor: pointer; /* Maintains the cursor indicating it's clickable */
+    outline: inherit; /* Inherits the outline style (useful for accessibility) */
+}
+</style>
 </body>
 </html>

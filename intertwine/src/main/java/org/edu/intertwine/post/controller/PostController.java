@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -62,17 +61,20 @@ public class PostController {
 		return "post/write";
 	}
 	
+	
 	@RequestMapping("page.do")
 	public ModelAndView moveOthersMyPage(String otherUserId, HttpSession session, ModelAndView mv) {
-		
+
 		//남의 아이디를 받음
 		User otherUser = userService.selectUser(otherUserId);
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		//그걸로 포스트 받아옴
-		ArrayList<Post> posts = postService.selectPostsById(otherUserId);
 		
+			ArrayList<Post> posts = postService.selectPostsById(otherUserId);
+		
+	
 		//그 포스트를 담음
 		for (Post post : posts) {
 	        Gallery gallery = new Gallery();
@@ -90,6 +92,9 @@ public class PostController {
 		//팔로잉 팔로워 횟수 셈
 		int followingCount = friendService.countFollowing(otherUserId);
 		int followerCount = friendService.countFollowers(otherUserId);
+		//Friend friend = new Friend(loginUser.getUserId(), findUserId);
+		//int isFollow = friendService.(friend);
+		//mv.addObject("isFollow", isFollow);
 		
 		mv.addObject("galleries", galleries);
 		mv.addObject("otheruser", otherUser);
@@ -229,25 +234,27 @@ public class PostController {
 
 	}// 메소드
 
+	//피드
 	@RequestMapping(value = "feed.do", method = {RequestMethod.GET })
-	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody FeedRequest feedRequest, HttpSession session, ModelAndView mv)
-			throws UnsupportedEncodingException {
+	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 			
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
 		// 일단 자신을 제외한 모든 유저아이디를 받아옴
 		ArrayList<String> userIds = postService.selectUserIds(loginUser.getUserId());
 		
-
+		
 		// 먼저 유저아이디 받아와서 차단 리스트 받아옴
-		// ArrayList<String> userIds = friendService.()(loginuser.getUserId());
+		// ArrayList<String> userIds = friendService.(loginuser.getUserId());
+		
 
 		ArrayList<Integer> postIds = new ArrayList<Integer>();
 		// 만약 사이즈가 0이면 다른 쿼리문 작동
 		if (userIds.size() > 0) {
 			// 그걸로 포스트 아이디들을 쭉 받아옴
+			logger.info(userIds.toString());
 			postIds = postService.selectPostIds(userIds);
+			logger.info(postIds.toString());
 
 		} else {
 
@@ -271,18 +278,20 @@ public class PostController {
 				
 				//리스트로 유저아이디 하나씩 꺼냄
 				int eachPostId = postIds.get(i);
+				
 				// 포스트 아이디로 유저 아이디 찾아옴
-				String findUserId = postService.selectUserId(eachPostId);
+				//String findUserId = postService.selectUserId(eachPostId);
 	       
 				// Mypage mypage = userService.(무언가)
 				// 유저정보 담음
-				User postuser = userService.selectUser(findUserId);
+				//User postuser = userService.selectUser(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(eachPostId);
 				// 이미지 정보 담음
 				Image image = postService.selectOneImage(eachPostId);
 				// 동영상 정보 담음
 				Video video = postService.selectOneVideo(eachPostId);
+				
 				// 좋아요 수 정보 담음
 				int likeCount = postService.selectLikeCounts(eachPostId);
 
@@ -292,23 +301,26 @@ public class PostController {
 
 				Like like = new Like(loginUser.getUserId(), eachPostId);
 				int isLiked = postService.selectIsLiked(like);
-				int whatIsLiked = postService.selectWhatIsLiked(like);
+				//int whatIsLiked = postService.selectWhatIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
 
 				Bookmark bookmark = new Bookmark(loginUser.getUserId(), eachPostId);
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				FeedItem feedItem = new FeedItem(postuser, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked);
-				feedItems.add(feedItem);
+				//FeedItem feedItem = new FeedItem(postuser, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked);
+				//feedItems.add(feedItem);
+				
 			}
 			
-			mv.addObject("feedItems", feedItems);
+			//mv.addObject("feedItems", feedItems);
 			mv.addObject("defaultImage", defaultImage);
+			mv.setViewName("post/feed");
 			return mv;
 
 		} else {
 			mv.addObject("message", "보여줄 피드가 없습니다.");
+			mv.setViewName("common/main");
 			return mv;
 
 		} // else

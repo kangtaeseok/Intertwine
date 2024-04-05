@@ -233,11 +233,12 @@
                 <div class="followrelated">
                     <div class="dummy2">
                     </div>
-                    
+                    <c:if test="">
                     <a class="follow" href="#">팔로우</a>
-                    <a class="follow" href="#">팔로우 해제</a>
-                    <a class="follow" href="#">디엠</a>
-    
+                    </c:if>
+                    <c:if test="">
+                    <a class="follow" href="#">언팔로우</a>
+                    </c:if>
                 </div>
             </div>
             <div class="right">
@@ -254,21 +255,22 @@
     </div>
     <div class="middle">
         <div class="search">
-            <select class="search-condition">
+        <form action="search.do">
+        	<input type="hidden" name="otherUserId" value="${ otheruser.userId }">
+            <select class="search-condition" name="condition">
                 <option value="all" selected>전체</option>
                 <option value="tag">태그</option>
                 <option value="content">콘텐츠</option>
-            <input type="text" placeholder="검색할 키워드를 입력하세요"> 
-            <i class="fa fa-search"></i>
-  
+            <input type="text" placeholder="검색할 키워드를 입력하세요" name="search"> 
+  	        <i class="fa fa-search"><input type="submit" style="style:none;"></i>
+  		</form>
         </div>
         <div class="dummy3">
         </div>
         <div class="sorting">
         
             <select name="dropdown1" id="dropdown1">
-            	<option value="">선택</option>
-                <option value="0">최신순</option>
+                <option value="0" selected >최신순</option>
                 <option value="1">오래된순</option>
                 <option value="2">좋아요 많은순</option>
             </select>
@@ -330,5 +332,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 </body>
 </html>
