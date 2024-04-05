@@ -30,4 +30,9 @@ public class CommentDao {
 		return sqlSessionTemplate.insert("commentMapper.insertComment1", comment);
 	}
 
+	public int insertComment2(Comment comment) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.insert("commentMapper.insertComment2", comment);
+	}
+
 }
