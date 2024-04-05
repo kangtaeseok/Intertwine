@@ -31,11 +31,27 @@ public class AdminController {
 	public String moveadLoginPage() {
 		return "admin/adlogin"; 
 	}
+	@RequestMapping("RptPage.do")
+	public String moveadReportPage() {
+		return "admin/reportPage"; 
+	}
+	@RequestMapping("userRptPage.do")
+	public String moveadUserReportPage() {
+		return "admin/userreportPage"; 
+	}
+	
+	
 	
 	@RequestMapping("admain.do")
 	public ModelAndView moveadadMainPage(ModelAndView mv) {
 		mv.addObject("visitCount", adminService.selectVisitCount());
 		mv.addObject("sumCount", adminService.selectVisitCountAll());
+		mv.addObject("Jan", adminService.selectVisitCountMonth("01"));
+		mv.addObject("Feb", adminService.selectVisitCountMonth("02"));
+		mv.addObject("Mar", adminService.selectVisitCountMonth("03"));
+		mv.addObject("Apr", adminService.selectVisitCountMonth("04"));
+		mv.addObject("May", adminService.selectVisitCountMonth("05"));
+		mv.addObject("Jun", adminService.selectVisitCountMonth("06"));
 		mv.setViewName("admin/admain");
 		return mv; 
 	}

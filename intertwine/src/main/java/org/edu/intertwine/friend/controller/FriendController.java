@@ -75,6 +75,8 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		return "friend/blockedViewPage";
 	}
 	
+	
+	
 	//팔로우 메소드
 	@PostMapping("insertF.do")
 	public String addFollowing(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,

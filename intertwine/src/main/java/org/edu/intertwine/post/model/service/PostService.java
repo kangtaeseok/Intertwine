@@ -50,6 +50,8 @@ public interface PostService {
 
 	ArrayList<Image> selectImagesByPostId(int postId);
 
+	String selectFindUserId(int each);
+
 
 
 	/* User selectUser(String findUserId); */
