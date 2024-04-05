@@ -13,4 +13,6 @@ public interface AdminService {
 	 void updateVisitCount();
 
 	 VisitCount selectVisitCount();
+
+	 int selectVisitCountAll();
 }

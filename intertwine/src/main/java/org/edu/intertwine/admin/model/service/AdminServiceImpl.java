@@ -6,6 +6,7 @@ import org.edu.intertwine.admin.model.vo.VisitCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service("AdminService")
 public class AdminServiceImpl implements AdminService {
 
@@ -31,5 +32,10 @@ public class AdminServiceImpl implements AdminService {
     public VisitCount selectVisitCount() {
         return adminDao.selectVisitCount();
     }
+
+	@Override
+	public int selectVisitCountAll() {
+		return adminDao.selectVisitCountAll();
+	}
 
 }
