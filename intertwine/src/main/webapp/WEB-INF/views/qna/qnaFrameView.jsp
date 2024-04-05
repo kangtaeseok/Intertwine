@@ -30,7 +30,7 @@ body, html {
 }
 
 header, footer {
-    background-color: #666;
+    background-color: #00f;
     color: white;
     padding: 10px;
 }
@@ -63,15 +63,51 @@ hr {
     text-decoration: underline;
     cursor: pointer;
 }
-</style>
 
+.rounded-button {
+      background-color: #4CAF50; /* 버튼 배경색 */
+      border: none; /* 테두리 없앰 */
+      border-radius: 50px; /* 버튼을 둥글게 만듦 */
+      color: white; /* 버튼 텍스트 색상 */
+      padding: 2px 2px; /* 버튼 내부 여백 설정 */
+      text-align: center; /* 텍스트 가운데 정렬 */
+      text-decoration: none; /* 텍스트에 밑줄 없앰 */
+      display: inline-block; /* 인라인 요소로 설정하여 여백을 설정할 수 있게 함 */
+      font-size: 15px; /* 버튼 텍스트 크기 */
+      margin: 2px 2px; /* 버튼 간격 설정 */
+      cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+      float : right;
+}
+</style>
+<script type="text/javascript">
+function moveMainPage(){
+	//자바스크립트로 페이지 이동 또는 서블릿 컨트롤러 연결 요청시
+	//location 내장객체의 href 속성을 사용함
+	location.href = "main.do";
+}
+
+function moveLoginPage(){
+	//자바스크립트로 페이지 이동 또는 서블릿 컨트롤러 연결 요청시
+	//location 내장객체의 href 속성을 사용함
+	location.href = "login.do";
+}
+</script>
 </head>
 <body>
 
 <hr>
 <br>
 <div class="container">
-    <header>INTERTWINE</header>
+	<header>
+	<div id="header_logo">
+		<img src="/intertwine/resources/images/faq/intertwinelogo.png" width="100px" height="40px" onclick="moveMainPage()">
+		<!-- <a href="${ pageContext.servletContext.contextPath }/main.do">Home</a> -->
+		
+		<button class="rounded-button" width="100px" align="right" onclick="moveLoginPage()"  ><h3>${ loginUser.userId }</h3></button>
+	</div>
+
+	</header>
+	<hr>
     <c:import url="/WEB-INF/views/common/menubar.jsp" />
     <br>
     <main>
