@@ -46,8 +46,8 @@
                     <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
                     <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
                 </li>
-                <li id="friend">
-                    <a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>
+                 <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
                 </li>
                 <li id="chatting">
                     <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
@@ -98,6 +98,7 @@
 							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
 						</li>
 					</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li> 				
                 </ul>
             </div>
 
