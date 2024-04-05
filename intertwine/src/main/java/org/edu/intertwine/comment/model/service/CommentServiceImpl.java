@@ -33,4 +33,10 @@ public class CommentServiceImpl implements CommentService{
 		return commentDao.insertComment1(comment);
 	}
 
+	@Override
+	public int insertComment2(Comment comment) {
+		// TODO Auto-generated method stub
+		return commentDao.insertComment2(comment);
+	}
+
 }

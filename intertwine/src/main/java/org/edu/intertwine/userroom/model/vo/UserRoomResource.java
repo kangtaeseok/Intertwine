@@ -6,10 +6,10 @@ public class UserRoomResource implements Serializable{
 	private static final long serialVersionUID = -671451751598167986L;
 	
 	private int ResourceId; // 리소스 고유번호
-	private int ResourcePositionX; // 리소스 배치 X좌표 
-	private int ResourcePositionY; // 리소스 배치 Y좌표
-	private int ResourceRotation; // 리소스 회전각도
-	private int ResourceScale; // 리소스 크기
+	private double ResourcePositionX; // 리소스 배치 X좌표 
+	private double ResourcePositionY; // 리소스 배치 Y좌표
+	private double ResourceRotation; // 리소스 회전각도
+	private double ResourceScale; // 리소스 크기
 	
 	// 테이블 조인해서 넣을 필드값
 	private String ResourceName; // 리소스 이름
@@ -19,7 +19,7 @@ public class UserRoomResource implements Serializable{
 		super();
 	}
 	
-	public UserRoomResource(int resourceId, int resourcePositionX, int resourcePositionY, int resourceRotation, int resourceScale) {
+	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation, double resourceScale) {
 		super();
 		ResourceId = resourceId;
 		ResourcePositionX = resourcePositionX;
@@ -30,8 +30,8 @@ public class UserRoomResource implements Serializable{
 	
 
 
-	public UserRoomResource(int resourceId, int resourcePositionX, int resourcePositionY, int resourceRotation,
-			int resourceScale, String resourceName, String resourceURL) {
+	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
+			double resourceScale, String resourceName, String resourceURL) {
 		super();
 		ResourceId = resourceId;
 		ResourcePositionX = resourcePositionX;
@@ -48,28 +48,28 @@ public class UserRoomResource implements Serializable{
 	public void setResourceId(int resourceId) {
 		ResourceId = resourceId;
 	}
-	public int getResourcePositionX() {
+	public double getResourcePositionX() {
 		return ResourcePositionX;
 	}
-	public void setResourcePositionX(int resourcePositionX) {
+	public void setResourcePositionX(double resourcePositionX) {
 		ResourcePositionX = resourcePositionX;
 	}
-	public int getResourcePositionY() {
+	public double getResourcePositionY() {
 		return ResourcePositionY;
 	}
-	public void setResourcePositionY(int resourcePositionY) {
+	public void setResourcePositionY(double resourcePositionY) {
 		ResourcePositionY = resourcePositionY;
 	}
-	public int getResourceRotation() {
+	public double getResourceRotation() {
 		return ResourceRotation;
 	}
-	public void setResourceRotation(int resourceRotation) {
+	public void setResourceRotation(double resourceRotation) {
 		ResourceRotation = resourceRotation;
 	}
-	public int getResourceScale() {
+	public double getResourceScale() {
 		return ResourceScale;
 	}
-	public void setResourceScale(int resourceScale) {
+	public void setResourceScale(double resourceScale) {
 		ResourceScale = resourceScale;
 	}
 	public static long getSerialversionuid() {

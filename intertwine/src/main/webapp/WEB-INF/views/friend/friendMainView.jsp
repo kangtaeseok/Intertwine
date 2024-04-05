@@ -277,33 +277,46 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${followingList}" var="friend">
-							<form action="unfollowing.do" method="post">
+							
+							<tr>
+								<td> <a href="${pageContext.request.contextPath}/page.do?otherUserId=${sessionScope.loginUser.userId}">
+								<img src="resources/profile/images.jpg"
+									alt="Profile Image" class="profile-img"></a></td>
+									
+								<td>${friend.friendId}</td>
+								<td>
+								<!-- 언팔로우 버튼 폼 태그 -->
+								<form action="unfollowing.do" method="post">
 								<input type="hidden" name="userId"
 									value="${sessionScope.loginUser.userId}"> <input
 									type="hidden" name="friendId" value="${friend.friendId}">
-							<tr>
-								<td><img src="${response.profileImageUrl}"
-									alt="Profile Image" class="profile-img"></td>
-								<td>${friend.friendId}</td>
-								<!-- Assuming friendId is what you want to display -->
-								<td>
 									<button class="unfollow-btn"
 										data-friend-id="${friend.friendId}">Unfollow</button>
-									<button class="block-btn" data-friend-id="${friend.friendId}">Block</button>
-									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button>
+										</form>
+								<%-- 	<button class="block-btn" onclick="javascript:location.href='blockFollowing.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.friendId}'">Block</button>
+									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
 								</td>
 							</tr>
-							</form>
+							
 						</c:forEach>
 					</tbody>
 				</table>
 
 				<script>
+				//언팔로잉 버튼 클릭시 출력 메세지
 document.addEventListener("DOMContentLoaded", function() {
     var dfollowMessage = "<c:out value='${sessionScope.dfollowMessage}'/>";
     if (dfollowMessage) {
         alert(dfollowMessage); // 팝업으로 메시지 보여주기
         <% session.removeAttribute("dfollowMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
+    }
+});
+// 차단 버튼 클릭시 출력 메세지				
+document.addEventListener("DOMContentLoaded", function() {
+    var blockedMessage = "<c:out value='${sessionScope.blockedMessage}'/>";
+    if (blockedMessage) {
+        alert(blockedMessage); // 팝업으로 메시지 보여주기
+        <% session.removeAttribute("blockedMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
     }
 });
 </script>
@@ -316,14 +329,14 @@ document.addEventListener("DOMContentLoaded", function() {
 							value="${sessionScope.loginUser.userId}"> <input
 							type="hidden" name="friendId" value="${friend.friendId}">
 						<tr>
-							<td><img src="${response.profileImageUrl}"
+							<td><img src="resources/profile/images.jpg"
 								alt="Profile Image" class="profile-img"></td>
-							<td>${friend.userId}</td>
+							<td>${friend.friendId}</td>
 							<!-- Assuming friendId is what you want to display -->
 							<td>
 								<button class="unfollow-btn" data-friend-id="${friend.friendId}">Unfollow</button>
-								<button class="block-btn" data-friend-id="${friend.friendId}">Block</button>
-								<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button>
+								<%-- <button class="block-btn" data-friend-id="${friend.friendId}">Block</button>
+								<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
 							</td>
 						</tr>
 						
@@ -363,23 +376,23 @@ document.addEventListener("DOMContentLoaded", function() {
 					</thead>
 					<tbody>
 						<c:forEach items="${followerList}" var="friend">
-							<form action="insertF.do" method="post">
-								<input type="hidden" name="userId"
-									value="${sessionScope.loginUser.userId}"> <input
-									type="hidden" name="friendId" value="${friend.userId}">
 								<tr>
-									<td><img src="profile_image_url_for_follower"
+									<td><img src="resources/profile/images.jpg"
 										alt="Profile Image" class="profile-img"></td>
 									<td>${friend.userId}</td>
 									<td>
+									<form action="insertF.do" method="post">
+								<input type="hidden" name="userId"
+									value="${sessionScope.loginUser.userId}"> <input
+									type="hidden" name="friendId" value="${friend.userId}">
 										<button type="submit" class="follow-btn">Follow</button>
-										<button type="button" class="block-btn"
-											data-friend-id="${friend.userId}">Block</button>
+										</form>
+										<%-- <button type="button" class="block-btn" onclick="javascript:location.href='blockFollower.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.userId}'"> 									
+						Block</button>
 										<button type="button" class="chat-btn"
-											data-friend-id="${friend.userId}">Chat</button>
+											data-friend-id="${friend.userId}">Chat</button> --%>
 									</td>
 								</tr>
-							</form>
 						</c:forEach>
 
 					</tbody>
@@ -394,6 +407,14 @@ document.addEventListener("DOMContentLoaded", function() {
         <% session.removeAttribute("followMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
     }
 });
+//팔로워 차단 버튼 클릭시 출력 메세지				
+document.addEventListener("DOMContentLoaded", function() {
+    var blocked2Message = "<c:out value='${sessionScope.blocked2Message}'/>";
+    if (blocked2Message) {
+        alert(blocked2Message); // 팝업으로 메시지 보여주기
+        <% session.removeAttribute("blocked2Message"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
+    }
+});
 </script>
 		<!-- 팔로워 계정 검색 결과 필드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 		<div id="searchResults"></div>
@@ -405,13 +426,13 @@ document.addEventListener("DOMContentLoaded", function() {
 					value="${sessionScope.loginUser.userId}"> <input
 					type="hidden" name="friendId" value="${friend.userId}">
 				<tr>
-					<td><img src="${response.profileImageUrl}" alt="Profile Image"
+					<td><img src="resources/profile/images.jpg" alt="Profile Image"
 						class="profile-img"></td>
 					<td>${friend.userId}</td>
 					<td>
 						<button type="submit" class="follow-btn" data-friend-id="${friend.userId}">Follow</button>
-						<button class="block-btn" data-friend-id="${friend.userId}">Block</button>
-						<button class="chat-btn" data-friend-id="${friend.userId}">Chat</button>
+						<%-- <button class="block-btn" data-friend-id="${friend.userId}">Block</button>
+						<button class="chat-btn" data-friend-id="${friend.userId}">Chat</button> --%>
 					</td>
 				</tr>
 			</form>
@@ -423,74 +444,47 @@ document.addEventListener("DOMContentLoaded", function() {
 	<script>
 <!-- 팔로잉, 팔로워 수 불러오는 ajax 코드 -->
 				// 팔로잉, 팔로워 수 불러오는 ajax 통신 코드 ---------------------------------------------------------------------------------
-				$(document)
-						.ready(
-								function() {
-									// 로그인한 사용자의 ID 가져오기
-									var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+$(document).ready(function() {
+    // 로그인한 사용자의 ID 가져오기
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
 
-									// AJAX 요청으로 userID 컨트롤러로 보내기
-									$
-											.ajax({
-												url : 'countFollowing.do', // 컨트롤러의 경로
-												type : 'GET',
-												data : {
-													userId : userId
-												},
-												success : function(
-														response) {
-													$(
-															"#followingCount")
-															.text(
-																	response);
-												},
-												error : function(
-														xhr,
-														status,
-														error) {
-													console
-															.error(
-																	'Error:',
-																	error);
-												}
-											});
-								});
-
-				$(document)
-						.ready(
-								function() {
-									// 로그인한 사용자의 ID 가져오기
-									var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
-
-									// AJAX 요청으로 userID 컨트롤러로 보내기
-									$
-											.ajax({
-												url : 'countFollowers.do', // 컨트롤러의 경로
-												type : 'GET',
-												data : {
-													userId : userId
-												},
-												success : function(
-														response) {
-													$(
-															"#followersCount")
-															.text(
-																	response);
-												},
-												error : function(
-														xhr,
-														status,
-														error) {
-													console
-															.error(
-																	'Error:',
-																	error);
-												}
-											});
-								});
-
+    // AJAX 요청으로 userID 컨트롤러로 보내기
+    $.ajax({
+        url: 'countFollowing.do', // 컨트롤러의 경로
+        type: 'GET',
+        data: {
+            userId: userId
+        },
+        success: function(response) {
+            $("#followingCount").text(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
 				
-			
+$(document).ready(function() {
+    // 로그인한 사용자의 ID 가져오기
+    var userId = '${sessionScope.loginUser.userId}'; // 세션에서 userID 가져오기
+
+    // AJAX 요청으로 userID 컨트롤러로 보내기
+    $.ajax({
+        url: 'countFollowers.do', // 컨트롤러의 경로
+        type: 'GET',
+        data: {
+            userId: userId
+        },
+        success: function(response) {
+            $("#followersCount").text(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+		
 </script>
 </body>
 </html>
