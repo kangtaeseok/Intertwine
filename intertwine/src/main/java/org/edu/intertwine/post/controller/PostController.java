@@ -2,7 +2,6 @@ package org.edu.intertwine.post.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +17,7 @@ import org.edu.intertwine.comment.model.vo.Comment;
 import org.edu.intertwine.common.FileNameChange;
 import org.edu.intertwine.common.GPS;
 import org.edu.intertwine.friend.model.service.FriendService;
+import org.edu.intertwine.friend.model.vo.Friend;
 import org.edu.intertwine.post.model.service.PostService;
 import org.edu.intertwine.post.model.vo.FeedItem;
 import org.edu.intertwine.post.model.vo.Gallery;
@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,16 +62,16 @@ public class PostController {
 	
 	
 	@RequestMapping("page.do")
-	public ModelAndView moveOthersMyPage(String otherUserId, HttpSession session, ModelAndView mv) {
+	public ModelAndView moveOthersMyPage(String friendId, HttpSession session, ModelAndView mv) {
 
 		//남의 아이디를 받음
-		User otherUser = userService.selectUser(otherUserId);
+		User otherUser = userService.selectUser(friendId);
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		//그걸로 포스트 받아옴
 		
-			ArrayList<Post> posts = postService.selectPostsById(otherUserId);
+			ArrayList<Post> posts = postService.selectPostsById(friendId);
 		
 	
 		//그 포스트를 담음
@@ -90,11 +89,13 @@ public class PostController {
 	        
 	    }
 		//팔로잉 팔로워 횟수 셈
-		int followingCount = friendService.countFollowing(otherUserId);
-		int followerCount = friendService.countFollowers(otherUserId);
-		//Friend friend = new Friend(loginUser.getUserId(), findUserId);
-		//int isFollow = friendService.(friend);
-		//mv.addObject("isFollow", isFollow);
+		int followingCount = friendService.countFollowing(friendId);
+		int followerCount = friendService.countFollowers(friendId);
+		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
+		String FollowingId = friendService.selectFollowingId(friend);
+	    String FollowerId = friendService.selectFollowerId(friend);
+	    mv.addObject("FollowingId", FollowingId);
+	    mv.addObject("FollowerId", FollowerId);
 		
 		mv.addObject("galleries", galleries);
 		mv.addObject("otheruser", otherUser);
@@ -178,7 +179,7 @@ public class PostController {
 				logger.info("파일 이름: " + mf.getOriginalFilename());
 				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
 
-				if ("jpg".equals(fileExtension) || "png".equals(fileExtension)) {
+				if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "gif".equals(fileExtension)) {
 					String renameFileName = null;
 					if (originalFileName != null && originalFileName.length() > 0) {
 						renameFileName = FileNameChange.change(originalFileName, "yyyyMMddHHmmss");
@@ -235,11 +236,12 @@ public class PostController {
 	}// 메소드
 
 	//피드
-	@RequestMapping(value = "feed.do", method = {RequestMethod.GET })
+	@RequestMapping(value = "getfeed.do", method = {RequestMethod.GET })
 	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 			
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
+		
 		// 일단 자신을 제외한 모든 유저아이디를 받아옴
 		ArrayList<String> userIds = postService.selectUserIds(loginUser.getUserId());
 		
@@ -272,50 +274,54 @@ public class PostController {
 		  	//피드 변수들 여러개 담을거 선언
 			ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
 			//프로필 사진이 없는 경우 이것을 사용
-			String defaultImage = request.getSession().getServletContext().getRealPath("resources/profile/default.png");
+			String defaultImage = request.getSession().getServletContext().getRealPath("resources/profile/images.jpg");
 			
 			for (int i = 0; i < postIds.size(); i++) {
 				
 				//리스트로 유저아이디 하나씩 꺼냄
-				int eachPostId = postIds.get(i);
 				
-				// 포스트 아이디로 유저 아이디 찾아옴
-				//String findUserId = postService.selectUserId(eachPostId);
+				String eachPostId = String.valueOf(postIds.get(i));
+				int each = Integer.parseInt(eachPostId);
+				 //포스트 아이디로 유저 아이디 찾아옴
+				
+				String findUserId = postService.selectFindUserId(each);
 	       
-				// Mypage mypage = userService.(무언가)
+				//  Mypage mypage = userService.(무언가)
 				// 유저정보 담음
-				//User postuser = userService.selectUser(findUserId);
+				User user = userService.selectUser(findUserId);
 				// 포스트 정보 담음
-				Post post = postService.selectOnePost(eachPostId);
+				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
 				// 이미지 정보 담음
-				Image image = postService.selectOneImage(eachPostId);
+				Image image = postService.selectOneImage(Integer.parseInt(eachPostId));
 				// 동영상 정보 담음
-				Video video = postService.selectOneVideo(eachPostId);
+				Video video = postService.selectOneVideo(Integer.parseInt(eachPostId));
 				
 				// 좋아요 수 정보 담음
-				int likeCount = postService.selectLikeCounts(eachPostId);
+				int likeCount = postService.selectLikeCounts(Integer.parseInt(eachPostId));
 
-				//Friend friend = new Friend(loginUser.getUserId(), findUserId);
-				//int isFollowed = friendService.selectFollowingUser(friend);
+				Friend friend = new Friend(loginUser.getUserId(), findUserId);
+				int isFollowing = friendService.selectFollowing(friend);
+				int isFollowed = friendService.selectFollower(friend);
 				// 1이면 팔로우중 즉 언팔로우 버튼 필요 0이면 팔로우 안하고 있음 팔로우 버튼 만들어야함
 
-				Like like = new Like(loginUser.getUserId(), eachPostId);
+				Like like = new Like(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isLiked = postService.selectIsLiked(like);
-				//int whatIsLiked = postService.selectWhatIsLiked(like);
+				int whatIsLiked = postService.selectWhatIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
 
-				Bookmark bookmark = new Bookmark(loginUser.getUserId(), eachPostId);
+				Bookmark bookmark = new Bookmark(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				//FeedItem feedItem = new FeedItem(postuser, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked);
-				//feedItems.add(feedItem);
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				feedItems.add(feedItem);
 				
 			}
 			
-			//mv.addObject("feedItems", feedItems);
+			mv.addObject("feedItems", feedItems);
 			mv.addObject("defaultImage", defaultImage);
 			mv.setViewName("post/feed");
+			logger.info(mv.toString());
 			return mv;
 
 		} else {

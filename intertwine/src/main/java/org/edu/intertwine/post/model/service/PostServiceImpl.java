@@ -133,6 +133,12 @@ public class PostServiceImpl implements PostService {
 		return postDao.selectImagesByPostId(postId);
 	}
 
+	@Override
+	public String selectFindUserId(int each) {
+		// TODO Auto-generated method stub
+		return postDao.selectFindUserId(each);
+	}
+
 
 	/*
 	 * @Override public User selectUser(String findUserId) { // TODO Auto-generated
