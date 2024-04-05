@@ -35,4 +35,8 @@ public class AdminDao {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCount");
 	}
 
+	public int selectVisitCountAll() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountAll");
+	}
+
 }

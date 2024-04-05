@@ -50,7 +50,6 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 			followinglist = new ArrayList<>();
 		}
 		return "friend/friendMainView";
-
 	}
 
 	// 로그인 세션 동작 확인 테스트용
@@ -161,8 +160,6 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 			return "redirect:friendPage.do";
 
 		}
-	
-	
 
 	//팔로잉 수 카운트
 	@GetMapping("countFollowing.do")
@@ -189,7 +186,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		return String.valueOf(blockedCount);
 	}
 
-//	// 팔로잉 중인 계정 검색(완)
+	// 팔로잉 중인 계정 검색(완)
 	@RequestMapping("searchFollowing.do")
 	public String searchFollowingMethod(Model model, HttpSession session, @RequestParam("keyword") String keyword) {
 		User loginUser = (User) session.getAttribute("loginUser");

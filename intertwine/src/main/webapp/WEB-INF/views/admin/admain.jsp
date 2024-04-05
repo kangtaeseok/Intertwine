@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>second : project</title>
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/intertwine/resources/css/admain.css" />
 <script>
@@ -43,7 +43,9 @@
 	      $('#time').html(year + "년 " + month + "월 " + day + "일 " +  ampm + " " + hours + ":" + minutes + ":" + seconds);
 	    }
 	    setInterval(dpTime, 1000)
-    </script>
+	    
+   
+</script>
 
 </head>
 <body>
@@ -100,25 +102,31 @@
                 <div class="content-div">
                 	<div class="content-first-div">
 						<div class="time-box">
-							<h3>오늘의 방문자 수</h3>
+							<h3>현재 시간</h3>
 							<div id="time" class="stat-div">	
 							</div>
 							<div class="stat-div-2">
-							오늘의 방문자 수 : ${visitCount.visitCount} &nbsp; 누적 방문자 수 : 
-
+							<h4>오늘의 방문자 수 : ${visitCount.visitCount} &nbsp; 누적 방문자 수 : ${ sumCount }</h4> 
 							</div>
 						</div>
 						<div class="noti-div">
-							알림 영역
-			
+							<h3>신고 관련 알림 현황</h3>
+							<div class="notice">알림1</div>
+							<div class="notice">알림2</div>
+							<div class="notice">알림3</div>	
 						</div>
 				</div>	
 					<div class="stat-div-3">
 						<div class="stat-div2">
-							통계영역
+						<h3>월별 방문자 수</h3>
+				<canvas ID="myChart" width="400" height="250"></canvas>
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 						</div>
 						<div class="noti-div2">
-							알림2 영역
+							<h3>오류 관련 알림 현황</h3>
+							<div class="notice">알림1</div>
+							<div class="notice">알림2</div>
+							<div class="notice">알림3</div>
 						</div>
 					</div>
 				</div>
@@ -129,5 +137,27 @@
 	
 </main>
 </div>
+
+<script>
+const ctx = document.getElementById('myChart');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jun'],
+    datasets: [{
+      label: '# of Votes',
+      data: ['${visitCount.visitCount}',1 ,'${visitCount.visitCount}' , '${visitCount.visitCount}', '${visitCount.visitCount}', '${visitCount.visitCount}'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
 </body>
 </html>
