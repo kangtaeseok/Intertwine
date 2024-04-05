@@ -279,8 +279,10 @@
 						<c:forEach items="${followingList}" var="friend">
 							
 							<tr>
-								<td> <a href="${pageContext.request.contextPath}/page.do?otherUserId=${sessionScope.loginUser.userId}"><img src="resources/profile/images.jpg"
+								<td> <a href="${pageContext.request.contextPath}/page.do?otherUserId=${sessionScope.loginUser.userId}">
+								<img src="resources/profile/images.jpg"
 									alt="Profile Image" class="profile-img"></a></td>
+									
 								<td>${friend.friendId}</td>
 								<td>
 								<!-- 언팔로우 버튼 폼 태그 -->
