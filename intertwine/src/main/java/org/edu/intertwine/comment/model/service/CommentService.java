@@ -12,4 +12,6 @@ public interface CommentService {
 
 	int insertComment1(Comment comment);
 
+	int insertComment2(Comment comment);
+
 }

@@ -11,21 +11,30 @@ public class FeedItem implements Serializable{
     //피드에 나올 사용자 아이디가 들어감
     private User user; // 사용자 .userid사용자아이디(보일수도있고 아닐수도 있음), .nickname 별명 -> 프로필에 보임
     //private Mypage mypage; //여기서 .profile 프로필 사진 받아옴
-    private String userProfile; //유저디폴트 사진 일단 가져감
     private Post post; // 포스트 .postid 안보여도 필요함 .
     private Image image; //이미지 위도 경도 경로로 위치와 사진 불러옴 -> 주소 가능할수도 있음
     private Video video; //비디오 (없을 수 있음)
     private int likeCount; //공감갯수
-    
+    //private int isFollowed; // 팔로우중 아님 (0) 팔로우중임 (1)
+    private int isLiked; // 공감아님(0) 공감중임(1)
+    private int whatIsLiked; // 어떤걸 공감중?(0~4)
+    private int isBookmarked; //북마크 아님(0) 북마크임 (1)
+	
+    public FeedItem() {
+		super();
+	}
 
-	public FeedItem(User user, String userProfile, Post post, Image image, Video video, int likeCount) {
+	public FeedItem(User user, Post post, Image image, Video video, int likeCount, int isLiked, int whatIsLiked,
+			int isBookmarked) {
 		super();
 		this.user = user;
-		this.userProfile = userProfile;
 		this.post = post;
 		this.image = image;
 		this.video = video;
 		this.likeCount = likeCount;
+		this.isLiked = isLiked;
+		this.whatIsLiked = whatIsLiked;
+		this.isBookmarked = isBookmarked;
 	}
 
 	public User getUser() {
@@ -34,14 +43,6 @@ public class FeedItem implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getUserProfile() {
-		return userProfile;
-	}
-
-	public void setUserProfile(String userProfile) {
-		this.userProfile = userProfile;
 	}
 
 	public Post getPost() {
@@ -76,13 +77,39 @@ public class FeedItem implements Serializable{
 		this.likeCount = likeCount;
 	}
 
-	@Override
-	public String toString() {
-		return "FeedItem [user=" + user + ", userProfile=" + userProfile + ", post=" + post + ", image=" + image
-				+ ", video=" + video + ", likeCount=" + likeCount + "]";
+	public int getIsLiked() {
+		return isLiked;
 	}
 
-	
-    
+	public void setIsLiked(int isLiked) {
+		this.isLiked = isLiked;
+	}
+
+	public int getWhatIsLiked() {
+		return whatIsLiked;
+	}
+
+	public void setWhatIsLiked(int whatIsLiked) {
+		this.whatIsLiked = whatIsLiked;
+	}
+
+	public int getIsBookmarked() {
+		return isBookmarked;
+	}
+
+	public void setIsBookmarked(int isBookmarked) {
+		this.isBookmarked = isBookmarked;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "FeedItem [user=" + user + ", post=" + post + ", image=" + image + ", video=" + video + ", likeCount="
+				+ likeCount + ", isLiked=" + isLiked + ", whatIsLiked=" + whatIsLiked + ", isBookmarked=" + isBookmarked
+				+ "]";
+	}
     
 }

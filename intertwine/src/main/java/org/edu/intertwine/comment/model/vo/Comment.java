@@ -18,6 +18,7 @@ public class Comment implements Serializable{
 		super();
 	}
 
+	//댓글용
 	public Comment(int postId, String userId, String commentContent) {
 		super();
 		this.postId = postId;
@@ -34,6 +35,16 @@ public class Comment implements Serializable{
 		this.commentLevel = commentLevel;
 		this.parentCommentId = parentCommentId;
 		this.commentTime = commentTime;
+	}
+	
+	
+	//대댓글 용
+	public Comment(int postId, String userId, String commentContent, int parentCommentId) {
+		super();
+		this.postId = postId;
+		this.userId = userId;
+		this.commentContent = commentContent;
+		this.parentCommentId = parentCommentId;
 	}
 
 	public Comment(int commentId, int postId, String userId, String commentContent, String commentLevel,

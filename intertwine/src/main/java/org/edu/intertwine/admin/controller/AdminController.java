@@ -4,12 +4,12 @@ package org.edu.intertwine.admin.controller;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.admin.model.service.AdminService;
 import org.edu.intertwine.admin.model.vo.Admin;
-import org.edu.intertwine.admin.model.vo.UserCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+@Resource(name="AdminService")
 @Controller
 public class AdminController {
 
@@ -34,6 +35,7 @@ public class AdminController {
 	@RequestMapping("admain.do")
 	public ModelAndView moveadadMainPage(ModelAndView mv) {
 		mv.addObject("visitCount", adminService.selectVisitCount());
+		mv.addObject("sumCount", adminService.selectVisitCountAll());
 		mv.setViewName("admin/admain");
 		return mv; 
 	}
