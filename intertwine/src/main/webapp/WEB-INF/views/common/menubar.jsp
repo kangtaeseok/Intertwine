@@ -86,6 +86,8 @@ hr { clear: both; }
 			<li><a href="${ pageContext.servletContext.contextPath }/moveAOP.do">AOP란</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/moveAjax.do">ajax 처리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/main.do">예제</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/kakaoMessage.do">Q&A api</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/moveAPI.do">카카오맵</a></li>
 		</ul>
 	</nav>
 </c:if>
@@ -97,8 +99,9 @@ hr { clear: both; }
 			<li><a href="${ pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항관리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/blist.do?page=1">게시글관리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/mlist.do?page=1">회원관리</a></li>
-			<li><a href="#">테스트API</a></li>
-			<li><a href="#">예제</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/kakaoMessage.do">Q&A api</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/moveAPI.do">카카오맵</a></li>
+
 		</ul>
 	</nav>
 </c:if>
@@ -112,6 +115,8 @@ hr { clear: both; }
 			<li><a href="${ pageContext.servletContext.contextPath }/moveAOP.do">AOP란</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/moveAjax.do">ajax 처리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/main.do">예제</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/kakaoMessage.do">Q&A api</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/moveAPI.do">카카오맵</a></li>
 		</ul>
 	</nav>
 </c:if>
