@@ -8,9 +8,9 @@ public interface UserCharacterService {
 	
 	UserCharacter selectUserCharacter(String userId);
 	
-	int insertUserCharacterFirst(String userId);
+	int UpdateUserCharacter(UserCharacter UserCharacter);
 	
-	int UpdateUserCharacter(String userId);
+	int insertUserCharacterFirst(String userId);
 	
 	int insertUserCharacter(UserCharacter UserCharacter);
 	

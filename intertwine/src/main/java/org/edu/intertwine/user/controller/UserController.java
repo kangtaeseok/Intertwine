@@ -131,7 +131,7 @@ public class UserController {
 		} else {
 			adminService.insertVisitCount();
 		}
-		userService.updateUserTime(loginUser.getUserId());
+		/* userService.updateUserTime(loginUser.getUserId()); */
 		
 		  return "common/main";
 	} else {
