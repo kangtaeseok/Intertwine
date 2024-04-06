@@ -20,14 +20,14 @@ public class UserCharacterDao {
 		return sqlSessionTemplate.selectOne("userCharacterMapper.selectUserCharacter", userId);
 	}
 
+	public int UpdateUserCharacter(UserCharacter userCharacter) {
+		return sqlSessionTemplate.update("userCharacterMapper.UpdateUserCharacter", userCharacter);
+	}
+	
 	public int insertUserCharacterFirst(String userId) {
 		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacterFirst", userId);
 	}
 
-	public int UpdateUserCharacter(String userId) {
-		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacter", userId);
-	}
-	
 	public int insertUserCharacter(UserCharacter userCharacter) {
 		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacter", userCharacter);
 	}

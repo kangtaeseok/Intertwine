@@ -383,7 +383,6 @@ main {
 
 #mycharacter {
 	z-index: 991;
-	background: red;
 	text-align: center;
 	display: flex;
 	flex-direction: row;
@@ -397,8 +396,17 @@ main {
     text-align: center;
 }
 
-#mycharacterhair{
-	z-index: 993;
+.mycharacterresource {
+	backgroundSize: cover;
+	backgroundPosition: center;
+}
+
+.dynamic-btn {
+	border-radius: 5px; 
+    position: absolute;
+    z-index: 1000; 
+    min-width: 90px; /* 최소 너비 설정 */
+  	cursor: pointer;
 }
 
 
@@ -419,28 +427,31 @@ main {
 
 
 
-
-
-
-
+ 
 
 
 
 /* 버튼 가져온거 코드 */
 
 #btnupdateroom {
-	left: 93%;
-	top: 2%;
+	 left: 92%;
+	 top: 2%;
+	 background-color: #f99d9d;
+	 box-shadow: 0 2px 25px rgba(249, 157, 157, 0.3);
 }
 
 #btnselectalbum {
-	left: 80%;
-	top: 2%;
+	 left: 78%;
+	 top: 2%;
+	 background-color: #fffcad;
+	 box-shadow: 0 2px 25px rgba(255, 252, 173, 0.3);
 }
 
 #btnselectguestbook {
-	left: 66%;
-	top: 2%;
+	 left: 65.4%;
+	 top: 2%;
+	 background-color: #b5ffca;
+	 box-shadow: 0 2px 25px rgba(181, 255, 202, 0.3);
 }
 $fuschia: #ff0081;
 $button-bg: $fuschia;
@@ -465,14 +476,14 @@ body{
   margin-bottom: 60px; */
   -webkit-appearance: none;
   appearance: none;
-  background-color: #f99d9d;
-  color: #fff;
-  border-radius: 4px;
+ 
+  color: rgb(75, 75, 75);
+  border-radius: 20px;
   border: none;
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+  
   z-index: 993;
   &:focus {
     outline: 0;
