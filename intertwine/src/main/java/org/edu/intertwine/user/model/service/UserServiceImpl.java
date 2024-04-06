@@ -107,6 +107,15 @@ public class UserServiceImpl implements UserService {
 
 	
 
+	@Override
+	public String selectUserNickname(String userId) {
+		return userDao.selectUserNickname(userId);
+	}
+
+	@Override
+	public void updateUserNickname(User user) {
+		userDao.updateUserNickname(user);
+	}
 
 	
 	
