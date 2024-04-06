@@ -1,4 +1,6 @@
 @charset "UTF-8";
+
+
 html {
 	font-size: 16px; /* rem 단위 사용을 위해 가장 상위요소의 px값 지정 */
 	height: 100%;
@@ -433,27 +435,28 @@ main {
 #bottom_right_contents div li:hover {
 	padding: 10px;
 	text-align: center;
-	background: #f4f4f4;
-	cursor: pointer;
+	background: #ff80ff;
 }
 
 	
 .box {
 	white-space: nowrap;
+	position: fixed;
 	margin: 0 auto;
     position: relative;
     height: 100vh;
-    width:45%;
+    width: 45%;
  	background: white;
-
+ 	display: flex;
+	 flex-direction: row;
 }
 
+
 .logo-box {
+	padding-bottom: 1rem;
+	padding-top: 20px;
 	display: flex;
 	justify-content: center;
-	margin: 10 0px;
-	padding-bottom: 80px;
-	padding-top: 20px;
 }
 
 .info-box {
@@ -519,36 +522,6 @@ main {
  	justify-content: center;
 
  }
-
- 
- 
-.submit-box input {
-  display: grid;
-  place-items: center;
-}
-
-.submit-box input[type="submit"] {
-      outline: none;
-      background: #f99d9d;
-      border-radius: 6px;
-      border: none;
-      color: white;
-      font-weight: bold;
-      padding: 5px;
-      width: 100px;
-       cursor: pointer;
-}
- .submit-box input[type="reset"] {
-      outline: none;
-      background: #f99d9d;
-      border-radius: 6px;
-      border: none;
-      color: white;
-      font-weight: bold;
-      padding: 5px;
-      width: 100px;
-       cursor: pointer;
-}
  
 button.btn {
 	font-weight: bold;
@@ -563,4 +536,74 @@ button.btn {
 	 
 }
 
+.time-box {
+	display: flex;
+	flex-direction: column;	
+	width: calc(60% - 50px);
+}
+h3 {
+	text-align: center;
+}
 
+.chart-box {
+	padding: 20px;
+}
+
+.usage-time {
+	background: #f4f4f4;
+	font-size: 20px;
+    font-weight: bold;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+	width: 100%;
+}
+
+.time-setting-box {
+	width: calc(60% - 30px);
+
+}
+.time-set-box {
+	padding: 1rem;
+	height: 100%;
+	display: flex;
+ 	justify-content: center;
+}
+
+.set-box {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	height: 80%;
+	border-radius: 0.5rem;
+}
+
+
+.set1 {
+	display: flex;
+	justify-content: center;
+	width: 80%;
+	height: 35%;
+	border: 2px solid gray;
+	align-items: center;
+	margin: 1rem;
+
+	background: gray;
+	
+}
+
+.set2 {
+	display: flex;
+	justify-content: center;
+	width: 90%;
+	height: 90%;
+	background: white;
+	align-items: center;
+	text-align: center;
+	cursor: pointer;
+}

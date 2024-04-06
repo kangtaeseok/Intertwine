@@ -3,6 +3,7 @@ package org.edu.intertwine.user.model.service;
 
 import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.dao.UserDao;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
@@ -78,10 +79,30 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateUser(user);
 	}
 
+	
+	
+	/* 마이페이지 */
 	@Override
-	public void updateUserTime(String userId) {
-		userDao.updateUserTime(userId);
+	public void updateUserTime(MyPage mypage) {
+		userDao.updateUserTime(mypage);
 		
+	}
+
+	@Override
+	public void insertMyPage(String userId) {
+		userDao.insertMyPage(userId);
+		
+		
+	}
+
+	@Override
+	public String selectUserTime(String userId) {
+		return userDao.selectUserTime(userId);
+	}
+
+	@Override
+	public MyPage selectMyPage(String userId) {
+		return userDao.selectMyPage(userId);
 	}
 
 	
