@@ -16,22 +16,23 @@
 					<div class="userDetails">
 						<div class="profile_img">
 							<div class="image">
-								<img src="${pageContext.servletContext.contextPath}/src/main/webapp/resources/profile/images.jpg">
-							
+								<img src="${ defaultImage }">
 							</div>
 						</div>
 						<h3>
 							<!-- 여기를 누르면 친구 상태페이지 연결-->
-							<a href="#">${ user.userId }</a> &nbsp;
+							<a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }">${ item.user.userId }</a> &nbsp;
 							<!-- 친구여부 여기서 확인 c:if 넘겨야 할 정보 내아이디 정보 상대 아이디 정보-->
 							<!-- 친구가 아닐 시-->
-							<a class="friend" href="#">팔로우</a>
-
-                            <a class="unfriend" href="#">언팔로우</a>
-
+							<c:if test="${ isFollowing eq 0 }">
+							<a class="friend" href="#" style="text-decoration:none;color:black;">팔로우</a>
+							</c:if>
+							<c:if test="${ isFollowing eq 1 }">
+                            <a class="unfriend" href="#" style="text-decoration:none;color:black;">언팔로우</a>
+							</c:if>
 							<br>
 							<c:if test="${ not empty item.image.imageLon }">
-							<span><a href="#">여기는 위치</a></span>
+							<span><a href="#" style="text-decoration:none;color:black;">여기는 위치</a></span>
 							</c:if>
 						</h3>
 					</div>
@@ -121,30 +122,27 @@
 							</span>
 						</div>
 					</div>
-					<!-- 여기서 가장 최근 3명의 공감 보여줌 -->
-					<a href="#"><p class="likes">공감 ${ item.isLiked }개</p></a>
+				
+					<p class="likes">공감 ${ item.isLiked }개</p>
 					<!-- 누를 시 그 사람의 상세 페이지로 들어감 카드 상단 닉네임부분과 역할이 같음 -->
-					<a href="#"><b>${ item.user.userId }</b></a> &nbsp;
+					<a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }"><b>${ item.user.userId }</b></a> &nbsp;
 					<!-- 여기에 쓴 글이 들어감-->
-					 ${ item.post.postContent }
-								${pageContext.servletContext.contextPath}/src/main/webapp/resources/profile
 					<!-- 누를 시 포스트 상세보기 페이지로 들어감-->
 					<h5 class="comments">
-						<a href="javascript:callFunction(pagedetil());">전체 댓글 보기</a>
+						<a href="${pageContext.servletContext.contextPath}/detail.do?postId=${ item.post.postId }">전체 댓글 보기</a>
 					</h5>
 					<h5 class="postTime">${ item.post.postTime }</h5>
-					<form action="your-server-endpoint" method="POST"
-						class="addComments" name="">
-						<input type="text" class="text" name="comment"
-							placeholder="댓글을 추가해주세요"> <input type="submit"
-							class="submit" value="등록">
+					<form action="addComment1.do" method="POST" class="addComments" >
+						<input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
+						<input type="hidden" name="postId" value="${ item.post.postId }">
+						<input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요"> 
+						<input type="submit" class="submit" value="등록">
 					</form>
 				</div>
 			</div>
 			<!-- card 끝-->
 
 		</c:forEach>
-		<div class="loader"></div>
 	</div>
 	<!-- Frame 끝-->
 	
