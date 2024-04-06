@@ -35,4 +35,9 @@ public class CommentDao {
 		return sqlSessionTemplate.insert("commentMapper.insertComment2", comment);
 	}
 
+	public int deleteComment(Comment comment) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("commentMapper.deleteComment", comment);
+	}
+
 }

@@ -17,4 +17,16 @@ public class BookmarkServiceImpl implements BookmarkService{
 		return bookmarkDao.selectIsBookmarked(bookmark);
 	}
 
+	@Override
+	public int insertBookmark(Bookmark bookmark) {
+		// TODO Auto-generated method stub
+		return bookmarkDao.insertBookmark(bookmark);
+	}
+
+	@Override
+	public int deleteBookmark(Bookmark bookmark) {
+		// TODO Auto-generated method stub
+		return bookmarkDao.deleteBookmark(bookmark);
+	}
+
 }

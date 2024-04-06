@@ -2,6 +2,7 @@ package org.edu.intertwine.user.model.dao;
 
 
 import org.edu.intertwine.user.controller.UserController;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -68,12 +69,32 @@ public class UserDao {
 		return sqlSessionTemplate.update("userMapper.updateUser", user);
 	}
 
-	public void updateUserTime(String userId) {
-		sqlSessionTemplate.update("userMapper.updateUserTime", userId);
+	public void updateUserTime(MyPage mypage) {
+		sqlSessionTemplate.update("userMapper.updateUserTime", mypage);
+	}
+
+	public void insertMyPage(String userId) {
+		sqlSessionTemplate.insert("userMapper.insertMyPage", userId);
+		
+	}
+
+	public String selectUserTime(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectUserTime", userId);
+	}
+
+	public MyPage selectMyPage(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectMyPage", userId);
 	}
 
 
-	
+	public String selectUserNickname(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectUserNickname", userId);
+	}
+
+	public void updateUserNickname(User user) {
+		sqlSessionTemplate.update("userMapper.updateUserNickname", user);		
+	}
+
 
 	
 }

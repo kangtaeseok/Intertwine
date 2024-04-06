@@ -110,6 +110,21 @@ public class UserController {
 		model.addAttribute("type", result);
 		return "user/socialUpPage"; 
 	}
+	
+	
+	
+	//이용시간 페이지로 이동
+	@RequestMapping("userTime.do")
+	public String moveUserTimePage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		userService.updateUserTime(userService.selectMyPage(user.getUserId()));
+		String time = userService.selectUserTime(user.getUserId());
+		logger.info(time);
+		
+		model.addAttribute("time", time);
+		return "user/userTimePage";
+	}
+	
 
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
@@ -122,7 +137,7 @@ public class UserController {
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
-			
+		
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
 		
@@ -131,7 +146,6 @@ public class UserController {
 		} else {
 			adminService.insertVisitCount();
 		}
-		userService.updateUserTime(loginUser.getUserId());
 		
 		  return "common/main";
 	} else {
@@ -201,8 +215,10 @@ public class UserController {
 		logger.info("uinsert.do : " + user.toString());
 		
 		user.setUserPwd(bcryptPasswordEncoder.encode(user.getUserPwd()));
+		userService.insertMyPage(user.getUserId());
 		
 		if(userService.insertUser(user) > 0) {
+			userService.insertMyPage(user.getUserId());
 			return "common/main";
 		}
 		return "user/enroll";
@@ -210,7 +226,11 @@ public class UserController {
 	
 	
 	@RequestMapping("kakao_login.do")
-	public String kakaoLogin(HttpServletRequest request) throws Exception {	
+	public String kakaoLogin(HttpServletRequest request, HttpSession session, Model model) throws Exception {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
 		return "commom/main";
 	}
 			
@@ -231,8 +251,9 @@ public class UserController {
 	    		}
 				String result = "";
 				result = userService.selectSocialType(loginUser.getUserId());
+				
 				model.addAttribute("type", result);
-			return "common/main";
+				return "common/main";
 			} else {
 				model.addAttribute("msg", "로그인에 실패했습니다. 관리자에게 문의하세요");
 				model.addAttribute("url", "login.do");
@@ -250,7 +271,7 @@ public class UserController {
 	    	social.setType("kakao");
 	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	    	userService.insertSocial(social);
-	    	
+	    	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		loginUser = user;
@@ -261,8 +282,9 @@ public class UserController {
 	    		} else {
 	    			adminService.insertVisitCount();
 	    		}
+	    		return "redirect:socialPage.do";
 	    	}
-		return "redirect:socialPage.do";
+		return "login.do";
 		}
 		
 	
@@ -301,7 +323,7 @@ public class UserController {
     		} else {
     			adminService.insertVisitCount();
     		}
-			return "common/main";
+			return "redirect:main.do";
         	
         } else {
         	int result = 0;
@@ -311,6 +333,7 @@ public class UserController {
         	user.setPhone(phone);
         	user.setUserName(name);
         	result = userService.insertUser(user);
+        	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		SocialLogin social = new SocialLogin();
@@ -329,7 +352,7 @@ public class UserController {
 	    		}
     			return "redirect:socialPage.do";
         	} else {
-        		return "user/login.do";
+        		return "user/login";
         	}
 	    }
 
@@ -555,8 +578,9 @@ public class UserController {
 	 }
 	 
 	 //마이페이지 시간 설정
-	 
-	 
+		/*
+		 * @RequestMapping(value="usettime.do", method="") public String myPageTime()
+		 */
  
 //	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
 //	 public String userDisabled() {}

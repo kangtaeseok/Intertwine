@@ -15,36 +15,21 @@ public class FeedItem implements Serializable{
     private Image image; //이미지 위도 경도 경로로 위치와 사진 불러옴 -> 주소 가능할수도 있음
     private Video video; //비디오 (없을 수 있음)
     private int likeCount; //공감갯수
-    //private int isFollowed; // 팔로우중 아님 (0) 팔로우중임 (1)
     private int isLiked; // 공감아님(0) 공감중임(1)
-    private int whatIsLiked; // 어떤걸 공감중?(0~4)
+    private String whatIsLiked; // 어떤걸 공감중?(0~4)
     private int isBookmarked; //북마크 아님(0) 북마크임 (1)
     private int isFollowing;
     private int isFollower;
-	
     
-
-	public int getIsFollowing() {
-		return isFollowing;
-	}
-
-	public void setIsFollowing(int isFollowing) {
-		this.isFollowing = isFollowing;
-	}
-
-	public int getIsFollower() {
-		return isFollower;
-	}
-
-	public void setIsFollower(int isFollower) {
-		this.isFollower = isFollower;
-	}
-
+    
+    
 	public FeedItem() {
 		super();
 	}
-
-	public FeedItem(User user, Post post, Image image, Video video, int likeCount, int isLiked, int whatIsLiked,
+	
+	
+	
+	public FeedItem(User user, Post post, Image image, Video video, int likeCount, int isLiked, String whatIsLiked,
 			int isBookmarked, int isFollowing, int isFollower) {
 		super();
 		this.user = user;
@@ -59,79 +44,82 @@ public class FeedItem implements Serializable{
 		this.isFollower = isFollower;
 	}
 
+
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	public Post getPost() {
 		return post;
 	}
-
 	public void setPost(Post post) {
 		this.post = post;
 	}
-
 	public Image getImage() {
 		return image;
 	}
-
 	public void setImage(Image image) {
 		this.image = image;
 	}
-
 	public Video getVideo() {
 		return video;
 	}
-
 	public void setVideo(Video video) {
 		this.video = video;
 	}
-
 	public int getLikeCount() {
 		return likeCount;
 	}
-
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
-
 	public int getIsLiked() {
 		return isLiked;
 	}
-
 	public void setIsLiked(int isLiked) {
 		this.isLiked = isLiked;
 	}
-
-	public int getWhatIsLiked() {
+	public String getWhatIsLiked() {
 		return whatIsLiked;
 	}
-
-	public void setWhatIsLiked(int whatIsLiked) {
+	public void setWhatIsLiked(String whatIsLiked) {
 		this.whatIsLiked = whatIsLiked;
 	}
-
 	public int getIsBookmarked() {
 		return isBookmarked;
 	}
-
 	public void setIsBookmarked(int isBookmarked) {
 		this.isBookmarked = isBookmarked;
 	}
-
+	public int getIsFollowing() {
+		return isFollowing;
+	}
+	public void setIsFollowing(int isFollowing) {
+		this.isFollowing = isFollowing;
+	}
+	public int getIsFollower() {
+		return isFollower;
+	}
+	public void setIsFollower(int isFollower) {
+		this.isFollower = isFollower;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return "FeedItem [user=" + user + ", post=" + post + ", image=" + image + ", video=" + video + ", likeCount="
 				+ likeCount + ", isLiked=" + isLiked + ", whatIsLiked=" + whatIsLiked + ", isBookmarked=" + isBookmarked
-				+ "]";
+				+ ", isFollowing=" + isFollowing + ", isFollower=" + isFollower + "]";
 	}
+	
+	
+	
+    
     
 }

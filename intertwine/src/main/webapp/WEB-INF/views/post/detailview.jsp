@@ -9,8 +9,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post Viewer</title>
-<!--슬라이드 쇼-->
-
 
 <!--스크롤바 디자인 -->
 
@@ -43,6 +41,7 @@
 <body>
 <div class="container-detail" style="display: flex; padding-top: 5vw; padding-left: 10vw;">
      <div class="left" style="max-width: 800px; height: 800px; width: 35vw; border: 1px grey solid; position: relative; background-color: black; display: flex; align-items: center; justify-content: center;">
+            <a href="${pageContext.servletContext.contextPath}/back.do?postId=${post.postId}"><i class="fa-solid fa-arrow-left" style="position: absolute;top: 0;left: 0;padding: 10px;color: white;font-size: 24px;cursor: pointer;"></i></a>
             <!-- this part will be repeated  -->
 			<c:if test="${!empty images}">
 			    <c:forEach var="image" items="${images}">
@@ -53,13 +52,6 @@
 			        </c:if>
 			    </c:forEach>
 			</c:if>
-
-<%-- 			<c:if test="${!empty video.videoURL and empty images}">
-			    <video controls>
-			        <source src="${video.videoURL}" type="video/mp4">
-			    </video>
-			</c:if> --%>
-
           <c:if test="${empty images}">
           		<div class="mySlides fade" style="display: none;">
 			            <img src="resources/postimage/noimage.jpg" style="width: 100%">
@@ -138,37 +130,41 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="scroll" style="height: 776px; overflow: auto;">
                <div class="owner" style="display: flex; border-bottom: 1px black solid; padding-bottom: 5px;"> 
                     <div class="pic" style="margin-left: 5px;">
-                         <img src="https://www.w3schools.com/html/img_girl.jpg" onclick="" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;">
+                         <a href="${pageContext.servletContext.contextPath}?friendId=${post.userId}"><img src="https://www.w3schools.com/html/img_girl.jpg" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"></a>
                     </div>
                     <div class="owner-info" style="padding-left: 5px;">
                          <div class="dummy" style="display: flex; margin-top: 5px; margin-bottom: 3px;">
-                              <div style="font-size: 18px; padding-left: 7px;"><b onclick="" style="cursor:pointer;">${post.userId}</b></div> &nbsp;
+                              <a href="${pageContext.servletContext.contextPath}?friendId=${post.userId}"><div style="font-size: 18px; padding-left: 7px;"><b style="cursor:pointer;">${post.userId}</b></div></a> &nbsp;
                               
                               <c:if test="${ post.userId ne viewingUser.userId }">
-                              <!--  친구중인지 확인하는 태그 추가 -->
-                              <a href="#"  style="text-decoration: none; color: black;">팔로우</a> &nbsp;
-                              <a href="#"  style="text-decoration: none; color: black;">언팔로우</a> &nbsp;
-                              <!-- 항상 보임 -->
-                              <a href="#"  style="text-decoration: none; color: black;">차단</a> &nbsp;
-                              <i class="fa-solid fa-ellipsis settings-button" ></i>
+                         	<c:if test="${ isFollowing eq 0 }">
+                              <a href="${pageContext.servletContext.contextPath}/insertFdetail.do?userId=${viewingUser.userId}&friendId=${post.userId}&postId=${post.postId}" style="text-decoration: none; color: black;">팔로우</a> &nbsp;
+                              </c:if>
+                              <c:if test="${ isFollowing eq 1 }">
+                              <a href="${pageContext.servletContext.contextPath}/unfollowingDetail.do?userId=${ viewingUser.userId }&friendId=${post.userId}&postId=${post.postId}"  style="text-decoration: none; color: black;">언팔로우</a> &nbsp;
+                              </c:if>
                               
-                              <!-- c:if 태그로 확인 남의 글 -->
+                              <c:if test="${ post.userId ne viewingUser.userId }">
                                    <ul class="settings-menu">
                                         <li><button>신고하기</button></li>
                                    </ul>
-                                   
+                                </c:if>   
                              </c:if>
                              <c:if test="${ post.userId eq viewingUser.userId }">
-                           
                                    <ul class="settings-menu" style="display:flex;">
-                                        <li><button>핀하기</button></li>&nbsp;
-                                        <li><button>삭제하기</button></li>
-                          
+                                   		<c:if test="${ isPinned eq 0 }">
+                                        <li><a href="${pageContext.servletContext.contextPath}/updatepin.do?value=1?postId=${post.postId}&userId='${post.userId}'">핀하기</a></li>&nbsp;
+                                        </c:if>
+                                        <c:if test="${ isPinned eq 1 }">
+                                        <li><a href="${pageContext.servletContext.contextPath}/updatepin.do?value=0?postId=${post.postId}&userId='${post.userId}'">핀제거</a></li>&nbsp;
+                                        </c:if>
+                                        <li><a href="${pageContext.servletContext.contextPath}/deletepost.do?postId=${post.postId}&userId='${post.userId}'">삭제하기</a></li>
                               </c:if>
                          </div>
                          
-                         <!-- 주소가 없으면 안나타남 -->
+                         <c:if test="${ not empty image.imageLon }">
                          <a href="" class="owner-address"  style="text-decoration: none; color: black;font-size: 12px;">주소</a>
+                         </c:if>
                          <!-- 주소가 있으면 안나타남 -->
                          <a href="" class="owner-id"  style="text-decoration: none; color: black; font-size: 12px;"><b><%-- ${postUser.userId} --%></b></a>
                     </div>
@@ -179,32 +175,60 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="box"style="display: flex;margin-top: 5px;margin-bottom: 3px;">
                          <div class="reaction" id="reaction" style=" position: relative;cursor: pointer;">
                               <!-- 반응을 남긴적 없을 경우-->
+                              <c:if test="${ isLiked eq 0 || empty isLiked }">
                               <i class="fa-regular fa-face-smile"style="font-size: 30px;padding-left: 7px;"></i>
+                              </c:if>
                               <!-- 반응을 남긴 적 있을 경우-->
+                              <c:if test="${ isLiked eq 1}">
                               <i class="fa-solid fa-face-smile"style="font-size: 30px;padding-left: 7px;"></i>
-                              <div class="reaction-box" id="reaction-box" 
-                              style="
-                              display: none; 
-                              position: absolute;
-                              top: 150%;
-                              left: 25%;
-                              transform: translateX(-50%); 
-                              background-color: #fff;
-                              border-radius: 5px; 
-                              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                              padding: 10px;
-                              z-index: 5; 
-                              flex-direction: row;
-                              align-items: center; 
-                              justify-content: center;
-                              width: auto;
-                              flex-wrap: wrap;">
-                                   <i class="fa-regular fa-thumbs-up reaction-icon" name="likeType" id="like" data-value="0" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
-                                   <i class="fa-regular fa-heart reaction-icon" name="likeType" id="love" data-value="1" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
-                                   <i class="fa-regular fa-face-sad-tear reaction-icon" name="likeType" id="sad" data-value="2" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
-                                   <i class="fa-regular fa-face-angry reaction-icon" name="likeType" id="angry" data-value="3" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
-                                   <i class="fa-regular fa-face-smile reaction-icon" name="likeType" id="haha" data-value="4" onclick=""style="font-size: 30px;padding-left: 7px;"></i>
-                              </div>
+                              </c:if>
+                              <form action="updatereaction.do" method="post" id="reactionForm">
+	                              <input type="hidden" name="userId" value="${ viewingUser.userId }">
+	                              <input type="hidden" name="postId" value="${ post.postId }">
+	                              <input type="hidden" name="likeType" id="likeType">
+	                              <div class="reaction-box" id="reaction-box" style="display: none;position: absolute;top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center; justify-content: center;width: auto;flex-wrap: wrap;">
+	                                   
+	                                 <c:if test="${ not empty whatIsLiked }">
+	                                   <c:if test="${ whatIsLiked ne '0' }">
+	                                   <i class="fa-regular fa-thumbs-up reaction-icon" id="like" value="0" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked eq '0' }">
+	                                   <i class="fa-solid fa-thumbs-up reaction-icon" id="liked" value="0" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked ne '1' }">
+	                                   <i class="fa-regular fa-heart reaction-icon" id="love" value="1" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked eq '1' }">
+	                                   <i class="fa-solid fa-heart reaction-icon" id="loved" value="1" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked ne '2' }">
+	                                   <i class="fa-regular fa-face-sad-tear reaction-icon" id="sad" value="2" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked eq '2' }">
+	                                   <i class="fa-solid fa-face-sad-tear reaction-icon" id="saddened" value="2" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked ne '3' }">
+	                                   <i class="fa-regular fa-face-angry reaction-icon" id="angry" value="3" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked eq '3' }">
+	                                   <i class="fa-solid fa-face-angry reaction-icon"  id="angried" value="3" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   </c:if>
+	                                   <c:if test="${ whatIsLiked ne '4' }">
+	                                   <i class="fa-regular fa-face-laugh-squint reaction-icon" id="haha" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+	                             	   </c:if>
+		                               <c:if test="${ whatIsLiked eq '4' }">
+		                               <i class="fa-solid fa-face-laugh-squint reaction-icon"  id="hahad" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+		                               </c:if>
+	                             	</c:if>
+	                             	<c:if test="${ empty whatIsLiked }">
+	                             		<i class="fa-regular fa-thumbs-up reaction-icon" id="like2" value="0" style="font-size: 30px;padding-left: 7px;"></i>
+	                             		<i class="fa-regular fa-heart reaction-icon" id="love2" value="1" style="font-size: 30px;padding-left: 7px;"></i>
+	                             		<i class="fa-regular fa-face-sad-tear reaction-icon" id="sad2" value="2" style="font-size: 30px;padding-left: 7px;"></i>
+	                             		<i class="fa-regular fa-face-angry reaction-icon" id="angry2" value="3" style="font-size: 30px;padding-left: 7px;"></i>
+	                             		<i class="fa-regular fa-face-laugh-squint" id="haha2" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+	                             	</c:if>
+	                              </div>
+	                          </form>
                          </div> 
                      <script>
 						document.addEventListener('DOMContentLoaded', function() {
@@ -223,16 +247,40 @@ document.addEventListener('DOMContentLoaded', function() {
 						    });
 						});
 						</script>
+						<script>
+						    document.querySelectorAll('.reaction-icon').forEach(icon => {
+						        icon.addEventListener('click', function() {
+						            const likeType = this.getAttribute('value');
+						            document.getElementById('likeType').value = likeType;
+						            document.getElementById('reactionForm').submit();
+						        });
+						    });
+						</script>
+						<script>
+						    document.addEventListener('DOMContentLoaded', function () {
+						        var icons = document.querySelectorAll('.reaction-icon');
+						        
+						        icons.forEach(function(icon) {
+						            icon.addEventListener('click', function() {
+						                //likeType value를 설정
+						            	document.getElementById('likeType').value = this.getAttribute('value');
+						                //폼 제출
+						                document.getElementById('reactionForm').submit();
+						            });
+						        });
+						    });
+						</script>
                          <div class="share">
                               <a class="url" href=javascript:getLink()><i class="fa-solid fa-share-nodes"></i></a>
                          </div>
                          <div class="bookmark">
-                              <!-- 북마크를 안했을 경우 c:if-->
-                              <i class="fa-regular fa-bookmark" onclick="#"></i>
-                              <!-- 북마크를 했을 경우 c:if -->
-                              <i class="fa-solid fa-bookmark" onclick="#"></i>
-                              <!-- 넘길 때 필요한 정보
-                              접속한 사람 userId 와 postId -->
+                              <c:if test="${ isBookmarked eq 0 || empty isBookmarked }">
+                              <a href="${pageContext.servletContext.contextPath}/insertBookmark.do?postId=${post.postId}&userId=${viewingUser.userId}"><i class="fa-regular fa-bookmark"></i></a>
+                              </c:if>
+                
+                              <c:if test="${ isBookmarked eq 1 }">
+                              <a href="${pageContext.servletContext.contextPath}/deleteBookmark.do?postId=${post.postId}&userId=${viewingUser.userId}"><i class="fa-solid fa-bookmark"></i></a>
+                              </c:if>
                          </div>
                     </div>
 
@@ -248,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</c:if>
                </div>
                <div class="time" style="font-size: 13px; color: grey;">
-                    ${ post.postTime}
+                    ${post.postTime}
                </div>
               
          <div class="commentbox" style="height: 100%; border-top: gray 1px solid;">
@@ -272,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
                               ${ comment.commentContent }
                               <div class="commenttime" style="font-size: 12px;">
                                    ${ comment.commentTime }
-                                   <!-- 답글달기 누르면 나옴 -->
+                                  		<c:if test="${ comment.commentLevel ne '1' }">
                                         <form action="addComment2.do" method="POST" class="add-comment2">
                                              <input type="hidden" name="userId" value="${ viewingUser.userId }">
                                              <input type="hidden" name="postId" value="${ post.postId }">
@@ -280,6 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                              <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요" style="margin-bottom: 10px;border: none;box-sizing: border-box;background-color: white;width: 88%">
                                              <input type="submit" class="submit" value="등록" style="margin-bottom: 10px;border: none;box-sizing: border-box;border-radius: 5px;background-color: plum; color: white;font-weight: bold; cursor: pointer;transition: background-color 0.3s, border-color 0.3s">
                                         </form>
+                                        </c:if>
                               </div>
                          </div>
                          <div class="commentreport" style="padding: 5px;">
@@ -290,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
                               </c:if>
                            <c:if test="${ comment.userId eq viewingUser.userId }">
                               <ul class="settings-menu">
-                                   <li><a href="#"  style="text-decoration: none; color: black;">삭제</a></li>
+                                   <li><a href="${pageContext.servletContext.contextPath}/deleteComment.do?userId=${viewingUser.userId}&postId=${ comment.postId }&commentId=${ comment.commentId }" style="text-decoration: none; color: black;">삭제</li>
                               </ul>
                           </c:if>
                          </div>
@@ -304,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <input type="hidden" name="userId" value="${ viewingUser.userId }">
                     <input type="hidden" name="postId" value="${ post.postId }">
                     <input type="text" class="text" name="commentContent" placeholder="댓글을 추가해주세요" style="margin-bottom: 10px; border: none; box-sizing: border-box; background-color: white; width: 88%;">
-                    <input type="submit" class="submit" value="등록" style="margin-bottom: 10px;border: none;box-sizing: border-box;border-radius: 5px;background-color: plum; color: white;font-weight: bold; cursor: pointer;transition: background-color 0.3s, border-color 0.3s"">
+                    <input type="submit" class="submit" value="등록" style="margin-bottom: 10px;border: none;box-sizing: border-box;border-radius: 5px;background-color: plum; color: white;font-weight: bold; cursor: pointer;transition: background-color 0.3s, border-color 0.3s">
                     ${ post.postId }
                 </form>
           </div>

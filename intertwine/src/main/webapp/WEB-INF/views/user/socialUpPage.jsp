@@ -15,6 +15,24 @@
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <script>
+
+Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
+console.log(Kakao.isInitialized()); 
+function kakaoLogout() {
+    if (Kakao.Auth.getAccessToken()) {
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+        success: function (response) {
+        	console.log(response)
+        	location.href="login.do";
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+      Kakao.Auth.setAccessToken(undefined)
+    }
+  }  
 function ph(target) {
 	target.value = target.value.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 }
@@ -91,42 +109,32 @@ function daumPostcode() {
                     <li id="a">
                         <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
                         <ul>
-                            <li><a href="#">text1</a></li>
-                            <li><a href="#">text2</a></li>
-                            <li><a href="#">text3</a></li>
-                            <li><a href="#">text4</a></li>
+                            <li id="square">
+                    			<a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+               				</li>
                         </ul>
                     </li>
                     <li id="mypage">
                         <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
                         <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
                     </li>
-                    <li id="c">
-                        <a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>
-                    </li>
-                    <li id="chatting">
-                        <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
-                    </li>
-                    <li id="alarm">
-                        <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
-                    </li>
-                    <li id="f">
-                        <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
-                    </li>
-                    <li id="settings">
-                        <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-   
-                        <c:if test="${empty type}">
-                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
-						</c:if>
-						<c:if test="${type eq 'kakao'}">
-							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
-						</c:if>
-						<c:if test="${type eq 'naver'}">
-							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
-						</c:if>
-                    </li>
-                </ul>
+                    <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
+                </li>
+            </ul>
             </aside>
             <div id="bottom_right_contents">
                 <div id="dummy_sub_menu" class="sub_menu">
@@ -142,21 +150,34 @@ function daumPostcode() {
                     알림 서브메뉴
                 </div>
                 <div id="settings_sub_menu" class="sub_menu">
-            <c:if test="${empty type}">
+                <ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
                         <li id="userInfo">
-                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
                        	</li>
                         </c:if>
                         <c:if test="${type eq 'kakao'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
 						</c:if>
 						<c:if test="${type eq 'naver'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
 						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+						<c:if test="${empty type}">
+                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
+						</c:if>
+						<c:if test="${type eq 'kakao'}">
+							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
+						</c:if>
+					</ul>	
                 </div>
                 
                

@@ -17,6 +17,7 @@ public class Post implements Serializable {
 	public Post() {
 		super();
 	}
+	
 
 	public Post(String userId, String postContent, String postVisible, Date postTime, int postView, String postPin) {
 		super();
@@ -26,6 +27,13 @@ public class Post implements Serializable {
 		this.postTime = postTime;
 		this.postView = postView;
 		this.postPin = postPin;
+	}
+	
+	//핀확인용
+	public Post(int postId, String userId) {
+		super();
+		this.postId = postId;
+		this.userId = userId;
 	}
 
 	public Post(int postId, String userId, String postContent, String postVisible, Date postTime, int postView,
