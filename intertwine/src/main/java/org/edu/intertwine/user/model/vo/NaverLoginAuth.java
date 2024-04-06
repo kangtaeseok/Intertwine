@@ -29,6 +29,7 @@ public class NaverLoginAuth {
 	
 	public String getAuthorizationUrl(HttpSession session) {
 		String state = generateRandomString();
+		
 		setSession(session, state);	
 		
 		OAuth20Service oauthService = new ServiceBuilder()
@@ -40,7 +41,9 @@ public class NaverLoginAuth {
 		return oauthService.getAuthorizationUrl();
 
 	}
+	
 	OAuth2AccessToken accessToken;
+	
 	public OAuth2AccessToken getAccessToken() {
 		return accessToken;
 	}

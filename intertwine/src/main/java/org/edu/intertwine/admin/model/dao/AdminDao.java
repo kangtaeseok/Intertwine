@@ -1,7 +1,13 @@
 package org.edu.intertwine.admin.model.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.edu.intertwine.admin.model.vo.Admin;
+import org.edu.intertwine.admin.model.vo.ContentReport;
 import org.edu.intertwine.admin.model.vo.VisitCount;
+import org.edu.intertwine.common.Paging;
+import org.edu.intertwine.common.Search;
 import org.edu.intertwine.user.controller.UserController;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -41,6 +47,24 @@ public class AdminDao {
 
 	public int selectVisitCountMonth(String string) {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountMonth", string);
+	}
+
+	public int selectRptListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectRptListCount");
+	}
+
+	public ArrayList<ContentReport> selectRptList(Paging paging) {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectRptList", paging);
+		return (ArrayList<ContentReport>)list;
+	}
+
+	public int selectSeachUserIdCount(String keyword) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectSeachUserIdCount", keyword);
+	}
+
+	public ArrayList<ContentReport> selectSearchUserId(Search search) {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectSearchUserId", search);
+		return (ArrayList<ContentReport>)list;
 	}
 
 }

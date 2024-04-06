@@ -67,7 +67,7 @@
                     <li><a href="${ pageContext.servletContext.contextPath }/userRptPage.do"><i class="fa-solid fa-flag"></i> 신고현황</a></li>
              
                 <li id="friend">
-                    <li><a href="${ pageContext.servletContext.contextPath }/RptPage.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
                 
                 <li id="chatting">
                     <li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
