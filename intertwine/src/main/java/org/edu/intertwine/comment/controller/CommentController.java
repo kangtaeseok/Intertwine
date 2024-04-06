@@ -59,4 +59,25 @@ public class CommentController {
 		
 		
 	}
+	
+	
+	@RequestMapping(value="deleteComment.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String addComment2(@RequestParam("userId")String userId, @RequestParam("commentId")String commentId, @RequestParam("postId")String postId, Model model) {
+		
+		int c = Integer.parseInt(commentId);
+		Comment comment = new Comment (c, userId);
+		int result = commentService.deleteComment(comment);
+		
+		if(result == 1) {
+			
+			return "redirect:detail.do?postId=" + postId;
+		}else {
+			
+			model.addAttribute("message", "댓글삭제 실패");
+			return "redirect:detail.do?postId=" + postId;
+		}
+		
+		
+	}
+	
 }

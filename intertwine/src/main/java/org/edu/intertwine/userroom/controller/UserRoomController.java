@@ -57,9 +57,8 @@ public class UserRoomController {
 
 		UserRoom userRoom = userRoomService.selectUserRoomFirst(userId);
 
-		System.out.println("내가 출력하는거임" + userRoom);
+		System.out.println("내가 출력하는거임 UserRoom " + userRoom);
 
-		// 받은 결과로 성공/실패 페이지 내보냄
 		if (userRoom != null) { // 처음 접속은 아닌 경우
 			userRoom = userRoomService.selectUserRoom(userId);
 			if(userRoom != null) { // 방이 꾸며져있는 유저의 경우

@@ -32,9 +32,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,12 +57,37 @@ public class PostController {
 	@Autowired
 	private CommentService commentService;
 
+	//글쓰기 화면으로 이동
 	@RequestMapping("create.do")
 	public String moveCreate() {
 		return "post/write";
 	}
 	
+	//전화면으로 돌아가기
+	@RequestMapping("back.do")
+	public String moveBack(@RequestParam("postId")int postId, HttpSession session, Model model) {
+		
+		//로그인 유저
+		User loginUser = (User) session.getAttribute("loginUser");
+		//포스트 유저
+		String postUserId = postService.selectUserId(postId);
+		
+		logger.info(postUserId);
+		logger.info(loginUser.toString());
+		logger.info(String.valueOf(postUserId == loginUser.getUserId()));
+		if( postUserId == loginUser.getUserId()) {
+			//포스트만든 유저 아이디와 로그인 유저 아이디가 같을 시
+			//나의 포스트 페이지로 이동
+			return "redirect:mypage.do";
+		} else {
+			//포스트 만든 유저 아이디와 로그인 유저 아이디가 다를 시
+			return "redirect:page.do?friendId=" + loginUser.getUserId();	
+		}
+		
+		
+	}
 	
+	//남의 마이페이지 들어갈 때
 	@RequestMapping("page.do")
 	public ModelAndView moveOthersMyPage(String friendId, HttpSession session, ModelAndView mv) {
 
@@ -94,9 +121,17 @@ public class PostController {
 		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
 		String FollowingId = friendService.selectFollowingId(friend);
 	    String FollowerId = friendService.selectFollowerId(friend);
+	    int isFollowing = friendService.selectFollowing(friend);
+	    int isFollower = friendService.selectFollower(friend);
+	    if(isFollowing > 0) {
+	         mv.addObject("isFollowing", isFollowing);
+	      }
+	      if(isFollower > 0) {
+	         mv.addObject("isFollower", isFollower);
+	      }
+	    
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
-		
 		mv.addObject("galleries", galleries);
 		mv.addObject("otheruser", otherUser);
 		mv.addObject("user", loginUser);
@@ -140,13 +175,55 @@ public class PostController {
 		
 		return mv;
 	}
-	
+		
+	//공감업데이트
+	@RequestMapping(value="updatereaction.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	@ResponseBody
+	public String updateLike(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
+		//공감을 업데이트
+		//가져온 값을 담음
+		Like like1 = new Like(userId, postId);
+		Like like2 = new Like(userId, postId, likeType);
+		logger.info("가져온 공감타입" + likeType);
+		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
+		String whatIsLiked = postService.selectWhatIsLiked(like1);
+		
+		//이전에 이 포스트에 공감을 한 적이 있는 경우
+		if(whatIsLiked != null) {
+			
+			if(whatIsLiked.equals(likeType)) {
+				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
+				//공감 삭제 delete
+				int result = postService.deleteLikeType(like1);
+				
+			}else {
+				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 다른 경우
+				//공감 변경 update
+				int result = postService.updateLikeType(like2);
+			}
+			
+			
+		}else {
+			//이전에 이 포스트에 공감을 한적이 없는 경우
+			//공감 삽입 insert
+			int result = postService.insertLikeType(like2);
+		}
+		
+		
+		return "redirect:detail.do?postId=" + postId;
+		
+		
+		
+	}
+
+	//포스트 생성
 	@RequestMapping(value = "posting.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView createPost(HttpServletRequest request, HttpServletResponse response, Post post,
 			@RequestParam(name = "files", required = false) List<MultipartFile> files,
 			@RequestParam(name = "tagName", required = false) String[] tags, ModelAndView mv)
 			throws IllegalStateException, IOException, ImageProcessingException {
 
+		
 		logger.info("files : " + files.toString());
 		logger.info("UserId : " + post.getUserId());
 		logger.info("PostContent : " + post.getPostContent());
@@ -301,13 +378,21 @@ public class PostController {
 
 				Friend friend = new Friend(loginUser.getUserId(), findUserId);
 				int isFollowing = friendService.selectFollowing(friend);
+				logger.info(String.valueOf(isFollowing));
 				int isFollowed = friendService.selectFollower(friend);
-				// 1이면 팔로우중 즉 언팔로우 버튼 필요 0이면 팔로우 안하고 있음 팔로우 버튼 만들어야함
+				// 1이면 팔로우중 -> 언팔로우 버튼 / 0이면 팔로우중 아님 -> 팔로우 버튼
 
 				Like like = new Like(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isLiked = postService.selectIsLiked(like);
-				int whatIsLiked = postService.selectWhatIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
+				
+				String whatIsLiked = null;
+				
+				if(isLiked == 1) {
+					whatIsLiked = postService.selectWhatIsLiked(like);
+				} else {
+					whatIsLiked = null;
+				}
 
 				Bookmark bookmark = new Bookmark(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
@@ -333,29 +418,57 @@ public class PostController {
 
 	}
 
+	//디테일 뷰 확인
 	@RequestMapping(value = "detail.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView showDetailView(@RequestParam("postId")int postId, ModelAndView mv, HttpSession session) {
 	    
+		//포스트 아이디로 연결된 사진들 가져옴
 		ArrayList<Image> images = postService.selectImagesByPostId(postId);
 		logger.info("images" + images.toString());
+		//비디오도 있다면 가져옴
 		Video video = postService.selectOneVideo(postId);
 		//logger.info("video" + video.toString());
 		//String postUserId = postService.selectUserId(postId);
 		//logger.info("postUserId" + postUserId.toString());
 		//User postUser = userService.selectUser(postUserId);
 		//logger.info("postUser" + postUser.toString());
+		
+		//현재 로그인 중인 유저정보 가져옴
 		User viewingUser = (User) session.getAttribute("loginUser");
-		logger.info("viewingUser" + viewingUser.toString());
+		//logger.info("viewingUser" + viewingUser.toString());
+		//포스트 아이디로 포스트 정보를 가져옴(포스트 게시글, 핀여부 등등)
 		Post post = postService.selectOnePost(postId);
-		logger.info("post" + post.toString());
+		//logger.info("post" + post.toString());
+		//포스트에 있는 태그들 가져옴
 		ArrayList<Tag> tags = postService.selectTags(postId);
-		logger.info("tags" + tags.toString());
+		//logger.info("tags" + tags.toString());
+		//포스트에 있는 댓글들 가져옴
 		ArrayList<Comment> comments = commentService.selectComments(postId);
-		logger.info("comments" + comments.toString());
+		//logger.info("comments" + comments.toString());
+		// 총 공감 갯수 세서 가져옴
 		int likeCount = postService.selectLikeCounts(postId);
-		logger.info("likeCount" + likeCount);
+		//logger.info("likeCount" + likeCount);
+		//현재 세션 접속중인 유저아이디와 포스트를 작성한 사람의 유저 아이디를 담아
+		Friend friend = new Friend(viewingUser.getUserId(), post.getUserId());
+		//팔로잉 여부 확인
+		int isFollowing = friendService.selectFollowing(friend);
+		Like like = new Like(viewingUser.getUserId(), post.getPostId());
+		//이 포스트에 공감을 했는 지 여부 확인
+		int isLiked = postService.selectIsLiked(like);
+		//무슨 버튼이 클릭되었는지 확인(한번도 상호작용을 한 적이 없을 시 null일 수 있음)
+		String result= postService.selectWhatIsLiked(like);
+		String whatIsLiked = null;
+		if ( result != null) {
+			whatIsLiked = postService.selectWhatIsLiked(like);
+		}
+		Bookmark bookmark = new Bookmark(viewingUser.getUserId(), post.getPostId());
+		//이 포스트를 북마크 했는 지 여부 확인
+		int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
+		//포스트 작성자가 이 포스트를 핀 했는 지 여부 확인
+		Post pincheck = new Post(postId, post.getUserId());
+		int isPinned = postService.selectIsPinned(pincheck);
 		
-		
+		//모두 담아 보냄
 	    mv.addObject("images", images);
 	    mv.addObject("video", video);
 	    mv.addObject("viewingUser", viewingUser);
@@ -363,13 +476,62 @@ public class PostController {
 	    mv.addObject("tags", tags);
 		mv.addObject("comments", comments);
 	    mv.addObject("likeCount", likeCount);
+	    mv.addObject("isFollowing", isFollowing);
+	    mv.addObject("isLiked", isLiked);
+		mv.addObject("whatIsLiked", whatIsLiked);
+	    mv.addObject("isBookmarked", isBookmarked);
+	    mv.addObject("isPinned", isPinned);
 		mv.setViewName("post/detailview");
 		
 	    return mv;
 	}
-
 	
+	//포스트 삭제
+	@RequestMapping(value="deletepost.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String deletePost(@RequestParam("postId")String postId, @RequestParam("userId")String userId) {
+		int p = Integer.parseInt(postId);
+		logger.info(String.valueOf(p));
+		
+		Post post = new Post (p, userId);
+		
+		postService.deletePost(post);
+		
+		return "redirect:mypage.do"; 
+	}
 	
-	
+	//핀 업데이트
+	@RequestMapping(value="updatepin.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String updatePin(@RequestParam("value")String value, @RequestParam("postId")String postId, @RequestParam("userId")String userId, Model model) {
+		
+		int p = Integer.parseInt(postId);
+		logger.info(String.valueOf(p));
+		Post post = new Post(p, userId);
+		
+		switch(value) {
+		
+		case "0":
+			//핀이 안되있을 경우
+			postService.updatePin1(post);
+			
+			break;
+			
+		case "1":
+			//핀이 되어있을 경우
+			postService.updatePin2(post);
+			
+			break;
+		
+		default:
+			
+			model.addAttribute("message", "핀 여부를 확인할 수 없습니다.");
+			
+			break;
+		}
+		
+		
+		return "redirect:detail.do?postId=" + postId; 
+		
+		
+	}
 	
 }// 클래스

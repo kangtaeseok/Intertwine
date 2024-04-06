@@ -15,5 +15,15 @@ public class BookmarkDao {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("bookmarkMapper.selectIsBookmarked", bookmark);
 	}
+
+	public int insertBookmark(Bookmark bookmark) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.insert("bookmarkMapper.insertBookmark", bookmark);
+	}
+
+	public int deleteBookmark(Bookmark bookmark) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("bookmarkMapper.deleteBookmark", bookmark);
+	}
 	
 }

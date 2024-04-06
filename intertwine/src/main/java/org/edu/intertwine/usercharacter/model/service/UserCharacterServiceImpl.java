@@ -21,13 +21,13 @@ public class UserCharacterServiceImpl implements UserCharacterService {
 	}
 
 	@Override
+	public int UpdateUserCharacter(UserCharacter UserCharacter) {
+		return userCharacterDao.UpdateUserCharacter(UserCharacter);
+	}
+	
+	@Override
 	public int insertUserCharacterFirst(String userId) {
 		return userCharacterDao.insertUserCharacterFirst(userId);
-	}
-
-	@Override
-	public int UpdateUserCharacter(String userId) {
-		return userCharacterDao.UpdateUserCharacter(userId);
 	}
 
 	@Override

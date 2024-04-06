@@ -367,3 +367,63 @@ for (var i = 0; i < bubblyButtons.length; i++) {
   bubblyButtons[i].addEventListener('click', animateButton, false);
 }
 //버튼 가져온거 여기까지
+
+
+
+const myCharacter = document.getElementById('mycharacter');
+
+// 기존 동적 버튼들을 제거하는 함수
+function removeDynamicButtons() {
+    const existingButtons = myCharacter.querySelectorAll('.dynamic-btn');
+    existingButtons.forEach(btn => btn.remove());
+}
+
+myCharacter.addEventListener('contextmenu', function(event) {
+    event.preventDefault(); // 기본 컨텍스트 메뉴 방지
+
+    // 기존에 있던 동적 버튼들 제거
+    removeDynamicButtons();
+
+    // 버튼 생성 함수
+    function createButton(text, dataBsTarget, offsetY) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-primary dynamic-btn';
+        button.setAttribute('data-bs-toggle', 'modal');
+        button.setAttribute('data-bs-target', dataBsTarget);
+        button.textContent = text;
+        
+        // #mycharacter에 대한 상대적 위치 계산
+        const rect = myCharacter.getBoundingClientRect();
+        button.style.left = `${event.clientX - rect.left}px`;
+        button.style.top = `${event.clientY - rect.top + offsetY}px`;
+
+        return button;
+    }
+
+    // "닉네임 수정" 버튼 생성 및 추가
+    const editNicknameButton = createButton('닉네임 수정', '#exampleModal', 0);
+    myCharacter.appendChild(editNicknameButton);
+
+    // "아바타 수정" 버튼 생성 및 위치 조정
+    const buttonHeight = 30; // 실제 높이에 따라 조절
+    const secondButton = createButton('아바타 수정', '#exampleModal2', buttonHeight);
+    const currentTop = parseInt(secondButton.style.top, 10);
+    secondButton.style.top = `${currentTop - 7}px`;
+    myCharacter.appendChild(secondButton);
+
+    // "오프라인 전환" 버튼 생성 및 위치 조정
+    const thirdButton = createButton('오프라인 전환', '#exampleModal3', 2 * (buttonHeight));
+    const currentTop2 = parseInt(thirdButton.style.top, 10);
+    thirdButton.style.top = `${currentTop2 - 14}px`;
+    myCharacter.appendChild(thirdButton);
+    
+    // 페이지의 다른 부분을 클릭하면 생성된 버튼들을 제거하는 이벤트 리스너 추가
+    function outsideClickListener(event) {
+        if (!myCharacter.contains(event.target)) {
+            removeDynamicButtons();
+            document.removeEventListener('click', outsideClickListener);
+        }
+    }
+    document.addEventListener('click', outsideClickListener);
+});

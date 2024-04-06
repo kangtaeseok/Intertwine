@@ -110,7 +110,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int selectWhatIsLiked(Like like) {
+	public String selectWhatIsLiked(Like like) {
 		// TODO Auto-generated method stub
 		return postDao.selectWhatIsLiked(like);
 	}
@@ -138,6 +138,50 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postDao.selectFindUserId(each);
 	}
+
+	@Override
+	public int selectIsPinned(Post pincheck) {
+		// TODO Auto-generated method stub
+		return postDao.selectIsPinned(pincheck);
+	}
+
+	@Override
+	public int updatePin1(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePin1(post);
+	}
+
+	@Override
+	public int updatePin2(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePin2(post);
+	}
+
+	@Override
+	public int deletePost(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.deletePost(post);
+	}
+
+	@Override
+	public int deleteLikeType(Like like1) {
+		// TODO Auto-generated method stub
+		return postDao.deleteLikeType(like1);
+	}
+
+	@Override
+	public int updateLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return postDao.updateLikeType(like2);
+	}
+
+	@Override
+	public int insertLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return postDao.insertLikeType(like2);
+	}
+
+	
 
 
 	/*
