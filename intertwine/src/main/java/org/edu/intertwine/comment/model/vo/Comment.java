@@ -18,6 +18,13 @@ public class Comment implements Serializable{
 		super();
 	}
 
+	//댓글 삭제용
+	public Comment(int commentId, String userId) {
+		super();
+		this.commentId = commentId;
+		this.userId = userId;
+	}
+
 	//댓글용
 	public Comment(int postId, String userId, String commentContent) {
 		super();

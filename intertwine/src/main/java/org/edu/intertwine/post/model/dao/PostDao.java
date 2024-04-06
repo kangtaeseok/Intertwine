@@ -89,12 +89,12 @@ public class PostDao {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("postMapper.selectIsLiked", like);
 	}
-	public int selectWhatIsLiked(Like like) {
+	public String selectWhatIsLiked(Like like) {
 		// TODO Auto-generated method stub
 		if(sqlSessionTemplate.selectOne("postMapper.selectWhatIsLiked", like) != null) {
 			return sqlSessionTemplate.selectOne("postMapper.selectWhatIsLiked", like);
 		}else {
-			return 0;
+			return null;
 		}
 	}
 	/*
@@ -120,6 +120,34 @@ public class PostDao {
 	public String selectFindUserId(int each) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("postMapper.selectFindUserId", each);
+	}
+	public int selectIsPinned(Post pincheck) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("postMapper.selectIsPinned", pincheck);
+	}
+	public int updatePin1(Post post) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updatePin1", post);
+	}
+	public int updatePin2(Post post) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updatePin2", post);
+	}
+	public int deletePost(Post post) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("postMapper.deletePost", post);
+	}
+	public int deleteLikeType(Like like1) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("postMapper.deleteLikeType", like1);
+	}
+	public int updateLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateLikeType", like2);
+	}
+	public int insertLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.insert("postMapper.DE", like2);
 	}
 
 }

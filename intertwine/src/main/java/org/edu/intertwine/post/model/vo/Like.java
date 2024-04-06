@@ -21,7 +21,14 @@ public class Like implements Serializable{
 		this.userId = userId;
 		this.postId = postId;
 	}
-
+	
+	//어떤 걸 공감한지 확인용 
+	public Like(String userId, int postId, String likeType) {
+		super();
+		this.userId = userId;
+		this.postId = postId;
+		this.likeType = likeType;
+	}
 
 	public Like(String userId, int postId, String likeType, Date likeTime) {
 		super();

@@ -42,7 +42,7 @@ public interface PostService {
 
 	int selectIsLiked(Like like);
 
-	int selectWhatIsLiked(Like like);
+	String selectWhatIsLiked(Like like);
 
 	ArrayList<Post> selectPostsById(String userId);
 
@@ -51,6 +51,20 @@ public interface PostService {
 	ArrayList<Image> selectImagesByPostId(int postId);
 
 	String selectFindUserId(int each);
+
+	int selectIsPinned(Post pincheck);
+
+	int updatePin1(Post post);
+
+	int updatePin2(Post post);
+
+	int deletePost(Post post);
+
+	int deleteLikeType(Like like1);
+
+	int updateLikeType(Like like2);
+
+	int insertLikeType(Like like2);
 
 
 
