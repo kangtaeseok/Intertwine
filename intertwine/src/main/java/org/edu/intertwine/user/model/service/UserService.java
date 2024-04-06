@@ -40,6 +40,9 @@ public interface UserService {
 	MyPage selectMyPage(String userId);
 
 
+	String selectUserNickname(String userId);
+
+	void updateUserNickname(User user);
 
 
 }

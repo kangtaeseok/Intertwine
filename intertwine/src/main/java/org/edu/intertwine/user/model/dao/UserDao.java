@@ -87,7 +87,14 @@ public class UserDao {
 	}
 
 
-	
+	public String selectUserNickname(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectUserNickname", userId);
+	}
+
+	public void updateUserNickname(User user) {
+		sqlSessionTemplate.update("userMapper.updateUserNickname", user);		
+	}
+
 
 	
 }
