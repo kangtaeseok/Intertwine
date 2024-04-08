@@ -139,13 +139,7 @@ function regExpPwd() {
             <aside class="side-bar">
                 <ul>
                     <li id="a">
-                        <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
-                        <ul>
-                            <li><a href="#">text1</a></li>
-                            <li><a href="#">text2</a></li>
-                            <li><a href="#">text3</a></li>
-                            <li><a href="#">text4</a></li>
-                        </ul>
+                       <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>  
                     </li>
                     <li id="mypage">
                         <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
@@ -165,16 +159,6 @@ function regExpPwd() {
                     </li>
                     <li id="settings">
                         <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-                        
-                        <c:if test="${empty type}">
-                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
-						</c:if>
-						<c:if test="${type eq 'kakao'}">
-							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
-						</c:if>
-						<c:if test="${type eq 'naver'}">
-							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
-						</c:if>
                     </li>
                 </ul>
             </aside>
@@ -192,23 +176,34 @@ function regExpPwd() {
                     알림 서브메뉴
                 </div>
                 <div id="settings_sub_menu" class="sub_menu">
-            		<c:if test="${empty type}">
+            		<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
                         <li id="userInfo">
-                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
                        	</li>
                         </c:if>
                         <c:if test="${type eq 'kakao'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
 						</c:if>
 						<c:if test="${type eq 'naver'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
 						</c:if>
-                    	
-                    
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+						<c:if test="${empty type}">
+                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
+						</c:if>
+						<c:if test="${type eq 'kakao'}">
+							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
+						</c:if>
+					</ul>
                 </div>
                 
                

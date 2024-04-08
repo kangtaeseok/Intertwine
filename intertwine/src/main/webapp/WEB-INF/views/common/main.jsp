@@ -10,9 +10,31 @@
 <!-- <link rel="icon" href="favicon.ico" type="image/X-icon"> --> <!-- 파비콘 설정 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css"> <!-- 이 jsp파일의 css파일 연결 -->
+<script src="/intertwine/resources/js/kakao.min.js"></script>
 <script defer src="/intertwine/resources/js/mainpage.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
+<script>
+Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
+console.log(Kakao.isInitialized()); 
+function kakaoLogout() {
+    if (Kakao.Auth.getAccessToken()) {
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+        success: function (response) {
+        	console.log(response)
+        	location.href="login.do";
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+      Kakao.Auth.setAccessToken(undefined)
+    }
+  }  
+
+</script>
+
 </head>
 <body>
     <header> <!-- 페이지 상단 -->
@@ -60,6 +82,7 @@
                 </li>
                 <li id="settings">
                     <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
                 </li>
             </ul>
         </aside>
@@ -81,35 +104,35 @@
                 알림 서브메뉴
             </div>
             <div id="settings_sub_menu" class="sub_menu">
-             	 <ul>
-	             	<li><a href="${pageContext.servletContext.contextPath}/userTime.do">이용시간<i class="fa-solid fa-clock"></i></a></li>
-	                <c:if test="${empty type}">
+            	<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
                         <li id="userInfo">
-                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
                        	</li>
                         </c:if>
                         <c:if test="${type eq 'kakao'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
 						</c:if>
 						<c:if test="${type eq 'naver'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
 						</li>
-					</c:if>
-						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li> 				
-                </ul>
+						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+					</ul>
             </div>
-
         </div>
+
         <div id="bottom_right_contents">
             <div id="abc">
                 <!-- <div class="feed">
                     피드창
                 </div> -->
                 <div class="squerediv">
-                     스퀘어 나올 화면
+                     
                 </div>
             </div>
         </div>

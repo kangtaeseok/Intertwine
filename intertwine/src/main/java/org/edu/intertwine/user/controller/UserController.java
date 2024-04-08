@@ -3,6 +3,7 @@ package org.edu.intertwine.user.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.Message;
@@ -13,14 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.admin.model.service.AdminService;
-import org.edu.intertwine.admin.model.vo.UserCount;
+import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.model.service.UserService;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,6 +114,22 @@ public class UserController {
 		model.addAttribute("type", result);
 		return "user/socialUpPage"; 
 	}
+	
+	
+	
+	//이용시간 페이지로 이동
+	@RequestMapping("userTime.do")
+	public String moveUserTimePage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		userService.updateUserTime(userService.selectMyPage(user.getUserId()));
+		String time = userService.selectUserTime(user.getUserId());
+		model.addAttribute("type", result);
+		model.addAttribute("time", time);
+		return "user/userTimePage";
+	}
+	
 
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
@@ -122,7 +142,7 @@ public class UserController {
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
-			
+		
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
 		
@@ -131,7 +151,6 @@ public class UserController {
 		} else {
 			adminService.insertVisitCount();
 		}
-		userService.updateUserTime(loginUser.getUserId());
 		
 		  return "common/main";
 	} else {
@@ -202,7 +221,10 @@ public class UserController {
 		
 		user.setUserPwd(bcryptPasswordEncoder.encode(user.getUserPwd()));
 		
+		
 		if(userService.insertUser(user) > 0) {
+			userService.insertMyPage(user.getUserId());
+			userService.insertAlarm(user.getUserId());
 			return "common/main";
 		}
 		return "user/enroll";
@@ -210,7 +232,11 @@ public class UserController {
 	
 	
 	@RequestMapping("kakao_login.do")
-	public String kakaoLogin(HttpServletRequest request) throws Exception {	
+	public String kakaoLogin(HttpServletRequest request, HttpSession session, Model model) throws Exception {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
 		return "commom/main";
 	}
 			
@@ -231,8 +257,10 @@ public class UserController {
 	    		}
 				String result = "";
 				result = userService.selectSocialType(loginUser.getUserId());
+				userService.updateDayTime(loginUser.getUserId());
+				
 				model.addAttribute("type", result);
-			return "common/main";
+				return "redirect:main.do";
 			} else {
 				model.addAttribute("msg", "로그인에 실패했습니다. 관리자에게 문의하세요");
 				model.addAttribute("url", "login.do");
@@ -250,7 +278,7 @@ public class UserController {
 	    	social.setType("kakao");
 	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	    	userService.insertSocial(social);
-	    	
+	    	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		loginUser = user;
@@ -261,8 +289,9 @@ public class UserController {
 	    		} else {
 	    			adminService.insertVisitCount();
 	    		}
+	    		return "redirect:socialPage.do";
 	    	}
-		return "redirect:socialPage.do";
+		return "login.do";
 		}
 		
 	
@@ -301,7 +330,7 @@ public class UserController {
     		} else {
     			adminService.insertVisitCount();
     		}
-			return "common/main";
+			return "redirect:main.do";
         	
         } else {
         	int result = 0;
@@ -311,6 +340,7 @@ public class UserController {
         	user.setPhone(phone);
         	user.setUserName(name);
         	result = userService.insertUser(user);
+        	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		SocialLogin social = new SocialLogin();
@@ -329,7 +359,7 @@ public class UserController {
 	    		}
     			return "redirect:socialPage.do";
         	} else {
-        		return "user/login.do";
+        		return "user/login";
         	}
 	    }
 
@@ -555,18 +585,87 @@ public class UserController {
 	 }
 	 
 	 //마이페이지 시간 설정
+	 @RequestMapping(value="customTime.do", method= {RequestMethod.POST,RequestMethod.GET})
+	 public String customTimeMethod(HttpSession session,@RequestParam("message") String meassage,
+			 Model model) {
+		 User user = (User) session.getAttribute("loginUser");
+		 Notification notify = userService.selectNotify(user.getUserId()); 
+		 notify.setNotifyContent(meassage);
+		 
+		 int result = userService.updateCustonAlarm(notify);
+		 
+		 if(result > 0) {
+			 return "user/userTimePage";
+		 } else {
+			 model.addAttribute("msg", "수정실패");
+			 model.addAttribute("url", "user/userTimePage");
+			 return "common/alert";
+		 }
+		 
+	 }
 	 
-	 
- 
-//	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
-//	 public String userDisabled() {}
+	 //기본제공 알림으로 변경
+	 @RequestMapping(value="userSetTime.do", method= {RequestMethod.POST,RequestMethod.GET})
+	 public String basicTimeMethod(HttpSession session, Model model) {
+		 User user = (User) session.getAttribute("loginUser");
+		 Notification notify = userService.selectNotify(user.getUserId());
+		 if(Integer.parseInt(userService.selectUserTime(user.getUserId()).trim()) % 60 == 0) {
+		 String message = "접속 후" + userService.selectUserTime(user.getUserId()) + "분이 지났습니다.";
+		 notify.setNotifyContent(message);
+		 }
+		 int result = userService.updateCustonAlarm(notify);
+		 
+		 if(result > 0) {
+			 model.addAttribute("msg", "수정성공");
+			 model.addAttribute("url", "user/userTimePage");
+			 return "common/alert";
+		 } else {
+			 model.addAttribute("msg", "수정실패");
+			 model.addAttribute("url", "user/userTimePage");
+			 return "common/alert";
+		 }
+		
+	 }
+	 @Component
+	 @EnableScheduling
+	 class ScheduledApplication {
+	 @Scheduled(fixedRate=3600000)
+	 public void sendNotifications() {
+	        List<User> users = userService.findAllUsers(); // 모든 유저 조회
+	        for (User user : users) {
+	            int userTime = Integer.parseInt(userService.selectUserTime(user.getUserId()).trim());
+	            if (userTime > 0 && userTime % 60 == 0) {
+	                Notification notify = userService.selectNotify(user.getUserId());
+	                String message = "접속 후 " + userTime + "분이 지났습니다.";
+	                notify.setNotifyContent(message);
+
+	            }
+	        }
+	    }
+	 }
+
+	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
+	 public String userDisabled(HttpSession session) {
+		 User user = (User) session.getAttribute("loginUser");
+		 userService.updateUserdisable(user.getUserId());
+		return result;
+	 }
 	 
 //	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
 //	 public String publicMypagesetting() {}
 
 	 
-//	 @RequestMapping(value="ustopdel.do", method=RequestMethod.POST)
-//	 public String userUpdate() {}
+	 @RequestMapping(value="ustopdel.do", method=RequestMethod.POST)
+	 public String userUpdate(HttpSession session) {
+		 User user = (User) session.getAttribute("loginUser");
+		 userService.insertUserStop(user.getUserId());
+		 
+
+		return result;
+		 
+		 
+	 }
+	 
 	
 	 
 	 

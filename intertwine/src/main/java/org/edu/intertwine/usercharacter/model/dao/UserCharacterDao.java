@@ -1,5 +1,8 @@
 package org.edu.intertwine.usercharacter.model.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.edu.intertwine.usercharacter.model.vo.UserCharacter;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +23,39 @@ public class UserCharacterDao {
 		return sqlSessionTemplate.selectOne("userCharacterMapper.selectUserCharacter", userId);
 	}
 
+	public int updateUserCharacter(UserCharacter userCharacter) {
+		return sqlSessionTemplate.update("userCharacterMapper.updateUserCharacter", userCharacter);
+	}
+	
 	public int insertUserCharacterFirst(String userId) {
 		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacterFirst", userId);
 	}
 
-	public int UpdateUserCharacter(String userId) {
-		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacter", userId);
-	}
-	
 	public int insertUserCharacter(UserCharacter userCharacter) {
 		return sqlSessionTemplate.insert("userCharacterMapper.insertUserCharacter", userCharacter);
 	}
 
 	public int deleteUserCharacter(String userId) {
 		return sqlSessionTemplate.delete("userCharacterMapper.deleteUserCharacter", userId);
+	}
+
+	public ArrayList<UserCharacter> selectUserCharacterHair() {
+		List<UserCharacter> list = sqlSessionTemplate.selectList("userCharacterMapper.selectUserCharacterHairResource");
+		return (ArrayList<UserCharacter>)list;
+	}
+
+	public ArrayList<UserCharacter> selectUserCharacterHat() {
+		List<UserCharacter> list = sqlSessionTemplate.selectList("userCharacterMapper.selectUserCharacterHatResource");
+		return (ArrayList<UserCharacter>)list;
+	}
+
+	public ArrayList<UserCharacter> selectUserCharactertop() {
+		List<UserCharacter> list = sqlSessionTemplate.selectList("userCharacterMapper.selectUserCharacterTopResource");
+		return (ArrayList<UserCharacter>)list;
+	}
+
+	public ArrayList<UserCharacter> selectUserCharacterbottom() {
+		List<UserCharacter> list = sqlSessionTemplate.selectList("userCharacterMapper.selectUserCharacterBottomResource");
+		return (ArrayList<UserCharacter>)list;
 	}
 }

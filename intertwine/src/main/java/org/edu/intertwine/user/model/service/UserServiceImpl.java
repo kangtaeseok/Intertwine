@@ -1,8 +1,12 @@
 package org.edu.intertwine.user.model.service;
 
 
+import java.util.List;
+
+import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.dao.UserDao;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
@@ -78,14 +82,83 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateUser(user);
 	}
 
+	
+	
+	/* 마이페이지 */
 	@Override
-	public void updateUserTime(String userId) {
-		userDao.updateUserTime(userId);
+	public void updateUserTime(MyPage mypage) {
+		userDao.updateUserTime(mypage);
 		
+	}
+
+	@Override
+	public void insertMyPage(String userId) {
+		userDao.insertMyPage(userId);
+		
+		
+	}
+
+	@Override
+	public String selectUserTime(String userId) {
+		return userDao.selectUserTime(userId);
+	}
+
+	@Override
+	public MyPage selectMyPage(String userId) {
+		return userDao.selectMyPage(userId);
 	}
 
 	
 
+	@Override
+	public String selectUserNickname(String userId) {
+		return userDao.selectUserNickname(userId);
+	}
+
+	@Override
+	public void updateUserNickname(User user) {
+		userDao.updateUserNickname(user);
+	}
+
+	//시간설정
+	@Override
+	public Notification selectNotify(String userId) {
+		return userDao.selectNotify(userId);
+	}
+
+	@Override
+	public int updateCustonAlarm(Notification notify) {
+		return userDao.updateCustonAlarm(notify);
+		
+	}
+
+	@Override
+	public List<User> findAllUsers() {
+		return userDao.findAllUsers();
+	}
+
+	@Override
+	public void updateUserdisable(String userId) {
+		userDao.updateUserdisable(userId);
+		
+	}
+
+	@Override
+	public void insertUserStop(String userId) {
+		userDao.insertUserStop(userId);
+	}
+
+	@Override
+	public void insertAlarm(String userId) {
+		userDao.insertAlarm(userId);
+		
+	}
+
+	@Override
+	public void updateDayTime(String userId) {
+		userDao.updateDayTime(userId);
+		
+	}
 
 	
 	
