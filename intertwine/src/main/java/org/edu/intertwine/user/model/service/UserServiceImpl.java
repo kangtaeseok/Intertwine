@@ -1,6 +1,9 @@
 package org.edu.intertwine.user.model.service;
 
 
+import java.util.List;
+
+import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.dao.UserDao;
 import org.edu.intertwine.user.model.vo.MyPage;
@@ -115,6 +118,46 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserNickname(User user) {
 		userDao.updateUserNickname(user);
+	}
+
+	//시간설정
+	@Override
+	public Notification selectNotify(String userId) {
+		return userDao.selectNotify(userId);
+	}
+
+	@Override
+	public int updateCustonAlarm(Notification notify) {
+		return userDao.updateCustonAlarm(notify);
+		
+	}
+
+	@Override
+	public List<User> findAllUsers() {
+		return userDao.findAllUsers();
+	}
+
+	@Override
+	public void updateUserdisable(String userId) {
+		userDao.updateUserdisable(userId);
+		
+	}
+
+	@Override
+	public void insertUserStop(String userId) {
+		userDao.insertUserStop(userId);
+	}
+
+	@Override
+	public void insertAlarm(String userId) {
+		userDao.insertAlarm(userId);
+		
+	}
+
+	@Override
+	public void updateDayTime(String userId) {
+		userDao.updateDayTime(userId);
+		
 	}
 
 	

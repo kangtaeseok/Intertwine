@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+@charset "UTF-8";
 html {
 	font-size: 16px;
 }
@@ -118,7 +119,7 @@ main {
 	width: calc(
 		100% - var(--side-bar-width)
 	); /* .side-bar의 너비를 제외한 너비로 설정 */
-	margin-left: 12rem; /* .side-bar의 너비만큼 마진을 줌 */
+	margin-left: 10rem; /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
 }
@@ -219,6 +220,7 @@ main {
 }
 
 #bottom_right_contents {
+/* 	left: var(--side-bar-width)+240px; */
 	width: 100vw;
 	display: flex;
 	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
@@ -229,7 +231,7 @@ main {
 	width: inherit;
 	position: relative;
 	display: flex;
-	 
+ 
     justify-content: center;
     align-items: center;
 }
@@ -243,7 +245,8 @@ height: 2px;
 background:  #d3d3d3;}
 
 .grey { 
- color: #727272;}
+ color: #727272;
+ }
 
 #strong { font-weight: 900;}
 
@@ -260,20 +263,18 @@ border-bottom: 1px solid #d3d3d3;
 padding: 10px;
 }
 
-  .greylist, .gradient {
-  width: 50px;
-  height: 30px;
+  .greylist {
+  align-items: center;
+  height: 2rem;
   font-weight: 900;
   color: white;
   text-align: center;
   background: grey;
   border: solid 2px white;
   border-radius: 5px;
+  margin: 0.5rem;
   }
   
-input {
-	height: 4vh;
-}
 
 .left {text-align: left;}
 .right {
@@ -289,22 +290,6 @@ a {
 	text-decoration-line : none;
 }
 
-.search-box {
-	display:flex;
-	flex-direction: row;
-	padding: 0.5rem;
-}
-
-#selectType {
-	margin-right: 0.5rem;
-	
-}
-
-form.sform {
-	display: none; 
-	
-	}
-	
 .content-div {
 	margin-left: 20rem;
 	width: 100rem;
@@ -312,9 +297,32 @@ form.sform {
 	
 .right-move-box {
 	float: right;
+
 }
 
 h2{
 
 }
-	
+
+button {
+	align-items: center;
+	font-weight: bold;
+	background: #c0c0c0;
+	border: none;
+	padding: 0.4rem;
+	border-radius: 6px;
+	 cursor: pointer;
+	 color: white;
+	 display: flex;
+
+}
+
+.button-box {
+	margin-right: 87%;
+	display: flex;
+	/* flex-direction: row; */
+}
+
+#hideButton {
+	clear: both;
+}

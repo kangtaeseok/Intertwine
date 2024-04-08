@@ -177,24 +177,24 @@ function regExpPwd() {
                 </div>
                 <div id="settings_sub_menu" class="sub_menu">
             		<ul>
-            			<li><a href="${pageContext.servletContext.contextPath}/userTime.do">이용시간<i class="fa-solid fa-clock"></i></a></li>
-            			<c:if test="${empty type}">
-                        	<li id="userInfo">
-                        		<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
-                       		</li>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                       	</li>
                         </c:if>
                         <c:if test="${type eq 'kakao'}">
-							<li id="socialUserInfo">
-								<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
-							</li>
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
 						</c:if>
 						<c:if test="${type eq 'naver'}">
-							<li id="socialUserInfo">
-								<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
-							</li>
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
 						</c:if>
-							<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
-                    	<c:if test="${empty type}">
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+						<c:if test="${empty type}">
                         	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
 						</c:if>
 						<c:if test="${type eq 'kakao'}">
@@ -203,7 +203,7 @@ function regExpPwd() {
 						<c:if test="${type eq 'naver'}">
 							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
 						</c:if>
-                    </ul>
+					</ul>
                 </div>
                 
                
