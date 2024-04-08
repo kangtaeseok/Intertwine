@@ -1,6 +1,7 @@
 package org.edu.intertwine.post.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.edu.intertwine.post.model.dao.PostDao;
 import org.edu.intertwine.post.model.vo.Image;
@@ -73,11 +74,6 @@ public class PostServiceImpl implements PostService {
 		return postDao.selectPostIdsforZero();
 	}
 
-	@Override
-	public String selectUserId(int eachPostId) {
-		// TODO Auto-generated method stub
-		return postDao.selectUserIds(eachPostId);
-	}
 
 	@Override
 	public Post selectOnePost(int eachPostId) {
@@ -181,7 +177,53 @@ public class PostServiceImpl implements PostService {
 		return postDao.insertLikeType(like2);
 	}
 
-	
+	@Override
+	public int deleteBatchDelete(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.deleteBatchDelete(postIds);
+	}
+
+	@Override
+	public int updateBatchPublic(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPublic(postIds);
+	}
+
+	@Override
+	public int updateBatchFollowing(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchFollowing(postIds);
+	}
+
+	@Override
+	public int updateBatchPrivate(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPrivate(postIds);
+	}
+
+	@Override
+	public int updateBatchPinOn(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPinOn(postIds);
+	}
+
+	@Override
+	public int updateBatchPinOff(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPinOff(postIds);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewest(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewest(userId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeast(userId);
+	}
 
 
 	/*
