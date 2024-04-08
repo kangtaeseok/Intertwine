@@ -28,7 +28,7 @@ $(document).ready(function () {
 
         mypage.addEventListener('click', function () {
             let isOn2 = mypage_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 mypage_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -38,13 +38,13 @@ $(document).ready(function () {
                 mypage_sub_menu.classList.add("on");
                 dummy_sub_menu.classList.add("on");
                 mypage_sub_menu.style.left = "75px";
-                
+
             }
         });
-        
+
         chatting.addEventListener('click', function () {
             let isOn2 = chatting_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 chatting_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -56,10 +56,10 @@ $(document).ready(function () {
                 chatting_sub_menu.style.left = "75px";
             }
         });
-        
+
         alarm.addEventListener('click', function () {
             let isOn2 = alarm_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 alarm_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -71,10 +71,10 @@ $(document).ready(function () {
                 alarm_sub_menu.style.left = "75px";
             }
         });
-        
+
         settings.addEventListener('click', function () {
             let isOn2 = settings_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 settings_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -97,7 +97,7 @@ $(document).ready(function () {
 
         mypage.addEventListener('click', function () {
             let isOn2 = mypage_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 mypage_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -107,13 +107,13 @@ $(document).ready(function () {
                 mypage_sub_menu.classList.add("on");
                 dummy_sub_menu.classList.add("on");
                 mypage_sub_menu.style.left = "240px";
-                
+
             }
         });
-        
+
         chatting.addEventListener('click', function () {
             let isOn2 = chatting_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 chatting_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -125,10 +125,10 @@ $(document).ready(function () {
                 chatting_sub_menu.style.left = "240px";
             }
         });
-        
+
         alarm.addEventListener('click', function () {
             let isOn2 = alarm_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 alarm_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -140,10 +140,10 @@ $(document).ready(function () {
                 alarm_sub_menu.style.left = "240px";
             }
         });
-        
+
         settings.addEventListener('click', function () {
             let isOn2 = settings_sub_menu.classList.contains("on");
-        
+
             if (isOn2) {
                 settings_sub_menu.classList.remove("on");
                 dummy_sub_menu.classList.remove("on");
@@ -210,20 +210,20 @@ $(document).ready(function () {
             $('#chatting_sub_menu').css('left', '240px');
             $('#alarm_sub_menu').css('left', '240px');
             $('#settings_sub_menu').css('left', '240px');
-        } 
+        }
     });
-    
-     // 창 크기가 변경될 때마다 호출하여 화면 크기에 따라 서브메뉴의 위치를 조정
-     $(window).resize(function () {
+
+    // 창 크기가 변경될 때마다 호출하여 화면 크기에 따라 서브메뉴의 위치를 조정
+    $(window).resize(function () {
         if ($(window).width() <= 1262) {
             // mypage_sub_menu의 left 값을 75px로 변경
             $('#mypage_sub_menu').css('left', '75px');
             $('#chatting_sub_menu').css('left', '75px');
             $('#alarm_sub_menu').css('left', '75px');
             $('#settings_sub_menu').css('left', '75px');
-        } 
+        }
     });
-    
+
     // 화면 크기가 1279px 이하일 때 서브메뉴의 위치 변경
     if ($(window).width() > 1262) {
         // mypage_sub_menu의 left 값을 75px로 변경
@@ -232,8 +232,8 @@ $(document).ready(function () {
         $('#alarm_sub_menu').css('left', '240px');
         $('#settings_sub_menu').css('left', '240px');
     }
-    
-    
+
+
     // 화면 크기가 1279px 이하일 때 서브메뉴의 위치 변경
     if ($(window).width() <= 1262) {
         // mypage_sub_menu의 left 값을 75px로 변경
@@ -242,11 +242,11 @@ $(document).ready(function () {
         $('#alarm_sub_menu').css('left', '75px');
         $('#settings_sub_menu').css('left', '75px');
     }
-    
+
 
 });
 
-$(function(){
+$(function () {
     var screenWidth = $(window).width();
 
     if (screenWidth > 1262) {
@@ -286,7 +286,7 @@ $(document).ready(function () {
             $('#settings_sub_menu').css('left', '75px');
         }
     });
-    
+
     // 초기 로딩 시에도 한 번 실행하여 화면 크기에 따라 서브메뉴의 위치 조정
     if ($(window).width() > 1262) {
         // mypage_sub_menu의 left 값을 75px로 변경
@@ -303,68 +303,68 @@ $(document).ready(function () {
     }
 });
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // 최소 7초 후 로딩 이미지 숨김 처리
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById('loadingview').classList.add('hidden');
         document.getElementById('squaretip').classList.add('hidden');
-    }, 7000); // 1000ms = 1초
+    }, 0); // 1000ms = 1초
 });
 
 
 (function () {
 
     document.addEventListener("keydown", function (e) {
-    const character = document.getElementById("mycharacter");
-    const room = document.getElementById("userroom");
-    
-    // `#userroom`의 크기와 위치를 얻음
-    const roomRect = room.getBoundingClientRect();
-    
-    // `#mycharacter`의 현재 위치를 얻음
-    let x = parseInt(character.style.left || 0, 10);
-    let y = parseInt(character.style.top || 0, 10);
+        const character = document.getElementById("mycharacter");
+        const room = document.getElementById("userroom");
 
-    // 키보드 입력에 따른 캐릭터의 이동 거리
-    const step = 5;
+        // `#userroom`의 크기와 위치를 얻음
+        const roomRect = room.getBoundingClientRect();
 
-    // 키 입력에 따라 x, y 위치 업데이트
-    if (e.key === "ArrowLeft") { x -= step; }
-    if (e.key === "ArrowRight") { x += step; }
-    if (e.key === "ArrowUp") { y -= step; }
-    if (e.key === "ArrowDown") { y += step; }
-    
-    // 캐릭터가 `#userroom` 영역 안에 있는지 확인
-    // 캐릭터의 크기를 고려하지 않았음. 필요시 캐릭터 크기를 고려하여 조정
-    if (x < 0) x = 0;
-    if (x > roomRect.width - character.offsetWidth) x = roomRect.width - character.offsetWidth;
-    if (y < 0) y = 0;
-    if (y > roomRect.height - character.offsetHeight) y = roomRect.height - character.offsetHeight;
+        // `#mycharacter`의 현재 위치를 얻음
+        let x = parseInt(character.style.left || 0, 10);
+        let y = parseInt(character.style.top || 0, 10);
 
-    // 업데이트된 위치를 적용
-    character.style.left = x + "px";
-    character.style.top = y + "px";
-});
+        // 키보드 입력에 따른 캐릭터의 이동 거리
+        const step = 5;
+
+        // 키 입력에 따라 x, y 위치 업데이트
+        if (e.key === "ArrowLeft") { x -= step; }
+        if (e.key === "ArrowRight") { x += step; }
+        if (e.key === "ArrowUp") { y -= step; }
+        if (e.key === "ArrowDown") { y += step; }
+
+        // 캐릭터가 `#userroom` 영역 안에 있는지 확인
+        // 캐릭터의 크기를 고려하지 않았음. 필요시 캐릭터 크기를 고려하여 조정
+        if (x < 0) x = 0;
+        if (x > roomRect.width - character.offsetWidth) x = roomRect.width - character.offsetWidth;
+        if (y < 0) y = 0;
+        if (y > roomRect.height - character.offsetHeight) y = roomRect.height - character.offsetHeight;
+
+        // 업데이트된 위치를 적용
+        character.style.left = x + "px";
+        character.style.top = y + "px";
+    });
 
 })();
 
 //버튼 가져온거 시작
-var animateButton = function(e) {
+var animateButton = function (e) {
 
-  e.preventDefault;
-  //reset animation
-  e.target.classList.remove('animate');
-  
-  e.target.classList.add('animate');
-  setTimeout(function(){
+    e.preventDefault;
+    //reset animation
     e.target.classList.remove('animate');
-  },700);
+
+    e.target.classList.add('animate');
+    setTimeout(function () {
+        e.target.classList.remove('animate');
+    }, 700);
 };
 
 var bubblyButtons = document.getElementsByClassName("bubbly-button");
 
 for (var i = 0; i < bubblyButtons.length; i++) {
-  bubblyButtons[i].addEventListener('click', animateButton, false);
+    bubblyButtons[i].addEventListener('click', animateButton, false);
 }
 //버튼 가져온거 여기까지
 
@@ -378,7 +378,7 @@ function removeDynamicButtons() {
     existingButtons.forEach(btn => btn.remove());
 }
 
-myCharacter.addEventListener('contextmenu', function(event) {
+myCharacter.addEventListener('contextmenu', function (event) {
     event.preventDefault(); // 기본 컨텍스트 메뉴 방지
 
     // 기존에 있던 동적 버튼들 제거
@@ -388,11 +388,11 @@ myCharacter.addEventListener('contextmenu', function(event) {
     function createButton(text, dataBsTarget, offsetY) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'btn btn-primary dynamic-btn';
+        button.className = 'btn dynamic-btn';
         button.setAttribute('data-bs-toggle', 'modal');
         button.setAttribute('data-bs-target', dataBsTarget);
         button.textContent = text;
-        
+
         // #mycharacter에 대한 상대적 위치 계산
         const rect = myCharacter.getBoundingClientRect();
         button.style.left = `${event.clientX - rect.left}px`;
@@ -402,22 +402,131 @@ myCharacter.addEventListener('contextmenu', function(event) {
     }
 
     // "닉네임 수정" 버튼 생성 및 추가
-    const editNicknameButton = createButton('닉네임 수정', '#exampleModal', 0);
-    myCharacter.appendChild(editNicknameButton);
+    const changeNicknameButton = createButton('닉네임 수정', '#nicknameModal', 0);
+    changeNicknameButton.id = 'changeNicknameButton'; // id 속성 추가
+    changeNicknameButton.setAttribute('data-bs-toggle', 'modal'); // Bootstrap 모달 트리거 속성 추가
+    changeNicknameButton.setAttribute('data-bs-target', '#nicknameModal'); // 타겟 모달의 ID 지정
+    myCharacter.appendChild(changeNicknameButton);
+    changeNicknameButton.addEventListener('click', function (event) {
+        const modal = document.querySelector("#nicknameChangeModal");
+        modal.style.display = "flex";
+    });
 
     // "아바타 수정" 버튼 생성 및 위치 조정
     const buttonHeight = 30; // 실제 높이에 따라 조절
-    const secondButton = createButton('아바타 수정', '#exampleModal2', buttonHeight);
-    const currentTop = parseInt(secondButton.style.top, 10);
-    secondButton.style.top = `${currentTop - 7}px`;
-    myCharacter.appendChild(secondButton);
+    const changeCharacterButton = createButton('캐릭터 수정', '#exampleModal2', buttonHeight);
+    changeCharacterButton.id = 'changeCharacterButton'; // id 속성 추가
+    const currentTop = parseInt(changeCharacterButton.style.top, 10);
+    changeCharacterButton.style.top = `${currentTop - 7}px`;
+    myCharacter.appendChild(changeCharacterButton);
+    
+    $("#changeCharacterButton").click(function () {
+        console.log("캐릭터 수정 버튼 클릭!");
+        const modal = document.querySelector("#characterChangeModal");
+        modal.style.display = "flex";
+        
+        $.ajax({
+            url: "getcharacterreosource.do",
+            type: "post",
+            data: { "userId": window.globaluserId },
+            dataType: "json",
+            success: function (data) {
+				var hairList = data.hairjarr; // 컨트롤러에서 보낸 hairjarr 사용
+        		var hatList = data.hatjarr; // 컨트롤러에서 보낸 hairjarr 사용
+        		var topList = data.topjarr; // 컨트롤러에서 보낸 hairjarr 사용
+        		var bottomList = data.bottomjarr; // 컨트롤러에서 보낸 hairjarr 사용
+        			    		
+        		const previewcharacterhair = document.querySelector("#previewcharacterhair");
+			    previewcharacterhair.style.backgroundImage = "url('" + data.mycharacter.hairStyleImageURL + "')";
+			    previewcharacterhair.style.backgroundSize = "cover";
+			    previewcharacterhair.style.backgroundPosition = "center";
+			    const previewcharacterhat = document.querySelector("#previewcharacterhat");
+			    previewcharacterhat.style.backgroundImage = "url('" + data.mycharacter.hatImageURL + "')";
+			    previewcharacterhat.style.backgroundSize = "cover";
+			    previewcharacterhat.style.backgroundPosition = "center";
+			    const previewcharactertop = document.querySelector("#previewcharactertop");
+			    previewcharactertop.style.backgroundImage = "url('" + data.mycharacter.topImageURL + "')";
+			    previewcharactertop.style.backgroundSize = "cover";
+			    previewcharactertop.style.backgroundPosition = "center";
+			    const previewcharacterbottom = document.querySelector("#previewcharacterbottom");
+			    previewcharacterbottom.style.backgroundImage = "url('" + data.mycharacter.bottomImageURL + "')";
+			    previewcharacterbottom.style.backgroundSize = "cover";
+			    previewcharacterbottom.style.backgroundPosition = "center";
+        		
+		        // .charactermodal-hair-container의 자식 div를 모두 찾음
+		        var hairDivs = document.querySelectorAll('.charactermodal-hair-container > div');
+		        // .charactermodal-hat-container의 자식 div를 모두 찾음
+		        var hatDivs = document.querySelectorAll('.charactermodal-hat-container > div');
+		        // .charactermodal-top-container의 자식 div를 모두 찾음
+		        var topDivs = document.querySelectorAll('.charactermodal-top-container > div');
+		        // .charactermodal-bottom-container의 자식 div를 모두 찾음
+		        var bottomDivs = document.querySelectorAll('.charactermodal-bottom-container > div');
+		        
+		        // hairList의 각 항목에 대해 반복
+		        hairList.forEach(function(hair, index) {
+				    // 존재하는 div 수 내에서만 실행
+				    if (index < hairDivs.length) {
+				        var $div = $(hairDivs[index]); // jQuery 객체로 변환
+				        $div.data('hairId', hair.hairId); // 데이터 설정
+				        $div.data('index', index); // 인덱스 설정
+				        // 각 div의 배경 이미지 설정
+				        $div.css('background-image', 'url(' + hair.hairImageURL + ')');
+				    }
+				});
+        		
+        		// hatList의 각 항목에 대해 반복
+		        hatList.forEach(function(hat, index) {
+				    // 존재하는 div 수 내에서만 실행
+				    if (index < hatDivs.length) {
+				        var $div = $(hatDivs[index]); // jQuery 객체로 변환
+				        $div.data('hatId', hat.hatId); // 데이터 설정
+				        $div.data('index', index); // 인덱스 설정
+				        // 각 div의 배경 이미지 설정
+				        $div.css('background-image', 'url(' + hat.hatImageURL + ')');
+				    }
+				});
+        		
+        		// topList의 각 항목에 대해 반복
+		        topList.forEach(function(top, index) {
+				    // 존재하는 div 수 내에서만 실행
+				    if (index < topDivs.length) {
+				        var $div = $(topDivs[index]); // jQuery 객체로 변환
+				        $div.data('topId', top.topId); // 데이터 설정
+				        $div.data('index', index); // 인덱스 설정
+				        // 각 div의 배경 이미지 설정
+				        $div.css('background-image', 'url(' + top.topImageURL + ')');
+				    }
+				});
+        		
+        		// bottomList의 각 항목에 대해 반복
+		        bottomList.forEach(function(bottom, index) {
+				    // 존재하는 div 수 내에서만 실행
+				    if (index < bottomDivs.length) {
+				        var $div = $(bottomDivs[index]); // jQuery 객체로 변환
+				        $div.data('bottomId', bottom.bottomId); // 데이터 설정
+				        $div.data('index', index); // 인덱스 설정
+				        // 각 div의 배경 이미지 설정
+				        $div.css('background-image', 'url(' + bottom.bottomImageURL + ')');
+				    }
+				});
+        		
+
+            },
+            error: function (request, status, errorData) {
+                console.log("error code : " + request.status
+                    + "\nMessage : " + request.responseText
+                    + "\nError : " + errorData);
+            }
+        });  // ajax
+
+    });
 
     // "오프라인 전환" 버튼 생성 및 위치 조정
     const thirdButton = createButton('오프라인 전환', '#exampleModal3', 2 * (buttonHeight));
     const currentTop2 = parseInt(thirdButton.style.top, 10);
     thirdButton.style.top = `${currentTop2 - 14}px`;
     myCharacter.appendChild(thirdButton);
-    
+
     // 페이지의 다른 부분을 클릭하면 생성된 버튼들을 제거하는 이벤트 리스너 추가
     function outsideClickListener(event) {
         if (!myCharacter.contains(event.target)) {
