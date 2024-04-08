@@ -1,5 +1,7 @@
 package org.edu.intertwine.usercharacter.model.service;
 
+import java.util.ArrayList;
+
 import org.edu.intertwine.usercharacter.model.dao.UserCharacterDao;
 import org.edu.intertwine.usercharacter.model.vo.UserCharacter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ public class UserCharacterServiceImpl implements UserCharacterService {
 	}
 
 	@Override
-	public int UpdateUserCharacter(UserCharacter UserCharacter) {
-		return userCharacterDao.UpdateUserCharacter(UserCharacter);
+	public int updateUserCharacter(UserCharacter UserCharacter) {
+		return userCharacterDao.updateUserCharacter(UserCharacter);
 	}
 	
 	@Override
@@ -38,6 +40,26 @@ public class UserCharacterServiceImpl implements UserCharacterService {
 	@Override
 	public int deleteUserCharacter(String userId) {
 		return userCharacterDao.deleteUserCharacter(userId);
+	}
+
+	@Override
+	public ArrayList<UserCharacter> selectUserCharacterHair() {
+		return userCharacterDao.selectUserCharacterHair();
+	}
+
+	@Override
+	public ArrayList<UserCharacter> selectUserCharacterHat() {
+		return userCharacterDao.selectUserCharacterHat();
+	}
+
+	@Override
+	public ArrayList<UserCharacter> selectUserCharactertop() {
+		return userCharacterDao.selectUserCharactertop();
+	}
+
+	@Override
+	public ArrayList<UserCharacter> selectUserCharacterbottom() {
+		return userCharacterDao.selectUserCharacterbottom();
 	}
 	
 	
