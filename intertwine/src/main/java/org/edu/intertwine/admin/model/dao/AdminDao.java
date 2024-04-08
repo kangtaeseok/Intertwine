@@ -49,6 +49,8 @@ public class AdminDao {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountMonth", string);
 	}
 
+	
+	//신고처리용
 	public int selectRptListCount() {
 		return sqlSessionTemplate.selectOne("adminMapper.selectRptListCount");
 	}
@@ -58,13 +60,63 @@ public class AdminDao {
 		return (ArrayList<ContentReport>)list;
 	}
 
+	//신고검색 처리용
 	public int selectSeachUserIdCount(String keyword) {
 		return sqlSessionTemplate.selectOne("adminMapper.selectSeachUserIdCount", keyword);
 	}
-
+	public int selectSeachBoardNumCount(String keyword) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectSeachBoardNumCount", keyword);
+	}
+	public int selectSeachStatusCount(String keyword) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectSeachStatusCount", keyword);
+	}
+	
 	public ArrayList<ContentReport> selectSearchUserId(Search search) {
 		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectSearchUserId", search);
 		return (ArrayList<ContentReport>)list;
+	}	
+	public ArrayList<ContentReport> selectSeachBoardNum(Search search) {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectSeachBoardNum", search);
+		return (ArrayList<ContentReport>)list;
+	}
+	public ArrayList<ContentReport> selectSeachStatus(Search search) {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectSeachStatus", search);
+		return (ArrayList<ContentReport>)list;
 	}
 
+	
+	//신고insert
+	public int insertRptPost(String postId) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptPost", postId);
+	}
+	public int insertRptComment(String commentId) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptComment", commentId);
+	}
+
+	public ArrayList<ContentReport> selectPostNumList(int boardNum) {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectPostNumList", boardNum);
+		return (ArrayList<ContentReport>)list;
+	}
+
+	
+	
+	//신고상태변경
+	public int updateRptStatus(int reportId) {
+		return sqlSessionTemplate.update("adminMapper.updateRptStatus", reportId);
+	}
+
+	public Object updateRptStatusing(int boardNum) {
+		return sqlSessionTemplate.update("adminMapper.updateRptStatusing", boardNum);
+	}
+
+	public ContentReport selectRptComment(int commentId) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectRptComment", commentId);
+	}
+
+	public void updateRptCStatusing(int boardNum) {
+		sqlSessionTemplate.update("adminMapper.updateRptCStatusing", boardNum);
+		
+	}
+
+	
 }

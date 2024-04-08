@@ -70,12 +70,11 @@ public class PostController {
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
 		//포스트 유저
-		String postUserId = postService.selectUserId(postId);
+		String postUserId = postService.selectFindUserId(postId);
 		
 		logger.info(postUserId);
 		logger.info(loginUser.toString());
-		logger.info(String.valueOf(postUserId == loginUser.getUserId()));
-		if( postUserId == loginUser.getUserId()) {
+		if( postUserId.equals(loginUser.getUserId())) {
 			//포스트만든 유저 아이디와 로그인 유저 아이디가 같을 시
 			//나의 포스트 페이지로 이동
 			return "redirect:mypage.do";
@@ -83,8 +82,27 @@ public class PostController {
 			//포스트 만든 유저 아이디와 로그인 유저 아이디가 다를 시
 			return "redirect:page.do?friendId=" + loginUser.getUserId();	
 		}
+			
+	}
 		
+	//전화면으로 돌아가기2
+	@RequestMapping("back2.do")
+	public String moveBack(@RequestParam("userId")String userId, HttpSession session, Model model) {
 		
+		//로그인 유저
+		User loginUser = (User) session.getAttribute("loginUser");
+		
+		logger.info(loginUser.toString());
+
+		if( userId.equals(loginUser.getUserId())) {
+			//포스트만든 유저 아이디와 로그인 유저 아이디가 같을 시
+			//나의 포스트 페이지로 이동
+			return "redirect:mypage.do";
+		} else {
+			//포스트 만든 유저 아이디와 로그인 유저 아이디가 다를 시
+			return "redirect:page.do?friendId=" + userId;	
+		}
+			
 	}
 	
 	//남의 마이페이지 들어갈 때
@@ -96,11 +114,29 @@ public class PostController {
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
-		//그걸로 포스트 받아옴
+		ArrayList<Post> posts = new ArrayList<Post>();
 		
-			ArrayList<Post> posts = postService.selectPostsById(friendId);
-		
-	
+		//정렬을 거쳐올 경우 정렬 값을 담음
+	    Integer value = (Integer) session.getAttribute("sortPreference");
+	    if (value == null) {
+	        value = 0; // 기본 정렬방식
+	    }
+	    
+	    switch(value) {
+	        case 0:
+	            posts = postService.selectPostsById(friendId);
+	            break;
+	        case 1:
+	            posts = postService.selectPostsByIdOldestToNewest(friendId);
+	            break;
+	        case 2:
+	            posts = postService.selectPostsByIdMostViewsToLeast(friendId);
+	            break;
+	        default:
+	            posts = postService.selectPostsById(friendId);
+	            break;
+	    }
+	    
 		//그 포스트를 담음
 		for (Post post : posts) {
 	        Gallery gallery = new Gallery();
@@ -121,15 +157,11 @@ public class PostController {
 		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
 		String FollowingId = friendService.selectFollowingId(friend);
 	    String FollowerId = friendService.selectFollowerId(friend);
-	    int isFollowing = friendService.selectFollowing(friend);
+	    int isFollowing = 0;
+	    isFollowing = friendService.selectFollowing(friend);
 	    int isFollower = friendService.selectFollower(friend);
-	    if(isFollowing > 0) {
-	         mv.addObject("isFollowing", isFollowing);
-	      }
-	      if(isFollower > 0) {
-	         mv.addObject("isFollower", isFollower);
-	      }
 	    
+	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
 		mv.addObject("galleries", galleries);
@@ -137,9 +169,64 @@ public class PostController {
 		mv.addObject("user", loginUser);
 		mv.addObject("followingCount", followingCount);
 		mv.addObject("followerCount", followerCount);
+		mv.addObject("sortPreference", value);
+		session.removeAttribute("sortPreference");
 		mv.setViewName("post/othermypage");
 		
 		return mv;
+	}
+	
+	//배치액션
+	@RequestMapping(value="batchAction.do", method=RequestMethod.POST)
+	public String batchActions(@RequestParam("action")String action, @RequestParam("checks") List<String> postIds, Model model) {
+		
+		logger.info("postIds" + postIds.toString());
+		
+		if (postIds.size() > 0) {
+			switch (action) {
+			case "delete":
+				postService.deleteBatchDelete(postIds);
+				break;
+			case "public":
+				postService.updateBatchPublic(postIds);
+				break;
+			case "friend":
+				postService.updateBatchFollowing(postIds);
+				break;
+			case "private":
+				postService.updateBatchPrivate(postIds);	
+				break;
+			case "pinon":
+				postService.updateBatchPinOn(postIds);
+				break;
+			case "pinoff":
+				postService.updateBatchPinOff(postIds);
+				break;
+
+			}
+		}
+		return "redirect:mypage.do";
+	}
+		
+	//정렬을 위한 메소드
+	@RequestMapping(value = "sorting1.do", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public String sortingPage1 (HttpSession session, HttpServletResponse response, HttpServletRequest request, ModelAndView mv, @RequestParam("dropdown")int value) {
+		
+		logger.info(String.valueOf(value));
+		session.setAttribute("sortPreference", value);
+		return "redirect:mypage.do";
+	}
+	
+	//정렬을 위한 메소드
+	@RequestMapping(value = "sorting2.do", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public String sortingPage2 (HttpSession session, HttpServletResponse response, HttpServletRequest request, ModelAndView mv, @RequestParam("dropdown")int value, @RequestParam("otherUserId")String friendId) {
+		
+		logger.info(String.valueOf(value));
+		session.setAttribute("sortPreference", value);
+		
+		return "redirect:page.do?friendId=" + friendId;
 	}
 	
 	//내가 나의 페이지 들어갈 때
@@ -148,8 +235,30 @@ public class PostController {
 		
 		User user = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
-		ArrayList<Post> posts = postService.selectPostsById(user.getUserId());
 		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		
+		//정렬을 거쳐올 경우 정렬 값을 담음
+	    Integer value = (Integer) session.getAttribute("sortPreference");
+	    if (value == null) {
+	        value = 0; // 기본 정렬방식
+	    }
+	    
+	    switch(value) {
+	        case 0:
+	            posts = postService.selectPostsById(user.getUserId());
+	            break;
+	        case 1:
+	            posts = postService.selectPostsByIdOldestToNewest(user.getUserId());
+	            break;
+	        case 2:
+	            posts = postService.selectPostsByIdMostViewsToLeast(user.getUserId());
+	            break;
+	        default:
+	            posts = postService.selectPostsById(user.getUserId());
+	            break;
+	    }
+				
 		for (Post post : posts) {
 	        Gallery gallery = new Gallery();
 	        gallery.setPost(post);
@@ -172,6 +281,8 @@ public class PostController {
 		mv.addObject("followingCount", followingCount);
 		mv.addObject("followerCount", followerCount);
 		mv.setViewName("post/mypage");
+		mv.addObject("sortPreference", value);
+		session.removeAttribute("sortPreference");
 		
 		return mv;
 	}
@@ -218,16 +329,20 @@ public class PostController {
 
 	//포스트 생성
 	@RequestMapping(value = "posting.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public ModelAndView createPost(HttpServletRequest request, HttpServletResponse response, Post post,
+	public ModelAndView createPost(HttpSession session, HttpServletRequest request, HttpServletResponse response, Post post,
 			@RequestParam(name = "files", required = false) List<MultipartFile> files,
 			@RequestParam(name = "tagName", required = false) String[] tags, ModelAndView mv)
 			throws IllegalStateException, IOException, ImageProcessingException {
 
 		
 		logger.info("files : " + files.toString());
-		logger.info("UserId : " + post.getUserId());
+		logger.info("userId : " + post.getUserId());
+		User user = (User) session.getAttribute("loginUser");
+		logger.info(user.toString());
+		post.setUserId(user.getUserId());
 		logger.info("PostContent : " + post.getPostContent());
 		logger.info("PostVisible : " + post.getPostVisible());
+		
 		logger.info(post.getUserId());
 		// 세션에서 들고온 userid post객체에 저장
 		// 포스트 저장 우선 그다음 포스트 아이디 필요
@@ -315,7 +430,8 @@ public class PostController {
 	//피드
 	@RequestMapping(value = "getfeed.do", method = {RequestMethod.GET })
 	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
-			
+		
+		
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
 		
@@ -438,6 +554,11 @@ public class PostController {
 		//logger.info("viewingUser" + viewingUser.toString());
 		//포스트 아이디로 포스트 정보를 가져옴(포스트 게시글, 핀여부 등등)
 		Post post = postService.selectOnePost(postId);
+		
+		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
+		if(!viewingUser.getUserId().equals(post.getUserId())) {
+			post.setPostView(post.getPostView() + 1);
+		}
 		//logger.info("post" + post.toString());
 		//포스트에 있는 태그들 가져옴
 		ArrayList<Tag> tags = postService.selectTags(postId);
@@ -504,30 +625,20 @@ public class PostController {
 	public String updatePin(@RequestParam("value")String value, @RequestParam("postId")String postId, @RequestParam("userId")String userId, Model model) {
 		
 		int p = Integer.parseInt(postId);
-		logger.info(String.valueOf(p));
+	
 		Post post = new Post(p, userId);
 		
 		switch(value) {
-		
 		case "0":
 			//핀이 안되있을 경우
 			postService.updatePin1(post);
-			
 			break;
 			
 		case "1":
 			//핀이 되어있을 경우
 			postService.updatePin2(post);
-			
-			break;
-		
-		default:
-			
-			model.addAttribute("message", "핀 여부를 확인할 수 없습니다.");
-			
 			break;
 		}
-		
 		
 		return "redirect:detail.do?postId=" + postId; 
 		

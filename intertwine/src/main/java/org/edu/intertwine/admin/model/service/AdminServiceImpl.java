@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-@Service("adminService")
+@Service("AdminService")
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
@@ -66,10 +66,69 @@ public class AdminServiceImpl implements AdminService {
 	public int selectSeachUserIdCount(String keyword) {
 		return adminDao.selectSeachUserIdCount(keyword);
 	}
+	
+	@Override
+	public int selectSeachBoardNumCount(String keyword) {
+		return adminDao.selectSeachBoardNumCount(keyword);
+	}
+
+	
+	@Override
+	public int selectSeachStatusCount(String keyword) {
+		return adminDao.selectSeachStatusCount(keyword);
+	}
+
 
 	@Override
 	public ArrayList<ContentReport> selectSearchUserId(Search search) {
 		return adminDao.selectSearchUserId(search);
 	}
 
+	@Override
+	public ArrayList<ContentReport> selectSeachBoardNum(Search search) {
+		return adminDao.selectSeachBoardNum(search);
+	}
+	@Override
+	public ArrayList<ContentReport> selectSeachStatus(Search search) {
+		return adminDao.selectSeachStatus(search);
+	}
+	
+	//신고insert
+	public int insertRptPost(String postId) {
+		return adminDao.insertRptPost(postId);
+	}
+	
+	public int insertRptComment(String commentId) {
+		return adminDao.insertRptComment(commentId);
+	}
+
+	@Override
+	public ArrayList<ContentReport> selectPostNumList(int boardNum) {
+		return adminDao.selectPostNumList(boardNum);
+	}
+
+	@Override
+	public int updateRptStatus(int reportId) {
+		return adminDao.updateRptStatus(reportId);
+	}
+
+	@Override
+	public void updateRptStatusing(int boardNum) {
+		adminDao.updateRptStatusing(boardNum);
+		
+	}
+
+	@Override
+	public ContentReport selectRptComment(int commentId) {
+		return adminDao.selectRptComment(commentId);
+	}
+
+	@Override
+	public void updateRptCStatusing(int boardNum) {
+		adminDao.updateRptCStatusing(boardNum);
+		
+	}
+
+
+	
 }

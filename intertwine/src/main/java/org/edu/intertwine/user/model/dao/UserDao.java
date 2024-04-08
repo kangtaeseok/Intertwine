@@ -1,6 +1,11 @@
 package org.edu.intertwine.user.model.dao;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.edu.intertwine.admin.model.vo.ContentReport;
+import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.controller.UserController;
 import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.SocialLogin;
@@ -93,6 +98,40 @@ public class UserDao {
 
 	public void updateUserNickname(User user) {
 		sqlSessionTemplate.update("userMapper.updateUserNickname", user);		
+	}
+
+	public Notification selectNotify(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectNotify", userId);
+	}
+
+	public int updateCustonAlarm(Notification notify) {
+		return sqlSessionTemplate.update("userMapper.updateCustonAlarm", notify);
+		
+	}
+
+	public List<User> findAllUsers() {
+		List<User> list = sqlSessionTemplate.selectList("userMapper.findAllUsers");
+		return (ArrayList<User>)list;
+	}
+
+	public void insertUserStop(String userId) {
+		sqlSessionTemplate.update("userMapper.insertUserStop", userId);
+		
+	}
+
+	public void updateUserdisable(String userId) {
+		sqlSessionTemplate.update("userMapper.updateUserdisable", userId);
+		
+	}
+
+	public void insertAlarm(String userId) {
+		sqlSessionTemplate.insert("userMapper.insertAlarm", userId);
+		
+	}
+
+	public void updateDayTime(String userId) {
+		sqlSessionTemplate.update("userMapper.updateDayTime", userId);
+		
 	}
 
 

@@ -97,16 +97,29 @@ public class PostDao {
 			return null;
 		}
 	}
-	/*
-	 * public User selectUser(String findUserId) { // TODO Auto-generated method
-	 * stub return sqlSessionTemplate.selectOne("postMapper.selectUser",
-	 * findUserId); }
-	 */
+
 	public ArrayList<Post> selectPostsById(String userId) {
 		// TODO Auto-generated method stub
 		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsById", userId);
 		return (ArrayList<Post>)list;
 	}
+	public ArrayList<Post> selectPostsByIdOldestToNewest(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdOldestToNewest", userId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostViewsToLeast", userId);
+		return (ArrayList<Post>)list;
+	}
+	/*
+	public ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostReactionsToLeast", userId);
+		return (ArrayList<Post>)list;
+	}
+	*/
 	public ArrayList<Tag> selectTags(int postId) {
 		// TODO Auto-generated method stub
 		List<Tag> list = sqlSessionTemplate.selectList("postMapper.selectTags", postId);
@@ -117,6 +130,7 @@ public class PostDao {
 		List<Image> list = sqlSessionTemplate.selectList("postMapper.selectImagesByPostId", postId);
 		return (ArrayList<Image>)list;
 	}
+	
 	public String selectFindUserId(int each) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("postMapper.selectFindUserId", each);
@@ -147,7 +161,32 @@ public class PostDao {
 	}
 	public int insertLikeType(Like like2) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.insert("postMapper.DE", like2);
+		return sqlSessionTemplate.insert("postMapper.insertLikeType", like2);
 	}
+	public int deleteBatchDelete(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("postMapper.deleteBatchDelete", postIds);
+	}
+	public int updateBatchPublic(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPublic", postIds);
+	}
+	public int updateBatchFollowing(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchFollowing", postIds);
+	}
+	public int updateBatchPrivate(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPrivate", postIds);
+	}
+	public int updateBatchPinOn(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPinOn", postIds);
+	}
+	public int updateBatchPinOff(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPinOff", postIds);
+	}
+
 
 }

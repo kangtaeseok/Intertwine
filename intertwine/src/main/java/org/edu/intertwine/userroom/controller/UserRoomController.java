@@ -1,15 +1,21 @@
 package org.edu.intertwine.userroom.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.faq.model.vo.Faq;
 import org.edu.intertwine.user.model.vo.User;
+import org.edu.intertwine.usercharacter.model.vo.UserCharacter;
 import org.edu.intertwine.userroom.model.service.UserRoomService;
 import org.edu.intertwine.userroom.model.vo.UserRoom;
+import org.edu.intertwine.userroom.model.vo.UserRoomResource;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -49,9 +56,7 @@ public class UserRoomController {
 				// 세션에 저장된 User 객체를 가져와서 캐스팅
 				user = (User) attributeValue;
 
-				// userId 값 출력
 				userId = user.getUserId();
-				System.out.println("userId: " + userId);
 			}
 		}
 
@@ -75,4 +80,35 @@ public class UserRoomController {
 		return "square/squareMain";
 	}
 
+	
+	@RequestMapping(value = "getallroomreosource.do", method = RequestMethod.POST)
+	@ResponseBody // 리턴하는 jsonString 을 response body 에 담아서 보낸다는 의미임
+	public String getAllRoomResource(HttpServletResponse response)
+			throws IOException {
+		
+		// 전달받은 키워드로 공지사항 제목 검색 메소드를 실행하고 결과받기
+		ArrayList<UserRoomResource> roomresourcelist = userRoomService.selectAllRoomResource();
+		
+		// response 에 내보낼 값에 대한 mimiType 설정
+		response.setContentType("application/json; charset=utf-8");
+
+		// 리턴된 list를 json 배열에 옮겨 담기
+		JSONArray jarr = new JSONArray();
+
+		for (UserRoomResource userRoomResource : roomresourcelist) {
+			JSONObject job = new JSONObject();
+			
+			job.put("resourceId", userRoomResource.getResourceId());
+			job.put("resourceURL", userRoomResource.getResourceURL());
+
+			jarr.add(job);
+		} 
+
+		// 전송용 json 객체 생성
+		JSONObject sendJson = new JSONObject();
+		
+		// 전송용 json에 jarr 을 저장함
+		sendJson.put("jarr", jarr);
+		return sendJson.toJSONString();
+	}
 }
