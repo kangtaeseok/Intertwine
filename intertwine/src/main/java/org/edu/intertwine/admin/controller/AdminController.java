@@ -4,6 +4,7 @@ package org.edu.intertwine.admin.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +13,18 @@ import javax.servlet.http.HttpSession;
 import org.edu.intertwine.admin.model.service.AdminService;
 import org.edu.intertwine.admin.model.vo.Admin;
 import org.edu.intertwine.admin.model.vo.ContentReport;
+import org.edu.intertwine.comment.model.service.CommentService;
+import org.edu.intertwine.comment.model.vo.Comment;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
+import org.edu.intertwine.post.model.service.PostService;
+import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.user.controller.UserController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +36,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdminController {
-
 	
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired
 	private AdminService adminService;
 	
@@ -127,7 +137,6 @@ public class AdminController {
 										@RequestParam(name="limit", required=false) String slimit,
 										@RequestParam(name="page", required=false) String page,
 										ModelAndView mv) {
-		//검색결과에 대한 페이징 처리를 위한 페이지 지정
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
@@ -138,16 +147,11 @@ public class AdminController {
 			limit = Integer.parseInt(slimit);
 		}
 		
-		
-		//검색결과가 적용된 총 페이지 계산을 위한 총 목록 갯수 조회
 		int listCount = adminService.selectSeachUserIdCount(keyword);
 		
-		//뷰 페이지에 사용할 페이징 관련 값들 계산 처리
 		Paging paging = new Paging(listCount, currentPage, limit, "rsearchuserId.do");
 		paging.calculate();
 		
-		
-		//한 페이지에 출력할 검색 결과 적용된 목록 조회
 		Search search = new Search();
 		search.setStartRow(paging.getStartRow());
 		search.setEndRow(paging.getEndRow());
@@ -155,7 +159,6 @@ public class AdminController {
 		
 		ArrayList<ContentReport> list = adminService.selectSearchUserId(search);
 		
-		//받은 결과에 따라 성공/실패 페이지 내보내기
 		if(list != null && list.size() > 0) {
 			mv.setViewName("admin/reportPage");
 			mv.addObject("list", list);
@@ -167,11 +170,198 @@ public class AdminController {
 			mv.addObject("listCount", listCount);
 			
 		} else {
-			mv.addObject("message", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
-			mv.setViewName("common/error");
+			mv.addObject("msg", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
+			mv.addObject("url", "admin/reportPage");
+			mv.setViewName("common/alert");
 		}
 		
 		return mv;
 	}
+	
+	
+	//포스트넘버
+	@RequestMapping(value="rsearchboardNum.do", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView reportSearchBoardNum(@RequestParam("action") String action,
+										@RequestParam("keyword") String keyword,
+										@RequestParam(name="limit", required=false) String slimit,
+										@RequestParam(name="page", required=false) String page,
+										ModelAndView mv) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		if(slimit != null) {
+			limit = Integer.parseInt(slimit);
+		}
+		
+		int listCount = adminService.selectSeachBoardNumCount(keyword);
+		
+		Paging paging = new Paging(listCount, currentPage, limit, "rsearchboardNum.do");
+		paging.calculate();
+		
+		Search search = new Search();
+		search.setStartRow(paging.getStartRow());
+		search.setEndRow(paging.getEndRow());
+		search.setKeyword(keyword);
+		
+		ArrayList<ContentReport> list = adminService.selectSeachBoardNum(search);
+		
+		if(list != null && list.size() > 0) {
+			mv.setViewName("admin/reportPage");
+			mv.addObject("list", list);
+			mv.addObject("paging", paging);
+			mv.addObject("currentPage", currentPage);
+			mv.addObject("action", action);
+			mv.addObject("keyword", keyword);
+			mv.addObject("limit", limit);
+			mv.addObject("listCount", listCount);
+			
+		} else {
+			mv.addObject("msg", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
+			mv.addObject("url", "admin/reportPage");
+			mv.setViewName("common/alert");
+		}
+		
+		return mv;
+	}
+	
+	//처리상태
+	@RequestMapping(value="rsearchStatus.do", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView reportSearchStatus(@RequestParam("action") String action,
+											@RequestParam("keyword") String keyword,
+											@RequestParam(name="limit", required=false) String slimit,
+											@RequestParam(name="page", required=false) String page,
+											ModelAndView mv) {
+			int currentPage = 1;
+			if(page != null) {
+				currentPage = Integer.parseInt(page);
+			}
+			
+			int limit = 10;
+			if(slimit != null) {
+				limit = Integer.parseInt(slimit);
+			}
+			
+			int listCount = adminService.selectSeachStatusCount(keyword);
+			
+			Paging paging = new Paging(listCount, currentPage, limit, "rsearchStatus.do");
+			paging.calculate();
+			
+			Search search = new Search();
+			search.setStartRow(paging.getStartRow());
+			search.setEndRow(paging.getEndRow());
+			search.setKeyword(keyword);
+			
+			ArrayList<ContentReport> list = adminService.selectSeachStatus(search);
+			
+			if(list != null && list.size() > 0) {
+				mv.setViewName("admin/reportPage");
+				mv.addObject("list", list);
+				mv.addObject("paging", paging);
+				mv.addObject("currentPage", currentPage);
+				mv.addObject("action", action);
+				mv.addObject("keyword", keyword);
+				mv.addObject("limit", limit);
+				mv.addObject("listCount", listCount);
+				
+			} else {
+				mv.addObject("msg", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
+				mv.addObject("url", "admin/reportPage");
+				mv.setViewName("common/alert");
+			}
+			
+			return mv;
+		}
+	@Autowired
+	private PostService postService;
+	
+	//게시물상세보기
+	@RequestMapping("rptdetail.do")
+	public String postDetailMethod(@RequestParam("pnum") int boardNum, 
+			@RequestParam(name="page", required=false) String page, Model model) {
+
+		int currentPage = 1;
+		if(page != null && page.trim().length() > 0) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		Post post = postService.selectOnePost(boardNum);
+		ArrayList<ContentReport> report = adminService.selectPostNumList(boardNum);
+		
+		if(post != null) {
+			adminService.updateRptStatusing(boardNum);
+			model.addAttribute("report", report);
+			model.addAttribute("post", post);
+			model.addAttribute("currentPage", currentPage);
+			return "admin/reportDetailView";
+		} else {
+			model.addAttribute("msg", boardNum + "번 게시글 상세보기 요청 실패");
+			model.addAttribute("url", "admin/reportPage");
+			return "common/alert";
+		}
+		
+	}
+	@Autowired
+	private CommentService commentService;
+	
+	@RequestMapping(value="rptCommentdetail.do", method= {RequestMethod.POST,RequestMethod.GET})
+	public String commentDetailMethod(@RequestParam("cnum") int commentId
+			,@RequestParam("pnum") int boardNum, 
+			@RequestParam(name="page", required=false) String page, Model model) {
+
+		int currentPage = 1;
+		if(page != null && page.trim().length() > 0) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		ArrayList<Comment> comment = commentService.selectComments(boardNum);
+		ArrayList<ContentReport> report = adminService.selectPostNumList(boardNum);
+		
+		if(comment != null) {
+			adminService.updateRptCStatusing(boardNum);
+			model.addAttribute("report", report);
+			model.addAttribute("comment", comment);
+			model.addAttribute("currentPage", currentPage);
+			return "admin/rptCommentView";
+		} else {
+			model.addAttribute("msg","상세보기 요청 실패");
+			model.addAttribute("url", "admin/reportPage");
+			return "common/alert";
+		}
+		
+	}
+	
+	
+	//처리상태 변경
+	@RequestMapping(value="delContent.do", method=RequestMethod.POST)
+	public ResponseEntity<?> delContentMethod(@RequestParam("reportId") List<Integer> reportIds,
+	 Model model) {
+		
+		for (Integer reportId : reportIds) {
+			//게시물 비공개처리 로직추가필요함
+	        adminService.updateRptStatus(reportId);
+	    }
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	
+	}
+	
+	@RequestMapping(value="upStatus.do", method=RequestMethod.POST)
+	public ResponseEntity<?> rptUpdateMethod(@RequestParam("reportId") List<Integer> reportIds,
+	 Model model) {
+		
+		for (Integer reportId : reportIds) {
+	        adminService.updateRptStatus(reportId);
+	    }
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	
+	}
+	
+		
+		
+		
 	
 }
