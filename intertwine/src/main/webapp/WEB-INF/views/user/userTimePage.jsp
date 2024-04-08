@@ -33,6 +33,17 @@ function kakaoLogout() {
     }
   }
 
+function openPopup() {
+	  document.getElementById("popup").style.display = "block";
+	}
+
+	// 팝업 닫기 함수
+	function closePopup() {
+	  document.getElementById("popup").style.display = "none";
+	}
+
+
+
 </script>
 
 </head>
@@ -107,6 +118,7 @@ function kakaoLogout() {
                 </div>
                 <div id="settings_sub_menu" class="sub_menu">
                 <ul>
+                
                 <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
             	<c:if test="${empty type}">
                         <li id="userInfo">
@@ -124,6 +136,7 @@ function kakaoLogout() {
 						</li>
 						</c:if>
 						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+						
 						<c:if test="${empty type}">
                         	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
 						</c:if>
@@ -160,17 +173,25 @@ function kakaoLogout() {
 			</div>
 			<div class="time-setting-box">
 				<div class="logo-box">
-				<h3>시간 설정 박스</h3>
+				<h3>시간 설정</h3>
 				</div>
 				<div class="time-set-box">
 				
 					<div class="set-box">
 					<center>
 						<div class="set1">
-							<div class="set2"><h4>커스텀 알림보내기 <i class="fa-solid fa-pen"></i></h4></div>
+							<div class="set2"><button onclick="openPopup();"><h4>커스텀 알림보내기 <i class="fa-solid fa-pen"></i></h4></button></div>
+							<div id="popup" class="popup">
+							    <form class="popup-content" action="customTime.do">
+							        <label for="message">메시지 :</label>
+							        <input type="text" id="message" name="message"><br><br>
+							        <input type="submit" value="전송" onclick="closePopup();">
+							        <input type="reset" value="취소" onclick="closePopup();">
+							    </form>
+							</div>
 						</div>
 						<div class="set1">
-							<div class="set2"><h4>기본 제공 알림보내기</h4></div>
+							<div class="set2"><a href="userSetTime.do"><h4>기본 제공 알림보내기</h4></a></div>
 						</div>
 						<div class="set1">
 							<div class="set2"><h4>시간 알림 차단하기</h4> &nbsp; <input type="checkbox"></div>

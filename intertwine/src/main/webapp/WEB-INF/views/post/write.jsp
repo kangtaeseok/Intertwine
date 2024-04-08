@@ -127,7 +127,6 @@ a {
             <div class="middle">
                 <input type="file" name="files" class="real-upload" accept="image/*, video/mp4" multiple>
                 <div class="upload"><i class="fa-solid fa-photo-film" fill="plum"></i>사진 업로드</div>
-                <!-- 파일업로드 스크립트 자리 옮길시 실행 안됨 -->
  <script>
     let trackedFiles = [];
     
@@ -241,90 +240,85 @@ a {
               </div>
               <div class="tags">
               </div>
-              <!-- 태그 관련 스크립트 자리 옮기면 실행안됨-->
-              <script>
-                document.getElementById('tagSettings').addEventListener('click', function() {
-                event.preventDefault();
-                var existingDialog = document.querySelector('.modal-content');
-                if (existingDialog) {
-                    existingDialog.remove();
+<script>
+    document.getElementById('tagSettings').addEventListener('click', function(event) {
+        event.preventDefault();
+        var existingDialog = document.querySelector('.modal-content');
+        if (existingDialog) {
+            existingDialog.remove();
+            return;
+        }
+
+        var dialogHTML = `<div class="modal-content" style="position: relative;">
+                            <input type="text" id="newTagInput" placeholder="#새 태그">
+                            <button id="confirmTag" onclick="event.preventDefault();">확인</button>
+                            <button id="cancelTag" onclick="event.preventDefault();">취소</button>
+                          </div>`;
+        document.querySelector('.tag').insertAdjacentHTML('afterend', dialogHTML);
+
+        document.getElementById('cancelTag').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.querySelector('.modal-content').remove();
+        });
+
+        document.getElementById('confirmTag').addEventListener('click', function(event) {
+            event.preventDefault();
+            const input = document.getElementById('newTagInput');
+            const tagValue = input.value.trim();
+            if (!tagValue.startsWith('#')) {
+                alert('태그는 #으로 시작해야 합니다.');
+                return;
+            }
+
+            if (tagValue.includes(' ')) {
+                alert('태그에는 공백이 포함될 수 없습니다.');
+                return;
+            }
+
+            const existingTags = document.querySelectorAll('.tags span');
+            for (let tag of existingTags) {
+                if (tag.textContent === tagValue) {
+                    alert('이미 존재하는 태그입니다.');
                     return;
                 }
+            }
 
-                var dialogHTML = `<div class="modal-content" style="position: relative;">
-                                    <input type="text" id="newTagInput" placeholder="#새 태그">
-                                    <button id="confirmTag" return="false">확인</button>
-                                    <button id="cancelTag" return="false">취소</button>
-                                  </div>`;
-                document.querySelector('.tag').insertAdjacentHTML('afterend', dialogHTML);
+            const uniqueId = new Date().getTime(); // 태그에 유니크 아이디 부여
 
-                document.getElementById('cancelTag').addEventListener('click', function() {
-                	 event.preventDefault(); 
-                    document.querySelector('.modal-content').remove();
-                });
+            // 페이지에 태그 삽입
+            const tagContainer = document.createElement('span');
+            tagContainer.setAttribute('data-tag-id', uniqueId); // 유니크 아이디 설정
+            tagContainer.textContent = tagValue;
+            tagContainer.style.marginRight = '5px';
 
-                document.getElementById('confirmTag').addEventListener('click', function() {
-                	event.preventDefault(); 
-                	const input = document.getElementById('newTagInput');
-                    const tagValue = input.value.trim();
-                    if (!tagValue.startsWith('#')) {
-                        alert('태그는 #으로 시작해야 합니다.');
-                        return;
-                    }
+            // 숨겨진 input 삽입
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'tagName[]'; //자바에서 꺼내 사용할 이름, array로 처리
+            hiddenInput.setAttribute('data-tag-id', uniqueId); //유니크 아이디 사용
+            hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
+            document.querySelector('form').appendChild(hiddenInput);
 
-                    if (tagValue.includes(' ')) {
-                        alert('태그에는 공백이 포함될 수 없습니다.');
-                        return;
-                    }
+            // 삭제 버튼 추가
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'X';
+            deleteButton.style.marginLeft = '5px';
+            deleteButton.onclick = function(event) {
+                // 삭제 버튼 누를 시 유니크 아이디로 보여지는 태그와 숨겨진 인풋 둘다 삭제 
+                event.preventDefault();
+                document.querySelector(`span[data-tag-id="${uniqueId}"]`).remove(); 
+                document.querySelector(`input[data-tag-id="${uniqueId}"]`).remove();
+            };
+            tagContainer.appendChild(deleteButton);
 
-                    const existingTags = document.querySelectorAll('.tags span');
-                    for (let tag of existingTags) {
-                        if (tag.textContent.startsWith(tagValue)) {
-                            alert('이미 존재하는 태그입니다.');
-                            return;
-                        }
-                    }
+            document.querySelector('.tags').appendChild(tagContainer);
+            document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
 
-                    const uniqueId = new Date().getTime(); // 태그에 유니크 아이디 부여
-
-                    // 페이지에 태그 삽입
-                    const tagContainer = document.createElement('span');
-                    tagContainer.setAttribute('data-tag-id', uniqueId); // 유니크 아이디 설정
-                    tagContainer.textContent = tagValue;
-                    tagContainer.style.marginRight = '5px';
-
-                    // 삭제 버튼 추가
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'X';
-                    deleteButton.style.marginLeft = '5px';
-                    deleteButton.addEventListener('click', function() {
-                        // 삭제 버튼 누를 시 유니크 아이디로 보여지는 태그와 숨겨진 인풋 둘다 삭제 
-                        event.preventDefault();
-                        document.querySelector(`span[data-tag-id="${uniqueId}"]`).remove(); 
-                        document.querySelector(`input[data-tag-id="${uniqueId}"]`).remove();
-                    });
-                    tagContainer.appendChild(deleteButton);
-
-                    document.querySelector('.tags').appendChild(tagContainer);
-                    document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
-
-                    document.querySelector('.modal-content').remove();
-                    input.value = ''; // 다이얼로그 비움
-
-                    // 숨겨진 input 삽입
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'tagName'; //자바에서 꺼내 사용할 이름
-                    hiddenInput.setAttribute('data-tag-id', uniqueId); //유니크 아이디 사용
-                    hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
-                    document.querySelector('form').appendChild(hiddenInput);
-
-
-                });
-            });
-                </script>
-                
-            
+            document.querySelector('.modal-content').remove();
+            input.value = ''; // 다이얼로그 비움
+        });
+    });
+</script>
               <div>
                 <br>
                 <b>프라이버시 설정</b>
@@ -348,6 +342,7 @@ a {
 </body>
 <!-- 임시저장용 자바스크립트 완료 -->
 <script>
+	const form = document.querySelector('form');
     const saveButton = document.getElementById("saveDraft");
     const textArea = document.querySelector(".detail");
       
@@ -368,6 +363,11 @@ a {
             }
         }
     };
+    form.addEventListener('submit', function(event) {
+
+        localStorage.removeItem("textArea"); //삭제
+    });
+
 </script>
 
 </body>

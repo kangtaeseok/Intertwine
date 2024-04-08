@@ -1,5 +1,8 @@
 package org.edu.intertwine.user.model.service;
 
+import java.util.List;
+
+import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
@@ -43,6 +46,20 @@ public interface UserService {
 	String selectUserNickname(String userId);
 
 	void updateUserNickname(User user);
+
+	Notification selectNotify(String userId);
+
+	int updateCustonAlarm(Notification notify);
+
+	List<User> findAllUsers();
+
+	void updateUserdisable(String userId);
+
+	void insertUserStop(String userId);
+
+	void insertAlarm(String userId);
+
+	void updateDayTime(String userId);
 
 
 }
