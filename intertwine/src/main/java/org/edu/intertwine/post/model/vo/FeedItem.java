@@ -108,7 +108,7 @@ public class FeedItem implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+ 
 
 
 	@Override

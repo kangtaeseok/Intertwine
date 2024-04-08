@@ -1,6 +1,7 @@
 package org.edu.intertwine.post.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
@@ -29,8 +30,6 @@ public interface PostService {
 	ArrayList<Integer> selectPostIds(ArrayList<String> userIds);
 
 	ArrayList<Integer> selectPostIdsforZero();
-
-	String selectUserId(int eachPostId);
 
 	Post selectOnePost(int eachPostId);
 
@@ -65,6 +64,24 @@ public interface PostService {
 	int updateLikeType(Like like2);
 
 	int insertLikeType(Like like2);
+
+	int deleteBatchDelete(List<String> postIds);
+
+	int updateBatchPublic(List<String> postIds);
+
+	int updateBatchFollowing(List<String> postIds);
+
+	int updateBatchPrivate(List<String> postIds);
+
+	int updateBatchPinOn(List<String> postIds);
+
+	int updateBatchPinOff(List<String> postIds);
+
+	ArrayList<Post> selectPostsByIdOldestToNewest(String userId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId);
+
+	//ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId);
 
 
 
