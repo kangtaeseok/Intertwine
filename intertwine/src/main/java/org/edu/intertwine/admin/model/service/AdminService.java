@@ -7,6 +7,7 @@ import org.edu.intertwine.admin.model.vo.ContentReport;
 import org.edu.intertwine.admin.model.vo.VisitCount;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
+import org.edu.intertwine.common.Time;
 
 
 public interface AdminService {
@@ -51,5 +52,16 @@ public interface AdminService {
 	ContentReport selectRptComment(int commentId);
 
 	void updateRptCStatusing(int boardNum);
+
+	ArrayList<ContentReport> selectReportAlarm();
+
+	int selectVisitCountTime(Time time);
+
+	int selectVisitCountToday();
+
+	int selectReportBoardNumCount(int boardNum);
+
+	int selectReportCommentCount(int commentId);
+
 
 }

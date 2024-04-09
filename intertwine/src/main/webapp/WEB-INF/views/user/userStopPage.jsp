@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>userTime</title>
-<link rel="stylesheet" href="/intertwine/resources/css/userTimePage.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/userStopPage.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
 <script src="/intertwine/resources/js/kakao.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +35,43 @@ function kakaoLogout() {
 
 function openPopup() {
 	  document.getElementById("popup").style.display = "block";
-	}
+}
 
-	// 팝업 닫기 함수
-	function closePopup() {
-	  document.getElementById("popup").style.display = "none";
-	}
-
-
-
+// 팝업 닫기 함수
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+function disableButton() {
+	var confirmAction = confirm("계정을 비활성화하시겠습니까?");
+	 if (confirmAction) {
+		 $.ajax({
+			 url: 'udisable.do'
+			 type: 'POST'
+		 });
+		 
+		 alert("계정이 비활성화되었습니다."); 
+	 } else {
+		 alert("계정 비활성화가 취소되었습니다.");
+		 
+	 }
+}
+function stopButton() {
+	var confirm = confirm("계정을 탈퇴하시겠습니까?");
+	 if (confirm) {
+		 $.ajax({
+			 url: 'ustopdel.do'
+			 type: 'POST'
+		 });
+		 
+		 alert("계정이 비활성화되었습니다."); 
+	 } else {
+		 alert("계정 비활성화가 취소되었습니다.");
+		 
+	 }
+	
+	
+	
+}
 </script>
 
 </head>
@@ -141,7 +169,7 @@ function openPopup() {
 						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
 						
 						<c:if test="${empty type}">
-                        	<button class="btn" onclick="location.href='ulogout.do';">logout</button>
+                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
 						</c:if>
 						<c:if test="${type eq 'kakao'}">
 							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
@@ -152,75 +180,40 @@ function openPopup() {
 					</ul>	
                 </div>
                 
-               
-                
-                <!--<div class="feed">
-                    피드창
-                </div>-->
-                
             </div>
         </div>
 <div class="box">      
-		<div class="time-box">
 			<div class="logo-box">
-				<h3>이용시간</h3>
+				<h3>계정 비활성화</h3>
 			</div>
-				<div class="usage-time">
-					 ${time} 분
-				 
-				</div>
-				<div class="chart-box">
-					<canvas ID="myChart"></canvas>
-				 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-				</div>
-			</div>
-			<div class="time-setting-box">
-				<div class="logo-box">
-				<h3>시간 설정</h3>
-				</div>
-				<div class="time-set-box">
+			<div class="body-box">
+			<br><br>
+			<h4>${sessionScope.loginUser.userName } 님, 안녕하세요.</h4>
+			<br> 
+				계정을 탈퇴하지 않고 비활성화할 수 있습니다. <br> 
+				비활성화 설정시 게시물은 비공개 상태로 전환됩니다.<br><br>
+				<hr>
+				<br><br>
+				계정을 비활성화하시는 이유가 무엇인가요? <br><br>
+
+				<select>
+					<option>휴식을 위해서</option>
+					<option>계정 보호를 위해서</option>
+				</select>
+				<br><br>
+				추후 비활성화 해제시 비밀번호를 입력하여
+				해제할 수 있습니다.
+				<br><br>
+				<button onclick="disableButton();">계정 비활성화</button>
+				<br><hr><br>
 				
-					<div class="set-box">
-					<center>
-						<div class="set1">
-							<div class="set2"><button onclick="openPopup();"><h4>커스텀 알림보내기 <i class="fa-solid fa-pen"></i></h4></button></div>
-							<div id="popup" class="popup">
-							    <form class="popup-content" action="customTime.do">
-							        <label for="message">메시지 :</label>
-							        <input type="text" id="message" name="message"><br><br>
-							        <input type="submit" value="전송" onclick="closePopup();">
-							        <input type="reset" value="취소" onclick="closePopup();">
-							    </form>
-							</div>
-						</div>
-						<div class="set1">
-							<div class="set2"><a href="userSetTime.do"><h4>기본 제공 알림보내기</h4></a></div>
-						</div>
-						<div class="set1">
-							<div class="set2"><h4>시간 알림 차단하기</h4> &nbsp; <input type="checkbox"></div>
-						</div>
-						</center>
-					</div>
+				혹은 계정 탈퇴를 원하시면 계정탈퇴 버튼을 눌러주세요.
+				<br><br>
+				<button onclick="stopButton();">계정 탈퇴</button>
+				<br>
 				
 				</div>
-			</div>
 	</div>
 </main>
-
-<script>
-	const ctx = document.getElementById('myChart');
-	new Chart(ctx, {
-	  type: 'pie',
-	  data: {
-	    labels: ['하루(시)', '이용시간(시)'],
-	    datasets: [{
-	      label: '하루 이용 시간',
-	      data: [1440 / 60,'${time}'/60],
-	    }]
-	  },
-	  options: {
-	  }
-	});
-</script>
 </body>
 </html>

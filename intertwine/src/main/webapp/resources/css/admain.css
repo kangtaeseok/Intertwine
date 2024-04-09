@@ -1,6 +1,7 @@
 @charset "UTF-8";
 html {
 	font-size: 16px;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 * {
@@ -17,13 +18,19 @@ ul,ol,li {
 }
 
 a {
+	color:black;
     text-decoration: none;
-    color: #ce8489;
-    
 }
 
+a:hover {
+	color:rgb(205, 79, 132);
+    text-decoration: none;
+}
+
+/* 로고 및 관리항목명 */
 .header{
-	padding: 8px;
+	padding: 10px;
+	margin: 10px;
 	width: 100%;
 	height: 40px;
 	align-items: center;
@@ -33,13 +40,15 @@ a {
 	display: flex;
 	gap: 20px;
 	align-items: center;
+	text-align: center;
 }
 
-
-.header {
-	padding: 10px;
-	margin: 10px;
+h2 { 
+	 color: rgb(205, 79, 132);
+	font-weight: border;
+	margin-left: 35%;	
 }
+
 
 main {
 	display: flex;
@@ -217,17 +226,21 @@ main {
 	left: 0; /* 슬라이딩되어 나타나도록 설정 */
 }
 
-#bottom_right_contents {
-	left: var(--side-bar-width)+240px;
-	width: calc(100% - var(--side-bar-width) - 240px);
+#bottom_right_contents.on {
+	position: relative;
 	display: flex;
-	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
-	display: flex;
-    justify-content: center;
-    align-items: center;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	/*left: 0px;*/
 }
 
 #abc {
+	margin-left: 15%;
 	width: inherit;
 	position: relative;
 	display: flex;
@@ -246,7 +259,7 @@ main {
 }
 
 .content-div {
-	margin-top: 100px;
+	margin-top: 2rem;
 	position: relative;
 	/* background-color: Aquamarine; */
 	display: flex;
@@ -332,6 +345,8 @@ h4 {
 	align-items: space-evenly;
 	justify-content: center;
 	border-radius: 6px;
+	 overflow: auto;
+	padding: 1rem;
 }
 
 .notice{
@@ -355,11 +370,40 @@ h4 {
 	height: 400px;
 	background: #f4f4f4;
 	border-radius: 6px;
+	
 }
 .noti-div2 {
 	margin: 20px;
 	width: 550px;
-	height: 330px;
+	height: 400px;
 	background: #f4f4f4;
 	border-radius: 6px;
+	 overflow: scroll;
+}
+table#report {
+	 width: 100%;
+	 align-items: center;
+	
+	      
+}
+
+th { 
+	padding: 1rem;
+}
+
+.alertStyle {
+        background-color: #ffffff;
+        color: black;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 0 20 auto;
+         height: 80px;
+         border-bottom: 1px solid #d3d3d3;
+         	 text-align: center;
+    }
+    
+.noti-box {
+	
+	display: flex;
+	flex-direction: column;	
 }

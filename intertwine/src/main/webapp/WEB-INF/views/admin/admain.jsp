@@ -10,7 +10,7 @@
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/intertwine/resources/css/admain.css" />
 <script>
-		const dpTime = function () {
+const dpTime = function () {
 	      const now = new Date()
 	      let year = now.getFullYear()
 	      let month = now.getMonth()
@@ -42,9 +42,36 @@
 	      }
 	      $('#time').html(year + "년 " + month + "월 " + day + "일 " +  ampm + " " + hours + ":" + minutes + ":" + seconds);
 	    }
-	    setInterval(dpTime, 1000)
+	    setInterval(dpTime, 1000);
 	    
-   
+$(function(){
+	$.ajax({
+		url: "reportAlarm.do",
+		type: "post",
+		dataType: "json",
+		success: function(data){
+			console.log("success : " + data);
+
+			var str = JSON.stringify(data);
+			var json = JSON.parse(str);
+			
+			values = "";			
+			for(var i in json.rlist){
+				values += "<tr><td class='alertStyle'>" + data.rlist[i].rId
+	              + "</td><td class='alertStyle'><a href='rptdetail.do?pnum=" 
+	              + data.rlist[i].Nnum + "'>" + data.rlist[i].Nnum + "</a></td><td class='alertStyle'>"
+	              + data.rlist[i].uId
+	              + "</td><td class='alertStyle'>"
+	              + data.rlist[i].reason + "</td></tr>";
+			}
+			$('#report').html($('#report').html() + values);
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});	    
+}); 
+
 </script>
 
 </head>
@@ -52,7 +79,7 @@
 <header>
 <div class="header">
 	<div class="header-div">
-		<a href="location.href='admain.do'"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
 	</div>
 </div>
 </header>
@@ -61,19 +88,19 @@
 <aside class="side-bar">
             <ul>
                 <li id="square">
-                    <li><a href="#"><i class="fa-solid fa-user"></i> 사용자 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
       
                 <li id="mypage">
-                    <li><a href="${ pageContext.servletContext.contextPath }/userRptPage.do"><i class="fa-solid fa-flag"></i> 신고현황</a></li>
+                    
              
                 <li id="friend">
-                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
+                    
                 
                 <li id="chatting">
                     <li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
                 
                 <li id="alarm">
-                    <li><a href="#"><i class="fa-solid fa-q"></i> 고객센터</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
                 
             </ul>
         </aside>
@@ -109,12 +136,16 @@
 							<h4>오늘의 방문자 수 : ${visitCount.visitCount} &nbsp; 누적 방문자 수 : ${ sumCount }</h4> 
 							</div>
 						</div>
+						<div class="noti-box">
+						<h3>신고 관련 알림 현황</h3>
 						<div class="noti-div">
-							<h3>신고 관련 알림 현황</h3>
-							<div class="notice">알림1</div>
-							<div class="notice">알림2</div>
-							<div class="notice">알림3</div>	
+							<div class="report-box">
+								<table id="report"cellspacing="0">
+									<tr><th>신고번호</th><th>게시물번호</th><th>신고자</th><th>신고사유</th></tr>
+								</table>
+							</div>
 						</div>
+					</div>	
 				</div>	
 					<div class="stat-div-3">
 						<div class="stat-div2">
@@ -123,10 +154,9 @@
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 						</div>
 						<div class="noti-div2">
-							<h3>오류 관련 알림 현황</h3>
-							<div class="notice">알림1</div>
-							<div class="notice">알림2</div>
-							<div class="notice">알림3</div>
+							<h3>회원수</h3>
+					<canvas ID="myChart2" width="400" height="250"></canvas>
+					<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>		
 						</div>
 					</div>
 				</div>
@@ -158,6 +188,28 @@ new Chart(ctx, {
     }
   }
 });
+
+
+const ctx2 = document.getElementById('myChart2');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['9', '12', '15', '18','21', '24'],
+    datasets: [{
+      label: '# of Votes',
+      data: ['${nine}','${twe}', '${fity}', '${eight}','${twone}', '${twone}'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
 </script>
 </body>
 </html>
