@@ -636,23 +636,7 @@ public class UserController {
 		 }
 		
 	 }
-	 @Component
-	 @EnableScheduling
-	 class ScheduledApplication {
-	 @Scheduled(fixedRate=3600000)
-	 public void sendNotifications() {
-	        List<User> users = userService.findAllUsers(); // 모든 유저 조회
-	        for (User user : users) {
-	            int userTime = Integer.parseInt(userService.selectUserTime(user.getUserId()).trim());
-	            if (userTime > 0 && userTime % 60 == 0) {
-	                Notification notify = userService.selectNotify(user.getUserId());
-	                String message = "접속 후 " + userTime + "분이 지났습니다.";
-	                notify.setNotifyContent(message);
-
-	            }
-	        }
-	    }
-	 }
+	 
 	 //계정 비활성화
 	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
 	 public String userDisabled(HttpSession session) {

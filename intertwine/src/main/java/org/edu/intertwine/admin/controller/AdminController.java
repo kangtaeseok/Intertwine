@@ -377,6 +377,33 @@ public class AdminController {
 		
 	}
 	
+	//신고 내용받기
+	@ResponseBody
+	@RequestMapping(value="inPostReport.do", method=RequestMethod.POST)
+	public void inPostReport(@RequestParam("postId") int postId, @RequestParam("message") String message,  @RequestParam("userId") String userId){
+		ContentReport cpt = new ContentReport();
+		
+		cpt.setBoardNum(postId);
+		cpt.setReportReason(message);
+		cpt.setReportComment(0);
+		cpt.setUserId(userId);
+		adminService.insertRptPost(cpt);
+		
+		
+	}
+	
+	//신고 내용받기
+	@ResponseBody
+	@RequestMapping(value="inComReport.do", method=RequestMethod.POST)
+	public void inComReport(@RequestParam("postId") int postId, @RequestParam("message") String message,  @RequestParam("userId") String userId,
+			@RequestParam("commentId") int commentId){
+		ContentReport cpt = new ContentReport();
+		cpt.setBoardNum(postId);
+		cpt.setReportReason(message);
+		cpt.setReportComment(commentId);
+		cpt.setUserId(userId);
+		adminService.insertRptComment(cpt);
+	}
 	
 	//처리상태 변경
 	@RequestMapping(value="delContent.do", method=RequestMethod.POST)
