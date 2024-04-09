@@ -6,6 +6,7 @@ import java.util.List;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.vo.User;
@@ -80,6 +81,16 @@ public interface PostService {
 	ArrayList<Post> selectPostsByIdOldestToNewest(String userId);
 
 	ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId);
+
+	int updatePostViews(Post post);
+
+	ArrayList<Integer> selectBookmarkedPosts(String userId);
+
+	ArrayList<Post> selectPostsBySearchAll(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage);
 
 	//ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId);
 

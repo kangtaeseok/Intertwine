@@ -1,290 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head>
+<head>	
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <script defer src="/intertwine/resources/js/mainpage.js"></script>
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>   
 <meta charset="UTF-8">
-<title>피드</title>
-<style>
-.container-feed {
-    width: auto; 
-    max-width: 1000px; 
-    justify-content: center;
-    margin: 20px auto; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-.action .profile {
-	position: relative;
-	width: 25px;
-	height: 25px;
-	border-radius: 50%;
-	overflow: hidden;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.action .profile img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.frame {
-	width: 470px;
-}
-
-.frame .card {
-	margin-bottom: 20px;
-	position: relative;
-	width: 100%;
-
-	display: inline-block;
-	border: 1px solid rgba(7, 7, 7, 0.24);
-}
-
-.frame .card .top {
-	padding: 10px 20px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.frame .card .bottom {
-	padding: 10px 20px;
-}
-
-.frame .card .top .userDetails {
-	width: 100%;
-	display: flex;
-	align-items: center;
-}
-
-.profile_img .image {
-	
-	align-items: center;
-	position: relative;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	overflow: hidden;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: 2px solid white;
-	margin-right: 5px;
-}
-
-.profile_img img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-.end-of-content{
-	text-align: center;
-}
-.cover {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.frame .card .top .userDetails h3 {
-	/* width: 100%; */
-	font-size: 16px;
-	color: #4d4d4f;
-	font-weight: 500;
-	line-height: 1em;
-}
-
-.frame .card .top .userDetails h3 span {
-	font-size: 0.75em;
-}
-
-.imgBox {
-	position: relative;
-	width: 470px;
-	height: 470px;
-	background-color: black; 
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.imgBox img {
-	max-width: 100%;
-	max-height: 100%;
-	object-fit: contain;
-	
-}
-
-.actionBtns {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.actionBtns svg {
-	cursor: pointer;
-}
-
-.actionBtns .left svg {
-	margin-right: 8px;
-}
-
-.actionBtns svg path {
-	stroke-width: 1;
-}
-
-.likes {
-	font-weight: 500;
-	margin-top: 5px;
-	font-size: 14px;
-	color: #4d4d4f;
-}
-
-.message {
-	font-weight: 400;
-	margin-top: 5px;
-	font-size: 14px;
-	color: #777;
-	line-height: 1.5em;
-}
-
-.message span {
-	cursor: pointer;
-	color: #1d92ff;
-}
-
-.comments {
-	margin-top: 10px;
-	font-weight: 400;
-	color: #999;
-}
-
-.addComments {
-	display: flex;
-	align-items: center;
-	margin-top: 20px;
-	border-top: 1px solid #ddd;
-	padding: 10px 0;
-}
-
-.addComments a {
-	color: #1d92ffcb;
-	font-weight: 500;
-}
-
- .reaction {
-  position: relative;
-  font-size: 1.3rem;
-  margin-right: 3px;
-  color: rgb(88, 88, 88);
-  cursor: pointer; 
-  display: inline-block; 
-}
-
-
- .reaction .reaction-box {
-  position: absolute;
-  width: 312px;
-  height: auto; 
-  background: white;
-  border-radius: 28px;
-  left: 0; 
-  bottom: 100%; 
-  margin-bottom: 10px; 
-  display: none; 
-}
-
-
- .reaction .reaction-box .reaction-icon {
-  width: 40px;
-  height: 30px;
-  display: inline-block;
-  background: white;
-  margin: 8px;
-  transition: transform 1.2s ease; 
-}
-.reaction .reaction-box .reaction-icon > svg {
-  margin-left: 2px;
-}
-
-input.text {
-	width: 100%;
-	border: none;
-	outline: none;
-	font-weight: 400;
-	font-size: 14px;
-	color: #262626;
-	background: none;
-}
-
-input.text::placeholder {
-	color: #777;
-}
-
-.postTime {
-	margin-top: 8px;
-	font-weight: lighter;
-	color: rgb(163, 163, 163);
-	font-size: 12px;
-	text-transform: uppercase;
-}
-
-.bottom a {
-	text-decoration: none;
-	color: black;
-}
-
-.submit {
-    color: black; 
-    font-weight: bold; 
-	background-color: none;
-    cursor: pointer;
-	border: none;
-}
-/*스크롤바 디자인*/
-::-webkit-scrollbar-track {
-    background-color: #f1f1f1; 
-    border-radius: 10px;
-}
-
-/* The scrollbar handle */
-::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
-
-::-webkit-scrollbar {
-    width: 8px; 
-    height: 8px; 
-    
-}
-
-/* 피드 CSS 종료 ***************************************************/
-</style>
+<title>Insert title here</title>
 </head>
 <body>
 <header> <!-- 페이지 상단 -->
@@ -375,7 +98,6 @@ input.text::placeholder {
 					</ul>
             </div>
         </div>
-        <div id="bottom_right_contents">
 	<div class="frame">
 		<c:forEach items="${feedItems}" var="item">
 			<div class="card">
@@ -409,22 +131,19 @@ input.text::placeholder {
 				</div>
 				<!-- 누르면 포스트 상세보기 페이지 연결 -->
 				<div class="imgBox" onclick="">
-					<c:if test="${ not empty item.image.imageURL }">
 					<img src="${ item.image.imageURL }">
-					</c:if>
-					<c:if test="${ empty item.image.imageURL }">
-					<img src="resources/postimage/noimage.jpg">
-					</c:if>
 				</div>
 				<div class="bottom">
 					<div class="actionBtns">
 						<div class="left">
-							<span class="reaction" return false;> <!--여기 if태그로 아이콘 설정이 되면 아이콘 바뀜 -->
+							<span class="reaction" onclick="" ; return false;> <!--여기 if태그로 아이콘 설정이 되면 아이콘 바뀜 -->
 									<c:if test="${ item.isLiked == 1 }">
                                     <svg aria-label="Liked" color="#262626" fill="#262626" height="24" role="img" width="24" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM164.1 325.5C182 346.2 212.6 368 256 368s74-21.8 91.9-42.5c5.8-6.7 15.9-7.4 22.6-1.6s7.4 15.9 1.6 22.6C349.8 372.1 311.1 400 256 400s-93.8-27.9-116.1-53.5c-5.8-6.7-5.1-16.8 1.6-22.6s16.8-5.1 22.6 1.6zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
                                       </c:if>
                                       <c:if test="${ item.isLiked == 0 }">
-                                      <svg aria-label="Like"color="#262626" fill="#262626" height="24" role="img"width="24" viewBox="0 0 512 512">
+                                      <svg aria-label="Like"
+									color="#262626" fill="#262626" height="24" role="img"
+									width="24" viewBox="0 0 512 512">
 									<path
 										d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
 									</c:if>
@@ -550,8 +269,6 @@ input.text::placeholder {
 		</c:forEach>
 	</div>
 	<!-- Frame 끝-->
-</div>
-</main>
 
 <script>
     const sidebarItems = document.querySelectorAll('.side-bar > ul > li');
@@ -613,6 +330,7 @@ const frame = document.querySelector('.frame');
 	});
 });
 </script>
-
+        
+    </main>
 </body>
 </html>
