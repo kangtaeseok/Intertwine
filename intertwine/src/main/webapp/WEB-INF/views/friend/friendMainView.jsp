@@ -232,7 +232,7 @@
 				<!-- 팔로잉 리스트  -->
 				<div class="list-header">
 					<h2>
-						Your Following <br>팔로잉 수 : <span id="followingCount"></span>
+						Your Following <br>팔로잉  <span id="followingCount"></span>
 					</h2>
 					<!-- 팔로잉 계정 검색 필드 -->
 					<form action="searchFollowing.do" method="get">
@@ -256,7 +256,7 @@
 						<c:forEach items="${followingList}" var="friend">
 							
 							<tr>
-								<td> <a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+								<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
 								<img src="resources/profile/images.jpg"
 									alt="Profile Image" class="profile-img"></a></td>
 									
@@ -270,7 +270,7 @@
 									<button class="unfollow-btn"
 										data-friend-id="${friend.friendId}">Unfollow</button>
 										</form>
-										<a href="${pageContext.request.contextPath}/chatView.do?friendId=${friend.friendId}" >chat</a>
+										<a href="${pageContext.request.contextPath}/insertChat.do?otherUserId=${friend.friendId}" >chat</a>
 								<%-- 	<button class="block-btn" onclick="javascript:location.href='blockFollowing.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.friendId}'">Block</button>
 									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
 								</td>
@@ -282,13 +282,13 @@
 
 				<script>
 				//언팔로잉 버튼 클릭시 출력 메세지
-document.addEventListener("DOMContentLoaded", function() {
+<%-- document.addEventListener("DOMContentLoaded", function() {
     var dfollowMessage = "<c:out value='${sessionScope.dfollowMessage}'/>";
     if (dfollowMessage) {
         alert(dfollowMessage); // 팝업으로 메시지 보여주기
         <% session.removeAttribute("dfollowMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
     }
-});
+}); --%>
 // 차단 버튼 클릭시 출력 메세지				
 document.addEventListener("DOMContentLoaded", function() {
     var blockedMessage = "<c:out value='${sessionScope.blockedMessage}'/>";
@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			<div class="followList">
 				<div class="list-header">
 					<h2>
-						Your Follower<br> 팔로워 수 : <span id="followersCount"></span>
+						Your Follower<br> 팔로워  <span id="followersCount"></span>
 					</h2>
 				
 					<!-- 팔로워 계정 검색필드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			
 		
 		<script>
-document.addEventListener("DOMContentLoaded", function() {
+d<%-- ocument.addEventListener("DOMContentLoaded", function() {
     var followMessage = "<c:out value='${sessionScope.followMessage}'/>";
     if (followMessage) {
         alert(followMessage); // 팝업으로 메시지 보여주기
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alert(blocked2Message); // 팝업으로 메시지 보여주기
         <% session.removeAttribute("blocked2Message"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
     }
-});
+}); --%>
 </script>
 		<!-- 팔로워 계정 검색 결과 필드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 		<div id="searchResults"></div>
