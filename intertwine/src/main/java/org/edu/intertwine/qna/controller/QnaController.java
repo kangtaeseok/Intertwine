@@ -141,7 +141,7 @@ public class QnaController {
 	}
 	
 	//게시글 작성자로 검색용 (페이징 처리 포함)
-		@RequestMapping(value="qsearchWriter.do", method=RequestMethod.POST)
+		@RequestMapping(value="qsearchWriter.do", method=RequestMethod.GET)
 		public ModelAndView qnaSearchWriterMethod(
 				@RequestParam("action") String action,
 				@RequestParam("keyword") String keyword,
@@ -188,7 +188,9 @@ public class QnaController {
 				
 			}else {
 				mv.addObject("message", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
-				mv.setViewName("common/error");
+				//mv.setViewName("common/error");
+				mv.setViewName("qna/qnaError");
+
 			}
 			
 			return mv;

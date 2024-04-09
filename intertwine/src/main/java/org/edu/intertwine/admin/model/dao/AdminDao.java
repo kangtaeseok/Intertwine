@@ -8,6 +8,7 @@ import org.edu.intertwine.admin.model.vo.ContentReport;
 import org.edu.intertwine.admin.model.vo.VisitCount;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
+import org.edu.intertwine.common.Time;
 import org.edu.intertwine.user.controller.UserController;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -86,12 +87,13 @@ public class AdminDao {
 
 	
 	//신고insert
-	public int insertRptPost(String postId) {
-		return sqlSessionTemplate.insert("adminMapper.insertRptPost", postId);
+	public int insertRptPost(ContentReport cpt) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptPost", cpt);
 	}
-	public int insertRptComment(String commentId) {
-		return sqlSessionTemplate.insert("adminMapper.insertRptComment", commentId);
+	public int insertRptComment(ContentReport cpt) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptComment", cpt);
 	}
+	
 
 	public ArrayList<ContentReport> selectPostNumList(int boardNum) {
 		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectPostNumList", boardNum);
@@ -116,6 +118,27 @@ public class AdminDao {
 	public void updateRptCStatusing(int boardNum) {
 		sqlSessionTemplate.update("adminMapper.updateRptCStatusing", boardNum);
 		
+	}
+
+	public ArrayList<ContentReport> selectReportAlarm() {
+		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectReportAlarm");
+		return (ArrayList<ContentReport>)list;
+	}
+
+	public int selectVisitCountTime(Time time) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountTime",time);
+	}
+
+	public int selectVisitCountToday() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountToday");
+	}
+
+	public int selectReportBoardNumCount(int boardNum) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectReportBoardNumCount", boardNum);
+	}
+
+	public int selectReportCommentCount(int commentId) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectReportCommentCount", commentId);
 	}
 
 	

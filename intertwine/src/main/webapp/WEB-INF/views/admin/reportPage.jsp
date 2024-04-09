@@ -16,6 +16,9 @@
 <title>reportPage</title>
 <link rel="stylesheet" href="/intertwine/resources/css/reportPage.css" />
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 
 </head>
@@ -50,19 +53,19 @@ $(function(){
 <header>
 <div class="header">
 	<div class="header-div">
-		<a href="location.href='admain.do'"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		<h2> <i class="fa-solid fa-clipboard"></i> 콘텐츠 관리 </h2>  
 	</div>
 </div>
 </header>
-<div class="body-div">
 <main>
 <aside class="side-bar">
             <ul>
                 <li id="square">
-                    <li><a href="#"><i class="fa-solid fa-user"></i> 사용자 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
       
                 <li id="mypage">
-             		<li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>       
+             	       
              
                 <li id="friend">
                 	<li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>    
@@ -96,12 +99,8 @@ $(function(){
         
 
 <div id="bottom_right_contents">
- <h2> 콘텐츠 관리 </h2>
             <div id="abc">
-           
-                <div class="content-div">
-                
-<hr class ="hr1" noshade> 
+               <div class="content-div">
 <br>
 <span class="right">
 <span> ▷ 총 ${listCount} 개의 신고건이 있습니다. </span>
@@ -163,7 +162,7 @@ $(function(){
 					<c:param name="cnum" value="${re.reportComment}"/>
 					<c:param name="page" value="${nowpage}"/>
 			</c:url>
-       		<td class="center"><a href="${cd}">${re.reportComment}</a></td>	
+       		<td class="center"><a class="detail-box" href="${cd}">${re.reportComment}</a></td>	
         </c:if>
         <td class="center">${re.reportReason}</td>
         <td class="center">${re.reportTime}</td>
@@ -178,7 +177,7 @@ $(function(){
 <button class="greylist" onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/rptlist.do?page=1';">목록  </button>
 </span>
 
-
+<br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp"></c:import>	
                 	
                 	

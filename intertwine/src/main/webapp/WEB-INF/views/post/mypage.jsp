@@ -6,6 +6,8 @@
 <html lang="ko">
 <head>
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+	<script defer src="/intertwine/resources/js/mainpage.js"></script>
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>   
     <title>
        마이 페이지
@@ -13,11 +15,106 @@
 
 </head>
 <body>
+<header> <!-- 페이지 상단 -->
+        <div> <!-- 홈 버튼 -->
+            <nav class="homebutton_nav">
+                <ul>
+                    <li class="homebutton"></li>
+                </ul>
+                <ol>
+                    <a href="${ pageContext.servletContext.contextPath }/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                </ol>
+            </nav>
+        </div>
+
+        <div class="search"> <!-- 검색창 -->
+            <input type="text" placeholder="검색어 입력">
+            <img src="/intertwine/resources/images/search.png">
+        </div>
+
+        <div></div>
+        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
+    </header>
+
+    <main>
+        <aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                </li>
+                <li id="mypage">
+                    <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                    <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                </li>
+                 <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="${ pageContext.servletContext.contextPath }/getbookmarkfeed.do"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
+                </li>
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
+				</ul>
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+            	<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                       	</li>
+                        </c:if>
+                        <c:if test="${type eq 'kakao'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+					</ul>
+            </div>
+        </div>
+
+
+
+
+
+
+
 <div class="container" style="margin: 0 auto; padding-left: 250px; width: 1000px;">
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
-                <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;"></a>
+                <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
             </div>
         </div>
         <div class="profile-info" style="display: flex;">
@@ -55,14 +152,23 @@
     </div>
     <div class="middle" style="padding-top: 30px; display: flex;">
         <div class="search" style="display: flex; background-color: #FFF; border: 0px solid #FFF; border-radius: 5px; padding: 5px 10px;">
-            <select class="search-condition" style="border: none; background: transparent; padding: 5px; margin-right: 5px; cursor: pointer;">
-                <option value="all" selected>전체</option>
-                <option value="tag">태그</option>
-                <option value="content">콘텐츠</option>
-            <input type="text" placeholder="검색할 키워드를 입력하세요" style="border: none; outline: none; background-color: #FFF; font-size: 13px;"> 
-            <i class="fa fa-search" style="color: #000; font-size: 33px; margin-left: 5px; cursor: pointer; transition: transform 1s ease;"></i>
-  
+            <select id="search-condition" class="search-condition" style="border: none; background: transparent; padding: 5px; margin-right: 5px; cursor: pointer;">
+                <option value="0" selected>전체</option>
+                <option value="1">태그</option>
+                <option value="2">콘텐츠</option>
+              </select>
+            <input id="search-input" type="text" placeholder="키워드 입력" style="width: 150px; border: none; outline: none; background-color: #FFF; font-size: 13px;"> 
+            <i onclick= "performSearch(); return false;"class="fa fa-search" style="color: #000; font-size: 33px; margin-left: 5px; cursor: pointer; transition: transform 1s ease;"></i>
         </div>
+        <script>
+		    function performSearch() {
+		        var keyword = document.getElementById("search-input").value;
+		        var selectedOption = document.querySelector(".search-condition").value;
+		        var userId = "${user.userId}";
+		        var url = "searchmypage.do?userId=" + userId + "&keyword=" + encodeURIComponent(keyword) + "&condition=" + encodeURIComponent(selectedOption);
+		        window.location.href = url;
+		    }
+		</script>
         <div class="dummy3" style="width: calc(60%);">
         </div>
         <div class="sorting" style="display: flex; justify-content: space-between;">
@@ -79,8 +185,7 @@
         <!-- 이것들이 반복 됨 -->
        <c:forEach var="gallery" items="${galleries}">
         <a href="detail.do?postId=${gallery.post.postId}">
-        <div class="options" style="width: 320px; height:320px; margin-bottom: 30px;margin-right: 13px;position: relative"
-        data-id="${ gallery.post.postId }">
+        <div class="options" style="width: 237px; height:235px; margin-bottom: 100px;margin-right: 13px;position: relative" data-id="${ gallery.post.postId }">
             <input type="checkbox" id="${ gallery.post.postId }" name="checks" value="${ gallery.post.postId }" class="checkbox">
             <div class="gallery" style="padding: 0px;height: 300px;padding: 0px;margin: 0px;justify-content: center;background-color: grey;">
                 <div class="image-wrap" style="position: relative;width: 100%;height: 100%;">
@@ -151,7 +256,7 @@
                             <i class="fa-solid fa-lock icon-top-left"></i> <!-- Private -->
                         </c:otherwise>
                     	</c:choose>
-                    </div> 
+                    	</div> 
                 </div>
             </div>
         </div>
@@ -159,6 +264,7 @@
        </c:forEach>      
     </div>
 </div>
+</main>
 <script>
 //개개 체크박스에 포스트 아이디 담음
 document.addEventListener('DOMContentLoaded', function() {
@@ -220,7 +326,6 @@ $(document).ready(function() {
 });
 
 </script>
-
 <script>
 $(document).ready(function() {
     $('#dropdown').change(function() {
