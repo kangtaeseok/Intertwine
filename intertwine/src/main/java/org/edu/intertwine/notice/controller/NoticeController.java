@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.common.FileNameChange;
 import org.edu.intertwine.common.Paging;
@@ -43,20 +42,15 @@ public class NoticeController {
 	}
 	
 	//공지글 수정페이지로 이동 처리용
-	@RequestMapping("movenoticeupdate.do")
-	public ModelAndView moveNoticeUpdate(
-			@RequestParam("noticeid") int noticeid, ModelAndView mv) {
-		//수정페이지에 출력할 공지글 조회해 옴
-		Notice notice = noticeService.selectNoticeOne(noticeid);
-		
-		if(notice != null) {
-			mv.addObject("notice", notice);
-			mv.setViewName("notice/noticeUpdate");
-		}else {
-			mv.addObject("alertMessage", "alert('" + noticeid + "번 공지글을 찾을 수 없습니다.')");
-		}
-		return mv;
-	}	
+	@RequestMapping(value = "noticeupdate.do", method = RequestMethod.POST)
+	public ModelAndView moveNoticeUpdate(@RequestParam("noticeId") int noticeId, ModelAndView mv) {
+	    // 공지사항 수정 페이지로 이동
+	    mv.addObject("noticeId", noticeId); // 수정할 공지사항의 ID를 모델에 추가
+	    mv.setViewName("notice/noticeUpdate"); // 수정 페이지로 이동
+	    return mv;
+	}
+
+	
 	
 	
 	//요청 결과 처리용 --------------------------------------------------------------
@@ -144,109 +138,16 @@ public class NoticeController {
 		}
 	}
 	
-	//공지글 상세보기 요청 처리용 // 관리자 + 유저 다 볼수 있음
-	@RequestMapping("noticedetail.do")
-	public ModelAndView noticeDetail(
-			@RequestParam("id") int noticeid, ModelAndView mv, HttpSession session) {
-		//관리자용 상세보기 페이지와 일반회원 | 비회원 상세보기 페이지 구분해서 내보냄
-		//관리자인지 확인하기 위해 session 매개변수 추가함
-		Notice notice = noticeService.selectNoticeOne(noticeid);
-		
-		/*
-		 * //조회수 1증가 처리 noticeService.updateAddReadCount(noticeid);
-		 */
-		
-		if(notice != null) {
-			mv.addObject("notice", notice);
-		}else {
-			mv.addObject("alertMessage", "alert('" + noticeid + "번 공지글을 찾을 수 없습니다.')");
-		}
-		
-		return mv;
-	}
-	
-	//공지글 수정 요청 처리용 (파일 업로드 기능 사용) + 관리자 만
-	@RequestMapping(value="noticeupdate.do", method=RequestMethod.POST)
-	public String noticeUpdate(Notice notice, Model model, 
-			HttpServletRequest request, 
-			@RequestParam(name="deleteFlag", required=false) String delFlag,
-			@RequestParam(name="upfile", required=false) MultipartFile mfile) {
-		logger.info("noticeupdate.do : " + notice);
-		
-		//공지사항 첨부파일 저장 폴더 경로 지정
-		String savePath = request.getSession().getServletContext().getRealPath(
-				"resources/notice_upfiles");
-		
-		//첨부파일이 변경된 경우의 처리 --------------------------------------------------------
-		//1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
-		//   또는 원래 첨부파일이 있는데 새로운 첨부파일이 업로드된 경우
-		if(notice.getOriginalFilePath() != null && 
-				(delFlag != null && delFlag.equals("yes")) || !mfile.isEmpty()) {
-			//저장 폴더에서 파일 삭제함
-			new File(savePath + "\\" + notice.getRenameFilePath()).delete();
-			//notice 안의 파일정보도 제거함
-			notice.setOriginalFilePath(null);
-			notice.setRenameFilePath(null);
-		}
-		
-		//2. 새로운 첨부파일이 있을 때 (공지글 첨부파일은 1개임)
-		if(!mfile.isEmpty()) {			
-			//전송온 파일이름 추출함
-			String fileName = mfile.getOriginalFilename();
-			String renameFileName = null;
-			
-			//저장폴더에는 변경된 이름을 저장 처리함
-			//파일 이름바꾸기함 : 년월일시분초.확장자
-			if(fileName != null && fileName.length() > 0) {				
-				//바꿀 파일명에 대한 문자열 만들기
-				renameFileName = FileNameChange.change(fileName, 	"yyyyMMddHHmmss");
-				logger.info("첨부파일명 확인 : " + fileName + ", " + renameFileName);
-				try {	
-					//저장 폴더에 파일명 바꾸기 처리
-					mfile.transferTo(new File(savePath + "\\" + renameFileName));
-				
-				}catch(Exception e) {
-					e.printStackTrace();
-					model.addAttribute("alertMessage", "alert('첨부파일 저장 실패 했습니다.')");
-				}
-			}  //파일명 바꾸기
-			//notice 객체에 첨부파일 정보 저장 처리
-			notice.setOriginalFilePath(fileName);
-			notice.setRenameFilePath(renameFileName);
-		} //첨부파일 있을 때	
-		
-		if(noticeService.updateNotice(notice) > 0) {
-			//공지글 수정 성공시 목록 보기 페이지로 이동
-			return "redirect:noticelist.do";
-		}else {
-			model.addAttribute("alertMessage", "alert('" + notice.getNoticeId() + "번 공지글을 수정에 실패 했습니다.')");
-			return null;
-		}
-	}
-	
-	//공지글 삭제 요청 처리용
+	// 공지글 삭제 요청 처리용
 	@RequestMapping("noticedelete.do")
-	public String noticeDelete(
-			@RequestParam("noticeid") int noticeid,
-			@RequestParam(name="rfile", required=false) String renameFileName,
-			HttpServletRequest request, Model model) {
-		
-		if(noticeService.deleteNotice(noticeid) > 0) {
-			//공지글 삭제 성공시 저장 폴더에 있는 첨부파일도 삭제함
-			if(renameFileName != null) {
-				//공지사항 첨부파일 저장 폴더 경로 지정
-				String savePath = request.getSession().getServletContext().getRealPath(
-						"resources/notice_upfiles");
-				//저장 폴더에서 파일 삭제함
-				new File(savePath + "\\" + renameFileName).delete();
-			}
-			
-			return "redirect:noticelist.do";
-		}else {		
-			model.addAttribute("alertMessage", "alert('" + noticeid + "번 공지글 삭제에 실패 했습니다.')");
-			return null;
-		}
-	}
+    public String noticeDelete(@RequestParam("noticeid") int noticeid, Model model) {
+        if (noticeService.deleteNotice(noticeid) > 0) {
+            model.addAttribute("alertMessage", "alert('" + noticeid + "번 공지사항이 삭제되었습니다.')");
+        } else {
+            model.addAttribute("alertMessage", "alert('" + noticeid + "번 공지사항 삭제에 실패했습니다.')");
+        }
+        return "redirect:adnlist.do"; // 삭제 후 공지사항 목록 페이지로 리다이렉트
+    }
 	
 	//공지글 제목 검색용 (페이징 처리 포함)
 	@RequestMapping(value="noticesearchtitle.do", method= RequestMethod.GET)
@@ -322,11 +223,45 @@ public class NoticeController {
 	         return "Error"; // 조회수 증가 과정에서 오류 발생 시 클라이언트에게 알림
 	     }
 	 }
-	
+	 
+	 @RequestMapping("adnlist.do")
+		public String adminNoticeList(
+		    @RequestParam(name="page", required=false) String page, 
+		    @RequestParam(name="limit", required=false) String slimit, 
+		    Model model) {
+		    int currentPage = 1;
+		    if (page != null) {
+		        currentPage = Integer.parseInt(page);
+		    }
+		    
+		    // 한 페이지 공지 10개씩 출력되게 한다면
+		    int limit = 10;
+		    if (slimit != null) {
+		        limit = Integer.parseInt(slimit);
+		    }
+		    
+		    // 총 페이지 수 계산을 위한 공지글 총갯수 조회
+		    int listCount = noticeService.selectListCount();
+		    // 페이지 관련 항목 계산 처리
+		    Paging paging = new Paging(listCount, currentPage, limit, "adnlist.do");
+		    paging.calculate();
+		    
+		    // 페이지에 출력할 목록 조회해 옴
+		    ArrayList<Notice> list = noticeService.selectList(paging);
+		    
+		    if(list != null && list.size() > 0) {
+		        model.addAttribute("list", list);
+		        model.addAttribute("paging", paging);
+		        model.addAttribute("currentPage", currentPage);
+		        model.addAttribute("limit", limit);
+		    } else {
+		        model.addAttribute("alertMessage", "alert('" + currentPage + "페이지 목록 조회에 실패했습니다.");
+		        return "notice/adminNoticeList";
+		    }
+		    return "notice/adminNoticeList";
+		}
+	 
 }
-
-
-
 
 
 

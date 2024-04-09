@@ -6,6 +6,7 @@ import java.util.List;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.vo.User;
@@ -97,16 +98,29 @@ public class PostDao {
 			return null;
 		}
 	}
-	/*
-	 * public User selectUser(String findUserId) { // TODO Auto-generated method
-	 * stub return sqlSessionTemplate.selectOne("postMapper.selectUser",
-	 * findUserId); }
-	 */
+
 	public ArrayList<Post> selectPostsById(String userId) {
 		// TODO Auto-generated method stub
 		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsById", userId);
 		return (ArrayList<Post>)list;
 	}
+	public ArrayList<Post> selectPostsByIdOldestToNewest(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdOldestToNewest", userId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostViewsToLeast", userId);
+		return (ArrayList<Post>)list;
+	}
+	/*
+	public ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostReactionsToLeast", userId);
+		return (ArrayList<Post>)list;
+	}
+	*/
 	public ArrayList<Tag> selectTags(int postId) {
 		// TODO Auto-generated method stub
 		List<Tag> list = sqlSessionTemplate.selectList("postMapper.selectTags", postId);
@@ -117,6 +131,7 @@ public class PostDao {
 		List<Image> list = sqlSessionTemplate.selectList("postMapper.selectImagesByPostId", postId);
 		return (ArrayList<Image>)list;
 	}
+	
 	public String selectFindUserId(int each) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("postMapper.selectFindUserId", each);
@@ -147,7 +162,56 @@ public class PostDao {
 	}
 	public int insertLikeType(Like like2) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.insert("postMapper.DE", like2);
+		return sqlSessionTemplate.insert("postMapper.insertLikeType", like2);
 	}
+	public int deleteBatchDelete(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("postMapper.deleteBatchDelete", postIds);
+	}
+	public int updateBatchPublic(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPublic", postIds);
+	}
+	public int updateBatchFollowing(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchFollowing", postIds);
+	}
+	public int updateBatchPrivate(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPrivate", postIds);
+	}
+	public int updateBatchPinOn(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPinOn", postIds);
+	}
+	public int updateBatchPinOff(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updateBatchPinOff", postIds);
+	}
+	public int updatePostViews(Post post) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("postMapper.updatePostViews", post);
+	}
+	public ArrayList<Integer> selectBookmarkedPosts(String userId) {
+		// TODO Auto-generated method stub
+		List<Integer> list = sqlSessionTemplate.selectList("postMapper.selectBookmarkedPosts", userId);
+		return (ArrayList<Integer>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchAll(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchAll", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchTag", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchKeyword", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+
 
 }

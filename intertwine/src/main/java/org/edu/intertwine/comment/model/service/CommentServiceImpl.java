@@ -45,4 +45,11 @@ public class CommentServiceImpl implements CommentService{
 		return commentDao.deleteComment(comment);
 	}
 
+	@Override
+	public int deleteParentComment(int commentId) {
+		// TODO Auto-generated method stub
+		return commentDao.deleteParentComment(commentId);
+	}
+
+
 }

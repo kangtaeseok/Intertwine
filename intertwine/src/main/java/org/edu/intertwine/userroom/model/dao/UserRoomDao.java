@@ -3,8 +3,10 @@ package org.edu.intertwine.userroom.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.edu.intertwine.usercharacter.model.vo.UserCharacter;
 import org.edu.intertwine.userroom.model.vo.InsertUserRoomParam;
 import org.edu.intertwine.userroom.model.vo.UserRoom;
+import org.edu.intertwine.userroom.model.vo.UserRoomResource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,15 +26,26 @@ public class UserRoomDao {
 		return sqlSessionTemplate.selectOne("userRoomMapper.selectUserRoom", userId);
 	}
 
+	public ArrayList<UserRoomResource> selectAllRoomResource() {
+		List<UserRoomResource> list = sqlSessionTemplate.selectList("userRoomMapper.selectAllRoomResource");
+		return (ArrayList<UserRoomResource>)list;
+	}
+	
+	public int updateUserRoom(UserRoom userRoom) {
+		return sqlSessionTemplate.update("userRoomMapper.updateUserRoom", userRoom);
+	}
+	
 	public int insertUserRoomFirst(String userId) {
 		return sqlSessionTemplate.insert("userRoomMapper.insertUserRoomFirst", userId);
 	}
 
-	public int insertUserRoom(InsertUserRoomParam insertUserRoomParam) {
-		return sqlSessionTemplate.insert("userRoomMapper.insertUserRoom", insertUserRoomParam);
+	public void insertUserRoom(String userId, UserRoomResource item) {
+		item.setUserId(userId); // userId 설정
+	    sqlSessionTemplate.insert("userRoomMapper.insertUserRoom", item);
 	}
 
 	public int deleteUserRoom(String userId) {
 		return sqlSessionTemplate.delete("userRoomMapper.deleteUserRoom", userId);
 	}
+
 }

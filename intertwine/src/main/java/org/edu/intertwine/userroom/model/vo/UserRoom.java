@@ -16,6 +16,12 @@ public class UserRoom implements Serializable {
 	public UserRoom() {
 		super();
 	}
+	
+	public UserRoom(String userId, String roomColor) {
+		super();
+		this.userId = userId;
+		this.roomColor = roomColor;
+	}
 
 	public UserRoom(String userId, String roomColor, int guestBookOpen) {
 		super();
