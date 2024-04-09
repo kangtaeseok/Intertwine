@@ -88,7 +88,7 @@ $(function(){
 						<c:param name="ofile" value="${ qna.qnaOriginalFileName }" />
 						<c:param name="rfile" value="${ qna.qnaRenameFileName }"/>			
 					</c:url>
-					<a href="${ bdown }" > ${ qna.qnaOriginalFileName }</a>
+					<a href="${ qdown }" > ${ qna.qnaOriginalFileName }</a>
 				</c:if>
 				<c:if test="${ empty qna.qnaOriginalFileName }">
 				&nbsp;
@@ -102,14 +102,16 @@ $(function(){
 			<tr>
 				<th colspan="2">
 					<%-- 로그인한 경우 : 본인 글 상세보기 일때는 수정페이지로 이동과 삭제 버튼 표시함 --%>
-					<c:if test="${ !empty loginUser }">	
+					<c:if test="${ !empty loginUser or !empty loginAdmin}">	
 						<c:if test="${ loginUser.userId eq qna.qnaWriter }">
 							<button onclick="moveUpdatePage(); return false;">수정페이지로 이동</button>&nbsp;
 							<button onclick="requestDelete(); return false;">글삭제</button>&nbsp;
 						</c:if>
 					
+						
+						
 						<%-- 로그인한 경우 : 관리자인 경우 글삭제 버튼과 댓글달기 버튼 표시함 --%>
-						<c:if test="${ loginUser.userId ne qna.qnaWriter  }">
+						<c:if test="${ loginUser.userId ne qna.qnaWriter or empty loginAdmin }">
 							<button onclick="requestDelete(); return false;">글삭제</button> &nbsp;
 							<c:if test="${ qna.qnaLev < 3 }">
 								<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;
@@ -144,10 +146,15 @@ $(function(){
 					     
 					     
 					     
-					 <c:url var="ql" value="qlist.do">
-					 	<c:param name="page" value="${ currentPage }" /> 
-					 </c:url>   
-					 <button onclick="javascript:location.href='${ ql }';">목록</button> 
+			                <c:if test="${ !empty loginUser or !empty loginAdmin }">
+							<c:url var="qsearchwriter" value="qsearchWriter.do">
+			 					<c:param name="keyword" value="${ loginUser.userId }" />
+			 					<c:param name="action" value="writer" />
+						 	</c:url>
+							
+							<input type="button" value="목록" onclick="location.href='${ qsearchwriter }'; return false;" >
+							</c:if> 
+
 				</th>		
 			</tr>
 		</table>
