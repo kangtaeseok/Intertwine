@@ -212,6 +212,56 @@ public class PostDao {
 		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchKeyword", searchMyPage);
 		return (ArrayList<Post>)list;
 	}
+	public ArrayList<Post> selectPostsByIdFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdNotFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdOldestToNewestFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdOldestToNewestFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdOldestToNewestNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdOldestToNewestNotFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostViewsToLeastFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsByIdMostViewsToLeastNotFollower", friendId);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchTagFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchTagFollower", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchTagNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchTagNotFollower", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchKeywordFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchKeywordFollower", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
+	public ArrayList<Post> selectPostsBySearchKeywordNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		List<Post> list = sqlSessionTemplate.selectList("postMapper.selectPostsBySearchKeywordNotFollower", searchMyPage);
+		return (ArrayList<Post>)list;
+	}
 
 
 }
