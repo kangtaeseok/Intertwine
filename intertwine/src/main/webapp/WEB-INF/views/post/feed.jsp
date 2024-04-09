@@ -376,10 +376,10 @@ input.text::placeholder {
             </div>
         </div>
         <div id="bottom_right_contents">
-	<div class="frame">
+	<div class="frame" id="feed">
 		<c:forEach items="${feedItems}" var="item">
 
-			<div class="card">
+			<div class="card" >
 				<!-- 카드 상부 구성 -->
 				<div class="top">
 					<div class="userDetails">
