@@ -309,9 +309,6 @@ $(function(){ // document.ready
 			data: { "userId": userId }, 
 			dataType: "json",  
 			success: function(data){
-				 // json 객체 한 개를 받을때는 바로 출력할 수 있음
-				console.log("json data : " + data);
-				
 				const hair = document.querySelector("#mycharacterhair");
 			    hair.style.backgroundImage = "url('" + data.hairStyleImageURL + "')";
 			    hair.style.backgroundSize = "cover";
@@ -402,7 +399,7 @@ $(function(){ // document.ready
 	        }
 	    });
 		
-		$("#changeCharacterbtn").click(function() {
+$("#changeCharacterbtn").click(function() {
 			
 	        var previewcharacterhairImgURL = $('#previewcharacterhair').css('background-image');
 	        var previewcharacterhatImgURL = $("#previewcharacterhat").css('background-image');
@@ -544,18 +541,21 @@ $(function(){ // document.ready
 	                resourceList.slice(0, 10).forEach(function(userRoomResource, index) {
 	                    var $div = $(firstDivs[index]); // jQuery 객체로 변환
 	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL  + ')');
+	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
 	                });
 	                
 	                // secondDivs에 다음 10개의 리소스 적용
 	                resourceList.slice(10, 20).forEach(function(userRoomResource, index) {
 	                    var $div = $(secondDivs[index]); // jQuery 객체로 변환
 	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
+	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
 	                });
 	                
 	                // thirdDivs에 마지막 10개의 리소스 적용
 	                resourceList.slice(20, 30).forEach(function(userRoomResource, index) {
 	                    var $div = $(thirdDivs[index]); // jQuery 객체로 변환
 	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
+	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
 	                });
 
 	            },
@@ -584,11 +584,164 @@ $(function(){ // document.ready
 		    });
 		
 		
-		
+		    
+		    var dragSrcEl = null;
+
+		    function handleDragStart(e) {
+		        dragSrcEl = this;
+
+		        e.dataTransfer.effectAllowed = 'move';
+		        e.dataTransfer.setData('text/html', this.innerHTML);
+		    }
+
+		    function handleDragOver(e) {
+		        if (e.preventDefault) {
+		            e.preventDefault(); 
+		        }
+
+		        e.dataTransfer.dropEffect = 'move';  
+
+		        return false;
+		    }
+
+		    function handleDrop(e) {
+		        if (e.stopPropagation) {
+		            e.stopPropagation(); // 브라우저의 리다이렉트를 멈춥니다.
+		        }
+
+		        // 드랍 위치에 새로운 div 생성
+		        var dropX = e.offsetX;
+		        var dropY = e.offsetY;
+
+		        var newDiv = document.createElement('div');
+		        newDiv.style.position = 'absolute';
+		        newDiv.style.left = dropX + 'px';
+		        newDiv.style.top = dropY + 'px';
+		        newDiv.style.width = '70px'; // 원본 div와 동일하게 설정
+		        newDiv.style.height = '120px';
+		        newDiv.style.backgroundImage = dragSrcEl.style.backgroundImage;
+		        newDiv.style.backgroundPosition = 'center';
+		        newDiv.style.backgroundRepeat = 'no-repeat';
+		        newDiv.style.backgroundSize = 'calc(100% - 40px) calc(100% - 40px)';
+		        
+		        // 드래그 소스에서 newDiv로 data-resource-id 속성 설정
+		        var resourceId = dragSrcEl.getAttribute('data-resource-id');
+		        newDiv.setAttribute('data-resource-id', resourceId);
+
+		        document.querySelector('.roommodal-preview').appendChild(newDiv);
+
+		        console.log('Dropped at position: ', dropX, dropY);
+
+		        return false;
+		    }
+
+		    var cols = document.querySelectorAll('.roommodal-first-container .roommodal-resource, .roommodal-second-container .roommodal-resource, .roommodal-third-container .roommodal-resource');
+		    [].forEach.call(cols, function(col) {
+		        col.setAttribute('draggable', 'true');  // Enable elements to be draggable
+		        col.addEventListener('dragstart', handleDragStart, false);
+		    });
+
+		    var roomPreview = document.querySelector('.roommodal-preview');
+		    roomPreview.addEventListener('dragover', handleDragOver, false);
+		    roomPreview.addEventListener('drop', handleDrop, false);
+		    
+		    
+		    
+		    $("#changeroombtn").click(async function() { // async 키워드를 추가합니다.
+		        try {
+		            var items = [];
+		            var previewstyle = getComputedStyle(roomPreview);
+		            var previewbackgroundColor = previewstyle.backgroundColor;
+		            $('.roommodal-preview > div').each(function() {
+		                var itemData = {
+		                    resourcePositionX: parseFloat($(this).css('left')),
+		                    resourcePositionY: parseFloat($(this).css('top')),
+		                    resourceId: parseInt($(this).data('resource-id'), 10)
+		                };
+		                items.push(itemData);
+		            });
+
+		            // 첫 번째 요청: changemyroomcolor.do
+		            await $.ajax({ // await 키워드를 추가하여 요청의 완료를 기다립니다.
+		                url: "changemyroomcolor.do",
+		                type: "POST",
+		                data: {
+		                    "userId": userId,
+		                    "previewbackgroundColor": previewbackgroundColor
+		                }
+		            });
+
+		            // 두 번째 요청: changemyroom.do
+		            await $.ajax({ // await 키워드를 추가하여 요청의 완료를 기다립니다.
+		                url: "changemyroom.do",
+		                type: "POST",
+		                contentType: "application/json; charset=utf-8",
+		                data: JSON.stringify({
+		                    userId: userId,
+		                    items: items
+		                })
+		            });
+
+		            // 세 번째 요청: getmyroom.do (위의 요청이 성공적으로 완료된 후 실행됩니다)
+		            await $.ajax({ // await 키워드를 추가하여 요청의 완료를 기다립니다.
+		                url: "getmyroom.do",
+		                type: "POST",
+		                dataType: "json",
+		                data: {
+		                    userId: userId,
+		                },
+		                success: function(data) {
+		                	 $('#userroom').css('background-color', previewbackgroundColor); // .roommodal-preview의 배경색을 #82c8a0로 설정
+		                	 $('.roommodal-preview').empty();  // .roommodal-preview의 모든 자식 요소를 제거
+				             $('.roommodal-preview').css('background-color', '#82c8a0'); // .roommodal-preview의 배경색을 #82c8a0로 설정
+				                
+				                
+				                const modal = document.querySelector("#roomChangeModal");
+				                modal.style.display="none";
+				                
+				                
+				                // #userroom 내의 <img> 태그만 찾아서 삭제합니다.
+				                $('#userroom').find('img').remove();
+
+				                // rList 배열을 순회합니다.
+				                data.rList.forEach(function(resource) {
+				                    var posx = resource.resourcePositionX*2.3;
+				                    var posy = resource.resourcePositionY*2.3;
+				                    // 이미지 URL에 타임스탬프를 추가하여 캐싱 방지
+				                    var cacheBustedURL = resource.resourceURL + "?t=" + new Date().getTime();
+				                    // 각 resource 객체에 대한 새로운 <img> 태그를 생성합니다.
+				                    var img = $('<img>', {
+				                        src: cacheBustedURL,
+				                        alt: 'Room Resource Image',
+				                        class: 'userroomresource',
+				                        css: {
+				                            position: 'absolute',
+				                            left: posx + 'px',
+				                            top: posy + 'px',
+				                            transform: 'rotate(' + resource.resourceRotation + 'deg) scale(' + resource.resourceScale + ')'
+				                        }
+				                    });
+				                    
+				                    
+
+				                    // 생성된 <img> 태그를 #userroom에 추가합니다.
+				                    $('#userroom').append(img);
+				                });
+		                },
+		                error: function(request, status, error) {
+		                    console.log("error code : " + request.status
+		                        + "\nMessage : " + request.responseText
+		                        + "\nError : " + error);
+		                }
+		            });
+		        } catch (error) {
+		            console.error("An error occurred:", error);
+		        }
+		    });
+	
 });  // document.ready
 
 </script>
-
 
 </body>
 </html>

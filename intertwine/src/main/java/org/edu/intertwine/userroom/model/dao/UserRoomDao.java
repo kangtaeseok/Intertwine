@@ -39,12 +39,13 @@ public class UserRoomDao {
 		return sqlSessionTemplate.insert("userRoomMapper.insertUserRoomFirst", userId);
 	}
 
-	public int insertUserRoom(InsertUserRoomParam insertUserRoomParam) {
-		return sqlSessionTemplate.insert("userRoomMapper.insertUserRoom", insertUserRoomParam);
+	public void insertUserRoom(String userId, UserRoomResource item) {
+		item.setUserId(userId); // userId 설정
+	    sqlSessionTemplate.insert("userRoomMapper.insertUserRoom", item);
 	}
 
 	public int deleteUserRoom(String userId) {
 		return sqlSessionTemplate.delete("userRoomMapper.deleteUserRoom", userId);
 	}
-	
+
 }
