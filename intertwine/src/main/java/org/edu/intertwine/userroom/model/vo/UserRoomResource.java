@@ -15,10 +15,12 @@ public class UserRoomResource implements Serializable{
 	private String resourceName; // 리소스 이름
 	private String resourceURL; // 리소스 저장 위치
 
+	private String userId; // 추가
+	
 	public UserRoomResource() {
 		super();
 	}
-	
+
 	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
 			double resourceScale) {
 		super();
@@ -28,9 +30,20 @@ public class UserRoomResource implements Serializable{
 		this.resourceRotation = resourceRotation;
 		this.resourceScale = resourceScale;
 	}
-	
+
 	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
-			double resourceScale, String resourceName, String resourceURL) {
+			double resourceScale, String userId) {
+		super();
+		this.resourceId = resourceId;
+		this.resourcePositionX = resourcePositionX;
+		this.resourcePositionY = resourcePositionY;
+		this.resourceRotation = resourceRotation;
+		this.resourceScale = resourceScale;
+		this.userId = userId;
+	}
+
+	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
+			double resourceScale, String resourceName, String resourceURL, String userId) {
 		super();
 		this.resourceId = resourceId;
 		this.resourcePositionX = resourcePositionX;
@@ -39,6 +52,7 @@ public class UserRoomResource implements Serializable{
 		this.resourceScale = resourceScale;
 		this.resourceName = resourceName;
 		this.resourceURL = resourceURL;
+		this.userId = userId;
 	}
 
 	public int getResourceId() {
@@ -97,6 +111,14 @@ public class UserRoomResource implements Serializable{
 		this.resourceURL = resourceURL;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -106,7 +128,6 @@ public class UserRoomResource implements Serializable{
 		return "UserRoomResource [resourceId=" + resourceId + ", resourcePositionX=" + resourcePositionX
 				+ ", resourcePositionY=" + resourcePositionY + ", resourceRotation=" + resourceRotation
 				+ ", resourceScale=" + resourceScale + ", resourceName=" + resourceName + ", resourceURL=" + resourceURL
-				+ "]";
+				+ ", userId=" + userId + "]";
 	}
-	
 }

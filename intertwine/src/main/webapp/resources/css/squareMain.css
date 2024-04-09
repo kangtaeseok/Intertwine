@@ -328,7 +328,7 @@ main {
 	display: flex;
 	justify-content: center;
 	align-items: end;
-	padding-top: 10px;
+	/* padding-top: 10px; */
 	overflow: hidden;
 	border-radius: 10px; 
 }
@@ -370,7 +370,7 @@ main {
 
 
 #userroom {
-	position: absolute;
+	position: relative;
 	width: 100%;
 	height: 100%;
 	border-radius: 10px; 
