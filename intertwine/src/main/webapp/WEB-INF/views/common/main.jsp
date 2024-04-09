@@ -4,60 +4,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 디자인을 지원하기 위한 뷰포트 설정 -->
-<!-- <link rel="icon" href="favicon.ico" type="image/X-icon"> --> <!-- 파비콘 설정 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
-<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css"> <!-- 이 jsp파일의 css파일 연결 -->
-<script src="/intertwine/resources/js/kakao.min.js"></script>
-<script defer src="/intertwine/resources/js/mainpage.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
-<script>
-Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
-console.log(Kakao.isInitialized()); 
-function kakaoLogout() {
-    if (Kakao.Auth.getAccessToken()) {
-      Kakao.API.request({
-        url: '/v1/user/unlink',
-        success: function (response) {
-        	console.log(response)
-        	location.href="login.do";
-        },
-        fail: function (error) {
-          console.log(error)
-        },
-      })
-      Kakao.Auth.setAccessToken(undefined)
-    }
-  }  
-
-</script>
-
 </head>
 <body>
-    <header> <!-- 페이지 상단 -->
-        <div> <!-- 홈 버튼 -->
-            <nav class="homebutton_nav">
-                <ul>
-                    <li class="homebutton"></li>
-                </ul>
-                <ol>
-                    <a href="#"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
-                </ol>
-            </nav>
-        </div>
-
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
-        <div></div>
-        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
-    </header>
-
     <main>
         <aside class="side-bar">
             <ul>
@@ -125,6 +76,15 @@ function kakaoLogout() {
 						<li><a href="${ pageContext.servletContext.contextPath }/noticelist.do">공지</a></li>
 						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do">문의</a></li>
 						<li><a href="${ pageContext.servletContext.contextPath }/aieventgo.do">이벤트</a></li>
+						<c:if test="${empty type}">
+                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
+						</c:if>
+						<c:if test="${type eq 'kakao'}">
+							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
+						</c:if>
 					</ul>
             </div>
         </div>
@@ -139,7 +99,34 @@ function kakaoLogout() {
                 </div>
             </div>
         </div>
+        <div class="floating-button" id="floatingButton">
+        	<img src="/intertwine/resources/images/ai/chatbot2.png" alt="Chatbot">
+        </div>
+			<div class="layer" id="layer">
+			    <div class="chatbot-container" id="chatbotContainer">
+			        <div id="header">
+			            <img src="/intertwine/resources/images/ai/chatbot1.png">
+			            <h1>이벤트 챗봇</h1>
+			        </div>
+			        <div id="chatbot">
+			            <div id="conversation">
+			                <div class="chatbot-message">
+			                    <p class="chatbot-text">안녕하세요! 👋 무엇을 도와드릴까요?</p>
+			                </div>
+			            </div>
+			            <form id="input-aievent" action="aieventgo.do" method="post">
+			                <message-container>
+			                    <input id="input-aefield" type="text" name="keyword" placeholder="메세지를 입력하세요.">
+			                    <button id="submit-button" type="submit">
+			                      <img class="send-icon" src="/intertwine/resources/images/ai/send-message.png" alt="">
+			                    </button>
+			                </message-container>
+			            </form>
+			        </div>
+			    </div>
+			</div>
     </main>
+ 
 </body>
 
 </html>

@@ -256,6 +256,66 @@ public class PostServiceImpl implements PostService {
 		return postDao.selectPostsBySearchKeyword(searchMyPage);
 	}
 
+	@Override
+	public ArrayList<Post> selectPostsByIdFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewestFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewestFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewestNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewestNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeastFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeastNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTagFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTagFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTagNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTagNotFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeywordFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeywordFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeywordNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeywordNotFollower(searchMyPage);
+	}
+
 
 	/*
 	 * @Override public User selectUser(String findUserId) { // TODO Auto-generated

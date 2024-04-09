@@ -10,8 +10,9 @@
 <!-- <link rel="icon" href="favicon.ico" type="image/X-icon"> --> <!-- 파비콘 설정 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
 <link rel="stylesheet" href="/intertwine/resources/css/aievent.css"> <!-- 이 jsp파일의 css파일 연결 -->
-<script defer src="/intertwine/resources/js/aievent.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
+<script defer src="/intertwine/resources/js/mainpage.js"></script>
+<script defer src="/intertwine/resources/js/aievent.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
 </head>
 <body>
@@ -141,6 +142,7 @@
 			</div>
 
     </main>
+    
     <!-- <script src="/intertwine/resources/js/aievent.js" />  이 jsp파일의 js파일 연결 -->
    </body>
 </html>

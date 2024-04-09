@@ -53,4 +53,14 @@ public class BookmarkController {
 		return "redirect:getfeed.do";
 	}
 	
+	@RequestMapping("deleteBookmark3.do")
+	public String deleteBookmarkFeedBookmark(@RequestParam("postId")String postId, @RequestParam("userId")String userId) {
+		
+		int p = Integer.parseInt(postId);
+		Bookmark bookmark = new Bookmark(userId, p);
+		bookmarkService.deleteBookmark(bookmark);
+		
+		return "redirect:getbookmarkfeed.do";
+	}
+	
 }

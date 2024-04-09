@@ -92,6 +92,27 @@ public interface PostService {
 
 	ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage);
 
+	ArrayList<Post> selectPostsByIdFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdOldestToNewestFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdOldestToNewestNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeastFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeastNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsBySearchTagFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchTagNotFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeywordFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeywordNotFollower(SearchMyPage searchMyPage);
+
+
 	//ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId);
 
 

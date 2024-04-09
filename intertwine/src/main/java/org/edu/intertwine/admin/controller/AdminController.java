@@ -376,7 +376,7 @@ public class AdminController {
 		}
 		
 	}
-	
+	 
 	//신고 내용받기
 	@ResponseBody
 	@RequestMapping(value="inPostReport.do", method=RequestMethod.POST)

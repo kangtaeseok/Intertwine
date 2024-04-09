@@ -8,7 +8,7 @@
 <title>second : project</title>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/intertwine/resources/css/adnoticeupdate.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/adnoticewrite.css" />
 </head>
 <body>
     <header> <!-- 페이지 상단 -->
@@ -71,27 +71,29 @@
 				    <div id="board-search">
 					    <div class="container">
 					        <div class="search-window">
-					             <h1>공지사항 수정 페이지</h1>
-								    <form id="updateForm" action="${pageContext.request.contextPath}/noticeupdate.do" method="POST">
-								        <input type="hidden" id="noticeId" name="noticeId" value="${notice.noticeId}">
-								        <label for="noticeTitle">제목:</label><br>
-								        <input type="text" id="noticeTitle" name="noticeTitle" value="${notice.noticeTitle}"><br>
-								        <label for="noticeContent">내용:</label><br>
-								        <textarea id="noticeContent" name="noticeContent">${notice.noticeContent}</textarea><br>
-								        <label for="noticeLevel">중요도:</label><br>
-								        <input type="radio" id="noticeLevel1" name="noticeLevel" value="1" ${notice.noticeLevel == 1 ? 'checked' : ''}>
-								        <label for="noticeLevel1">중요</label>
-								        <input type="radio" id="noticeLevel0" name="noticeLevel" value="0" ${notice.noticeLevel == 0 ? 'checked' : ''}>
-								        <label for="noticeLevel0">보통</label>
-								        <input type="submit" value="수정">
-								    </form>
+					             <h1>공지사항 등록</h1>
+							     <form id="writeForm" action="${pageContext.request.contextPath}/noticewrite.do" method="POST">
+							         <label for="noticeTitle">제목:</label><br>
+							         <input type="text" id="noticeTitle" name="noticeTitle" required><br><br>
+							        
+							         <label for="noticeContent">내용:</label><br>
+							         <textarea id="noticeContent" name="noticeContent" rows="5" required></textarea><br><br>
+							        
+							         <label>중요도:</label><br>
+							         <input type="radio" id="noticeLevel1" name="noticeLevel" value="1" checked>
+							         <label for="noticeLevel1">중요</label>
+							         <input type="radio" id="noticeLevel0" name="noticeLevel" value="0">
+							         <label for="noticeLevel0">보통</label>
+							        
+							         <input type="submit" value="등록">
+							     </form>
 					        </table>
 					    </div>
 					</div>
 					</div>
 				</div>
 			</div>
-			<script src="/intertwine/resources/js/adnoticeupdate.js"></script>
+			<script src="/intertwine/resources/js/adnoticewrite.js"></script>
     </main>
 </body>
 </html>
