@@ -14,26 +14,6 @@ public class AiChatServiceImpl implements AiChatService  {
 	private AiChatDao aiChatDao;
 
 	@Override
-	public AiChat selectAiChatOne(int aiChatId) {
-		return aiChatDao.selectAiChatOne(aiChatId);
-	}
-
-	@Override
-	public int insertAiChat(AiChat aiChat) {
-		return aiChatDao.insertAiChat(aiChat);
-	}
-
-	@Override
-	public int updateAiChat(AiChat aiChat) {
-		return aiChatDao.updateAiChat(aiChat);
-	}
-
-	@Override
-	public int deleteAiChat(int aiChatId) {
-		return aiChatDao.deleteAiChat(aiChatId);
-	}
-
-	@Override
 	public ArrayList<AiChat> selectAiChatByKeyword(String keyword) {
 		return aiChatDao.selectAiChatByKeyword(keyword);
 	}
