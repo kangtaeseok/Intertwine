@@ -84,7 +84,7 @@
 					                    <button type="submit" class="btn btn-dark">검색</button>
 					                </div>
 					            </form>
-					            <a id="noticewrite" href="${pageContext.servletContext.contextPath}/noticewrite.do">등록</a>
+					            <a id="noticewrite" href="${pageContext.servletContext.contextPath}/movenoticewrite.do">등록</a>
 					        </div>
 					    </div>
 					</div>
@@ -117,7 +117,7 @@
 					                        <td align="left">${n.noticeTime}</td>
 					                        <td align="center">${n.noticeView}</td>
 					                        <td id="cho" align="left">
-					                            <a href="${pageContext.servletContext.contextPath}/noticeupdate.do">수정</a>
+					                            <a href="${pageContext.servletContext.contextPath}/noticeupdate.do?noticeId=${n.noticeId}">수정</a>
 					                            <a onclick="requestDelete(${n.noticeId});">삭제</a>
 					                        </td>
 					                    </tr>
