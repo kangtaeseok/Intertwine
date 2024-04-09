@@ -51,7 +51,7 @@ function moveUpdatePage(){
 </script>
 </head>
 <body>
-<c:import url="/WEB-INF/views/faq/faqFrameView.jsp" />
+<c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
 <script>
 $(function(){
 	
