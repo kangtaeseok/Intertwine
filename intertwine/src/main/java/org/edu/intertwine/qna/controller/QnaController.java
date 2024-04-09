@@ -626,6 +626,9 @@ public class QnaController {
 		return "qna/kakaoMessage";
 	}
 	
-
+	@RequestMapping("movePushAlarm.do")
+	public String kakaoPushAlarmMethod() {
+		return "qna/kakaoShareData";
+	}
 	
 }
