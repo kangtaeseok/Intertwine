@@ -533,6 +533,8 @@ myCharacter.addEventListener('contextmenu', function (event) {
         modal.style.display = "flex";
         var $friendModalList = $('.friendmodal-list');
         $friendModalList.empty();
+        //userid로 친구목록 받아오기 
+        //받아온 친구목록 id들로 
         
         var friendsList = [
   { nickname: "친구1", profilePic: "/path/to/profile1.jpg" },
