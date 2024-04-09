@@ -122,6 +122,9 @@ function kakaoLogout() {
 						</li>
 						</c:if>
 						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/noticelist.do">공지</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do">문의</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/aieventgo.do">이벤트</a></li>
 					</ul>
             </div>
         </div>

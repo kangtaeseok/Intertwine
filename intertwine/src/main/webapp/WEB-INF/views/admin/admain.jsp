@@ -97,7 +97,7 @@ $(function(){
                     
                 
                 <li id="chatting">
-                    <li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/adnlist.do"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
                 
                 <li id="alarm">
                     <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
