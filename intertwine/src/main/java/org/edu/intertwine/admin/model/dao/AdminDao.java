@@ -87,12 +87,13 @@ public class AdminDao {
 
 	
 	//신고insert
-	public int insertRptPost(String postId) {
-		return sqlSessionTemplate.insert("adminMapper.insertRptPost", postId);
+	public int insertRptPost(ContentReport cpt) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptPost", cpt);
 	}
-	public int insertRptComment(String commentId) {
-		return sqlSessionTemplate.insert("adminMapper.insertRptComment", commentId);
+	public int insertRptComment(ContentReport cpt) {
+		return sqlSessionTemplate.insert("adminMapper.insertRptComment", cpt);
 	}
+	
 
 	public ArrayList<ContentReport> selectPostNumList(int boardNum) {
 		List<ContentReport> list = sqlSessionTemplate.selectList("adminMapper.selectPostNumList", boardNum);

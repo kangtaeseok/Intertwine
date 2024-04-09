@@ -12,22 +12,13 @@ import org.edu.intertwine.common.Time;
 
 public interface AdminService {
 
+	//로그인
 	Admin selectAdmin(String adminId);
-
-	 void insertVisitCount();
-
-	 void updateVisitCount();
-
-	 VisitCount selectVisitCount();
-
-	 int selectVisitCountAll();
-
-	int selectVisitCountMonth(String string);
-
 
 	//신고처리용
 	int selectRptListCount();
 
+	//페이징처리
 	ArrayList<ContentReport> selectRptList(Paging paging);
 	
 	int selectSeachUserIdCount(String keyword);
@@ -40,28 +31,38 @@ public interface AdminService {
 	
 	
 	//신고insert
-	int insertRptPost(String postId);
-	int insertRptComment(String commentId);
+	int insertRptPost(ContentReport cpt);
+	int insertRptComment(ContentReport cpt);
 
+	
+	//신고리스트
 	ArrayList<ContentReport> selectPostNumList(int boardNum);
 
+	//처리완료
 	int updateRptStatus(int reportId);
-
+	
+	//미확인  > 처리중
 	void updateRptStatusing(int boardNum);
-
-	ContentReport selectRptComment(int commentId);
-
 	void updateRptCStatusing(int boardNum);
+
+	//신고댓글 리스트
+	ContentReport selectRptComment(int commentId);
 
 	ArrayList<ContentReport> selectReportAlarm();
 
-	int selectVisitCountTime(Time time);
-
-	int selectVisitCountToday();
-
+	//신고상세 페이징
 	int selectReportBoardNumCount(int boardNum);
-
 	int selectReportCommentCount(int commentId);
+
+	
+	//방문수
+	int selectVisitCountTime(Time time);
+	int selectVisitCountToday();
+	void insertVisitCount();
+	void updateVisitCount();
+	VisitCount selectVisitCount();
+	int selectVisitCountAll();
+	int selectVisitCountMonth(String string);
 
 
 }
