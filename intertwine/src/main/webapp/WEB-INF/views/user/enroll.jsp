@@ -299,7 +299,7 @@ function daumPostcode() {
 				</table>
 					<div class="submit-box">
 						<input type="submit" value="가입하기"> &nbsp;
-						<input type="reset" value="작성취소" onclick="javascript:location.href='enroll.do'"> &nbsp;
+						<input type="reset" value="작성취소" onclick="javascript:location.href='login.do'"> &nbsp;
 					</div>
 		</form>
 	</div>

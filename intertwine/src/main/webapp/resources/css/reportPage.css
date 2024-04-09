@@ -2,6 +2,7 @@
 
 html {
 	font-size: 16px;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 * {
@@ -18,13 +19,23 @@ ul,ol,li {
 }
 
 a {
+	color:black;
     text-decoration: none;
-    color: #ce8489;
-    
 }
 
+a:hover {
+	color:rgb(205, 79, 132);
+    text-decoration: none;
+}
+
+.center > a {
+	display: block;
+}
+
+/* 로고 및 관리항목명 */
 .header{
-	padding: 8px;
+	padding: 10px;
+	margin: 10px;
 	width: 100%;
 	height: 40px;
 	align-items: center;
@@ -34,13 +45,18 @@ a {
 	display: flex;
 	gap: 20px;
 	align-items: center;
+	text-align: center;
+}
+
+h2 { 
+	 color: rgb(205, 79, 132);
+	font-weight: border;
+	margin-left: 35%;	
 }
 
 
-.header {
-	padding: 10px;
-	margin: 10px;
-}
+
+/* 사이드 메뉴 바 포함 */
 
 main {
 	display: flex;
@@ -50,6 +66,12 @@ main {
 	align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
 	width: 100%;
 }
+
+.content-div {
+	margin-left: 20rem;
+	width: 100rem;
+}
+
 
 /* 사이드 메뉴 바 */
 .side-bar {
@@ -108,6 +130,7 @@ main {
 	font-size: 1.5rem;
 }
 
+/* 사이드 메뉴 포함 영역 */
 #bottom_right_contents {
 	top: 0;
 	position: relative;
@@ -115,12 +138,11 @@ main {
 	flex-direction: row;
 	flex-flow: wrap;
 	justify-content: space-around;
-	width: calc(
-		100% - var(--side-bar-width)
-	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	width: 100vw;
 	margin-left: 12rem; /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
+	flex-grow: 1;
 }
 
 #bottom_right_contents.on {
@@ -135,6 +157,15 @@ main {
 	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
 	/*left: 0px;*/
 }
+
+#abc {
+	width: inherit;
+	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 #dummy_sub_menu {
 	visibility: hidden;
@@ -218,103 +249,88 @@ main {
 	left: 0; /* 슬라이딩되어 나타나도록 설정 */
 }
 
-#bottom_right_contents {
-	width: 100vw;
-	display: flex;
-	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
-	display: flex;
-}
+/* 사이드 메뉴 끝 */
 
-#abc {
-	width: inherit;
-	position: relative;
-	display: flex;
-	 
-    justify-content: center;
-    align-items: center;
-}
-
-h2 { 
-	font-weight: border; 
-}
-
-.hr1 { border: 0;
-height: 2px;
-background:  #d3d3d3;}
-
-.grey { 
- color: #727272;}
-
-#strong { font-weight: 900;}
-
+/* 게시글 영역 */
 table {
-width: 100%;
-border-top: 1px solid #d3d3d3;
-border-collapse: collapse;
-}
-th { background-color: #d3d3d3 ; 
-border-top: 3px solid #727272;
-}
-th, td {
-border-bottom: 1px solid #d3d3d3;
-padding: 10px;
+	width: 100%;
+	border-top: 1px solid #d3d3d3;
+	border-collapse: collapse;
 }
 
-  .greylist, .gradient {
-  width: 50px;
-  height: 30px;
-  font-weight: 900;
-  color: white;
-  text-align: center;
-  background: grey;
-  border: solid 2px white;
-  border-radius: 5px;
-  }
-  
-input {
-	height: 4vh;
+th { 
+	background-color: #f99d9d;
+	color: white; 
+}
+
+th, td {
+	border-bottom: 1px solid #d3d3d3;
+	padding: 10px;
+}
+
+.greylist, .gradient {
+	width: 50px;
+	height: 30px;
+	font-weight: 900;
+	color: white;
+	text-align: center;
+	background: #f99d9d;
+	border: solid 2px white;
+	border-radius: 5px;
 }
 
 .left {text-align: left;}
+
+/* 총 신고건 및 검색 박스 */
 .right {
-	
 	display:flex;
 	flex-direction: row;
 	justify-content: space-between;
 }
+/* td 스타일 작업 */
 .center { text-align: center;}
 
-a {
-	color:black;
-	text-decoration-line : none;
+
+/* 검색 폼 스타일 작업 */
+form.sform {
+	display: none; 
 }
 
+/* 목록으로 돌아가는 박스 */
+.right-move-box {
+	margin-top: 1rem;
+	float: right;
+}
+
+/* input 및 검색박스 조정 */
 .search-box {
 	display:flex;
 	flex-direction: row;
 	padding: 0.5rem;
 }
 
+/* 분류 selectType */
 #selectType {
 	margin-right: 0.5rem;
-	
 }
 
-form.sform {
-	display: none; 
-	
-	}
-	
-.content-div {
-	margin-left: 20rem;
-	width: 100rem;
-}
-	
-.right-move-box {
-	float: right;
+input {
+	border-radius: 5px;
+	height: 4vh;
 }
 
-h2{
-
+input:focus {
+		outline: solid 2px #f99d9d;
+	  border-radius: 5px;
+	  border: none;
 }
-	
+
+select {
+	border-radius: 5px;
+}
+
+select:focus {
+	border: none;
+	 outline: solid 2px #f99d9d;
+	 border-radius: 5px;
+}

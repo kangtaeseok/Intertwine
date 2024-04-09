@@ -39,8 +39,13 @@ $(function(){
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><input type="text" name="qnaWriter" readonly value="${sessionScope.loginMember.userId}"></td>
-			</tr>	
+			    <c:if test="${ !empty loginUser and empty loginAdmin }">	
+			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginUser.userId }"></td>
+			    </c:if>
+			    			    
+			    <c:if test="${ !empty loginAdmin }">	
+			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginAdmin.adminId }"></td>
+			    </c:if>				</tr>	
 			<tr>
 				<th>내 용</th>
 				<td><textarea rows="5" cols="50" name="qnaContent"></textarea></td>

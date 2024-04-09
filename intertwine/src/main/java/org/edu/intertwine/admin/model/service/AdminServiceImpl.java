@@ -9,6 +9,7 @@ import org.edu.intertwine.admin.model.vo.ContentReport;
 import org.edu.intertwine.admin.model.vo.VisitCount;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
+import org.edu.intertwine.common.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,15 +93,6 @@ public class AdminServiceImpl implements AdminService {
 	public ArrayList<ContentReport> selectSeachStatus(Search search) {
 		return adminDao.selectSeachStatus(search);
 	}
-	
-	//신고insert
-	public int insertRptPost(String postId) {
-		return adminDao.insertRptPost(postId);
-	}
-	
-	public int insertRptComment(String commentId) {
-		return adminDao.insertRptComment(commentId);
-	}
 
 	@Override
 	public ArrayList<ContentReport> selectPostNumList(int boardNum) {
@@ -122,13 +114,44 @@ public class AdminServiceImpl implements AdminService {
 	public ContentReport selectRptComment(int commentId) {
 		return adminDao.selectRptComment(commentId);
 	}
-
 	@Override
 	public void updateRptCStatusing(int boardNum) {
 		adminDao.updateRptCStatusing(boardNum);
 		
 	}
 
+	@Override
+	public ArrayList<ContentReport> selectReportAlarm() {
+		return adminDao.selectReportAlarm();
+	}
+	@Override
+	public int selectVisitCountTime(Time time) {
+		return adminDao.selectVisitCountTime(time);
+	}
+	@Override
+	public int selectVisitCountToday() {
+		return adminDao.selectVisitCountToday();
+	}
 
+	//상세보기 페이징
+	@Override
+	public int selectReportBoardNumCount(int boardNum) {
+		return adminDao.selectReportBoardNumCount(boardNum);
+	}
+
+	@Override
+	public int selectReportCommentCount(int commentId) {
+		return adminDao.selectReportCommentCount(commentId);
+	}
+	
+	//신고insert
+	@Override
+	public int insertRptPost(ContentReport cpt) {
+		return adminDao.insertRptPost(cpt);
+	}
+	
+	public int insertRptComment(ContentReport cpt) {
+		return adminDao.insertRptComment(cpt);
+	}
 	
 }

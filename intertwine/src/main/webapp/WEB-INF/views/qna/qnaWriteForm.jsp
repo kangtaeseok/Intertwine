@@ -37,7 +37,14 @@ $(function(){
 			</tr>
 			<tr>
 			    <th>작성자</th>
-			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginMember.userId }"></td>
+			    <c:if test="${ !empty loginUser and empty loginAdmin }">	
+			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginUser.userId }"></td>
+			    </c:if>
+			    			    
+			    <c:if test="${ !empty loginAdmin }">	
+			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginAdmin.adminId }"></td>
+			    </c:if>			    
+			    
 			</tr>
 			<tr>
 			    <th>첨부파일</th>
@@ -48,14 +55,36 @@ $(function(){
 			    <td><textarea rows="5", cols="50" name="qnaContent"></textarea></td>
 			</tr>
 			<tr>
-				<c:url var="ql" value="qlist.do">
-					<c:param name="page" value="1"/>
-				</c:url>
+
 				
 				<th colspan="2">
 					<input type="submit" value="등록하기">
 					<input type="reset" value="작성취소">
-					<input type="button" value="목록" onclick="javascrpt.location.href='${ ql }'; return false;" }>
+					<!-- <input type="button" value="목록" onclick="location.href='${ ql }'; return false;" > -->
+					
+					<!-- 유저 로그인이고 관리자 가 아닐 경우 -->
+	                <c:if test="${ !empty loginUser and empty loginUser}">
+					<c:url var="qsearchwriter" value="qsearchWriter.do">
+	 					<c:param name="keyword" value="${ loginUser.userId }" />
+	 					<c:param name="action" value="writer" />
+				 	</c:url>
+					</c:if> 
+					
+					<!-- 관리자 로그인 일 경우 -->
+	                <c:if test="${ !empty loginAdmin }">
+					<c:url var="qsearchwriter" value="qsearchWriter.do">
+	 					<c:param name="keyword" value="${ loginUser.adminId }" />
+	 					<c:param name="action" value="writer" />
+				 	</c:url>
+					</c:if> 
+					<input type="button" value="목록" onclick="location.href='${ qsearchwriter }'; return false;" >
+					
+				
+
+	                
+					
+					
+					
 				</th>
 			</tr>
 		</table>
