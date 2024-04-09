@@ -2,8 +2,13 @@ package org.edu.intertwine.post.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +29,7 @@ import org.edu.intertwine.post.model.vo.Gallery;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.service.UserService;
@@ -103,6 +109,75 @@ public class PostController {
 			return "redirect:page.do?friendId=" + userId;	
 		}
 			
+	}
+	
+	//남의 페이지 검색
+	@RequestMapping(value="searchothermypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	public ModelAndView searchOtherMyPage(@RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
+		
+		
+		logger.info(friendId);
+		logger.info(keyword);
+		logger.info(String.valueOf(condition));
+		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
+		SearchMyPage searchMyPage = new SearchMyPage(friendId, decodedKeyword);
+		logger.info(decodedKeyword);
+		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		switch(condition) {
+
+		case 0:
+			//전체 검색
+			posts = postService.selectPostsBySearchAll(searchMyPage);
+			break;				
+
+		case 1:
+			//태그 검색
+			posts = postService.selectPostsBySearchTag(searchMyPage);
+			break;
+			
+		case 2:
+			//콘텐츠 검색
+			posts = postService.selectPostsBySearchKeyword(searchMyPage);
+			break;
+		}
+		
+		User user = userService.selectUser(friendId);
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		
+		
+		
+		//정렬을 거쳐올 경우 정렬 값을 담음
+		if(posts.size() > 0) {		
+			for (Post post : posts) {
+		        Gallery gallery = new Gallery();
+		        gallery.setPost(post);
+		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+		        gallery.setImage(postService.selectOneImage(post.getPostId()));
+		        gallery.setTags(postService.selectTags(post.getPostId()));
+		        logger.info(gallery.toString());
+		        
+		        galleries.add(gallery);
+		        
+		    }
+		}
+		
+		int followingCount = friendService.countFollowing(friendId);
+		int followerCount = friendService.countFollowers(friendId);
+		
+		if(posts.size() > 0 ) {
+			mv.addObject("galleries", galleries);
+		}
+		mv.addObject("user", user);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/page.do?friendId=" + friendId );
+		
+		return mv;
+		
+		
 	}
 	
 	//남의 마이페이지 들어갈 때
@@ -334,7 +409,6 @@ public class PostController {
 			@RequestParam(name = "tagName", required = false) String[] tags, ModelAndView mv)
 			throws IllegalStateException, IOException, ImageProcessingException {
 
-		
 		logger.info("files : " + files.toString());
 		logger.info("userId : " + post.getUserId());
 		User user = (User) session.getAttribute("loginUser");
@@ -354,13 +428,11 @@ public class PostController {
 		// 태그가 널이 아니라면
 		if (tags != null && tags.length > 0) {
 
-			for (String s : tags) {
-				Tag tag = new Tag();
-				tag.setPostId(p.getPostId());
-				tag.setTagName(s);
-				postService.insertTag(tag);
-			}
-
+		    for (String tag : tags) {
+		    	logger.info(tag);
+		        Tag newTag = new Tag(p.getPostId(), tag);
+		        postService.insertTag(newTag);
+		    }
 		}
 		// 사진 저장 및 동영상 저장 필요
 		if (files != null && files.size() > 0) {
@@ -533,6 +605,100 @@ public class PostController {
 		} // else
 
 	}
+	
+	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.GET })
+	public ModelAndView getBookmarkFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
+		
+		
+		User loginUser = (User) session.getAttribute("loginUser");
+		logger.info("loginUser:" + loginUser);
+		
+		// 내가 북마크한 포스트 아이디들을 받아옴
+
+		ArrayList<Integer> postIds = new ArrayList<Integer>();
+		// 만약 사이즈가 0이면 다른 쿼리문 작동
+		
+		// 그걸로 포스트 아이디들을 쭉 받아옴
+			
+		postIds = postService.selectBookmarkedPosts(loginUser.getUserId());
+		
+		logger.info("postIds: " + postIds.size());
+		logger.info("postIds: " + postIds.toString());
+		// 피드 아이템 선언 이것들이 사용될 예정
+
+		// 다음 받아온 아이디로 모든걸 가져옴
+
+		// 포스트 아이디 갯수 셈
+		if (postIds.size() > 0) {
+		  	//피드 변수들 여러개 담을거 선언
+			ArrayList<FeedItem> feedItems = new ArrayList<FeedItem>();
+			//프로필 사진이 없는 경우 이것을 사용
+			String defaultImage = request.getSession().getServletContext().getRealPath("resources/profile/images.jpg");
+			
+			for (int i = 0; i < postIds.size(); i++) {
+				
+				//리스트로 유저아이디 하나씩 꺼냄
+				
+				String eachPostId = String.valueOf(postIds.get(i));
+				int each = Integer.parseInt(eachPostId);
+				 //포스트 아이디로 유저 아이디 찾아옴
+				
+				String findUserId = postService.selectFindUserId(each);
+	       
+				//  Mypage mypage = userService.(무언가)
+				// 유저정보 담음
+				User user = userService.selectUser(findUserId);
+				// 포스트 정보 담음
+				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
+				// 이미지 정보 담음
+				Image image = postService.selectOneImage(Integer.parseInt(eachPostId));
+				// 동영상 정보 담음
+				Video video = postService.selectOneVideo(Integer.parseInt(eachPostId));
+				
+				// 좋아요 수 정보 담음
+				int likeCount = postService.selectLikeCounts(Integer.parseInt(eachPostId));
+
+				Friend friend = new Friend(loginUser.getUserId(), findUserId);
+				int isFollowing = friendService.selectFollowing(friend);
+				logger.info(String.valueOf(isFollowing));
+				int isFollowed = friendService.selectFollower(friend);
+				// 1이면 팔로우중 -> 언팔로우 버튼 / 0이면 팔로우중 아님 -> 팔로우 버튼
+
+				Like like = new Like(loginUser.getUserId(), Integer.parseInt(eachPostId));
+				int isLiked = postService.selectIsLiked(like);
+				// 1이면 이미 공감중 0이면 공감안하고 있음
+				
+				String whatIsLiked = null;
+				
+				if(isLiked == 1) {
+					whatIsLiked = postService.selectWhatIsLiked(like);
+				} else {
+					whatIsLiked = null;
+				}
+
+				Bookmark bookmark = new Bookmark(loginUser.getUserId(), Integer.parseInt(eachPostId));
+				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
+				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
+				
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				feedItems.add(feedItem);
+				
+			}
+			
+			mv.addObject("feedItems", feedItems);
+			mv.addObject("defaultImage", defaultImage);
+			mv.setViewName("post/getbookmarkfeed");
+			logger.info(mv.toString());
+			return mv;
+
+		} else {
+			mv.addObject("message", "보여줄 피드가 없습니다.");
+			mv.setViewName("common/main");
+			return mv;
+
+		} // else
+
+	}
 
 	//디테일 뷰 확인
 	@RequestMapping(value = "detail.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -557,7 +723,7 @@ public class PostController {
 		
 		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
 		if(!viewingUser.getUserId().equals(post.getUserId())) {
-			post.setPostView(post.getPostView() + 1);
+			postService.updatePostViews(post);
 		}
 		//logger.info("post" + post.toString());
 		//포스트에 있는 태그들 가져옴
@@ -614,7 +780,6 @@ public class PostController {
 		logger.info(String.valueOf(p));
 		
 		Post post = new Post (p, userId);
-		
 		postService.deletePost(post);
 		
 		return "redirect:mypage.do"; 
@@ -645,4 +810,80 @@ public class PostController {
 		
 	}
 	
+	
+	@RequestMapping(value="searchmypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	public ModelAndView searchMyPage(@RequestParam("userId")String userId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
+		
+		
+		logger.info(userId);
+		logger.info(keyword);
+		logger.info(String.valueOf(condition));
+		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
+		SearchMyPage searchMyPage = new SearchMyPage(userId, decodedKeyword);
+		logger.info(decodedKeyword);
+		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		switch(condition) {
+
+		case 0:
+			//전체 검색
+			List<Post> postsByTag = postService.selectPostsBySearchTag(searchMyPage);
+	        List<Post> postsByKeyword = postService.selectPostsBySearchKeyword(searchMyPage);
+	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
+	        combinedPosts.addAll(postsByKeyword);
+	        posts = new ArrayList<>(combinedPosts);
+	        
+			break;				
+
+		case 1:
+			//태그 검색
+			posts = postService.selectPostsBySearchTag(searchMyPage);
+			break;
+			
+		case 2:
+			//콘텐츠 검색
+			posts = postService.selectPostsBySearchKeyword(searchMyPage);
+			break;
+		}
+		
+		User user = userService.selectUser(userId);
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		
+		
+		
+		//정렬을 거쳐올 경우 정렬 값을 담음
+		if(posts.size() > 0) {		
+			for (Post post : posts) {
+		        Gallery gallery = new Gallery();
+		        gallery.setPost(post);
+		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+		        gallery.setImage(postService.selectOneImage(post.getPostId()));
+		        gallery.setTags(postService.selectTags(post.getPostId()));
+		        logger.info(gallery.toString());
+		        
+		        galleries.add(gallery);
+		        
+		    }
+		}
+		
+		int followingCount = friendService.countFollowing(userId);
+		int followerCount = friendService.countFollowers(userId);
+		
+		if(posts.size() > 0 ) {
+			mv.addObject("galleries", galleries);
+		}
+		mv.addObject("user", user);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/mypage");
+		
+		return mv;
+		
+		
+	}
+	
+	
+
 }// 클래스

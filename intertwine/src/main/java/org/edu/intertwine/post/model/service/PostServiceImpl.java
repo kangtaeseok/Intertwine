@@ -7,6 +7,7 @@ import org.edu.intertwine.post.model.dao.PostDao;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.vo.User;
@@ -223,6 +224,36 @@ public class PostServiceImpl implements PostService {
 	public ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId) {
 		// TODO Auto-generated method stub
 		return postDao.selectPostsByIdMostViewsToLeast(userId);
+	}
+
+	@Override
+	public int updatePostViews(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePostViews(post);
+	}
+
+	@Override
+	public ArrayList<Integer> selectBookmarkedPosts(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectBookmarkedPosts(userId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchAll(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchAll(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTag(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeyword(searchMyPage);
 	}
 
 

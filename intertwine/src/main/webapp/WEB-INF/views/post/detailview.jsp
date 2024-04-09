@@ -6,6 +6,8 @@
 <html lang="ko">
 <head>
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+	<script defer src="/intertwine/resources/js/mainpage.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post Viewer</title>
@@ -267,6 +269,102 @@ button {
 </style>
 </head>
 <body>
+<header> <!-- 페이지 상단 -->
+        <div> <!-- 홈 버튼 -->
+            <nav class="homebutton_nav">
+                <ul>
+                    <li class="homebutton"></li>
+                </ul>
+                <ol>
+                    <a href="${ pageContext.servletContext.contextPath }/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                </ol>
+            </nav>
+        </div>
+
+        <div class="search"> <!-- 검색창 -->
+            <input type="text" placeholder="검색어 입력">
+            <img src="/intertwine/resources/images/search.png">
+        </div>
+
+        <div></div>
+        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
+    </header>
+
+    <main>
+        <aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                </li>
+                <li id="mypage">
+                    <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                    <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                </li>
+                 <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="${ pageContext.servletContext.contextPath }/getbookmarkfeed.do"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
+                </li>
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
+				</ul>
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+            	<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                       	</li>
+                        </c:if>
+                        <c:if test="${type eq 'kakao'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+					</ul>
+            </div>
+        </div>
+        <div id="bottom_right_contents">
+
+
+
+
+
+
+
 <div class="container-detail" style="display: flex; padding-top: 5vw; padding-left: 10vw;">
      <div class="left" style="max-width: 800px; height: 800px; width: 35vw; border: 1px grey solid; position: relative; background-color: black; display: flex; align-items: center; justify-content: center;">
             <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"><i class="fa-solid fa-arrow-left" style="position: absolute;top: 0;left: 0;padding: 10px;color: white;font-size: 24px;cursor: pointer;"></i></a>
@@ -340,9 +438,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-     <div class="right" style="width: 35vw; max-height: 800px;">
+     <div class="right" style="width: 35vw; max-height: 800px;background-color:white;border-top: 1px black solid;border-right: 1px black solid;border-bottom: 1px black solid;">
           <div class="scroll" style="height: 776px; overflow: auto;">
-               <div class="owner" style="display: flex; border-bottom: 1px black solid; padding-bottom: 5px;"> 
+               <div class="owner" style="display: flex; margin-top:3 px;border-bottom: 1px black solid; padding-bottom: 5px;"> 
                     <div class="pic" style="margin-left: 5px;">
                          <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"><img src="https://www.w3schools.com/html/img_girl.jpg" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"></a>
                     </div>
@@ -350,18 +448,18 @@ document.addEventListener('DOMContentLoaded', function() {
                          <div class="dummy" style="display: flex; margin-top: 5px; margin-bottom: 3px;">
                               <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"><b style="cursor:pointer;">${post.userId}</b></a> &nbsp;
                               
-                              <c:if test="${ post.userId ne viewingUser.userId }">
+                             <%--  <c:if test="${ post.userId ne viewingUser.userId }">
                          	<c:if test="${ isFollowing eq 0 }">
                               <a href="${pageContext.servletContext.contextPath}/insertFdetail.do?userId=${viewingUser.userId}&friendId=${post.userId}&postId=${post.postId}" style="text-decoration: none; color: black;">팔로우</a> &nbsp;
                               </c:if>
                               <c:if test="${ isFollowing eq 1 }">
                               <a href="${pageContext.servletContext.contextPath}/unfollowingDetail.do?userId=${ viewingUser.userId }&friendId=${post.userId}&postId=${post.postId}"  style="text-decoration: none; color: black;">언팔로우</a> &nbsp;
-                              </c:if>
+                              </c:if> --%>
                               
                               <c:if test="${ post.userId ne viewingUser.userId }">
-                                    <button class="reportPost" data-post-id="${ post.postId }">신고</button></li>
+                                    <button class="reportPost" data-post-id="${ post.postId }">신고</button>
                                 </c:if>   
-                             </c:if>
+                             <%-- </c:if> --%>
                              <c:if test="${ post.userId eq viewingUser.userId }">
                                    <ul class="settings-menu" style="display:flex;">
                                    		<c:if test="${ isPinned eq 0 }">
@@ -444,47 +542,30 @@ document.addEventListener('DOMContentLoaded', function() {
 	                              </div>
 	                          </form>
                          </div> 
-                     <script>
-                     document.addEventListener('DOMContentLoaded', function() {
-                    	    var reaction = document.getElementById('reaction');
-                    	    reaction.addEventListener('click', function(event) {
-                    	        var reactionBox = document.getElementById('reaction-box');
-                    	        reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
-                    	        event.stopPropagation(); 
-                    	    });
-
-                    	    
-                    	    window.addEventListener('click', function(event) {
-                    	        if (!event.target.closest('#reaction')) {
-                    	            var reactionBox = document.getElementById('reaction-box');
-                    	            reactionBox.style.display = 'none';
-                    	        }
-                    	    });
-                    	});
-						</script>
-						<script>
-						    document.querySelectorAll('.reaction-icon').forEach(icon => {
+						 <script>
+						document.addEventListener('DOMContentLoaded', function() {
+						    var reaction = document.getElementById('reaction');
+						    var reactionBox = document.getElementById('reaction-box');
+						    reaction.addEventListener('click', function(event) {
+						        reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
+						        event.stopPropagation(); 
+						    });
+						
+						    window.addEventListener('click', function(event) {
+						        if (!event.target.closest('#reaction')) {
+						            reactionBox.style.display = 'none';
+						        }
+						    });
+						
+						    document.querySelectorAll('.reaction-icon').forEach(function(icon) {
 						        icon.addEventListener('click', function() {
-						            const likeType = this.getAttribute('value');
-						            document.getElementById('likeType').value = likeType;
-						            document.getElementById('reactionForm').submit();
+						            document.getElementById('likeType').value = this.getAttribute('value');
+						            document.getElementById('reactionForm').submit(); 
 						        });
 						    });
+						});
 						</script>
-						<script>
-						    document.addEventListener('DOMContentLoaded', function () {
-						        var icons = document.querySelectorAll('.reaction-icon');
-						        
-						        icons.forEach(function(icon) {
-						            icon.addEventListener('click', function() {
-						                //likeType value를 설정
-						            	document.getElementById('likeType').value = this.getAttribute('value');
-						                //폼 제출
-						                document.getElementById('reactionForm').submit();
-						            });
-						        });
-						    });
-						</script>
+
                          <div class="share">
                               <i class="fa-solid fa-share-nodes" style="cursor:pointer;"></i>
                          </div>
@@ -584,6 +665,9 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
      </div>
 </div>
+</div>
+</main>
+
 <!-- 댓글 신고 -->
 <script>
 $(document).ready(function() {
@@ -591,16 +675,18 @@ $(document).ready(function() {
         // Retrieve the commentId stored in the data-comment-id attribute
         var commentId = $(this).data('comment-id');
         var userId = "${viewingUser.userId}";
+        var postId = $(this).data('post-id');
         var message = prompt("신고 사유를 적어주세요: ");
 
         if (message) {
             $.ajax({
-                url: '~~~.do',
+                url: 'inComReport.do',
                 type: 'POST',
                 data: {
                     commentId: commentId,
                     userId: userId,
-                    message: message
+                    message: message,
+                    postId: postId
                 },
                 success: function(response) {
                     alert("신고가 정상적으로 접수되었습니다.");
@@ -624,7 +710,7 @@ $(document).ready(function() {
 
         if (message) {
             $.ajax({
-                url: '~~~.do',
+                url: 'inPostReport.do',
                 type: 'POST',
                 data: {
                     postId: postId,
