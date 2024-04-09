@@ -6,303 +6,240 @@
 <html lang="ko">
 <head>
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+	<script defer src="/intertwine/resources/js/mainpage.js"></script>
+<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>   
     <title>
-        마이 페이지
+       마이 페이지
     </title>
-
-    
-    <style>
-        .container{
-            margin: 0 auto; /* Center the container horizontally */
-            padding-left: 250px; /* Adjust padding to match sidebar width */
-            width: 1000px;
-        }
-        .top{
-            margin-top: 30px;
-            display: flex;
-        }
-        .middle{
-            padding-top: 30px;
-            display:flex;
-        }
-        .profile{
-            padding-left: 10px;
-        }
-        .profile-info{
-          display: flex;   
-        }
-        .left{
-            display: flex;
-        }
-        .right{
-            display: flex;
-        }
-        .bottom{
-            display: flex;
-        }
-        .pic{
-            width: 200px; /* Adjust width as needed */
-            height: 200px; /* Adjust height as needed */
-            border-radius: 50%;
-            border: 0px solid black;
-            overflow: hidden;
-        }
-        .pic img {
-             width: 100%;
-             height: 100%;
-             object-fit: cover; /* Ensures image fills container */
-        }
-        .dummy2 {
-            height: 50px;
-        }
-        .dummy3{
-            width: calc(60%);
-        }
-        .sorting{
-            justify-content: right;
-        }
-        li{
-            list-style-type: none;
-        }
-        .search {
-        display: flex;
-        background-color: #FFF; /* Light gray background */
-        border: 0px solid #FFF; /* Light gray border */
-        border-radius: 5px; /* Rounded corners */
-        padding: 5px 10px;
-        }
-        .search select {
-            border: none; /* Remove default border */
-            background: transparent; /* Transparent background */
-            padding: 5px; /* Add some padding for consistency */
-            margin-right: 5px; /* Space between dropdown and input field */
-            cursor: pointer; /* Change cursor to pointer */
-        }
-
-        .search input[type="text"] {
-        border: none;
-        outline: none;
-        background-color: #FFF; /* Inherit background color */
-        font-size: 13px; /* Adjust font size as needed */
-        }
-
-        .search .fa-search {
-        color: #000; /* Black color for the icon */
-        font-size: 33px; /* Adjust icon size as needed */
-        margin-left: 5px; /* Add spacing between input and icon */
-        cursor: pointer; /* Indicate clickable behavior */
-        transition: transform 1.0s ease;
-        }
-        .search .fa-search:hover {
-         transform: scale(1.1) rotate(360deg); /* Make it 10% bigger and rotate */
-        }
-        .sorting{
-            display: flex; /* Arrange dropdowns horizontally */
-            justify-content: space-between;
-        }
-        .sorting select {
-            padding: 8px 12px; /* Add padding inside the dropdown */
-            margin-right: 10px; /* Space between multiple elements */
-            border: 0px solid #ccc; /* Border color */
-            border-radius: 4px; /* Rounded corners */
-            background-color: #FFF; /* Background color */
-            cursor: pointer; /* Cursor to indicate it's selectable */
-            font-size: 16px; /* Text size */
-        }
-
-        .sorting select:hover {
-            background-color: #f1f1f1; /* Lighter background on hover */
-        }
-
-        .sorting select:focus {
-            border-color: #009688; /* Change border color to highlight focus */
-            outline: none; /* Remove the default focus outline */
-        }
-
-        button {
-        padding: 5px 10px; /* Adjust padding as needed */
-        border: none;
-        border-radius: 5px; /* Rounded corners */
-        cursor: pointer; /* Indicate clickable behavior */
-        font-size: 15px; /* Adjust font size as needed */
-        }
-
-        .bottom {
-        display: flex; /* Make the gallery container a flexbox */
-        flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
-        width: 100%; /* Ensure the gallery fills the available width */
-        }
-
-        .follow{
-            text-decoration: none;
-            color: black;
-            margin-right: 5px;
-        }
-
-        .bottom .options {
-            width: calc(33% - 10px);
-            margin-bottom: 5px;
-            margin-right: 13px;
-            position: relative;
-            /* The existing styles remain unchanged */
-        }
-
-        .bottom .options .gallery{
-            padding: 0px;
-            height: 300px;
-            padding: 0px;
-            margin: 0px;
-            justify-content: center;
-            background-color: grey;
-        }
-
-        .bottom .options .gallery img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            /* Ensures the image fits within the .gallery item */
-        }
-
-        /* New styles for the hover effect */
-         .bottom .options .gallery .image-wrap {
-            position: relative;
-            width: 100%; /* Full width of the gallery item */
-            height: 100%; /* Full height of the gallery item */
-        }
-
-        .bottom .options .gallery .image-wrap .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-            color: white;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.5s, visibility 0.5s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .bottom .options .gallery .image-wrap:hover .overlay {
-            visibility: visible;
-            opacity: 1;
-            cursor: pointer;
-        }
-        .bottom .options .gallery .image-wrap .overlay .icon-bottom-right,
-        .bottom .options .gallery .image-wrap .overlay .icon-top-left {
-            position: absolute; 
-        }
-
-        .bottom .options .gallery .image-wrap .overlay .icon-bottom-right {
-            bottom: 15px; /* Adjust as needed */
-            right: 15px; /* Adjust as needed */
-        }
-
-        .bottom .options .gallery .image-wrap .overlay .icon-top-left {
-            top: 15px; /* Adjust as needed */
-            left: 15px; /* Adjust as needed */
-        }
- 
-
-    </style>
 
 </head>
 <body>
-<div class="container">
-    <div class="top">
-        <div class="profile">
-            <div class="pic">
-                <a href=""><img src="resources/profile/default.png"></a>
+<header> <!-- 페이지 상단 -->
+        <div> <!-- 홈 버튼 -->
+            <nav class="homebutton_nav">
+                <ul>
+                    <li class="homebutton"></li>
+                </ul>
+                <ol>
+                    <a href="${ pageContext.servletContext.contextPath }/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                </ol>
+            </nav>
+        </div>
+
+        <div class="search"> <!-- 검색창 -->
+            <input type="text" placeholder="검색어 입력">
+            <img src="/intertwine/resources/images/search.png">
+        </div>
+
+        <div></div>
+        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
+    </header>
+
+    <main>
+        <aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                </li>
+                <li id="mypage">
+                    <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                    <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                </li>
+                 <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="${ pageContext.servletContext.contextPath }/getbookmarkfeed.do"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
+                </li>
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
+				</ul>
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+            	<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                       	</li>
+                        </c:if>
+                        <c:if test="${type eq 'kakao'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+					</ul>
             </div>
         </div>
-        <div class="profile-info">
+
+
+
+
+
+
+
+<div class="container" style="margin: 0 auto; padding-left: 250px; width: 1000px;">
+    <div class="top" style="margin-top: 30px; display: flex;">
+        <div class="profile"  style="padding-left: 10px;">
+            <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
+                <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+        <div class="profile-info" style="display: flex;">
             
-            <div class="left">
+            <div class="left" style="display: flex;">
                 <div class="personal">
                     <ul>
                         <br>
-                        <li><h3>${ user.userId } &nbsp;&nbsp;<a href="#"><i class="fa-solid fa-gear" style="color:black;"></i></a></h3></li>
-                        <li><%-- 여기 유저 바이오 --%></li>
+                        <li style="list-style-type: none;"><h3>${ user.userId } </h3></li>
+                        <li style="list-style-type: none;"><%-- 여기 유저 바이오 --%></li>
                         <br>
-                        <li><a><b>팔로잉 </b>${ followingCount }</a>&nbsp;&nbsp;<a><b>팔로워 </b>${ followerCount }</a> &nbsp;<a></a></li>
+                        <li style="list-style-type: none;"><a><b>팔로잉 </b>${ followingCount }</a>&nbsp;&nbsp;<a><b>팔로워 </b>${ followerCount }</a> &nbsp;<a></a></li>
                     </ul>
                 </div>
-                <div class="followrelated">
-                    <div class="dummy2">
+                <div class="followrelated" style="height: 50px;">
+                    <div class="dummy2" style="height: 50px;">
                     </div>
-                    
-                    <!-- 본인계정엔 보이지 않음 -->
-                    <!-- <a class="follow" href="#">팔로우</a>
-                    <a class="follow" href="#">팔로우 해제</a>
-                    <a class="follow" href="#">디엠</a>
-                    <a class="follow" href="#">차단</a> -->
                 </div>
             </div>
-            <div class="right">
-                <div class="dummy">
-                    <div class="dummy2">
-
+            <div class="right" style="display: flex;">
+                <div class="dummy" style="height: 50px;">
+                    <div class="dummy2" style="height: 50px;">
                     </div>
-                    <!-- 남의 계정엔 보이지 않음 -->
-                    <!-- once you click 선택 then the other three buttons appear and hide itself and also hide -->
-                    <button class="select-button">선택</button>
-                    <!-- once you click 선택 then the other three buttons appear and hide itself-->
-                    <button class="select-all-button">전체선택</button>
-                    <button class="delete-button">삭제</button>
-                    <button class="cancel-button">취소</button>
+ 					<button class="delete-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;">선택삭제</button>
+                    <button class="public-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;">선택 전체공개</button>
+                    <button class="friend-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;">선택 팔로워공개</button><br>
+                    <button class="private-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;margin-top: 5px;">선택 비공개</button>
+                    <button class="pinon-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;margin-top: 5px;">선택 핀</button>
+                    <button class="pinoff-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;margin-top: 5px;">선택 핀제거</button>
                 </div>
                 
-
             </div>
         </div>
 
     </div>
-    <div class="middle">
-        <div class="search">
-            <select class="search-condition">
-                <option value="all" selected>전체</option>
-                <option value="tag">태그</option>
-                <option value="content">콘텐츠</option>
-            <input type="text" placeholder="검색할 키워드를 입력하세요"> 
-            <i class="fa fa-search"></i>
-  
+    <div class="middle" style="padding-top: 30px; display: flex;">
+        <div class="search" style="display: flex; background-color: #FFF; border: 0px solid #FFF; border-radius: 5px; padding: 5px 10px;">
+            <select id="search-condition" class="search-condition" style="border: none; background: transparent; padding: 5px; margin-right: 5px; cursor: pointer;">
+                <option value="0" selected>전체</option>
+                <option value="1">태그</option>
+                <option value="2">콘텐츠</option>
+              </select>
+            <input id="search-input" type="text" placeholder="키워드 입력" style="width: 150px; border: none; outline: none; background-color: #FFF; font-size: 13px;"> 
+            <i onclick= "performSearch(); return false;"class="fa fa-search" style="color: #000; font-size: 33px; margin-left: 5px; cursor: pointer; transition: transform 1s ease;"></i>
         </div>
-        <div class="dummy3">
+        <script>
+		    function performSearch() {
+		        var keyword = document.getElementById("search-input").value;
+		        var selectedOption = document.querySelector(".search-condition").value;
+		        var userId = "${user.userId}";
+		        var url = "searchmypage.do?userId=" + userId + "&keyword=" + encodeURIComponent(keyword) + "&condition=" + encodeURIComponent(selectedOption);
+		        window.location.href = url;
+		    }
+		</script>
+        <div class="dummy3" style="width: calc(60%);">
         </div>
-        <div class="sorting">
+        <div class="sorting" style="display: flex; justify-content: space-between;">
         
-            <select name="dropdown1" id="dropdown1">
-            	<option value="">선택</option>
+            <select name="dropdown" id="dropdown" style="padding: 8px 12px; margin-right: 10px; border: 0px solid #ccc; border-radius: 4px; background-color: #FFF; cursor: pointer; font-size: 16px;">
                 <option value="0">최신순</option>
                 <option value="1">오래된순</option>
-                <option value="2">좋아요 많은순</option>
+                <option value="2">조회수 많은순</option>
             </select>
         </div>
         
     </div>
-    <div class="bottom" >
+    <div class="bottom" style="display: flex;flex-wrap: wrap;width: 100%;">
         <!-- 이것들이 반복 됨 -->
        <c:forEach var="gallery" items="${galleries}">
         <a href="detail.do?postId=${gallery.post.postId}">
-        <div class="options gallery-item" data-id="${ gallery.post.postId }">
-            <input type="checkbox">
-            <div class="gallery">
-                <div class="image-wrap">
+        <div class="options" style="width: 237px; height:235px; margin-bottom: 100px;margin-right: 13px;position: relative" data-id="${ gallery.post.postId }">
+            <input type="checkbox" id="${ gallery.post.postId }" name="checks" value="${ gallery.post.postId }" class="checkbox">
+            <div class="gallery" style="padding: 0px;height: 300px;padding: 0px;margin: 0px;justify-content: center;background-color: grey;">
+                <div class="image-wrap" style="position: relative;width: 100%;height: 100%;">
 				<c:if test="${not empty gallery.image.imageURL}">
-				    <img src="${gallery.image.imageURL}" alt="Gallery Image">
+				    <img src="${gallery.image.imageURL}" style="width: 100%;height: 100%;object-fit: contain;">
 				</c:if>
-				<c:if test="${not empty gallery.video.videoURL and empty gallery.image.imageURL}">
-				    <video muted autoplay>
-				        <source src="${gallery.video.videoURL}" type="video/mp4">
-				    </video>
+				<c:if test="${empty gallery.image.imageURL}">
+				    <img src="resources/postimage/noimage.jpg" style="width: 100%;height: 100%;object-fit: contain;">
 				</c:if>
-				<c:if test="${not empty gallery.video.videoURL and not empty gallery.image.imageURL}">
-				    <img src="resources/postimage/noimage.png" alt="Gallery Image">
-				</c:if>
-                    <div class="overlay">
+                    <div class="overlay" style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0, 0, 0, 0.5);color: white; visibility: hidden;opacity: 0.5;transition: opacity 0.5s, visibility 0.5s;display: flex;justify-content: center;align-items: center;">
+						<script>
+						document.addEventListener('DOMContentLoaded', function() {
+						    // 태그 찾기
+						    var imageWraps = document.querySelectorAll('.bottom .options .gallery .image-wrap');
+						
+						    // 마우스 올릴때 할 작업
+						    function showOverlay(event) {
+						        var overlay = event.currentTarget.querySelector('.overlay');
+						        overlay.style.visibility = 'visible';
+						        overlay.style.opacity = '1';
+						        overlay.style.cursor = 'pointer';
+						    }
+						
+						    // 마우스 내릴때 작업
+						    function hideOverlay(event) {
+						        var overlay = event.currentTarget.querySelector('.overlay');
+						        overlay.style.visibility = 'hidden';
+						        overlay.style.opacity = '0';
+						    }
+						
+						    // 각 카드마다 이벤트 작업 적용
+						    imageWraps.forEach(function(wrap) {
+						        wrap.addEventListener('mouseover', showOverlay);
+						        wrap.addEventListener('mouseout', hideOverlay);
+						    });
+						});
+						</script>
+						<style>
+
+					        .bottom .options .gallery .image-wrap .overlay .icon-bottom-right,
+					        .bottom .options .gallery .image-wrap .overlay .icon-top-left {
+					            position: absolute; 
+					        }
+					
+					        .bottom .options .gallery .image-wrap .overlay .icon-bottom-right {
+					            bottom: 15px; /* Adjust as needed */
+					            right: 15px; /* Adjust as needed */
+					        }
+					
+					        .bottom .options .gallery .image-wrap .overlay .icon-top-left {
+					            top: 15px; /* Adjust as needed */
+					            left: 15px; /* Adjust as needed */
+					        }
+                        </style>
                         <i fill=white; class="fa-solid fa-heart">&nbsp;<c:out value="${gallery.likeCount}" /></i> &nbsp;&nbsp;&nbsp;
                         <i fill=white; class="fa-solid fa-comment">&nbsp;<c:out value="${gallery.commentCount}"/></i>
                         <c:if test="${gallery.post.postPin == '1'}">
@@ -319,7 +256,7 @@
                             <i class="fa-solid fa-lock icon-top-left"></i> <!-- Private -->
                         </c:otherwise>
                     	</c:choose>
-                    </div> 
+                    	</div> 
                 </div>
             </div>
         </div>
@@ -327,7 +264,9 @@
        </c:forEach>      
     </div>
 </div>
+</main>
 <script>
+//개개 체크박스에 포스트 아이디 담음
 document.addEventListener('DOMContentLoaded', function() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     galleryItems.forEach(function(item) {
@@ -338,5 +277,76 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+$(document).ready(function() {
+    function submitForm(actionType, message) {
+        // 커스텀 메시지를 컨펌으로 담음
+        var confirmAction = confirm(message);
+        if (!confirmAction) {
+            return; // 만일 취소를 클릭 시 이벤트 취소
+        }
+
+        var postIds = $('.checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        console.log("Action:", actionType);
+        console.log("Selected Post IDs:", postIds.join(", "));
+
+        var formData = new FormData();
+        formData.append('action', actionType);
+        $.each(postIds, function(index, value) {
+            formData.append('checks', value);
+        });
+
+        // ajax로 데이터 전송
+        $.ajax({
+            url: 'batchAction.do',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                window.location.reload(true);
+            },
+            error: function(xhr, status, error) {
+                console.error('요청하신 명령 수행에 오류가 생겼습니다. :', error);
+            }
+        });
+    }
+
+    // 버튼 마다 커스텀 메시지 전송
+    $('.delete-button').on('click', function() { submitForm('delete', '선택하신 항목들을 삭제하시겠습니까?'); });
+    $('.public-button').on('click', function() { submitForm('public', '선택하신 항목들을 전체공개로 변경하시겠습니까?'); });
+    $('.friend-button').on('click', function() { submitForm('friend', '선택하신 항목들을 팔로워 한정공개로 변경하시겠습니까?'); });
+    $('.private-button').on('click', function() { submitForm('private', '선택하신 항목들을 비공개로 변경하시겠습니까?'); });
+    $('.pinon-button').on('click', function() { submitForm('pinon', '선택하신 항목들을 핀하시겠습니까?'); });
+    $('.pinoff-button').on('click', function() { submitForm('pinoff', '선택하신 항목들에서 핀을 제거하시겠습니까?'); });
+});
+
+</script>
+<script>
+$(document).ready(function() {
+    $('#dropdown').change(function() {
+        var value = $(this).val(); //값을 가져옴
+        $.ajax({
+            url: 'sorting1.do',
+            type: 'POST',
+            data: { dropdown: value },
+            success: function(data) {
+                console.log(data);
+                window.location.reload(true); 
+            },
+            error: function(xhr, status, error) {
+                console.error('요청하신 명령 수행에 오류가 생겼습니다. : ', error);
+            }
+        });
+    });
+    var sortPreference = ${sortPreference};
+    $('#dropdown').val(sortPreference);
+});
+</script>
+
 </body>
 </html>

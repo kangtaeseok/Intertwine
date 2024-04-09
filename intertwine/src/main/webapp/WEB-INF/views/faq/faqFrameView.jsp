@@ -82,7 +82,15 @@ hr {
                 <!-- 문의하기(Q&A)와 자주묻는질문(FAQ)에 ID 추가 -->
                 <li><h2 id="faq">자주묻는질문(FAQ)</h2></li>
                 <li><h2 id="qna">문의하기(Q&A)</h2></li>
-            </ul>           
+            </ul>
+   
+            
+            
+            
+            
+            
+            
+                       
         </div>
         <div class="right" id="faqContent">
 		</div>

@@ -1,11 +1,13 @@
 package org.edu.intertwine.post.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.edu.intertwine.post.model.dao.PostDao;
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.vo.User;
@@ -73,11 +75,6 @@ public class PostServiceImpl implements PostService {
 		return postDao.selectPostIdsforZero();
 	}
 
-	@Override
-	public String selectUserId(int eachPostId) {
-		// TODO Auto-generated method stub
-		return postDao.selectUserIds(eachPostId);
-	}
 
 	@Override
 	public Post selectOnePost(int eachPostId) {
@@ -110,7 +107,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int selectWhatIsLiked(Like like) {
+	public String selectWhatIsLiked(Like like) {
 		// TODO Auto-generated method stub
 		return postDao.selectWhatIsLiked(like);
 	}
@@ -137,6 +134,126 @@ public class PostServiceImpl implements PostService {
 	public String selectFindUserId(int each) {
 		// TODO Auto-generated method stub
 		return postDao.selectFindUserId(each);
+	}
+
+	@Override
+	public int selectIsPinned(Post pincheck) {
+		// TODO Auto-generated method stub
+		return postDao.selectIsPinned(pincheck);
+	}
+
+	@Override
+	public int updatePin1(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePin1(post);
+	}
+
+	@Override
+	public int updatePin2(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePin2(post);
+	}
+
+	@Override
+	public int deletePost(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.deletePost(post);
+	}
+
+	@Override
+	public int deleteLikeType(Like like1) {
+		// TODO Auto-generated method stub
+		return postDao.deleteLikeType(like1);
+	}
+
+	@Override
+	public int updateLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return postDao.updateLikeType(like2);
+	}
+
+	@Override
+	public int insertLikeType(Like like2) {
+		// TODO Auto-generated method stub
+		return postDao.insertLikeType(like2);
+	}
+
+	@Override
+	public int deleteBatchDelete(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.deleteBatchDelete(postIds);
+	}
+
+	@Override
+	public int updateBatchPublic(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPublic(postIds);
+	}
+
+	@Override
+	public int updateBatchFollowing(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchFollowing(postIds);
+	}
+
+	@Override
+	public int updateBatchPrivate(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPrivate(postIds);
+	}
+
+	@Override
+	public int updateBatchPinOn(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPinOn(postIds);
+	}
+
+	@Override
+	public int updateBatchPinOff(List<String> postIds) {
+		// TODO Auto-generated method stub
+		return postDao.updateBatchPinOff(postIds);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewest(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewest(userId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeast(userId);
+	}
+
+	@Override
+	public int updatePostViews(Post post) {
+		// TODO Auto-generated method stub
+		return postDao.updatePostViews(post);
+	}
+
+	@Override
+	public ArrayList<Integer> selectBookmarkedPosts(String userId) {
+		// TODO Auto-generated method stub
+		return postDao.selectBookmarkedPosts(userId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchAll(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchAll(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTag(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeyword(searchMyPage);
 	}
 
 

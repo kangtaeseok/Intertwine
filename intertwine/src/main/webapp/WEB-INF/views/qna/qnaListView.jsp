@@ -55,7 +55,7 @@ $(function(){
 		<br>
 		<%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
 		<%-- <% if(loginMember != null){ %> --%>
-		<c:if test="${ !empty sessionScope.loginMember }">
+		<c:if test="${ !empty sessionScope.loginUser or !empty loginAdmin }">
 			<div style="align:center;text-align:center;">
 				<button onclick="showWriteForm();">글쓰기</button>
 			</div>
@@ -64,7 +64,15 @@ $(function(){
 		<br>
 		
 		<center>
-				<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/qlist.do?page=1';">목록</button>
+				<!-- <button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/qlist.do?page=1';">목록</button> -->
+                <c:if test="${ !empty loginUser and empty loginAdmin }">
+				<c:url var="qsearchwriter" value="qsearchWriter.do">
+ 					<c:param name="keyword" value="${ loginUser.userId }" />
+ 					<c:param name="action" value="writer" />
+			 	</c:url>
+				<button onclick="javascript:location.href='${qsearchwriter}';">목록</button>
+
+			</c:if> 
 		</center>
 		<br>
 		<br>
@@ -72,6 +80,7 @@ $(function(){
 
 		
 		<%-- 항목별 검색 기능 추가 --%>
+		<!--
 		<fieldset id="ss" style="display: left;">
 			<legend>검색할 항목을 선택하세요.</legend>
 			<input type="radio" name="item" id="title"> 제목 &nbsp;
@@ -79,6 +88,7 @@ $(function(){
 			<input type="radio" name="item" id="date"> 등록날짜 &nbsp;	
 		</fieldset>
 		<br>
+		-->
 		
 		<%-- 검색 항목별 값 입력 전송용 폼 만들기 --%>
 		<%-- 제목 검색 폼 --%>

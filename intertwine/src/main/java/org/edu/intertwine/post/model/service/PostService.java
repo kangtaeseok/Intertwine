@@ -1,10 +1,12 @@
 package org.edu.intertwine.post.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.edu.intertwine.post.model.vo.Image;
 import org.edu.intertwine.post.model.vo.Like;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.vo.User;
@@ -30,8 +32,6 @@ public interface PostService {
 
 	ArrayList<Integer> selectPostIdsforZero();
 
-	String selectUserId(int eachPostId);
-
 	Post selectOnePost(int eachPostId);
 
 	Image selectOneImage(int eachPostId);
@@ -42,7 +42,7 @@ public interface PostService {
 
 	int selectIsLiked(Like like);
 
-	int selectWhatIsLiked(Like like);
+	String selectWhatIsLiked(Like like);
 
 	ArrayList<Post> selectPostsById(String userId);
 
@@ -51,6 +51,48 @@ public interface PostService {
 	ArrayList<Image> selectImagesByPostId(int postId);
 
 	String selectFindUserId(int each);
+
+	int selectIsPinned(Post pincheck);
+
+	int updatePin1(Post post);
+
+	int updatePin2(Post post);
+
+	int deletePost(Post post);
+
+	int deleteLikeType(Like like1);
+
+	int updateLikeType(Like like2);
+
+	int insertLikeType(Like like2);
+
+	int deleteBatchDelete(List<String> postIds);
+
+	int updateBatchPublic(List<String> postIds);
+
+	int updateBatchFollowing(List<String> postIds);
+
+	int updateBatchPrivate(List<String> postIds);
+
+	int updateBatchPinOn(List<String> postIds);
+
+	int updateBatchPinOff(List<String> postIds);
+
+	ArrayList<Post> selectPostsByIdOldestToNewest(String userId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeast(String userId);
+
+	int updatePostViews(Post post);
+
+	ArrayList<Integer> selectBookmarkedPosts(String userId);
+
+	ArrayList<Post> selectPostsBySearchAll(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage);
+
+	//ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId);
 
 
 

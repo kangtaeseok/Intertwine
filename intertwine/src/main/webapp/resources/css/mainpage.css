@@ -515,4 +515,16 @@ main {
 	.side-bar {
 		width: 75px;
 	}
+
+}
+button.btn {
+	font-weight: bold;
+	background: #f99d9d;
+	border: none;
+	padding: 10px;
+	border-radius: 6px;
+	 cursor: pointer;
+	 color: white;
+	 display: flex;
+	 margin: auto 0 0 auto;
 }
