@@ -1,0 +1,506 @@
+@charset "UTF-8";
+html {
+	font-size: 16px;
+}
+
+* {
+	margin: 0px;
+   	padding: 0px;
+    box-sizing: border-box;
+}
+
+ul,ol,li {
+    list-style: none;
+    margin: 0;
+	padding: 0;
+	width: 200px;
+}
+
+a {
+    text-decoration: none;
+    color: #ce8489;
+    
+}
+
+.header{
+	padding: 8px;
+	width: 100%;
+	height: 40px;
+	align-items: center;
+}
+
+.header-div {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
+
+
+.header {
+	padding: 10px;
+	margin: 10px;
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap; /* 필요하다면 flex-wrap 속성 추가하여 여러 줄로 배치되도록 설정 */
+	justify-content: flex-start;
+	align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
+	width: 100%;
+}
+
+/* 사이드 메뉴 바 */
+.side-bar {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: fixed; /* 스크롤을 따라오도록 지정, 스크롤을 내려도 위치 고정 */
+	background-color: #ffffff;
+	z-index: 1;
+	/* border-radius: 20px; */
+	/* 가져온 코드라 이해 잘 안감... */
+	/* 사이드바의 높이를 전체 화면 높이의 90%로 지정 */
+	/* margin-top: calc((100vh - var(--side-bar-height)) / 2); */
+	/* 사이드바 위와 아래의 마진을 동일하게 지정 */
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	/* 너비를 고정 */
+	flex: 0;
+	margin-right: 250px;
+}
+
+/* 자식의 position이 absolute일 때 자식을 영역 안에 가두어 준다 */
+.side-bar > ul > li {
+	white-space: nowrap;
+	position: relative;
+	border-radius: 10px;
+	background-color: #fff; /* 배경 추가 */
+}
+
+/* 모든 메뉴의 a에 속성값 부여 */
+.side-bar ul > li > a {
+	display: block;
+	color: rgb(205, 79, 132);
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 0.8rem;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	transition: background-color 0.8s ease;
+}
+
+/* 사이드바 각 메뉴에 마우스 올렸을 때 background 회색 효과 */
+.side-bar ul > li:hover > a {
+	background-color: #f2f2f2;
+}
+
+.side-bar ul > li > a > i {
+	font-size: 1.2rem; /* 메뉴 아이콘 초기 크기 */
+	transition: font-size 0.3s ease; /* 메뉴 아이콘(글자) 크기가 서서히 변하도록 */
+}
+/* 사이드바 각 메뉴에 마우스 올렸을 때 메뉴 아이콘 크기 변화 */
+.side-bar ul > li:hover > a > i {
+	font-size: 1.5rem;
+}
+
+#bottom_right_contents {
+	top: 0;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#bottom_right_contents.on {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	/*left: 0px;*/
+}
+
+#dummy_sub_menu {
+	visibility: hidden;
+}
+
+#mypage_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: Pink;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#chatting_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSkyBlue;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#alarm_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSalmon;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#settings_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: GreenYellow;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#mypage_sub_menu.on,
+#chatting_sub_menu.on,
+#alarm_sub_menu.on,
+#settings_sub_menu.on {
+	top: 60px;
+	opacity: 1;
+	left: 240px;
+	position: fixed;
+	z-index: 1;
+	align-items: center;
+	text-align: center;
+}
+
+.sub_menu {
+	min-height: var(--side-bar-height);
+	width: var(--side-bar-width);
+	/* background-color: Pink; */
+	z-index: 0;
+	position: absolute;
+	top: 0; /* 부모 요소에 상대적으로 위치 설정 */
+	transition: left 0.5s ease; /* left 속성으로 변경 */
+	left: -100%; /* 초기에 왼쪽으로 숨겨둠 */
+}
+
+.sub_menu.on {
+	position: sticky; /* 고정된 위치에 유지 */
+	top: 0; /* 스크롤 시 상단에 고정 */
+	left: 0; /* 슬라이딩되어 나타나도록 설정 */
+}
+
+#bottom_right_contents {
+	left: var(--side-bar-width)+240px;
+	width: calc(100% - var(--side-bar-width) - 240px);
+	display: flex;
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#abc {
+	width: inherit;
+	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.feed {
+	position: relative;
+	width: 1500px;
+	height: 5000px;
+	background-color: white;
+	justify-content: center;
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#notice {
+    display: inline-block; /* 인라인 요소를 블록 요소처럼 보이게 함 */
+    font-size: 38px; /* 원하는 글자 크기로 조정 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: #333; /* 글자 색상 지정 */
+    padding: 10px 20px; /* 안쪽 여백 설정 */
+    border-radius: 5px;
+    margin: 20px;
+    font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+section.notice {
+  padding: 80px 0;
+}
+
+.page-title {
+  margin-bottom: 60px;
+}
+.page-title h3 {
+  font-size: 28px;
+  color: #333333;
+  font-weight: 400;
+  text-align: center;
+}
+
+#board-search .search-window {
+  padding: 15px 0;  
+}
+#board-search .search-window .search-wrap {
+  position: relative;
+/*   padding-right: 124px; */
+  margin: 0 auto;
+  width: 80%;
+  max-width: 564px;
+}
+#board-search .search-window .search-wrap input {
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+}
+#board-search .search-window .search-wrap input:focus {
+  border-color: #333;
+  outline: 0;
+  border-width: 1px;
+}
+#board-search .search-window .search-wrap .btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 108px;
+  padding: 0;
+  font-size: 16px;
+}
+#noticewrite {
+	float: right; /* 오른쪽으로 이동 */
+    margin-right: 30px;
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.board-table {
+  font-size: 13px;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.board-table a {
+  color: #333;
+  display: inline-block;
+  line-height: 1.4;
+  word-break: break-all;
+  vertical-align: middle;
+}
+.board-table a:hover {
+  text-decoration: underline;
+}
+.board-table th {
+  text-align: center;
+}
+
+.board-table .th-num {
+  width: 100px;
+  text-align: center;
+}
+
+.board-table .th-date {
+  width: 200px;
+}
+
+.board-table .th-view {
+  width: 200px;
+}
+
+.board-table .th-adm {
+  width: 100px;
+}
+
+.board-table th, .board-table td {
+  padding: 14px 0;
+}
+
+.board-table tbody td {
+  border-top: 1px solid #e7e7e7;
+  text-align: center;
+}
+
+.board-table tbody th {
+  padding-left: 28px;
+  padding-right: 14px;
+  border-top: 1px solid #e7e7e7;
+  text-align: left;
+}
+
+.board-table tbody th p{
+  display: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0 30px;
+  font-size: 15px;
+  font-weight: 400;
+  background: transparent;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.btn-dark {
+  background: #555;
+  color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+  background: #373737;
+  border-color: #373737;
+  color: #fff;
+}
+
+.btn-dark {
+  background: #555;
+  color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+  background: #373737;
+  border-color: #373737;
+  color: #fff;
+}
+
+.notice-item {
+    border-bottom: 1px solid #ddd; /* 공지사항 아이템 간 구분선 */
+}
+
+.notice-title {
+    cursor: pointer; /* 제목에 마우스 커서 변경 */
+    padding: 10px;
+    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.notice-content {
+    max-height: 0; /* 기본적으로 내용을 숨깁니다. */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    transition: max-height 0.3s ease; /* 내용 확장/축소 효과 */
+}
+
+.notice-item.active .notice-content {
+    max-height: 1000px; /* 활성화된 아이템의 내용은 표시됩니다. */
+}
+
+#cho {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+/* 활성화된 아이템의 제목 배경색 */
+.notice-item.active .notice-title {
+    background-color: #f0f0f0;
+}
+
+/* reset */
+
+* {
+  list-style: none;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.container {
+  width: 1100px;
+  margin: 0 auto;
+}
+.blind {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  width: 1px;
+  height: 1px;
+}
+
+.notice-item.active .notice-content {
+    max-height: 1000px; /* 활성화된 아이템의 내용은 표시됩니다. */
+    padding: 10px; /* 내용의 여백 추가 */
+}
+
+/* 활성화된 아이템의 제목 배경색 */
+.notice-content {
+    max-height: 0; /* 기본적으로 내용을 숨깁니다. */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    transition: max-height 0.3s ease; /* 내용 확장/축소 효과 */
+}
+
+.notice-item.active .notice-content {
+    max-height: 1000px; /* 활성화된 아이템의 내용은 표시됩니다. */
+    padding: 10px; /* 내용의 여백 추가 */
+}
+
+/* 활성화된 아이템의 제목 배경색 */
+.notice-item.active .notice-title {
+    background-color: #f0f0f0;
+    cursor: pointer; /* 추가: 제목에 마우스 커서 변경 */
+}
+
+.notice-title:hover { /* 추가: 제목에 마우스를 올렸을 때 배경색 변경 */
+    background-color: #f0f0f0;
+}

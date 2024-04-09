@@ -1,0 +1,1397 @@
+/* 초기화, 기본요소의 디자인을 모두 없애기 */
+html {
+	font-size: 16px; /* rem 단위 사용을 위해 가장 상위요소의 px값 지정 */
+	height: 100%;
+}
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+ul,ol,li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+
+/* 사이드바의 너비와 높이를 변수를 통해 통제 
+   :root 가상 클래스, :root 선택자는 가장 상위요소를 선택할 때 사용함.  
+   즉, html을 가리키지만, html 선택자보다 우선순위가 높다. */
+:root {
+	--side-bar-width: 240px;
+	--side-bar-height: 100vh;
+}
+
+/* 페이지 전체 */
+body {
+	overflow: visible;
+	background-color: #f5f5f5;
+	overflow-x: hidden;
+	width: 100%;
+	height: 100%;
+	/* height: 900px; 사이트의 높이를 2000px로 만들어 스크롤 생성 */
+}
+
+/* 페이지 상단 */
+header {
+	width: 100%;
+	height: 60px;
+	display: flex;
+	background-color: #ffffff;
+	/* margin-bottom: 2rem; */
+	position: sticky;
+	z-index: 2;
+	top: 0;
+	justify-content: space-around;
+	align-items: center;
+}
+
+/* 페이지 좌측 상단 홈버튼 */
+.homebutton_nav {
+	position: absolute;
+	/* 위치 조정 */
+	top: 0.2rem;
+	left: 3rem;
+	width: 5rem;
+	height: 4rem; /* 헤더의 높이와 맞춤 */
+}
+.homebutton_nav ul {
+	display: flex;
+	height: 100%; /* 네비게이션의 높이를 부모 요소인 헤더의 높이와 맞춤 */
+}
+.homebutton_nav ul li {
+	display: flex;
+	align-items: center; /* 세로 정렬을 위해 */
+}
+
+.homebutton {
+	width: 5.5rem; /* 홈버튼 이미지의 너비에 맞게 조정 */
+	scale: 2; /* 이미지 크기 */
+	background-image: url("/intertwine/resources/images/homebutton.png"); /* 이미지 파일 위치 */
+	background-repeat: no-repeat; /* 이미지 반복 없애기 */
+	background-size: cover; /* 이미지 꽉 채우기 */
+	background-position: center; /* 이미지가 중앙에 오게 */
+	cursor: pointer; /* 마우스를 올렸을 때 커서를 포인터로 변경 */
+
+	/* 지워도 변화는 코드지만 혹시 몰라서 주석으로 남겨둠... */
+	/* overflow: hidden; */
+	/* position: relative; */
+	/* display: inline-block; */
+}
+
+/* 웹페이지 줄였을 때 나오는 집 모양 아이콘 */
+.homebutton_nav > ol {
+	display: none;
+}
+.homebutton_nav > ol > i {
+	display: none;
+	font-size: 10rem;
+	color: rgb(205, 79, 132);
+}
+
+/* 페이지 중앙 상단 검색창  */
+.search {
+	display: flex;
+	position: relative;
+	width: 15rem;
+	/* justify-content: center; */
+}
+/* 검색창 입력칸 */
+.search > input {
+	width: 100%;
+	height: 50%;
+	border: 1px solid #bbb;
+	border-radius: 8px; /* 테두리 둥글게 */
+	padding: 10px 12px;
+	font-size: 14px;
+}
+/* 검색창 포커스 시 테두리 */
+.search > input:focus {
+	outline: 2px solid rgb(205, 79, 132);
+}
+/* 검색창의 돋보기 모양  */
+.search > img {
+	position: absolute;
+	width: 1rem;
+	top: 10px;
+	right: 12px;
+	margin: 0;
+}
+
+/* 2차 이상의 메뉴를 숨기기 */
+.side-bar > ul ul {
+	display: none;
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap; /* 필요하다면 flex-wrap 속성 추가하여 여러 줄로 배치되도록 설정 */
+	justify-content: flex-start;
+	align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
+	width: 100%;
+}
+
+/* 사이드 메뉴 바 */
+.side-bar {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: fixed; /* 스크롤을 따라오도록 지정, 스크롤을 내려도 위치 고정 */
+	background-color: #ffffff;
+	z-index: 1;
+	/* border-radius: 20px; */
+	/* 가져온 코드라 이해 잘 안감... */
+	/* 사이드바의 높이를 전체 화면 높이의 90%로 지정 */
+	/* margin-top: calc((100vh - var(--side-bar-height)) / 2); */
+	/* 사이드바 위와 아래의 마진을 동일하게 지정 */
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	/* 너비를 고정 */
+	flex: 0;
+}
+
+/* 자식의 position이 absolute일 때 자식을 영역 안에 가두어 준다 */
+.side-bar > ul > li {
+	position: relative;
+	border-radius: 10px;
+	background-color: #fff; /* 배경 추가 */
+}
+
+/* 모든 메뉴의 a에 속성값 부여 */
+.side-bar ul > li > a {
+	display: block;
+	color: rgb(205, 79, 132);
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 0.8rem;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	transition: background-color 0.8s ease;
+}
+
+/* 사이드바 각 메뉴에 마우스 올렸을 때 background 회색 효과 */
+.side-bar ul > li:hover > a {
+	background-color: #f2f2f2;
+}
+
+.side-bar ul > li > a > i {
+	font-size: 1.2rem; /* 메뉴 아이콘 초기 크기 */
+	transition: font-size 0.3s ease; /* 메뉴 아이콘(글자) 크기가 서서히 변하도록 */
+}
+/* 사이드바 각 메뉴에 마우스 올렸을 때 메뉴 아이콘 크기 변화 */
+.side-bar ul > li:hover > a > i {
+	font-size: 1.5rem;
+}
+
+#bottom_right_contents {
+	top: 0;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	left: -240px;
+	transition: left 1s ease;
+}
+
+#bottom_right_contents.on {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	flex-flow: wrap;
+	justify-content: space-around;
+	width: calc(
+		100% - var(--side-bar-width)
+	); /* .side-bar의 너비를 제외한 너비로 설정 */
+	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
+	/*left: 0px;*/
+}
+
+#dummy_sub_menu {
+	visibility: hidden;
+}
+
+#mypage_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: Pink;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#chatting_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSkyBlue;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#alarm_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: LightSalmon;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#settings_sub_menu {
+	position: absolute;
+	left: 0px;
+	transition: left 1s ease;
+	opacity: 0;
+	transition: opacity 1s ease;
+	background-color: GreenYellow;
+	align-items: center;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#mypage_sub_menu.on,
+#chatting_sub_menu.on,
+#alarm_sub_menu.on,
+#settings_sub_menu.on {
+	top: 60px;
+	opacity: 1;
+	left: 240px;
+	position: fixed;
+	z-index: 1;
+	align-items: center;
+	text-align: center;
+}
+
+.sub_menu {
+	/* min-height: var(--side-bar-height); */
+	height: 100%;
+	width: var(--side-bar-width);
+	/* background-color: Pink; */
+	z-index: 0;
+	position: absolute;
+	top: 0; /* 부모 요소에 상대적으로 위치 설정 */
+	transition: left 0.5s ease; /* left 속성으로 변경 */
+	left: -100%; /* 초기에 왼쪽으로 숨겨둠 */
+}
+
+.sub_menu.on {
+	position: sticky; /* 고정된 위치에 유지 */
+	top: 0; /* 스크롤 시 상단에 고정 */
+	left: 0; /* 슬라이딩되어 나타나도록 설정 */
+}
+
+#bottom_right_contents {
+	left: var(--side-bar-width)+240px;
+	width: calc(100% - var(--side-bar-width) - 240px);
+	display: flex;
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#abc {
+	width: inherit;
+	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#squarearea {
+	margin: 1rem;
+	position: relative;
+	/* width: 1400px;
+	height: 700px; */
+	width: 80%;
+	height: 700px;
+	background-color: #FFE4FC;
+	display: flex;
+	justify-content: center;
+	align-items: end;
+	/* padding-top: 10px; */
+	overflow: hidden;
+	border-radius: 10px; 
+}
+
+#squaretip {
+	color: #ffffff;
+	position: absolute;
+    bottom: 10%; /* 하단에 위치 */
+    left: 50%;
+    transform: translateX(-50%); 
+    z-index: 1000;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+#loadingview {
+   padding:1rem;
+    /* 로딩 이미지의 크기가 너무 크거나 작은 경우 조정 */
+    width: 100%;
+    height: 100%;
+    z-index:999;
+    border-radius: 10px; 
+}
+
+#loadingview > img {
+	width: 100%; /* 이미지를 div의 너비에 맞게 조정 */
+    height: 100%; /* 이미지를 div의 높이에 맞게 조정 */
+    object-fit: cover; /* 이미지 비율을 유지하면서 div에 꽉 채우도록 조정 */
+    position: absolute; /* div 내에서 이미지 위치를 조정하기 위해 */
+    top: 50%; /* 상위 요소 기준으로 상하 중앙 정렬 */
+    left: 50%; /* 상위 요소 기준으로 좌우 중앙 정렬 */
+    transform: translate(-50%, -50%); /* 정확한 중앙 정렬을 위해 */
+    border-radius: 10px; 
+}
+
+.hidden { /* 로딩 완료 후 로딩 이미지를 숨기기 위한 클래스 */
+    display: none;
+}
+
+
+#userroom {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px; 
+}
+
+.userroomresource {
+	position: absolute;
+	z-index: 990;
+}
+
+#mycharacter {
+	z-index: 991;
+	text-align: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+#mycharacter > div {
+	z-index: 992;
+	font-size: 1.0rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#mycharacterhat {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 5px) calc(100% - 5px);
+	
+}
+
+.mycharacterresource {
+	background-size: cover;
+	background-position: center;
+}
+
+.dynamic-btn {
+	border-radius: 5px; 
+    position: absolute;
+    z-index: 1000; 
+    min-width: 90px; /* 최소 너비 설정 */
+  	cursor: pointer;
+}
+
+
+        
+
+
+
+
+/* 닉네임 수정 모달 전반에 대한 스타일 */
+.nicknamemodal{
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+        }
+
+.nicknamemodal-dialog {
+	
+	display: flex;
+	display-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 500px;
+}
+
+
+.nicknamemodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+
+.nicknamemodal-header {
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self : center;
+	justify-content: center;
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.nicknamemodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.btn-close {
+    /* 닫기 버튼 커스텀 스타일 */
+}
+
+.nicknamemodal-body {
+	position: relative;
+
+	text-align: center;
+
+	background-color: rgb(255,255,255); 
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+}
+
+.nicknamemodal-footer {
+	position: relative;
+    flex-direction: row;
+    /* border-top: 1px solid #eeeeee; */
+    /* background-color: #f8f9fa; */
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff; /* 기본 배경색 */
+    border-color: #007bff; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* 배경색 */
+    border-color: #6c757d; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+    border-radius: 5px; /* 입력 필드 테두리 둥글게 */
+    border: 1px solid #ced4da; /* 테두리 색상 */
+    padding: 10px; /* 내부 패딩 */
+    
+}
+
+
+
+/* 캐릭터 수정 모달 전반에 대한 스타일 */
+.charactermodal{
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+        }
+
+.charactermodal-dialog {
+	
+	display: flex;
+	display-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 1200px;
+}
+
+
+.charactermodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+
+.charactermodal-header {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self: center; /* 자기 자신을 중앙에 정렬 */
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.charactermodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.charactermodal-preview {
+	width: 125px;
+	height: 125px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin-bottom: 10px;
+	background: #f5f5f5;
+}
+
+.charactermodal-body {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	position: relative;
+
+	text-align: center;
+
+	background-color: rgb(255,255,255); 
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+}
+
+.charactermodal-hair-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.charactermodal-hat-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.charactermodal-top-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.charactermodal-bottom-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.charactermodal-hair {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin: 5px;
+}
+
+.charactermodal-hat {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin: 5px;
+}
+
+.charactermodal-top {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin: 5px;
+}
+
+.charactermodal-bottom {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin: 5px;
+}
+
+
+.charactermodal-footer {
+	position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    width: 20%; 
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff; /* 기본 배경색 */
+    border-color: #007bff; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* 배경색 */
+    border-color: #6c757d; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+    border-radius: 5px; /* 입력 필드 테두리 둥글게 */
+    border: 1px solid #ced4da; /* 테두리 색상 */
+    padding: 10px; /* 내부 패딩 */
+    
+}
+
+.charactermodal-hair-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+.charactermodal-hat-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+.charactermodal-top-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+.charactermodal-bottom-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+
+/* 방 수정 모달 전반에 대한 스타일 */
+.roommodal {
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+}
+
+.roommodal-dialog {
+	
+	display: flex;
+	display-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 1200px;
+}
+
+.roommodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+
+.roommodal-header {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self: center; /* 자기 자신을 중앙에 정렬 */
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.roommodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.roomcolor {
+    width: 600px;
+    margin: 0 auto;
+    display: block;
+    margin-block-start: 0.2em;
+    margin-block-end: 0.6em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+    box-sizing: border-box;
+}
+
+.roomcolor > li {
+    margin: 0 15px 0 0;
+    width: 30px;
+    height: 30px;
+    display: inline-block; /* 또는 inline */
+  	margin-right: 10px; /* 요소 사이의 간격 조정 */
+    border-radius: 100%;
+    box-sizing: border-box;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+    cursor: pointer;
+}
+
+.roomcolor .green {
+    background: #82c8a0;    
+}
+.roomcolor .blue {
+    background: #6698cb;
+}
+.roomcolor .red {
+    background: #fa5a5a;
+}
+.roomcolor .purple {
+    background: #cb99c5;
+}
+.roomcolor .cyan {
+    background: #7fccde;
+}
+.roomcolor .yellow {
+    background: #f0d264;
+}
+.roomcolor .orange {
+    background: #f5a623;
+}
+.roomcolor .lime {
+    background: #b8e986;
+}
+.roomcolor .pink {
+    background: #ff7bac;
+}
+.roomcolor .yeonpink {
+    background: #F2B3B3;
+}
+.roomcolor .olive {
+    background: #808000;
+}
+.roomcolor .gray {
+    background: #7e8c8d;
+}
+
+
+.roommodal-preview {
+	position: relative;
+	width: 600px;
+    height: 300px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    background: #82c8a0;    
+}
+
+
+.roommodal-body {
+	display: flex;
+	
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	position: relative;
+
+	text-align: center;
+
+	background-color: rgb(255,255,255); 
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+}
+
+.roommodal-first-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.roommodal-second-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.roommodal-third-container {
+	display: flex;
+	flex-direction: row;
+}
+
+
+.roommodal-resource {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #ced4da; /* 테두리 색상 */
+	border-radius: 10px;
+	margin: 5px;
+}
+
+.roommodal-footer {
+	position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    width: 20%; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff; /* 기본 배경색 */
+    border-color: #007bff; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* 배경색 */
+    border-color: #6c757d; /* 테두리 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내 패딩 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    font-weight: bold; /* 텍스트 굵기 */
+}
+
+.roommodal-first-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+.roommodal-second-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+ .roommodal-third-container > div {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: calc(100% - 40px) calc(100% - 40px);
+	cursor: pointer;
+}
+
+
+
+/* 방 수정 모달 전반에 대한 스타일 */
+.friendmodal {
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+}
+
+.friendodal-dialog {
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 800px;
+}
+
+.friendmodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+.friendmodal-header {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self: center; /* 자기 자신을 중앙에 정렬 */
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.friendmodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.friendmodal-body {
+	display: flex;
+	max-height: calc(100vh - 200px);
+    overflow-y: auto;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	position: relative;
+	text-align: center;
+	background-color: rgb(255,255,255);   
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+}
+
+.friendmodal-list {
+	display: flex;
+    flex-direction: column;
+	position: relative;
+	width: 300px;
+    height: 300px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    background: #82c8a0;    
+}
+
+.friend-info > img {
+	position: relative;
+	left: 30px;
+}
+
+.friend-info > div {
+	position: relative;
+	left: 90px;
+}
+
+.friendmodal-footer {
+	position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    width: 45%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+/* 버튼 가져온거 코드 */
+
+#btnselectguestbook {
+	 left: 92%;
+	 top: 2%;
+	 background-color: #f99d9d;
+	 box-shadow: 0 2px 25px rgba(249, 157, 157, 0.3);
+}
+
+#btnselectalbum {
+	 left: 78%;
+	 top: 2%;
+	 background-color: #fffcad;
+	 box-shadow: 0 2px 25px rgba(255, 252, 173, 0.3);
+}
+
+#btnupdateroom{
+	 left: 65.4%;
+	 top: 2%;
+	 background-color: #b5ffca;
+	 box-shadow: 0 2px 25px rgba(181, 255, 202, 0.3);
+}
+$fuschia: #ff0081;
+$button-bg: $fuschia;
+$button-text-color: #fff;
+$baby-blue: #f8faff;
+
+body{
+  font-size: 16px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  text-align: center;
+  background-color: $baby-blue;
+}
+.bubbly-button{
+	
+  padding: 10px;
+  /* font-family: 'Helvetica', 'Arial', sans-serif; */
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  /* padding: 1em 2em;
+  margin-top: 100px;
+  margin-bottom: 60px; */
+  -webkit-appearance: none;
+  appearance: none;
+ 
+  color: rgb(75, 75, 75);
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+  
+  z-index: 993;
+  &:focus {
+    outline: 0;
+  }
+  
+  &:before, &:after{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 140%;
+    height: 100%;
+    left: -20%;
+    z-index: -1000;
+    transition: all ease-in-out 0.5s;
+    background-repeat: no-repeat;
+  }
+  
+  &:before{
+    display: none;
+    top: -75%;
+    background-image:  
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle,  transparent 20%, $button-bg 20%, transparent 30%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%), 
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle,  transparent 10%, $button-bg 15%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+  //background-position: 0% 80%, -5% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 85% 30%;
+  }
+  
+  &:after{
+    display: none;
+    bottom: -75%;
+    background-image:  
+    radial-gradient(circle, $button-bg 20%, transparent 20%), 
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle,  transparent 10%, $button-bg 15%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+  //background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+  }
+ 
+  &:active{
+    transform: scale(0.9);
+    background-color: darken($button-bg, 5%);
+    box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+  }
+  
+  &.animate{
+    &:before{
+      display: block;
+      animation: topBubbles ease-in-out 0.75s forwards;
+    }
+    &:after{
+      display: block;
+      animation: bottomBubbles ease-in-out 0.75s forwards;
+    }
+  }
+}
+
+
+@keyframes topBubbles {
+  0%{
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+  }
+    50% {
+      background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;}
+ 100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+  background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+  }
+}
+
+@keyframes bottomBubbles {
+  0%{
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+  }
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;}
+ 100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+  background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+  }
+}
+/* 버튼 가져온거 코드 */
+
+
+/* 반응형 웹, 미디어 쿼리, 웹 페이지의 가로 크기에 맞춰 UI 변경 */
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/
+@media all and (min-width: 1024px) and (max-width: 1279px) {
+	:root {
+		--side-bar-width: 75px;
+		--side-bar-height: 100vh;
+	}
+	/* 스타일 입력 */
+	.search {
+		display: none;
+	}
+	.homebutton_nav > ul {
+		display: none;
+	}
+	.homebutton_nav > ol {
+		display: block;
+	}
+	.homebutton_nav > ol > a {
+		display: block;
+		color: rgb(205, 79, 132);
+		font-size: 1.2rem;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		margin-left: -23px;
+	}
+	.side-bar {
+		width: 75px;
+	}
+
+	.side-bar ul > li > a {
+		display: block;
+		color: rgb(205, 79, 132);
+		font-size: 1.2rem;
+		font-weight: bold;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		padding-left: 0.8rem;
+		margin-top: 5px;
+		margin-bottom: 15px;
+		border-radius: 10px;
+		transition: background-color 0.8s ease;
+	}
+	#mypage_sub_menu {
+		position: absolute;
+		left: 0px;
+		transition: left 1s ease;
+		opacity: 0;
+		transition: opacity 1s ease;
+		background-color: Pink;
+		align-items: center;
+		text-align: center;
+		padding-top: 10px;
+	}
+
+	#chatting_sub_menu {
+		position: absolute;
+		left: 0px;
+		transition: left 1s ease;
+		opacity: 0;
+		transition: opacity 1s ease;
+		background-color: LightSkyBlue;
+		align-items: center;
+		text-align: center;
+		padding-top: 10px;
+	}
+
+	#alarm_sub_menu {
+		position: absolute;
+		left: 0px;
+		transition: left 1s ease;
+		opacity: 0;
+		transition: opacity 1s ease;
+		background-color: LightSalmon;
+		align-items: center;
+		text-align: center;
+		padding-top: 10px;
+	}
+
+	#settings_sub_menu {
+		position: absolute;
+		left: 0px;
+		transition: left 1s ease;
+		opacity: 0;
+		transition: opacity 1s ease;
+		background-color: GreenYellow;
+		align-items: center;
+		text-align: center;
+		padding-top: 10px;
+	}
+
+	#mypage_sub_menu.on,
+	#chatting_sub_menu.on,
+	#alarm_sub_menu.on,
+	#settings_sub_menu.on {
+		top: 60px;
+		opacity: 1;
+		left: 75px;
+		position: fixed;
+		z-index: 1;
+		align-items: center;
+		text-align: center;
+	}
+}
+
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+	
+	/* 스타일 입력 */
+	.search {
+		display: none;
+	}
+	.homebutton_nav > ul {
+		display: none;
+	}
+	.homebutton_nav > ol {
+		display: block;
+	}
+	.homebutton_nav > ol > a {
+		display: block;
+		color: rgb(205, 79, 132);
+		font-size: 1.2rem;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		margin-left: -23px;
+	}
+	.side-bar {
+		width: 75px;
+	}
+}
+
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+	/* 스타일 입력 */
+	.search {
+		display: none;
+	}
+	.homebutton_nav > ul {
+		display: none;
+	}
+	.homebutton_nav > ol {
+		display: block;
+	}
+	.homebutton_nav > ol > a {
+		display: block;
+		color: rgb(205, 79, 132);
+		font-size: 1.2rem;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		margin-left: -23px;
+	}
+	.side-bar {
+		width: 75px;
+	}
+}
+
+/* 모바일 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+	/* 스타일 입력 */
+	.search {
+		display: none;
+	}
+	.homebutton_nav > ul {
+		display: none;
+	}
+	.homebutton_nav > ol {
+		display: block;
+	}
+	.homebutton_nav > ol > a {
+		display: block;
+		color: rgb(205, 79, 132);
+		font-size: 1.2rem;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		margin-left: -23px;
+	}
+	.side-bar {
+		width: 75px;
+	}
+}
