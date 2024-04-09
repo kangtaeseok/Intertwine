@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.edu.intertwine.userroom.model.vo.InsertUserRoomParam;
 import org.edu.intertwine.userroom.model.vo.UserRoom;
+import org.edu.intertwine.userroom.model.vo.UserRoomResource;
 
 public interface UserRoomService {
 	
@@ -11,10 +12,13 @@ public interface UserRoomService {
 	
 	UserRoom selectUserRoom(String userId);
 	
+	ArrayList<UserRoomResource> selectAllRoomResource();
+
+	int updateUserRoom(UserRoom userRoom);
+	
 	int insertUserRoomFirst(String userId);
 	
-	int insertUserRoom(InsertUserRoomParam insertUserRoomParam);
+	void insertUserRoom(String userId, UserRoomResource item);
 	
 	int deleteUserRoom(String userId);
-
 }

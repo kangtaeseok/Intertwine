@@ -259,7 +259,6 @@ main {
 
 
 .sub_menu {
-
 	min-height: var(--side-bar-height);
 	width: var(--side-bar-width);
 	background-color: rgb(205, 79, 132);
@@ -433,20 +432,19 @@ main {
 #bottom_right_contents div li:hover {
 	padding: 10px;
 	text-align: center;
-	background: #ff80ff;
+	background: #f4f4f4;
+	cursor: pointer;
 }
 
 	
 .box {
 	white-space: nowrap;
-	position: fixed;
 	margin: 0 auto;
     position: relative;
     height: 100vh;
-    width: 45%;
+    width:45%;
  	background: white;
 
- 	
 }
 
 .logo-box {

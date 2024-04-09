@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class CommentController {
@@ -19,6 +18,7 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 	
+
 	//코멘트 삽입
 	@RequestMapping(value="addComment1.do", method = { RequestMethod.POST, RequestMethod.GET })
 	public String addComment1(@RequestParam("userId")String userId, @RequestParam("postId")String postId, @RequestParam("commentContent")String commentContent, Model model) {
@@ -59,4 +59,27 @@ public class CommentController {
 		
 		
 	}
+	
+	
+	@RequestMapping(value="deleteComment.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String deleteComment(@RequestParam("userId")String userId, @RequestParam("commentId")String commentId, @RequestParam("postId")String postId, Model model) {
+		
+		int c = Integer.parseInt(commentId);
+		Comment comment = new Comment (c, userId);
+		
+		int i = commentService.deleteParentComment(comment.getCommentId());
+		int result = commentService.deleteComment(comment);
+		
+		if(result >= 1) {
+			
+			return "redirect:detail.do?postId=" + postId;
+		}else {
+			
+			model.addAttribute("message", "댓글삭제 실패");
+			return "redirect:detail.do?postId=" + postId;
+		}
+		
+		
+	}
+	
 }

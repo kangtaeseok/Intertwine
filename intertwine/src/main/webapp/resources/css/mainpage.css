@@ -130,6 +130,7 @@ main {
 	justify-content: flex-start;
 	align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
 	width: 100%;
+	height: 80vh;
 }
 
 /* 사이드 메뉴 바 */
@@ -515,4 +516,16 @@ main {
 	.side-bar {
 		width: 75px;
 	}
+
+}
+button.btn {
+	font-weight: bold;
+	background: #f99d9d;
+	border: none;
+	padding: 10px;
+	border-radius: 6px;
+	 cursor: pointer;
+	 color: white;
+	 display: flex;
+	 margin: auto 0 0 auto;
 }

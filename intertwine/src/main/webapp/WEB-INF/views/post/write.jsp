@@ -5,61 +5,19 @@
 <head>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<script src="https://kit.fontawesome.com/4b2098cb2a.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"></script>
+	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+		<script defer src="/intertwine/resources/js/mainpage.js"></script>
+	<script defer src="/intertwine/resources/js/mainpage.js"></script>
 <!-- 폰트어썸 가져오기 -->
 </head>
 <style>
-.container-write {
-    margin: 0 auto; /* Center the container horizontally */
-    padding-left: 250px; /* Adjust padding to match sidebar width */
-    width: 550px;
-}
-.top {
-max-width: 550px;
-position: relative;
-margin: auto;
-}
 
-.tags a{
-    text-decoration: none;
-    color: black;
-}
-.middle{
-    padding-top: 10px;
-}
 .middle form {
 display: flex; 
 flex-wrap: wrap; 
 }
 
-.dummy {
-display: flex; 
-margin-right: auto; 
-}
-
-.icons {
-display: flex;
-justify-content: flex-end;
-}
-
-.middle {
-display: flex; /* Enable flexbox layout */
-flex-wrap: wrap; /* Allow elements to wrap onto multiple lines */
-}
-
-.icons {
-display: flex;
-justify-content: flex-end; /* Align buttons to the right */
-padding-bottom: 10px;
-}
-
-.upload,
-.upload i {
-     color: plum; /* Sets the color to plum */
-     font-size: 24px; /* Makes the icon a bit larger */
-     cursor: pointer;
-}
 
 #confirmTag, #cancelTag, #tagSettings,
 .icons button,
@@ -72,25 +30,7 @@ padding: 10px 20px;
 border-radius: 5px;
 margin-left: 10px;
 cursor: pointer;
-}
 
-.text{
-    width: 550px;
-}
-
-textarea {
-    width: 545px;
-    min-height: 100px;
-    resize: none;
-}
-
-ul{
-    padding-left: 0px;
-}
-a {
-    color: plum;
-    text-decoration: none;
-}
 </style>
 
 <!-- 사진 업로드 코드 -->
@@ -110,24 +50,103 @@ a {
 
     .image-preview {
       width: 550px;
-      background-color: white;
+      background-color: grey;
       display: flex;
       gap: 20px;
     }
 
   </style>
+<header> <!-- 페이지 상단 -->
+        <div> <!-- 홈 버튼 -->
+            <nav class="homebutton_nav">
+                <ul>
+                    <li class="homebutton"></li>
+                </ul>
+                <ol>
+                    <a href="${ pageContext.servletContext.contextPath }/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                </ol>
+            </nav>
+        </div>
+    </header>
 
 <body>
-    <div class="container-write">
-        <form action="posting.do" method="post" enctype="multipart/form-data">
+<main>
+        <aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                </li>
+                <li id="mypage">
+                    <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                    <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                </li>
+                 <li id="friend">
+                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
+                </li>
+                <li id="chatting">
+                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                </li>
+                <li id="alarm">
+                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                </li>
+                <li id="bookmark">
+                    <a href="${ pageContext.servletContext.contextPath }/getbookmarkfeed.do"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                </li>
+                <li id="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
+                     
+                </li>
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
+					<li><a href="getfeed.do">피드확인</a>
+				</ul>
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+            	<ul>
+                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+            	<c:if test="${empty type}">
+                        <li id="userInfo">
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                       	</li>
+                        </c:if>
+                        <c:if test="${type eq 'kakao'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+						<li id="socialUserInfo">
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+						</li>
+						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
+					</ul>
+            </div>
+        </div>
+
+    <div class="container-write" style="margin: 0 auto;  padding-left: 250px; width: 550px;">
+        <form id ="postFrom" action="posting.do" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
-            <div class="top">
+            <div class="top" style="max-width: 550px;position: relative;margin: auto;">
                 <ul class="image-preview"></ul>
             </div>
-            <div class="middle">
+            <div class="middle" style="padding-top: 10px;display: flex; flex-wrap: wrap;">
                 <input type="file" name="files" class="real-upload" accept="image/*, video/mp4" multiple>
-                <div class="upload"><i class="fa-solid fa-photo-film" fill="plum"></i>사진 업로드</div>
-                <!-- 파일업로드 스크립트 자리 옮길시 실행 안됨 -->
+                <div class="upload" style="color: plum;font-size: 24px;cursor: pointer;"><i class="fa-solid fa-photo-film" fill="plum"style="color: plum;font-size: 24px;cursor: pointer;"></i>사진 업로드</div>
  <script>
     let trackedFiles = [];
     
@@ -224,24 +243,23 @@ a {
 </script>
                 
                     
-                <div class="dummy">
+                <div class="dummy" style="display: flex; margin-right: auto;">
                 </div>
-                <div class="icons">
+                <div class="icons" style="display: flex;justify-content: flex-end;display: flex;justify-content: flex-end;padding-bottom: 10px;">
                     <button id="saveDraft" return="false">임시저장</button>
                     <input type="reset" value="취소">
                     <input type="submit" value="게시">
                 </div>
-                <div class="text">
-                    <textarea class="detail" name="postContent" placeholder="내용을 입력하세요"></textarea>
+                <div class="text" style="">
+                    <textarea class="detail" name="postContent" placeholder="내용을 입력하세요" style="width: 545px;min-height: 100px;resize: none;"></textarea>
                 </div>  
             </div>
             <div class="bottom">
-              <div class="tag">
-                  <button id="tagSettings" return="false">태그 설정</button>
-              </div>
-              <div class="tags">
-              </div>
-              <!-- 태그 관련 스크립트 자리 옮기면 실행안됨-->
+<div class="tag">
+    <button id="tagSettings" return="false">태그 설정</button>
+</div>
+<div class="tags">
+</div>
               <script>
                 document.getElementById('tagSettings').addEventListener('click', function() {
                 event.preventDefault();
@@ -277,7 +295,7 @@ a {
                         return;
                     }
 
-                    const existingTags = document.querySelectorAll('.tags span');
+                    const existingTags = document.querySelectorAll('.tags div');
                     for (let tag of existingTags) {
                         if (tag.textContent.startsWith(tagValue)) {
                             alert('이미 존재하는 태그입니다.');
@@ -288,8 +306,8 @@ a {
                     const uniqueId = new Date().getTime(); // 태그에 유니크 아이디 부여
 
                     // 페이지에 태그 삽입
-                    const tagContainer = document.createElement('span');
-                    tagContainer.setAttribute('data-tag-id', uniqueId); // 유니크 아이디 설정
+                    const tagContainer = document.createElement('div');
+                    tagContainer.setAttribute('id', uniqueId); // 유니크 아이디 설정
                     tagContainer.textContent = tagValue;
                     tagContainer.style.marginRight = '5px';
 
@@ -300,13 +318,14 @@ a {
                     deleteButton.addEventListener('click', function() {
                         // 삭제 버튼 누를 시 유니크 아이디로 보여지는 태그와 숨겨진 인풋 둘다 삭제 
                         event.preventDefault();
-                        document.querySelector(`span[data-tag-id="${uniqueId}"]`).remove(); 
-                        document.querySelector(`input[data-tag-id="${uniqueId}"]`).remove();
+                        document.querySelector(`div[id="${uniqueId}"]`).remove(); 
+                        document.querySelector(`input[id="${uniqueId}"]`).remove();
                     });
                     tagContainer.appendChild(deleteButton);
 
                     document.querySelector('.tags').appendChild(tagContainer);
                     document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
+                    console.log('Inserted tag container:', tagContainer.outerHTML);
 
                     document.querySelector('.modal-content').remove();
                     input.value = ''; // 다이얼로그 비움
@@ -315,16 +334,15 @@ a {
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
                     hiddenInput.name = 'tagName'; //자바에서 꺼내 사용할 이름
-                    hiddenInput.setAttribute('data-tag-id', uniqueId); //유니크 아이디 사용
+                    hiddenInput.setAttribute('id', uniqueId); //유니크 아이디 사용
                     hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
                     document.querySelector('form').appendChild(hiddenInput);
+                    console.log('Inserted hidden input:', hiddenInput.outerHTML);
 
 
                 });
             });
                 </script>
-                
-            
               <div>
                 <br>
                 <b>프라이버시 설정</b>
@@ -333,7 +351,7 @@ a {
                   <br>
                   이 게시글의 공개범위를 설정해주세요<br>
                   (계정이 비공개인 경우 각 포스트 설정과 무관하게 비공개 처리 됩니다)
-                  <ul>
+                  <ul style="padding-left: 0px;">
                       <input type="radio" id="option1" name="postVisible" value="0" checked>
                       <label for="option1">전체공개</label><br>
                       <input type="radio" id="option2" name="postVisible" value="1">
@@ -345,9 +363,13 @@ a {
             </div>
         </form>
     </div>
+
+
+    </main>
 </body>
 <!-- 임시저장용 자바스크립트 완료 -->
 <script>
+	const form = document.querySelector('form');
     const saveButton = document.getElementById("saveDraft");
     const textArea = document.querySelector(".detail");
       
@@ -368,6 +390,11 @@ a {
             }
         }
     };
+    form.addEventListener('submit', function(event) {
+
+        localStorage.removeItem("textArea"); //임시저장은 게시버튼 누를 시 삭제
+    });
+
 </script>
 
 </body>

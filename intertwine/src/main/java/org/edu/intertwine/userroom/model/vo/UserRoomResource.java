@@ -5,101 +5,129 @@ import java.io.Serializable;
 public class UserRoomResource implements Serializable{
 	private static final long serialVersionUID = -671451751598167986L;
 	
-	private int ResourceId; // 리소스 고유번호
-	private double ResourcePositionX; // 리소스 배치 X좌표 
-	private double ResourcePositionY; // 리소스 배치 Y좌표
-	private double ResourceRotation; // 리소스 회전각도
-	private double ResourceScale; // 리소스 크기
+	private int resourceId; // 리소스 고유번호
+	private double resourcePositionX; // 리소스 배치 X좌표 
+	private double resourcePositionY; // 리소스 배치 Y좌표
+	private double resourceRotation; // 리소스 회전각도
+	private double resourceScale; // 리소스 크기
 	
 	// 테이블 조인해서 넣을 필드값
-	private String ResourceName; // 리소스 이름
-	private String ResourceURL; // 리소스 저장 위치
+	private String resourceName; // 리소스 이름
+	private String resourceURL; // 리소스 저장 위치
+
+	private String userId; // 추가
 	
 	public UserRoomResource() {
 		super();
 	}
-	
-	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation, double resourceScale) {
-		super();
-		ResourceId = resourceId;
-		ResourcePositionX = resourcePositionX;
-		ResourcePositionY = resourcePositionY;
-		ResourceRotation = resourceRotation;
-		ResourceScale = resourceScale;
-	}
-	
-
 
 	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
-			double resourceScale, String resourceName, String resourceURL) {
+			double resourceScale) {
 		super();
-		ResourceId = resourceId;
-		ResourcePositionX = resourcePositionX;
-		ResourcePositionY = resourcePositionY;
-		ResourceRotation = resourceRotation;
-		ResourceScale = resourceScale;
-		ResourceName = resourceName;
-		ResourceURL = resourceURL;
+		this.resourceId = resourceId;
+		this.resourcePositionX = resourcePositionX;
+		this.resourcePositionY = resourcePositionY;
+		this.resourceRotation = resourceRotation;
+		this.resourceScale = resourceScale;
+	}
+
+	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
+			double resourceScale, String userId) {
+		super();
+		this.resourceId = resourceId;
+		this.resourcePositionX = resourcePositionX;
+		this.resourcePositionY = resourcePositionY;
+		this.resourceRotation = resourceRotation;
+		this.resourceScale = resourceScale;
+		this.userId = userId;
+	}
+
+	public UserRoomResource(int resourceId, double resourcePositionX, double resourcePositionY, double resourceRotation,
+			double resourceScale, String resourceName, String resourceURL, String userId) {
+		super();
+		this.resourceId = resourceId;
+		this.resourcePositionX = resourcePositionX;
+		this.resourcePositionY = resourcePositionY;
+		this.resourceRotation = resourceRotation;
+		this.resourceScale = resourceScale;
+		this.resourceName = resourceName;
+		this.resourceURL = resourceURL;
+		this.userId = userId;
 	}
 
 	public int getResourceId() {
-		return ResourceId;
+		return resourceId;
 	}
+
 	public void setResourceId(int resourceId) {
-		ResourceId = resourceId;
+		this.resourceId = resourceId;
 	}
+
 	public double getResourcePositionX() {
-		return ResourcePositionX;
+		return resourcePositionX;
 	}
+
 	public void setResourcePositionX(double resourcePositionX) {
-		ResourcePositionX = resourcePositionX;
+		this.resourcePositionX = resourcePositionX;
 	}
+
 	public double getResourcePositionY() {
-		return ResourcePositionY;
+		return resourcePositionY;
 	}
+
 	public void setResourcePositionY(double resourcePositionY) {
-		ResourcePositionY = resourcePositionY;
+		this.resourcePositionY = resourcePositionY;
 	}
+
 	public double getResourceRotation() {
-		return ResourceRotation;
+		return resourceRotation;
 	}
+
 	public void setResourceRotation(double resourceRotation) {
-		ResourceRotation = resourceRotation;
+		this.resourceRotation = resourceRotation;
 	}
+
 	public double getResourceScale() {
-		return ResourceScale;
+		return resourceScale;
 	}
+
 	public void setResourceScale(double resourceScale) {
-		ResourceScale = resourceScale;
+		this.resourceScale = resourceScale;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
+
 	public String getResourceName() {
-		return ResourceName;
+		return resourceName;
 	}
 
 	public void setResourceName(String resourceName) {
-		ResourceName = resourceName;
+		this.resourceName = resourceName;
 	}
 
 	public String getResourceURL() {
-		return ResourceURL;
+		return resourceURL;
 	}
 
 	public void setResourceURL(String resourceURL) {
-		ResourceURL = resourceURL;
+		this.resourceURL = resourceURL;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return "UserRoomResource [ResourceId=" + ResourceId + ", ResourcePositionX=" + ResourcePositionX
-				+ ", ResourcePositionY=" + ResourcePositionY + ", ResourceRotation=" + ResourceRotation
-				+ ", ResourceScale=" + ResourceScale + ", ResourceName=" + ResourceName + ", ResourceURL=" + ResourceURL
-				+ "]";
+		return "UserRoomResource [resourceId=" + resourceId + ", resourcePositionX=" + resourcePositionX
+				+ ", resourcePositionY=" + resourcePositionY + ", resourceRotation=" + resourceRotation
+				+ ", resourceScale=" + resourceScale + ", resourceName=" + resourceName + ", resourceURL=" + resourceURL
+				+ ", userId=" + userId + "]";
 	}
-
-	
-	
 }
