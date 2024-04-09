@@ -3,6 +3,8 @@ package org.edu.intertwine.user.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +21,7 @@ import org.edu.intertwine.user.model.service.UserService;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -69,17 +72,18 @@ public class UserController {
 	private NaverLoginAuth naverLoginAuth;
 	
 	//뷰페이지 이동
-	
+	//회원가입
 	@RequestMapping("enrollPage.do")
 	public String moveEnrollPage() {
 	return "user/enroll";
 	}
 	
+	//아이디/비번찾기
 	@RequestMapping("findInfo.do")
 	public String moveFindInfoPage() {
 		return "user/finduserInfo"; 
 	}
-	
+	//일반유저 정보수정
 	@RequestMapping("userInfo.do")
 	public String moveUserInfoPage(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
@@ -104,7 +108,6 @@ public class UserController {
 		return "common/main";
 	}
 	
-	
 	//회원가입후 이동페이지
 	@RequestMapping("socialUpdatePage.do")
 	public String moveSocialUpdatePage(Model model, HttpSession session) {
@@ -114,9 +117,7 @@ public class UserController {
 		model.addAttribute("type", result);
 		return "user/socialUpPage"; 
 	}
-	
-	
-	
+
 	//이용시간 페이지로 이동
 	@RequestMapping("userTime.do")
 	public String moveUserTimePage(Model model, HttpSession session) {
@@ -129,7 +130,15 @@ public class UserController {
 		model.addAttribute("time", time);
 		return "user/userTimePage";
 	}
-	
+	//유저 계정 비활성화
+	@RequestMapping("userStopPage.do")
+	public String moveUserStopPage(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		String result = "";
+		result = userService.selectSocialType(user.getUserId());
+		model.addAttribute("type", result);
+		return "user/userStopPage";
+	}
 
 	//요청 받아서 결과받는 메소드 --------------------------
 	//로그인
@@ -165,15 +174,16 @@ public class UserController {
 	@RequestMapping("ulogout.do")
 	public String userLogout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
-		logger.info(session.getAttribute("loginUser").toString());
 		if(session != null) {
-			if(naverLoginAuth.getAccessToken().toString() != null) {
+			if(naverLoginAuth.getAccessToken() != null && naverLoginAuth.getAccessToken().toString() != null) {
 				naverLoginAuth.logOut(naverLoginAuth.getAccessToken().toString());
 				session.invalidate();
+				return "common/login";
 			} else {
+				logger.info(session.toString());
 				session.invalidate();
+				return "common/login";
 			}
-			return "common/login";
 		}
 		return "common/main";
 	}
@@ -643,30 +653,28 @@ public class UserController {
 	        }
 	    }
 	 }
-
+	 //계정 비활성화
 	 @RequestMapping(value="udisable.do", method=RequestMethod.POST)
 	 public String userDisabled(HttpSession session) {
 		 User user = (User) session.getAttribute("loginUser");
 		 userService.updateUserdisable(user.getUserId());
-		return result;
+		return "성공";
 	 }
 	 
-//	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
-//	 public String publicMypagesetting() {}
-
-	 
+	 //계정 정지(탈퇴)
 	 @RequestMapping(value="ustopdel.do", method=RequestMethod.POST)
 	 public String userUpdate(HttpSession session) {
 		 User user = (User) session.getAttribute("loginUser");
 		 userService.insertUserStop(user.getUserId());
-		 
-
-		return result;
-		 
-		 
+		 userService.updateUserdisable(user.getUserId());
+		return "성공";
 	 }
 	 
-	
+//	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
+//	 public String publicMypagesetting() {}
+	 
+	 
+	 
 	 
 	 
 } 
