@@ -412,12 +412,12 @@ myCharacter.addEventListener('contextmenu', function (event) {
         modal.style.display = "flex";
     });
 
-    // "아바타 수정" 버튼 생성 및 위치 조정
+    // "캐릭터 수정" 버튼 생성 및 위치 조정
     const buttonHeight = 30; // 실제 높이에 따라 조절
     const changeCharacterButton = createButton('캐릭터 수정', '#exampleModal2', buttonHeight);
     changeCharacterButton.id = 'changeCharacterButton'; // id 속성 추가
     const currentTop = parseInt(changeCharacterButton.style.top, 10);
-    changeCharacterButton.style.top = `${currentTop - 7}px`;
+    changeCharacterButton.style.top = `${currentTop - 6}px`;
     myCharacter.appendChild(changeCharacterButton);
     
     $("#changeCharacterButton").click(function () {
@@ -521,11 +521,64 @@ myCharacter.addEventListener('contextmenu', function (event) {
 
     });
 
-    // "오프라인 전환" 버튼 생성 및 위치 조정
-    const thirdButton = createButton('오프라인 전환', '#exampleModal3', 2 * (buttonHeight));
-    const currentTop2 = parseInt(thirdButton.style.top, 10);
-    thirdButton.style.top = `${currentTop2 - 14}px`;
-    myCharacter.appendChild(thirdButton);
+    // "친구 목록" 버튼 생성 및 위치 조정
+    const friendListButton = createButton('친구 목록', '#exampleModal3', 2 * (buttonHeight));
+    friendListButton.id = 'friendListButton'; // id 속성 추가
+    const currentTop2 = parseInt(friendListButton.style.top, 10);
+    friendListButton.style.top = `${currentTop2 - 12}px`;
+    myCharacter.appendChild(friendListButton);
+
+	 friendListButton.addEventListener('click', function (event) {
+        const modal = document.querySelector("#friendListModal");
+        modal.style.display = "flex";
+        var $friendModalList = $('.friendmodal-list');
+        $friendModalList.empty();
+        
+        var friendsList = [
+  { nickname: "친구1", profilePic: "/path/to/profile1.jpg" },
+  { nickname: "친구2", profilePic: "/path/to/profile2.jpg" },
+  { nickname: "친구3", profilePic: "/path/to/profile3.jpg" },
+  { nickname: "친구4", profilePic: "/path/to/profile4.jpg" },
+  { nickname: "친구5", profilePic: "/path/to/profile5.jpg" },
+  { nickname: "친구6", profilePic: "/path/to/profile6.jpg" },
+  { nickname: "친구7", profilePic: "/path/to/profile7.jpg" },
+  { nickname: "친구8", profilePic: "/path/to/profile8.jpg" },
+  { nickname: "친구9", profilePic: "/path/to/profile9.jpg" },
+  { nickname: "친구10", profilePic: "/path/to/profile10.jpg" },
+]; 
+   
+  var $friendModalList = $('.friendmodal-list'); // .friendmodal-body 선택
+
+  // friendsList 배열을 순회하여 각 친구 정보로 HTML 요소 생성
+  $.each(friendsList, function(index, friend) {
+    var $friendDiv = $('<div>', { class: 'friend-info' }).css({
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '10px',
+    });
+
+    var $profilePic = $('<img>', {
+      src: friend.profilePic,
+      alt: 'Profile Picture',
+      width: '50px',
+      height: '50px',
+      css: {
+        borderRadius: '50%', // 이미지를 동그랗게
+        marginRight: '10px', // 별명과의 간격
+      }
+    });
+
+    var $nickname = $('<div>').text(friend.nickname);
+
+    // $friendDiv에 프로필 사진과 별명을 추가
+    $friendDiv.append($profilePic).append($nickname);
+
+    // 생성된 $friendDiv를 .friendmodal-body에 추가
+    $friendModalList.append($friendDiv);
+  });
+        
+    });
+
 
     // 페이지의 다른 부분을 클릭하면 생성된 버튼들을 제거하는 이벤트 리스너 추가
     function outsideClickListener(event) {
@@ -535,4 +588,10 @@ myCharacter.addEventListener('contextmenu', function (event) {
         }
     }
     document.addEventListener('click', outsideClickListener);
+    
+   
+   
+   
+
+   
 });
