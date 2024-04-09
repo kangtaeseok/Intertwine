@@ -8,6 +8,7 @@
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 	<script defer src="/intertwine/resources/js/mainpage.js"></script>
+	<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post Viewer</title>
@@ -502,54 +503,87 @@ document.addEventListener('DOMContentLoaded', function() {
 	                                   
 	                                 <c:if test="${ not empty whatIsLiked }">
 	                                   <c:if test="${ whatIsLiked ne '0' }">
-	                                   <i class="fa-regular fa-thumbs-up reaction-icon" id="like" value="0" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '0' }">
-	                                   <i class="fa-solid fa-thumbs-up reaction-icon" id="liked" value="0" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-solid fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '1' }">
-	                                   <i class="fa-regular fa-heart reaction-icon" id="love" value="1" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '1' }">
-	                                   <i class="fa-solid fa-heart reaction-icon" id="loved" value="1" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-solid fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '2' }">
-	                                   <i class="fa-regular fa-face-sad-tear reaction-icon" id="sad" value="2" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '2' }">
-	                                   <i class="fa-solid fa-face-sad-tear reaction-icon" id="saddened" value="2" style="font-size: 30px;padding-left: 7px;"></i>
+	                                  <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-solid fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '3' }">
-	                                   <i class="fa-regular fa-face-angry reaction-icon" id="angry" value="3" style="font-size: 30px;padding-left: 7px;"></i>
+	                                    <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '3' }">
-	                                   <i class="fa-solid fa-face-angry reaction-icon"  id="angried" value="3" style="font-size: 30px;padding-left: 7px;"></i>
+	                                  <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-solid fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '4' }">
-	                                   <i class="fa-regular fa-face-laugh-squint reaction-icon" id="haha" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+	                                   <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 	                             	   </c:if>
 		                               <c:if test="${ whatIsLiked eq '4' }">
-		                               <i class="fa-solid fa-face-laugh-squint reaction-icon"  id="hahad" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+		                                <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
+						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                </button>
 		                               </c:if>
 	                             	</c:if>
 	                             	<c:if test="${ empty whatIsLiked }">
-	                             		<i class="fa-regular fa-thumbs-up reaction-icon" id="like2" value="0" style="font-size: 30px;padding-left: 7px;"></i>
-	                             		<i class="fa-regular fa-heart reaction-icon" id="love2" value="1" style="font-size: 30px;padding-left: 7px;"></i>
-	                             		<i class="fa-regular fa-face-sad-tear reaction-icon" id="sad2" value="2" style="font-size: 30px;padding-left: 7px;"></i>
-	                             		<i class="fa-regular fa-face-angry reaction-icon" id="angry2" value="3" style="font-size: 30px;padding-left: 7px;"></i>
-	                             		<i class="fa-regular fa-face-laugh-squint" id="haha2" value="4" style="font-size: 30px;padding-left: 7px;"></i>
+	                             		 <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
+							                <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+							            </button>
+	                             		<button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
+							                <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+							            </button>
+							            <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
+							                <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+							            </button>
+							            <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
+							                <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+							            </button>
+							            <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
+							                <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+							            </button>
 	                             	</c:if>
 	                              </div>
 	                          </form>
                          </div> 
+                         
+                         
+                         
 						 <script>
-						document.addEventListener('DOMContentLoaded', function() {
-						    var reaction = document.getElementById('reaction');
-						    var reactionBox = document.getElementById('reaction-box');
-						    reaction.addEventListener('click', function(event) {
-						        reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
-						        event.stopPropagation(); 
-						    });
+						 document.addEventListener('DOMContentLoaded', function() {
+							    var reaction = document.getElementById('reaction');
+							    var reactionBox = document.getElementById('reaction-box');
+							    reaction.onclick = function() {
+							        reactionBox.style.display = (reactionBox.style.display === 'flex') ? 'none' : 'flex';
+							    };
+							});
 						
 						    window.addEventListener('click', function(event) {
 						        if (!event.target.closest('#reaction')) {
@@ -564,7 +598,21 @@ document.addEventListener('DOMContentLoaded', function() {
 						        });
 						    });
 						});
+						
+						document.addEventListener('DOMContentLoaded', function() {
+						    
+						    const icons = document.querySelectorAll('.reaction-icon');
+						    icons.forEach(icon => {
+						        icon.addEventListener('click', function() {
+						            const likeType = this.getAttribute('data-value');
+						            document.getElementById('likeType').value = likeType;
+						            document.getElementById('reactionForm').submit();
+						        });
+						    });
+						});
 						</script>
+
+
 
                          <div class="share">
                               <i class="fa-solid fa-share-nodes" style="cursor:pointer;"></i>

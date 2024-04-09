@@ -113,9 +113,20 @@ public class PostController {
 	
 	//남의 페이지 검색
 	@RequestMapping(value="searchothermypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	public ModelAndView searchOtherMyPage(@RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
+	public ModelAndView searchOtherMyPage(HttpSession session, @RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
 		
+		User loginUser = (User) session.getAttribute("loginUser");
 		
+		Friend friend = new Friend(loginUser.getUserId(), friendId);
+		String FollowingId = friendService.selectFollowingId(friend);
+	    String FollowerId = friendService.selectFollowerId(friend);
+	    
+	    int isFollowing = 0;
+	    isFollowing = friendService.selectFollowing(friend);
+	    int isFollower = friendService.selectFollower(friend);
+	    
+	    
+	    
 		logger.info(friendId);
 		logger.info(keyword);
 		logger.info(String.valueOf(condition));
@@ -128,17 +139,50 @@ public class PostController {
 
 		case 0:
 			//전체 검색
-			posts = postService.selectPostsBySearchAll(searchMyPage);
+
+        	if(isFollowing == 1) {
+        		
+        		List<Post> postsByTag = postService.selectPostsBySearchTagFollower(searchMyPage);
+        		List<Post> postsByKeyword = postService.selectPostsBySearchKeywordFollower(searchMyPage);
+     	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
+    	        combinedPosts.addAll(postsByKeyword);
+    	        posts = new ArrayList<>(combinedPosts);
+        		 	 
+        	} else {
+        		
+        		List<Post> postsByTag = postService.selectPostsBySearchTagNotFollower(searchMyPage);
+       		 	List<Post> postsByKeyword = postService.selectPostsBySearchKeywordNotFollower(searchMyPage);
+    	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
+    	        combinedPosts.addAll(postsByKeyword);
+    	        posts = new ArrayList<>(combinedPosts);
+    	        
+        	}
+
 			break;				
 
 		case 1:
 			//태그 검색
-			posts = postService.selectPostsBySearchTag(searchMyPage);
+			
+			if(isFollowing == 1) {
+				
+				posts = postService.selectPostsBySearchTagFollower(searchMyPage);
+			}else {
+				
+				posts = postService.selectPostsBySearchTagNotFollower(searchMyPage);
+			}
 			break;
 			
 		case 2:
 			//콘텐츠 검색
-			posts = postService.selectPostsBySearchKeyword(searchMyPage);
+			
+			if(isFollowing == 1) {
+				
+				posts = postService.selectPostsBySearchKeywordFollower(searchMyPage);
+				
+			}else {
+				
+				posts = postService.selectPostsBySearchKeywordNotFollower(searchMyPage);
+			}
 			break;
 		}
 		
@@ -191,6 +235,17 @@ public class PostController {
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
+		//팔로잉 여부 확인
+		int followingCount = friendService.countFollowing(friendId);
+		int followerCount = friendService.countFollowers(friendId);
+		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
+		String FollowingId = friendService.selectFollowingId(friend);
+	    String FollowerId = friendService.selectFollowerId(friend);
+	    
+	    int isFollowing = 0;
+	    isFollowing = friendService.selectFollowing(friend);
+	    int isFollower = friendService.selectFollower(friend);
+	    
 		//정렬을 거쳐올 경우 정렬 값을 담음
 	    Integer value = (Integer) session.getAttribute("sortPreference");
 	    if (value == null) {
@@ -199,15 +254,34 @@ public class PostController {
 	    
 	    switch(value) {
 	        case 0:
-	            posts = postService.selectPostsById(friendId);
+	        	if(isFollowing == 1) {
+	        		posts = postService.selectPostsByIdFollower(friendId);
+	        	} else {
+	        		posts = postService.selectPostsByIdNotFollower(friendId);
+	        	}
+	            
 	            break;
+	            
 	        case 1:
-	            posts = postService.selectPostsByIdOldestToNewest(friendId);
+	        	
+	        	if(isFollowing == 1) {
+	        		posts = postService.selectPostsByIdOldestToNewestFollower(friendId);
+	        	} else {
+	        		posts = postService.selectPostsByIdOldestToNewestNotFollower(friendId);
+	        	}
 	            break;
+	            
 	        case 2:
-	            posts = postService.selectPostsByIdMostViewsToLeast(friendId);
+	        	
+	        	if(isFollowing == 1) {
+	        		posts = postService.selectPostsByIdMostViewsToLeastFollower(friendId);
+	        	} else {
+	        		posts = postService.selectPostsByIdMostViewsToLeastNotFollower(friendId);
+	        	}
 	            break;
+	            
 	        default:
+	        	
 	            posts = postService.selectPostsById(friendId);
 	            break;
 	    }
@@ -227,14 +301,7 @@ public class PostController {
 	        
 	    }
 		//팔로잉 팔로워 횟수 셈
-		int followingCount = friendService.countFollowing(friendId);
-		int followerCount = friendService.countFollowers(friendId);
-		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
-		String FollowingId = friendService.selectFollowingId(friend);
-	    String FollowerId = friendService.selectFollowerId(friend);
-	    int isFollowing = 0;
-	    isFollowing = friendService.selectFollowing(friend);
-	    int isFollower = friendService.selectFollower(friend);
+
 	    
 	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("FollowingId", FollowingId);
@@ -365,7 +432,53 @@ public class PostController {
 	//공감업데이트
 	@RequestMapping(value="updatereaction.do", method = { RequestMethod.POST, RequestMethod.GET } )
 	@ResponseBody
-	public String updateLike(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
+	public String updateLike(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")int likeType, Model model) {
+		//공감을 업데이트
+		//가져온 값을 담음
+		System.out.println("User ID: " + userId);
+	    System.out.println("Post ID: " + postId);
+	    System.out.println("Like Type: " + likeType);
+	    String likeType2 = String.valueOf(likeType);
+	    
+		Like like1 = new Like(userId, postId);
+		Like like2 = new Like(userId, postId, likeType2);
+		logger.info("가져온 공감타입" + likeType2);
+		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
+		String whatIsLiked = postService.selectWhatIsLiked(like1);
+		
+		//이전에 이 포스트에 공감을 한 적이 있는 경우
+		if(whatIsLiked != null) {
+			
+			if(whatIsLiked.equals(likeType2)) {
+				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
+				//공감 삭제 delete
+				int result = postService.deleteLikeType(like1);
+				
+			}else {
+				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 다른 경우
+				//공감 변경 update
+				int result = postService.updateLikeType(like2);
+			}
+			
+			
+		}else {
+			//이전에 이 포스트에 공감을 한적이 없는 경우
+			//공감 삽입 insert
+			int result = postService.insertLikeType(like2);
+		}
+		
+		
+		return "redirect:detail.do?postId=" + postId;
+		
+		
+		
+	}
+	
+	
+	//공감업데이트2
+	@RequestMapping(value="updatereaction2.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	@ResponseBody
+	public String updateLike2(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
 		Like like1 = new Like(userId, postId);
@@ -396,7 +509,7 @@ public class PostController {
 		}
 		
 		
-		return "redirect:detail.do?postId=" + postId;
+		return "redirect:getfeed.do";
 		
 		
 		
@@ -511,15 +624,13 @@ public class PostController {
 		ArrayList<String> userIds = postService.selectUserIds(loginUser.getUserId());
 		
 		
-		// 먼저 유저아이디 받아와서 차단 리스트 받아옴
-		// ArrayList<String> userIds = friendService.(loginuser.getUserId());
-		
 
 		ArrayList<Integer> postIds = new ArrayList<Integer>();
 		// 만약 사이즈가 0이면 다른 쿼리문 작동
 		if (userIds.size() > 0) {
 			// 그걸로 포스트 아이디들을 쭉 받아옴
 			logger.info(userIds.toString());
+			//어카운트 상태가 활성화되어있으며 정지유저가 아니고 포스트가 공개상태인 포스트 아이디만 받아옴
 			postIds = postService.selectPostIds(userIds);
 			logger.info(postIds.toString());
 
@@ -687,7 +798,7 @@ public class PostController {
 			
 			mv.addObject("feedItems", feedItems);
 			mv.addObject("defaultImage", defaultImage);
-			mv.setViewName("post/getbookmarkfeed");
+			mv.setViewName("post/bookmarkfeed");
 			logger.info(mv.toString());
 			return mv;
 

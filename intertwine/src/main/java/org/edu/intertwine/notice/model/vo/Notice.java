@@ -11,8 +11,6 @@ public class Notice implements java.io.Serializable {
 	private String noticeTitle;
 	private java.sql.Date noticeTime;
 	private String noticeContent;
-	private String originalFilePath;
-	private String renameFilePath;
 	private int noticeView;
 	private int noticeLevel;
 	
@@ -21,15 +19,13 @@ public class Notice implements java.io.Serializable {
 	}
 	
 	public Notice(int noticeId, String adminId, String noticeTitle, Date noticeTime,
-			String noticeContent, String originalFilePath, String renameFilePath, int noticeView, int noticeLevel) {
+			String noticeContent, int noticeView, int noticeLevel) {
 		super();
 		this.noticeId = noticeId;
 		this.adminId = adminId;
 		this.noticeTitle = noticeTitle;
 		this.noticeTime = noticeTime;
 		this.noticeContent = noticeContent;
-		this.originalFilePath = originalFilePath;
-		this.renameFilePath = renameFilePath;
 		this.noticeView = noticeView;
 		this.noticeLevel = noticeLevel;
 	}
@@ -74,22 +70,6 @@ public class Notice implements java.io.Serializable {
 		this.noticeContent = noticeContent;
 	}
 	
-	public String getOriginalFilePath() {
-		return originalFilePath;
-	}
-	
-	public void setOriginalFilePath(String originalFilePath) {
-		this.originalFilePath = originalFilePath;
-	}
-	
-	public String getRenameFilePath() {
-		return renameFilePath;
-	}
-	
-	public void setRenameFilePath(String renameFilePath) {
-		this.renameFilePath = renameFilePath;
-	}
-	
 	public int getNoticeView() {
 		return noticeView;
 	}
@@ -114,8 +94,7 @@ public class Notice implements java.io.Serializable {
 	public String toString() {
 		return "Notice [noticeId=" + noticeId + ", adminId=" + adminId + ", noticeTitle="
 				+ noticeTitle + ", noticeTime=" + noticeTime + ", noticeContent=" + noticeContent
-				+ ", originalFilePath=" + originalFilePath + ", renameFilePath=" + renameFilePath + ", noticeView="
-				+ noticeView + ", noticeLevel=" + noticeLevel + "]";
+				+ "noticeView=" + noticeView + ", noticeLevel=" + noticeLevel + "]";
 	}
 	
 }

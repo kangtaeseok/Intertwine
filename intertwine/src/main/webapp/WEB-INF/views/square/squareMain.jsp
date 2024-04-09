@@ -8,60 +8,84 @@
 <head>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 디자인을 지원하기 위한 뷰포트 설정 -->
-<!-- <link rel="icon" href="favicon.ico" type="image/X-icon"> --> <!-- 파비콘 설정 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
-<link rel="stylesheet" href="/intertwine/resources/css/squareMain.css"> <!-- 이 jsp파일의 css파일 연결 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 반응형 디자인을 지원하기 위한 뷰포트 설정 -->
+<!-- <link rel="icon" href="favicon.ico" type="image/X-icon"> -->
+<!-- 파비콘 설정 -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<!-- swiper css 가져오기 -->
+<link rel="stylesheet" href="/intertwine/resources/css/squareMain.css">
+<!-- 이 jsp파일의 css파일 연결 -->
 <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet"> -->
-<script defer src="/intertwine/resources/js/squareMain.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+<script defer src="/intertwine/resources/js/squareMain.js"></script>
+<!-- 이 jsp파일의 js파일 연결 -->
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"
+	crossorigin="anonymous"></script>
+<!-- 폰트어썸 가져오기 -->
+<script type="text/javascript"
+	src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
+<%-- jquery 파일 로드 --%>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
-<!-- 닉네임 수정 모달 -->
-<div class="nicknamemodal" id="nicknameChangeModal" tabindex="-1" aria-labelledby="nicknameChangeModalLabel" aria-hidden="true">
-  <div class="nicknamemodal-dialog">
-    <div class="nicknamemodal-content">
-      <div class="nicknamemodal-header">
-        <h5 class="nicknamemodal-title" id="nicknameChangeModalLabel">닉네임 수정</h5>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-      </div>
-      <div class="nicknamemodal-body">
-        <form>
-          <div class="mb-3">
-           <!--  <label for="nickname-input" class="col-form-label"></label> -->
-            <input type="text" class="form-control" id="renamenicknameinput" autocomplete="off" placeholder="새로운 닉네임 입력" style="width: 160px;">
-          </div>
-        </form>
-      </div>
-      <div class="nicknamemodal-footer">
-        <button type="button" class="btn btn-secondary" id="cancleNicknamebtn" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" id="changeNicknamebtn">변경</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 닉네임 수정 모달 -->
-
-<!-- 캐릭터 수정 모달 -->
-<div class="charactermodal" id="characterChangeModal" tabindex="-1" aria-labelledby="characterChangeModalLabel" aria-hidden="true">
-  <div class="charactermodal-dialog">
-    <div class="charactermodal-content">
-      <div class="charactermodal-header">
-        <h5 class="charactermodal-title" id="characterChangeModalLabel">캐릭터 수정</h5>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-         <div class="charactermodal-preview">
-         	<div id="previewcharacter" style="width: 70px; height: 120px; position: absolute; top:65px; left: 42px; /* background: blue; */ padding:10px;">
-						    <div id="previewcharacterhair" class="previewcharacterresource" style="position: absolute; width: 30px; height: 20px; top:8px; left:18px;"></div>
-						    <div id="previewcharacterhat" class="previewcharacterresource" style="position: absolute; width: 50px; height: 20px; top:0px; left: 7px;"></div>
-						    <div id="previewcharactertop" class="previewcharacterresource" style="position: absolute; width: 50px; height: 30px; top: 30px; left: 10px; /* background-color: pink; */"></div>
-						    <div id="previewcharacterbottom" class="previewcharacterresource" style="position: absolute; width: 50px; height: 40px; top: 60px; left: 10px; /* background-color: orange; */"></div>
-						    
+	<!-- 닉네임 수정 모달 -->
+	<div class="nicknamemodal" id="nicknameChangeModal" tabindex="-1"
+		aria-labelledby="nicknameChangeModalLabel" aria-hidden="true">
+		<div class="nicknamemodal-dialog">
+			<div class="nicknamemodal-content">
+				<div class="nicknamemodal-header">
+					<h5 class="nicknamemodal-title" id="nicknameChangeModalLabel">닉네임
+						수정</h5>
+					<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+				</div>
+				<div class="nicknamemodal-body">
+					<form>
+						<div class="mb-3">
+							<!--  <label for="nickname-input" class="col-form-label"></label> -->
+							<input type="text" class="form-control" id="renamenicknameinput"
+								autocomplete="off" placeholder="새로운 닉네임 입력"
+								style="width: 160px;">
+						</div>
+					</form>
+				</div>
+				<div class="nicknamemodal-footer">
+					<button type="button" class="btn btn-secondary"
+						id="cancleNicknamebtn" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary"
+						id="changeNicknamebtn">변경</button>
+				</div>
 			</div>
-         </div>
-      </div>
+		</div>
+	</div>
+	<!-- 닉네임 수정 모달 -->
+
+	<!-- 캐릭터 수정 모달 -->
+	<div class="charactermodal" id="characterChangeModal" tabindex="-1"
+		aria-labelledby="characterChangeModalLabel" aria-hidden="true">
+		<div class="charactermodal-dialog">
+			<div class="charactermodal-content">
+				<div class="charactermodal-header">
+					<h5 class="charactermodal-title" id="characterChangeModalLabel">캐릭터
+						수정</h5>
+					<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+					<div class="charactermodal-preview">
+						<div id="previewcharacter"
+							style="width: 70px; height: 120px; position: absolute; top: 65px; left: 42px; /* background: blue; */ padding: 10px;">
+							<div id="previewcharacterhair" class="previewcharacterresource"
+								style="position: absolute; width: 30px; height: 20px; top: 8px; left: 18px;"></div>
+							<div id="previewcharacterhat" class="previewcharacterresource"
+								style="position: absolute; width: 50px; height: 20px; top: 0px; left: 7px;"></div>
+							<div id="previewcharactertop" class="previewcharacterresource"
+								style="position: absolute; width: 50px; height: 30px; top: 30px; left: 10px;"></div>
+							<div id="previewcharacterbottom" class="previewcharacterresource"
+								style="position: absolute; width: 50px; height: 40px; top: 60px; left: 10px;"></div>
+
+						</div>
+					</div>
+				</div>
 				<div class="charactermodal-body">
 					<div class="charactermodal-hair-container">
 						<div id="characterhair0" class="charactermodal-hair"></div>
@@ -116,40 +140,43 @@
 					</div>
 				</div>
 				<div class="charactermodal-footer">
-        <button type="button" class="btn btn-secondary" id="cancleCharacterbtn" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" id="changeCharacterbtn">변경</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 캐릭터 수정 모달 -->
+					<button type="button" class="btn btn-secondary"
+						id="cancleCharacterbtn" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary"
+						id="changeCharacterbtn">변경</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 캐릭터 수정 모달 -->
 
-<!-- 방 수정 모달 -->
-<div class="roommodal" id="roomChangeModal" tabindex="-1" aria-labelledby="roomChangeModalLabel" aria-hidden="true">
-  <div class="roommodal-dialog">
-    <div class="roommodal-content">
-      <div class="roommodal-header">
-        <h5 class="roommodal-title" id="roomChangeModalLabel">방 꾸미기</h5>
-        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-        <ul class= "roomcolor">
-         		<li class="green"></li>
-         		<li class="blue"></li>
-         		<li class="red"></li>
-         		<li class="purple"></li>
-         		<li class="cyan"></li>
-         		<li class="yellow"></li>
-         		<li class="orange"></li>
-         		<li class="lime"></li>
-         		<li class="pink"></li>
-         		<li class="yeonpink"></li>
-         		<li class="olive"></li>
-         		<li class="gray"></li>
-         	</ul>
-         <div class="roommodal-preview">
-         	<!-- <div id="previewroom" style="width: 70px; height: 120px; position: absolute; top:65px; left: 42px; /* background: blue; */ padding:10px;"></div> -->
-						 
-         </div>
-      </div>
+	<!-- 방 수정 모달 -->
+	<div class="roommodal" id="roomChangeModal" tabindex="-1"
+		aria-labelledby="roomChangeModalLabel" aria-hidden="true">
+		<div class="roommodal-dialog">
+			<div class="roommodal-content">
+				<div class="roommodal-header">
+					<h5 class="roommodal-title" id="roomChangeModalLabel">방 꾸미기</h5>
+					<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+					<ul class="roomcolor">
+						<li class="green"></li>
+						<li class="blue"></li>
+						<li class="red"></li>
+						<li class="purple"></li>
+						<li class="cyan"></li>
+						<li class="yellow"></li>
+						<li class="orange"></li>
+						<li class="lime"></li>
+						<li class="pink"></li>
+						<li class="yeonpink"></li>
+						<li class="olive"></li>
+						<li class="gray"></li>
+					</ul>
+					<div class="roommodal-preview">
+						<!-- <div id="previewroom" style="width: 70px; height: 120px; position: absolute; top:65px; left: 42px; /* background: blue; */ padding:10px;"></div> -->
+
+					</div>
+				</div>
 				<div class="roommodal-body">
 					<div class="roommodal-first-container">
 						<div id="roomresource0" class="roommodal-resource"></div>
@@ -191,29 +218,59 @@
 					</div>
 				</div>
 				<div class="roommodal-footer">
-        <button type="button" class="btn btn-secondary" id="cancleroombtn" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" id="changeroombtn">변경</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 방 수정 모달 -->
+					<button type="button" class="btn btn-secondary" id="cancleroombtn"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" id="changeroombtn">변경</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 방 수정 모달 -->
+
+	<!-- 친구 리스트 모달 -->
+	<div class="friendmodal" id="friendListModal" tabindex="-1"
+		aria-labelledby="friendModalLabel" aria-hidden="true">
+		<div class="friendodal-dialog">
+			<div class="friendmodal-content">
+				<div class="friendmodal-header">
+					<h5 class="friendmodal-title" id="friendListModalLabel">친구 목록</h5>
+				</div>
+				
+				<div class="friendmodal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
+					<div class="friendmodal-list" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;"></div>
+
+					
+
+				</div>
+				<div class="friendmodal-footer">
+					<button type="button" class="btn btn-secondary" id="canclefirendbtn" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" id="gofirendroombtn">이동</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 친구 리스트 모달 -->
 
 
-	<header> <!-- 페이지 상단 -->
+	<header>
+		<!-- 페이지 상단 -->
 		<div>
-			<nav class="homebutton_nav"> <!-- 홈 버튼 -->
+			<nav class="homebutton_nav">
+				<!-- 홈 버튼 -->
 				<ul>
 					<li class="homebutton"></li>
 				</ul>
 				<ol>
-					<a href="#"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+					<a href="#"><i class="fa-solid fa-house"></i></a>
+					<!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
 				</ol>
 			</nav>
 		</div>
 
-		<div class="search"> <!-- 검색창 -->
-			<input type="text" placeholder="검색어 입력"> <img src="/intertwine/resources/images/search.png">
+		<div class="search">
+			<!-- 검색창 -->
+			<input type="text" placeholder="검색어 입력"> <img
+				src="/intertwine/resources/images/search.png">
 		</div>
 
 		<div></div>
@@ -225,16 +282,22 @@
 			<ul>
 				<li id="square">
 					<%-- <a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a> --%>
-					<!-- 스퀘어에서 스퀘어 버튼 막아놓기 --> <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+					<!-- 스퀘어에서 스퀘어 버튼 막아놓기 --> <a href="#"><i
+						class="fa-solid fa-gamepad"></i> 스퀘어</a>
 				</li>
-				<li id="mypage"><a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a> 
-				<!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
-				</li>
-				<li id="friend"><a href="#"><i class="fa-solid fa-user-group"></i> 친구</a></li>
-				<li id="chatting"><a href="#"><i class="fa-solid fa-comment"></i> 채팅</a></li>
-				<li id="alarm"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a></li>
-				<li id="bookmark"><a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a></li>
-				<li id="settings"><a href="#"><i class="fa-solid fa-gear"></i> 설정</a></li>
+				<li id="mypage"><a href="#"><i
+						class="fa-solid fa-circle-user"></i> 마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
+					<!-- 색칠된 아이콘 --></li>
+				<li id="friend"><a href="#"><i
+						class="fa-solid fa-user-group"></i> 친구</a></li>
+				<li id="chatting"><a href="#"><i
+						class="fa-solid fa-comment"></i> 채팅</a></li>
+				<li id="alarm"><a href="#"><i class="fa-solid fa-bell"></i>
+						알림</a></li>
+				<li id="bookmark"><a href="#"><i
+						class="fa-solid fa-bookmark"></i> 북마크</a></li>
+				<li id="settings"><a href="#"><i class="fa-solid fa-gear"></i>
+						설정</a></li>
 			</ul>
 		</aside>
 		<div id="submenubars">
@@ -248,32 +311,39 @@
 			<div id="abc">
 				<div id="squarearea">
 					<div id="loadingview">
-						<img src="/intertwine/resources/images/loading/loading3.gif" alt="로딩 중...">
+						<img src="/intertwine/resources/images/loading/loading3.gif"
+							alt="로딩 중...">
 						<div id="squaretip">알고 계셨나요? 팀 세미콜론은 8명의 멤버로 이루어져 있답니다.</div>
 						<!-- <div id="squaretip">알고 계셨나요? Intertwine은 두 가지 이상의 것이 서로 얽히거나 엮이는 것을 의미합니다. </div> -->
 						<!-- <div id="squaretip">알고 계셨나요? 알고 계셨군요.</div> -->
 					</div>
 					<div id="userroom" style="background-color:${userRoom.roomColor}">
-					<button id="btnselectguestbook" class="bubbly-button">방명록 보기</button>
-					<button id="btnselectalbum" class="bubbly-button">앨범 보기</button>
-					<c:if test="${userRoom.userId == sessionScope.loginUser.userId}">
-					<button id="btnupdateroom" class="bubbly-button">방꾸미기</button>
-					</c:if>
+						<button id="btnselectguestbook" class="bubbly-button">방명록
+							보기</button>
+						<button id="btnselectalbum" class="bubbly-button">앨범 보기</button>
+						<c:if test="${userRoom.userId == sessionScope.loginUser.userId}">
+							<button id="btnupdateroom" class="bubbly-button">방꾸미기</button>
+						</c:if>
 						<c:forEach var="roomResource" items="${userRoom.rList}">
-							<img src="${roomResource.resourceURL}" 
-									 alt="Room Resource Image"
-									 class="userroomresource"
-									 style="position: absolute; 
+							<img src="${roomResource.resourceURL}" alt="Room Resource Image"
+								class="userroomresource"
+								style="position: absolute; 
 									            left: ${roomResource.resourcePositionX}px; 
 									            top: ${roomResource.resourcePositionY}px; 
 									            transform: rotate(${roomResource.resourceRotation}deg) scale(${roomResource.resourceScale});" />
 						</c:forEach>
-						<div id="mycharacter" style="width: 70px; height: 100px; position: absolute; top: 200px; left: 670px;">
-							<div id="mycharacternickname" style="position: absolute; bottom: 100%; width: 100%; text-align: center; margin-bottom:4px;">닉네임</div>
-						    <div id="mycharacterhair" class="mycharacterresource" style="position: absolute; width: 30px; height: 20px; top:8px"></div>
-						    <div id="mycharacterhat" style="position: absolute; width: 50px; height: 20px; background-size: calc(100% - 10px) calc(100% - 10px);" ></div>
-						    <div id="mycharactertop" class="mycharacterresource" style="position: absolute; width: 50px; height: 30px; top: 30px; left: 10px; /* background-color: pink; */"></div>
-						    <div id="mycharacterbottom" class="mycharacterresource" style="position: absolute; width: 50px; height: 40px; top: 60px; left: 10px; /* background-color: orange; */"></div>
+						<div id="mycharacter"
+							style="width: 70px; height: 100px; position: absolute; top: 200px; left: 670px;">
+							<div id="mycharacternickname"
+								style="position: absolute; bottom: 100%; width: 100%; text-align: center; margin-bottom: 4px;">닉네임</div>
+							<div id="mycharacterhair" class="mycharacterresource"
+								style="position: absolute; width: 30px; height: 20px; top: 8px"></div>
+							<div id="mycharacterhat"
+								style="position: absolute; width: 50px; height: 20px; background-size: calc(100% - 10px) calc(100% - 10px);"></div>
+							<div id="mycharactertop" class="mycharacterresource"
+								style="position: absolute; width: 50px; height: 30px; top: 30px; left: 10px;"></div>
+							<div id="mycharacterbottom" class="mycharacterresource"
+								style="position: absolute; width: 50px; height: 40px; top: 60px; left: 10px;"></div>
 						</div>
 					</div>
 					<%-- userroom --%>
@@ -458,8 +528,16 @@ $("#changeCharacterbtn").click(function() {
 		
 		$("#cancleroombtn").click(function() {
 			const modal = document.querySelector(".roommodal");
+			$('.roommodal-preview').empty();
+			$('.roommodal-preview').css('background-color', '#82c8a0'); // .roommodal-preview의 배경색을 #82c8a0로 설정
 			modal.style.display="none";
 		});
+		
+		$("#canclefirendbtn").click(function() {
+			const modal = document.querySelector(".friendmodal");
+			modal.style.display="none";
+		});
+		
 		
 		$('.charactermodal-hair-container > div').each(function() {
 	        // 각 hairdiv에 클릭 이벤트 리스너 추가
@@ -691,7 +769,7 @@ $("#changeCharacterbtn").click(function() {
 		                    userId: userId,
 		                },
 		                success: function(data) {
-		                	 $('#userroom').css('background-color', previewbackgroundColor); // .roommodal-preview의 배경색을 #82c8a0로 설정
+		                	 $('#userroom').css('background-color', previewbackgroundColor); // #userroom의 배경색을 #82c8a0로 설정
 		                	 $('.roommodal-preview').empty();  // .roommodal-preview의 모든 자식 요소를 제거
 				             $('.roommodal-preview').css('background-color', '#82c8a0'); // .roommodal-preview의 배경색을 #82c8a0로 설정
 				                

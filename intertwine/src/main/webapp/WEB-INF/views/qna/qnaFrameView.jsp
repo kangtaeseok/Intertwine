@@ -158,7 +158,7 @@ function moveLoginPage(){
 
 	</header>
 
-    <%-- <c:import url="/WEB-INF/views/common/menubar.jsp" /> --%>
+  <%--   <c:import url="/WEB-INF/views/common/menubar.jsp" /> --%>
     <br>
     <main>
         <div class="left">
@@ -206,11 +206,16 @@ function moveLoginPage(){
         	 <c:if test="${ empty loginAdmin and empty loginUser}">	
 	                <li><h2 id="nologin">로그인 한 후 사용하세요.</h2></li>
 				</c:if> 
-        
+ 
 		</div>
+
+</div>		
+<hr>
+<footer>
+<c:import url="/WEB-INF/views/common/footer.jsp"/>
+</footer> 		
     </main>
 
-</div>
 <script>
 
 document.getElementById("faq").addEventListener("click", function() {
@@ -231,7 +236,9 @@ document.getElementById("qna").addEventListener("click", function() {
         
 
 </script>
-<hr>
-<c:import url="/WEB-INF/views/common/footer.jsp"/>
+
+
+
+  
 </body>
 </html>
