@@ -18,8 +18,7 @@ public interface UserRoomService {
 	
 	int insertUserRoomFirst(String userId);
 	
-	int insertUserRoom(InsertUserRoomParam insertUserRoomParam);
+	void insertUserRoom(String userId, UserRoomResource item);
 	
 	int deleteUserRoom(String userId);
-
 }

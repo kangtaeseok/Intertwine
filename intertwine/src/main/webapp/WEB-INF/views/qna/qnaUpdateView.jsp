@@ -71,8 +71,13 @@ $(function(){
 			<input type="reset" value="수정취소"> &nbsp;
 			<input type="button" value="이전페이지로 이동" 
 			onclick="javascript:history.go(-1); return false;"> &nbsp;
-			<input type="button" value="목록" 
-			onclick="javascript:location.href='qlist.do?page=${ currentPage }'; return false;">
+            <c:if test="${ !empty loginUser }">
+			<c:url var="qsearchwriter" value="qsearchWriter.do">
+					<c:param name="keyword" value="${ loginUser.userId }" />
+					<c:param name="action" value="writer" />
+		 	</c:url>
+			</c:if> 
+			<input type="button" value="목록" onclick="location.href='${ qsearchwriter }'; return false;" >
 		</th>		
 	</tr>
 </table>
@@ -107,8 +112,15 @@ $(function(){
 			<input type="reset" value="수정취소"> &nbsp;
 			<input type="button" value="이전페이지로 이동" 
 			onclick="javascript:history.go(-1); return false;"> &nbsp;
-			<input type="button" value="목록" 
-			onclick="javascript:location.href='qlist.do?page=${ currentPage }'; return false;">
+		     
+            <c:if test="${ !empty loginUser }">
+			<c:url var="qsearchwriter" value="qsearchWriter.do">
+					<c:param name="keyword" value="${ loginUser.userId }" />
+					<c:param name="action" value="writer" />
+		 	</c:url>
+			</c:if> 
+			<input type="button" value="목록" onclick="location.href='${ qsearchwriter }'; return false;" >
+
 		</th>		
 	</tr>
 </table>

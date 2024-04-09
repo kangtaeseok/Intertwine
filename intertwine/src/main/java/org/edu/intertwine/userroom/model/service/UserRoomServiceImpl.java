@@ -29,6 +29,7 @@ public class UserRoomServiceImpl implements UserRoomService {
 		return userRoomDao.selectAllRoomResource();
 	}
 	
+	@Override
 	public int updateUserRoom(UserRoom userRoom) {
 		return userRoomDao.updateUserRoom(userRoom);
 	}
@@ -39,13 +40,13 @@ public class UserRoomServiceImpl implements UserRoomService {
 	}
 
 	@Override
-	public int insertUserRoom(InsertUserRoomParam insertUserRoomParam) {
-		return userRoomDao.insertUserRoom(insertUserRoomParam);
+	public void insertUserRoom(String userId, UserRoomResource item)  {
+		userRoomDao.insertUserRoom(userId, item);
 	}
 
 	@Override
 	public int deleteUserRoom(String userId) {
 		return userRoomDao.deleteUserRoom(userId);
 	}
-	
+
 }

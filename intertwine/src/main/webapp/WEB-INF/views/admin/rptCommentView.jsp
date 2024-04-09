@@ -15,6 +15,9 @@
 <meta charset="UTF-8">
 <title>reportPage</title>
 <link rel="stylesheet" href="/intertwine/resources/css/rptCommentView.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 
@@ -122,7 +125,8 @@ function sendCheckedIds2() {
 <header>
 <div class="header">
 	<div class="header-div">
-		<a href="location.href='admain.do'"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		<h2> <i class="fa-solid fa-clipboard"></i> 콘텐츠 관리 </h2>
 	</div>
 </div>
 </header>
@@ -131,10 +135,9 @@ function sendCheckedIds2() {
 <aside class="side-bar">
              <ul>
                 <li id="square">
-                    <li><a href="#"><i class="fa-solid fa-user"></i> 사용자 관리</a></li>
+                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
       
                 <li id="mypage">
-             		<li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>       
              
                 <li id="friend">
                 	<li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>    
@@ -143,6 +146,7 @@ function sendCheckedIds2() {
                     <li><a href="#"><i class="fa-solid fa-q"></i> 고객센터</a></li>
                 
                 <li id="alarm">
+                    <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
                     
                 
             </ul>
@@ -168,12 +172,10 @@ function sendCheckedIds2() {
         
 
 <div id="bottom_right_contents">
- <h2> 콘텐츠 관리 </h2>
             <div id="abc">
            
                 <div class="content-div">
-                
-<hr class ="hr1" noshade> 
+
 <br>
 <div class="button-box">
 <button id="hideButton" onclick="sendCheckedIds();" disabled>비공개</button>
@@ -204,7 +206,7 @@ function sendCheckedIds2() {
        	<td class="center">${re.boardNum}</td>
        	<td class="center">${re.reportComment}</td>
 
-        	<td class="center">${comment[i].commentContent}</td>
+       <td class="center">${comment[i].commentContent}</td>
        <c:set var="i" value="${i + 1}"/>
         <td class="center">${re.reportReason}</td>
         <td class="center">${re.reportTime}</td>
@@ -221,8 +223,8 @@ function sendCheckedIds2() {
 <span class="right-move-box">
 <button class="greylist" onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/rptlist.do?page=1';">목록</button>
 </span>
-                	
-                	
+       <br>         	
+           <c:import url="/WEB-INF/views/common/pagingView.jsp"></c:import>          	
 				</div>
             </div>
         </div>

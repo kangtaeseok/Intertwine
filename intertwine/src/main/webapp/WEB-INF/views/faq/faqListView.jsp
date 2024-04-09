@@ -68,34 +68,24 @@ hr {
 </head>
 <body>
 
-<hr>
-<br>
-<div class="container">
-    <header>Header</header>
-    <c:import url="/WEB-INF/views/common/menubar.jsp" />
-    <br>
-    <main>
-        <div class="left">
-            <h1>고객센터</h1>
-            <hr>
-            <ul>
-                <!-- 문의하기(Q&A)와 자주묻는질문(FAQ)에 ID 추가 -->
-                <li><h2 id="faq">자주묻는질문(FAQ)</h2></li>
-                <li><h2 id="qna">문의하기(Q&A)</h2></li>
-            </ul>           
-        </div>
-        <div class="right" id="faqContent">
+<c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
+<script>
+$(function(){
+	
+	document.getElementById("faqContent").innerHTML = `
+
+
             <!-- 초기 FAQ 내용 -->
             <h1>자주묻는질문(FAQ)</h1>
             <hr>
             <p>자주 묻는 질문 내용입니다.
             <%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
-			<%-- <c:if test="${ !empty sessionScope.loginMember }"> --%>
+			<c:if test="${ !empty sessionScope.loginAdmin }">
 				<div style="align:center;text-align:right;">
 	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">글쓰기</button>
 					<!-- <button onclick="showWriteForm();">글쓰기</button> -->
 				</div>
-			<%-- </c:if> --%>
+			</c:if>
 			<br>
 
             
@@ -133,14 +123,14 @@ hr {
 			<c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
 			
-		</div>
+
 		
 		
-    </main>
+ 
 
-</div>
+`; 
+});
 
-<script>
 
 document.getElementById("faq").addEventListener("click", function() {
     // 자주묻는질문(FAQ) 클릭 시 오른쪽 창의 내용이 변경됩니다.
