@@ -6,33 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>userTime</title>
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <link rel="stylesheet" href="/intertwine/resources/css/userTimePage.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> <!-- swiper css 가져오기 -->
-<script src="/intertwine/resources/js/kakao.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script defer src="/intertwine/resources/js/mainpage.js"></script>
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <script>
-Kakao.init('40ec0da7a298d729eab6f57f66aad7f8');
-console.log(Kakao.isInitialized()); 
-function kakaoLogout() {
-    if (Kakao.Auth.getAccessToken()) {
-      Kakao.API.request({
-        url: '/v1/user/unlink',
-        success: function (response) {
-        	console.log(response)
-        	location.href="login.do";
-        },
-        fail: function (error) {
-          console.log(error)
-        },
-      })
-      Kakao.Auth.setAccessToken(undefined)
-    }
-  }
-
 function openPopup() {
 	  document.getElementById("popup").style.display = "block";
 	}
@@ -41,133 +18,20 @@ function openPopup() {
 	function closePopup() {
 	  document.getElementById("popup").style.display = "none";
 	}
-
-
-
 </script>
-
 </head>
 <body>
-<header> <!-- 페이지 상단 -->
-        <div> <!-- 홈 버튼 -->
-            <nav class="homebutton_nav">
-                <ul>
-                    <li class="homebutton"></li>
-                </ul>
-                <ol>
-                    <a href="#"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
-                </ol>
-            </nav>
-        </div>
-
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
-        <div></div>
-        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
-    </header>
-
     <main>
-        <div>
-            <aside class="side-bar">
-                <ul>
-                    <li id="a">
-                        <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
-                        <ul>
-                            <li id="square">
-                    			<a href="${ pageContext.servletContext.contextPath }/startSquare.do"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
-               				</li>
-                        </ul>
-                    </li>
-                    <li id="mypage">
-                        <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
-                        <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
-                    </li>
-                    <li id="friend">
-                    <a href="${ pageContext.servletContext.contextPath }/friendPage.do"><i class="fa-solid fa-user-group"></i> 친구</a>
-                </li>
-                <li id="chatting">
-                    <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
-                </li>
-                <li id="alarm">
-                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
-                </li>
-                <li id="bookmark">
-                    <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
-                </li>
-                <li id="settings">
-                    <a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-                     
-                </li>
-            </ul>
-            </aside>
-            <div id="bottom_right_contents">
-                <div id="dummy_sub_menu" class="sub_menu">
-                    더미 서브메뉴
-                </div>
-                <div id="mypage_sub_menu" class="sub_menu">
-                    마이페이지 서브메뉴
-                </div>
-                <div id="chatting_sub_menu" class="sub_menu">
-                    채팅 서브메뉴
-                </div>
-                <div id="alarm_sub_menu" class="sub_menu">
-                    알림 서브메뉴
-                </div>
-                <div id="settings_sub_menu" class="sub_menu">
-                <ul>
-                
-                <li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
-            	<c:if test="${empty type}">
-                        <li id="userInfo">
-                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
-                       	</li>
-                        </c:if>
-                        <c:if test="${type eq 'kakao'}">
-						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
-						</li>
-						</c:if>
-						<c:if test="${type eq 'naver'}">
-						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
-						</li>
-						</c:if>
-						
-						<li><a href="${ pageContext.servletContext.contextPath }/userStopPage.do">계정 비활성화 <i class="fa-solid fa-user-xmark"></i></a></li>
-						
-						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
-						
-						<c:if test="${empty type}">
-                        	<button class="btn" onclick="location.href='ulogout.do';">logout</button>
-						</c:if>
-						<c:if test="${type eq 'kakao'}">
-							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
-						</c:if>
-						<c:if test="${type eq 'naver'}">
-							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
-						</c:if>
-					</ul>	
-                </div>
-                
-               
-                
-                <!--<div class="feed">
-                    피드창
-                </div>-->
-                
-            </div>
-        </div>
-<div class="box">      
+       <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>    
+<div id="bottom_right_contents">
+	<div id="abc">
+	            <div id="feed">     
 		<div class="time-box">
 			<div class="logo-box">
 				<h3>이용시간</h3>
 			</div>
 				<div class="usage-time">
 					 ${time} 분
-				 
 				</div>
 				<div class="chart-box">
 					<canvas ID="myChart"></canvas>
@@ -179,7 +43,6 @@ function openPopup() {
 				<h3>시간 설정</h3>
 				</div>
 				<div class="time-set-box">
-				
 					<div class="set-box">
 					<center>
 						<div class="set1">
@@ -201,10 +64,38 @@ function openPopup() {
 						</div>
 						</center>
 					</div>
-				
 				</div>
 			</div>
 	</div>
+				</div>
+            </div>
+        <div class="floating-button" id="floatingButton">
+        	<img src="/intertwine/resources/images/ai/chatbot2.png" alt="Chatbot">
+        </div>
+			<div class="layer" id="layer">
+			    <div class="chatbot-container" id="chatbotContainer">
+			        <div id="header">
+			            <img src="/intertwine/resources/images/ai/chatbot1.png">
+			            <h1>이벤트 챗봇</h1>
+			        </div>
+			        <div id="chatbot">
+			            <div id="conversation">
+			                <div class="chatbot-message">
+			                    <p class="chatbot-text">안녕하세요! 👋 무엇을 도와드릴까요?</p>
+			                </div>
+			            </div>
+			            <form id="input-aievent" action="aieventgo.do" method="post">
+			                <message-container>
+			                    <input id="input-aefield" type="text" name="keyword" placeholder="메세지를 입력하세요.">
+			                    <button id="submit-button" type="submit">
+			                      <img class="send-icon" src="/intertwine/resources/images/ai/send-message.png" alt="">
+			                    </button>
+			                </message-container>
+			            </form>
+			        </div>
+			    </div>
+			</div>
+
 </main>
 
 <script>

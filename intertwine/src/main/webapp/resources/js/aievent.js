@@ -188,17 +188,17 @@ $(document).ready(function () {
         }
     });
 });
-const content = document.querySelector("#bottom_right_contents");
-const sidebarItems = document.querySelectorAll('.side-bar > ul > li');
-const submenu = document.querySelector(".sub_menu");
-const mypage = document.querySelector("#mypage");
-const chatting = document.querySelector("#chatting");
-const alarm = document.querySelector("#alarm");
-const settings = document.querySelector("#settings");
-const mypage_sub_menu = document.querySelector("#mypage_sub_menu");
-const chatting_sub_menu = document.querySelector("#chatting_sub_menu");
-const alarm_sub_menu = document.querySelector("#alarm_sub_menu");
-const settings_sub_menu = document.querySelector("#settings_sub_menu");
+const content1 = document.querySelector("#bottom_right_contents");
+const sidebarItems1 = document.querySelectorAll('.side-bar > ul > li');
+const submenu1 = document.querySelector(".sub_menu");
+const mypage1 = document.querySelector("#mypage");
+const chatting1 = document.querySelector("#chatting");
+const alarm1 = document.querySelector("#alarm");
+const settings1 = document.querySelector("#settings");
+const mypage_sub_menu1 = document.querySelector("#mypage_sub_menu");
+const chatting_sub_menu1 = document.querySelector("#chatting_sub_menu");
+const alarm_sub_menu1 = document.querySelector("#alarm_sub_menu");
+const settings_sub_menu1 = document.querySelector("#settings_sub_menu");
 
 
 $(document).ready(function () {
@@ -303,8 +303,10 @@ $(document).ready(function () {
     }
 });
 
+
 const floatingButton = document.getElementById('floatingButton');
 const layer = document.getElementById('layer');
+
 
 // 클릭 이벤트를 처리하는 함수
 function toggleChatbot() {
