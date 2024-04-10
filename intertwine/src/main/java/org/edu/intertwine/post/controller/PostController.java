@@ -117,6 +117,81 @@ public class PostController {
 			
 	}
 	
+	//나의 페이지 검색
+	@RequestMapping(value="searchmypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	public ModelAndView searchMyPage(@RequestParam("userId")String userId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
+		
+		
+		logger.info(userId);
+		logger.info(keyword);
+		logger.info(String.valueOf(condition));
+		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
+		SearchMyPage searchMyPage = new SearchMyPage(userId, decodedKeyword);
+		logger.info(decodedKeyword);
+		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		switch(condition) {
+
+		case 0:
+			//전체 검색
+			List<Post> postsByTag = postService.selectPostsBySearchTag(searchMyPage);
+	        List<Post> postsByKeyword = postService.selectPostsBySearchKeyword(searchMyPage);
+	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
+	        combinedPosts.addAll(postsByKeyword);
+	        posts = new ArrayList<>(combinedPosts);
+	        
+			break;				
+
+		case 1:
+			//태그 검색
+			posts = postService.selectPostsBySearchTag(searchMyPage);
+			break;
+			
+		case 2:
+			//콘텐츠 검색
+			posts = postService.selectPostsBySearchKeyword(searchMyPage);
+			break;
+		}
+		
+		User user = userService.selectUser(userId);
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		
+		
+		
+		//정렬을 거쳐올 경우 정렬 값을 담음
+		if(posts.size() > 0) {		
+			for (Post post : posts) {
+		        Gallery gallery = new Gallery();
+		        gallery.setPost(post);
+		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+		        gallery.setImage(postService.selectOneImage(post.getPostId()));
+		        gallery.setTags(postService.selectTags(post.getPostId()));
+		        logger.info(gallery.toString());
+		        
+		        galleries.add(gallery);
+		        
+		    }
+		}
+		
+		int followingCount = friendService.selectCountFollowing(userId);
+		int followerCount = friendService.selectCountFollowers(userId);
+		
+		if(posts.size() > 0 ) {
+			mv.addObject("galleries", galleries);
+		}
+		mv.addObject("user", user);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/mypage");
+		
+		return mv;
+		
+		
+	}
+	
+	
 	//남의 페이지 검색
 	@RequestMapping(value="searchothermypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
 	public ModelAndView searchOtherMyPage(HttpSession session, @RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
@@ -129,6 +204,7 @@ public class PostController {
 	    
 	    int isFollowing = 0;
 	    isFollowing = friendService.selectFollowing(friend);
+	    logger.info(String.valueOf(isFollowing));
 	    int isFollower = friendService.selectFollower(friend);
 	    
 	    
@@ -192,7 +268,7 @@ public class PostController {
 			break;
 		}
 		
-		User user = userService.selectUser(friendId);
+		User otherUser = userService.selectUser(friendId);
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		
 		
@@ -214,16 +290,23 @@ public class PostController {
 		    }
 		}
 		
-		int followingCount = friendService.countFollowing(friendId);
-		int followerCount = friendService.countFollowers(friendId);
+		int followingCount = friendService.selectCountFollowing(friendId);
+		int followerCount = friendService.selectCountFollowers(friendId);
 		
 		if(posts.size() > 0 ) {
 			mv.addObject("galleries", galleries);
 		}
-		mv.addObject("user", user);
+		
+		
+	    mv.addObject("isFollowing", isFollowing);
+	    mv.addObject("FollowingId", FollowingId);
+	    mv.addObject("FollowerId", FollowerId);
+		mv.addObject("galleries", galleries);
+		mv.addObject("otheruser", otherUser);
+		mv.addObject("user", loginUser);
 		mv.addObject("followingCount", followingCount);
 		mv.addObject("followerCount", followerCount);
-		mv.setViewName("post/page.do?friendId=" + friendId );
+		mv.setViewName("post/othermypage");
 		
 		return mv;
 		
@@ -242,8 +325,8 @@ public class PostController {
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
 		//팔로잉 여부 확인
-		int followingCount = friendService.countFollowing(friendId);
-		int followerCount = friendService.countFollowers(friendId);
+		int followingCount = friendService.selectCountFollowing(friendId);
+		int followerCount = friendService.selectCountFollowers(friendId);
 		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
 		String FollowingId = friendService.selectFollowingId(friend);
 	    String FollowerId = friendService.selectFollowerId(friend);
@@ -421,8 +504,8 @@ public class PostController {
 	        
 	    }
 		
-		int followingCount = friendService.countFollowing(user.getUserId());
-		int followerCount = friendService.countFollowers(user.getUserId());
+		int followingCount = friendService.selectCountFollowing(user.getUserId());
+		int followerCount = friendService.selectCountFollowers(user.getUserId());
 		
 		mv.addObject("galleries", galleries);
 		mv.addObject("user", user);
@@ -722,6 +805,7 @@ public class PostController {
 
 	}
 	
+	//북마크 확인
 	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView getBookmarkFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 		
@@ -935,79 +1019,7 @@ public class PostController {
 	}
 	
 	
-	@RequestMapping(value="searchmypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	public ModelAndView searchMyPage(@RequestParam("userId")String userId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
-		
-		
-		logger.info(userId);
-		logger.info(keyword);
-		logger.info(String.valueOf(condition));
-		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
-		SearchMyPage searchMyPage = new SearchMyPage(userId, decodedKeyword);
-		logger.info(decodedKeyword);
-		
-		ArrayList<Post> posts = new ArrayList<Post>();
-		switch(condition) {
 
-		case 0:
-			//전체 검색
-			List<Post> postsByTag = postService.selectPostsBySearchTag(searchMyPage);
-	        List<Post> postsByKeyword = postService.selectPostsBySearchKeyword(searchMyPage);
-	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
-	        combinedPosts.addAll(postsByKeyword);
-	        posts = new ArrayList<>(combinedPosts);
-	        
-			break;				
-
-		case 1:
-			//태그 검색
-			posts = postService.selectPostsBySearchTag(searchMyPage);
-			break;
-			
-		case 2:
-			//콘텐츠 검색
-			posts = postService.selectPostsBySearchKeyword(searchMyPage);
-			break;
-		}
-		
-		User user = userService.selectUser(userId);
-		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
-		
-		
-		
-		//정렬을 거쳐올 경우 정렬 값을 담음
-		if(posts.size() > 0) {		
-			for (Post post : posts) {
-		        Gallery gallery = new Gallery();
-		        gallery.setPost(post);
-		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
-		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
-		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
-		        gallery.setImage(postService.selectOneImage(post.getPostId()));
-		        gallery.setTags(postService.selectTags(post.getPostId()));
-		        logger.info(gallery.toString());
-		        
-		        galleries.add(gallery);
-		        
-		    }
-		}
-		
-		int followingCount = friendService.countFollowing(userId);
-		int followerCount = friendService.countFollowers(userId);
-		
-		if(posts.size() > 0 ) {
-			mv.addObject("galleries", galleries);
-		}
-		mv.addObject("user", user);
-		mv.addObject("followingCount", followingCount);
-		mv.addObject("followerCount", followerCount);
-		mv.setViewName("post/mypage");
-		
-		return mv;
-		
-		
-	}
-	
 	
 
 }// 클래스

@@ -20,12 +20,12 @@ public class FriendDao {
 
 	}
 
-	public int countFollowing(String userId) {
-		return sqlSessionTemplate.selectOne("friendMapper.countFollowing", userId);
+	public int selectCountFollowing(String userId) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectCountFollowing", userId);
 	}
 
-	public int countFollowers(String userId) {
-		return sqlSessionTemplate.selectOne("friendMapper.countFollowers", userId);
+	public int selectCountFollowers(String userId) {
+		return sqlSessionTemplate.selectOne("friendMapper.selectCountFollowers", userId);
 	}
 
 	public int deleteFollowing(Friend friend) {
@@ -38,23 +38,23 @@ public class FriendDao {
 
 	}
 
-	public ArrayList<Friend> searchFollowing(Friend friend) {
-		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.searchFollowing", friend);
+	public ArrayList<Friend> selectSearchFollowing(Friend friend) {
+		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.selectSearchFollowing", friend);
 		return (ArrayList<Friend>) list;
 	}
 
-	public ArrayList<Friend> FollowingList(String userId) {
-		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.FollowingList", userId);
+	public ArrayList<Friend> selectFollowingList(String userId) {
+		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.selectFollowingList", userId);
 		return (ArrayList<Friend>) list;
 	}
 
-	public ArrayList<Friend> FollowerList(String userId) {
-		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.FollowerList", userId);
+	public ArrayList<Friend> selectFollowerList(String userId) {
+		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.selectFollowerList", userId);
 		return (ArrayList<Friend>) list;
 	}
 
-	public ArrayList<Friend> searchFollower(Friend friend) {
-		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.searchFollower", friend);
+	public ArrayList<Friend> selectSearchFollower(Friend friend) {
+		List<Friend> list = sqlSessionTemplate.selectList("friendMapper.selectSearchFollower", friend);
 		return (ArrayList<Friend>) list;
 	}
 
