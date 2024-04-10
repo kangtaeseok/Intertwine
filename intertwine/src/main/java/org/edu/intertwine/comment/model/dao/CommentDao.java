@@ -45,4 +45,9 @@ public class CommentDao {
 		return sqlSessionTemplate.delete("commentMapper.deleteParentComment", commentId);
 	}
 
+	public Comment selectCommentbyCommentId(int commentId) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("commentMapper.selectCommentbyCommentId", commentId);
+	}
+
 }
