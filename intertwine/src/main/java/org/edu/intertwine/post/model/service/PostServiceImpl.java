@@ -179,37 +179,37 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int deleteBatchDelete(List<String> postIds) {
+	public int deleteBatchDelete(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.deleteBatchDelete(postIds);
 	}
 
 	@Override
-	public int updateBatchPublic(List<String> postIds) {
+	public int updateBatchPublic(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPublic(postIds);
 	}
 
 	@Override
-	public int updateBatchFollowing(List<String> postIds) {
+	public int updateBatchFollowing(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchFollowing(postIds);
 	}
 
 	@Override
-	public int updateBatchPrivate(List<String> postIds) {
+	public int updateBatchPrivate(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPrivate(postIds);
 	}
 
 	@Override
-	public int updateBatchPinOn(List<String> postIds) {
+	public int updateBatchPinOn(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPinOn(postIds);
 	}
 
 	@Override
-	public int updateBatchPinOff(List<String> postIds) {
+	public int updateBatchPinOff(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPinOff(postIds);
 	}

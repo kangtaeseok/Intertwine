@@ -69,6 +69,12 @@ public class PostController {
 		return "post/write";
 	}
 	
+	@RequestMapping("profileupdate.do")
+	public String moveProfileUpdate() {
+		
+		return "post/updateprofile";
+	}
+	
 	//전화면으로 돌아가기
 	@RequestMapping("back.do")
 	public String moveBack(@RequestParam("postId")int postId, HttpSession session, Model model) {
@@ -320,7 +326,7 @@ public class PostController {
 	
 	//배치액션
 	@RequestMapping(value="batchAction.do", method=RequestMethod.POST)
-	public String batchActions(@RequestParam("action")String action, @RequestParam("checks") List<String> postIds, Model model) {
+	public String batchActions(@RequestParam("action")String action, @RequestParam("checks") List<Integer> postIds, Model model) {
 		
 		logger.info("postIds" + postIds.toString());
 		
@@ -431,25 +437,22 @@ public class PostController {
 		
 	//공감업데이트
 	@RequestMapping(value="updatereaction.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	@ResponseBody
-	public String updateLike(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")int likeType, Model model) {
+	public String updateLike(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
-		System.out.println("User ID: " + userId);
-	    System.out.println("Post ID: " + postId);
-	    System.out.println("Like Type: " + likeType);
-	    String likeType2 = String.valueOf(likeType);
-	    
+		
+		
 		Like like1 = new Like(userId, postId);
-		Like like2 = new Like(userId, postId, likeType2);
-		logger.info("가져온 공감타입" + likeType2);
+		String trimmedLikeType = likeType.replace(",", "");
+		Like like2 = new Like(userId, postId, trimmedLikeType);
+		logger.info("가져온 공감타입" + likeType);
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
 		
 		//이전에 이 포스트에 공감을 한 적이 있는 경우
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(likeType2)) {
+			if(whatIsLiked.equals(trimmedLikeType)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -467,7 +470,7 @@ public class PostController {
 			int result = postService.insertLikeType(like2);
 		}
 		
-		
+		session.setAttribute("redirecting", "1");
 		return "redirect:detail.do?postId=" + postId;
 		
 		
@@ -477,20 +480,22 @@ public class PostController {
 	
 	//공감업데이트2
 	@RequestMapping(value="updatereaction2.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	@ResponseBody
 	public String updateLike2(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
 		Like like1 = new Like(userId, postId);
-		Like like2 = new Like(userId, postId, likeType);
+		String trimmedLikeType = likeType.replace(",", "");
+		Like like2 = new Like(userId, postId, trimmedLikeType);
 		logger.info("가져온 공감타입" + likeType);
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
-		
+		System.out.print(whatIsLiked);
+		System.out.print(whatIsLiked == trimmedLikeType);
 		//이전에 이 포스트에 공감을 한 적이 있는 경우
+		
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(likeType)) {
+			if(whatIsLiked.equals(trimmedLikeType)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -613,7 +618,7 @@ public class PostController {
 	}// 메소드
 
 	//피드
-	@RequestMapping(value = "getfeed.do", method = {RequestMethod.GET })
+	@RequestMapping(value = "getfeed.do", method = {RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 		
 		
@@ -717,7 +722,7 @@ public class PostController {
 
 	}
 	
-	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.GET })
+	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView getBookmarkFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 		
 		
@@ -834,7 +839,15 @@ public class PostController {
 		
 		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
 		if(!viewingUser.getUserId().equals(post.getUserId())) {
-			postService.updatePostViews(post);
+			if(session.getAttribute("redirecting")!= null) {
+				if(!session.getAttribute("redirecting").equals("1")) {
+				postService.updatePostViews(post);
+				}else {
+					 session.removeAttribute("redirecting");
+				}
+			}else {
+				postService.updatePostViews(post);
+			}
 		}
 		//logger.info("post" + post.toString());
 		//포스트에 있는 태그들 가져옴
