@@ -157,7 +157,7 @@ public class UserRoomController {
 	@ResponseBody
 	public String getFriendList(@RequestParam("userId") String userId, HttpServletResponse response) {
 
-		ArrayList<Friend> friendList = friendService.FollowingList(userId);
+		ArrayList<Friend> friendList = friendService.selectFollowingList(userId);
 		JSONArray jsonFriendArray = new JSONArray();
 
 		for (Friend friend : friendList) {

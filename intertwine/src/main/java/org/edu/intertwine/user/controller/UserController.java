@@ -89,6 +89,12 @@ public class UserController {
 		return "user/finduserInfo"; 
 	}
 	
+	//휴면해제
+	@RequestMapping("ustopclear.do")
+	public String movestopClearPage() {
+		return "user/stopPage"; 
+	}
+	
 	
 	//일반유저 정보수정
 	@RequestMapping("userInfo.do")
@@ -152,12 +158,16 @@ public class UserController {
 	@RequestMapping(value="ulogin.do", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session, SessionStatus status,
 			HttpServletResponse response, Model model) throws IOException {
-			
+	
+	if(userService.selectAccountStatus(user.getUserId()) > 0) {
+			return "redirect:ustopclear.do";
+	}
 	User loginUser = userService.selectUser(user.getUserId());
 	
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
+		
 		userService.updateDayTime(loginUser.getUserId());
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
@@ -220,8 +230,11 @@ public class UserController {
 	String returnStr = null;
 		if(idCount == 0) {
 			returnStr = "ok";
+			
 		} else {
+			userService.updateUserStatus(email);
 			returnStr = "dup";
+			
 		}
 
 	response.setContentType("text/html' charSet=utf-8");
@@ -262,8 +275,14 @@ public class UserController {
 			@RequestParam("kakaoId") String userId,  SessionStatus status, Model model) throws Exception {
 		User loginUser = null;
 		User user = null;
+		
+		if(userService.selectAccountStatus(userId) > 0) {
+			return "redirect:ustopclear.do";
+		}
+		
 		if(userService.selectEmailCount(email) > 0) {
 			loginUser = userService.selectEmail(email);
+			
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
 				status.setComplete();
@@ -320,6 +339,7 @@ public class UserController {
 	public String naverLogin(@RequestParam String code, SessionStatus status, Model model, 
 			HttpSession session, @RequestParam String state) throws Exception{
 		
+		
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginAuth.getAccessToken(session, code, state);
 		result = naverLoginAuth.getUserProfile(oauthToken);
@@ -339,7 +359,14 @@ public class UserController {
         User user = null;
         
         if(userService.selectEmailCount(email) > 0) {
+        	if(userService.selectAccountStatus(userId) > 0) {
+    			return "redirect:ustopclear.do";
+    		}
+        	
         	User loginUser = userService.selectEmail(email);
+        	if(userService.selectAccountStatus(loginUser.getUserId()) > 0) {
+				return "redirect:ustopclear.do";
+			}
         	session.setAttribute("loginUser", loginUser);
         	userService.updateDayTime(loginUser.getUserId());
 			status.setComplete();
@@ -434,10 +461,6 @@ public class UserController {
 		out.flush();
 		out.close();
 		}
-	 
-	
-	 
-	 
 	 
 	//비번찾기처리(email)
 	 @RequestMapping(value="changePwd.do", method=RequestMethod.POST)
@@ -654,11 +677,11 @@ public class UserController {
 		 
 		 if(result > 0) {
 			 model.addAttribute("msg", "수정성공");
-			 model.addAttribute("url", "user/userTimePage");
+			 model.addAttribute("url", "userTime.do");
 			 return "common/alert";
 		 } else {
 			 model.addAttribute("msg", "수정실패");
-			 model.addAttribute("url", "user/userTimePage");
+			 model.addAttribute("url", "userTime.do");
 			 return "common/alert";
 		 }
 		
@@ -677,7 +700,7 @@ public class UserController {
 	 public String userUpdate(HttpSession session) {
 		 User user = (User) session.getAttribute("loginUser");
 		 userService.insertUserStop(user.getUserId());
-		 userService.updateUserdisable(user.getUserId());
+		 userService.updateUserStop(user.getUserId());
 		return "성공";
 	 }
 	 
