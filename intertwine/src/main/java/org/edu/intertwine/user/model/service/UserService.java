@@ -47,18 +47,16 @@ public interface UserService {
 
 	void updateUserNickname(User user);
 
-	Notification selectNotify(String userId);
-
-	int updateCustonAlarm(Notification notify);
-
-	List<User> findAllUsers();
 
 	void updateUserdisable(String userId);
 
 	void insertUserStop(String userId);
 
-	void insertAlarm(String userId);
 
+
+	Notification selectNotify(String userId);
+	int updateCustonAlarm(Notification notify);
+	void insertAlarm(String userId);
 	void updateDayTime(String userId);
 
 

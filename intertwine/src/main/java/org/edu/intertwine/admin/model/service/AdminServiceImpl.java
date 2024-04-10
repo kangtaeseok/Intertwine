@@ -153,5 +153,12 @@ public class AdminServiceImpl implements AdminService {
 	public int insertRptComment(ContentReport cpt) {
 		return adminDao.insertRptComment(cpt);
 	}
+
+	//신고관리조회
+	@Override
+	public List<ContentReport> selectContentReportList(Integer reportId) {
+		return adminDao.selectContentReportList(reportId);
+	}
+
 	
 }

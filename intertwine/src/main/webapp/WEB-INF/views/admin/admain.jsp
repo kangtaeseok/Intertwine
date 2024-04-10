@@ -5,10 +5,13 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>second : project</title>
+<title></title>
+<link rel="stylesheet" href="/intertwine/resources/css/admin/admain.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script></head>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
-<script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/intertwine/resources/css/admain.css" />
 <script>
 const dpTime = function () {
 	      const now = new Date()
@@ -76,55 +79,16 @@ $(function(){
 
 </head>
 <body>
-<header>
-<div class="header">
-	<div class="header-div">
-		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+	<header>
+	<div class="header">
+		<div class="header-div">
+			<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
+		</div>
 	</div>
-</div>
-</header>
-<div class="body-div">
-<main>
-<aside class="side-bar">
-            <ul>
-                <li id="square">
-                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
-      
-                <li id="mypage">
-                    
-             
-                <li id="friend">
-                    
-                
-                <li id="chatting">
-                    <li><a href="${ pageContext.servletContext.contextPath }/adnlist.do"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
-                
-                <li id="alarm">
-                    <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
-                
-            </ul>
-        </aside>
-        <div id="submenubars">
-            <div id="dummy_sub_menu" class="sub_menu">
-                더미 서브메뉴
-            </div>
-            <div id="mypage_sub_menu" class="sub_menu">
-                마이페이지 서브메뉴
-            </div>
-            <div id="chatting_sub_menu" class="sub_menu">
-                채팅 서브메뉴
-            </div>
-            <div id="alarm_sub_menu" class="sub_menu">
-                알림 서브메뉴
-            </div>
-            <div id="settings_sub_menu" class="sub_menu">
-                설정 서브메뉴
-            </div>
-
-        </div>
-        
-
-<div id="bottom_right_contents">
+	</header>
+	<main>
+ 	<c:import url="/WEB-INF/views/common/admenubar.jsp"></c:import>
+	<div id="bottom_right_contents">
             <div id="abc">
                 <div class="content-div">
                 	<div class="content-first-div">
@@ -162,11 +126,7 @@ $(function(){
 				</div>
             </div>
         </div>
-
-	
-	
 </main>
-</div>
 
 <script>
 const ctx = document.getElementById('myChart');

@@ -2,6 +2,7 @@ package org.edu.intertwine.user.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -83,6 +84,8 @@ public class UserController {
 	public String moveFindInfoPage() {
 		return "user/finduserInfo"; 
 	}
+	
+	
 	//일반유저 정보수정
 	@RequestMapping("userInfo.do")
 	public String moveUserInfoPage(Model model, HttpSession session) {
@@ -151,7 +154,7 @@ public class UserController {
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
-		
+		userService.updateDayTime(loginUser.getUserId());
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
 		
@@ -289,6 +292,7 @@ public class UserController {
 	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	    	userService.insertSocial(social);
 	    	userService.insertMyPage(user.getUserId());
+	    	userService.insertAlarm(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		loginUser = user;
@@ -333,6 +337,7 @@ public class UserController {
         if(userService.selectEmailCount(email) > 0) {
         	User loginUser = userService.selectEmail(email);
         	session.setAttribute("loginUser", loginUser);
+        	userService.updateDayTime(loginUser.getUserId());
 			status.setComplete();
 			logger.info(loginUser.toString());
 			if(adminService.selectVisitCount() != null) {
@@ -350,7 +355,6 @@ public class UserController {
         	user.setPhone(phone);
         	user.setUserName(name);
         	result = userService.insertUser(user);
-        	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		SocialLogin social = new SocialLogin();
@@ -358,6 +362,8 @@ public class UserController {
 	        	social.setType("naver");
 	        	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	        	userService.insertSocial(social);
+	        	userService.insertMyPage(user.getUserId());
+	        	userService.insertAlarm(user.getUserId());
 	        	
         		User loginUser = user;
     			session.setAttribute("loginUser", loginUser);
@@ -578,7 +584,7 @@ public class UserController {
 	 }
 	 
 	 
-	 
+	 //소셜로그인 정보수정
 	 @RequestMapping(value="usocialupdate.do", method=RequestMethod.POST)
 	 public String userSocialInfoUpdate(User user, HttpSession session) {
 		 User loginUser = (User) session.getAttribute("loginUser");
@@ -593,6 +599,23 @@ public class UserController {
 		userService.updateSocial(loginUser);
 		 return "common/main";
 	 }
+	 
+	 @RequestMapping(value="getUserTime.do", method= {RequestMethod.POST, RequestMethod.GET})
+	 public ResponseEntity<?> userUseTime(HttpSession session) throws UnsupportedEncodingException {
+		 	User loginUser = (User) session.getAttribute("loginUser");
+		 	String time = "";
+	        if (loginUser != null) {
+	        	Notification notify = userService.selectNotify(loginUser.getUserId());
+	        	 if(Integer.parseInt(userService.selectUserTime(loginUser.getUserId()).trim()) % 60 == 0) {
+	        		 time = notify.getNotifyContent();
+	        		 return ResponseEntity.ok(URLEncoder.encode(time, "utf-8"));
+	        	 } else {
+	        		 return ResponseEntity.notFound().build();
+	        	 }
+	        }
+	        return ResponseEntity.notFound().build();
+	    }
+	 
 	 
 	 //마이페이지 시간 설정
 	 @RequestMapping(value="customTime.do", method= {RequestMethod.POST,RequestMethod.GET})
@@ -653,9 +676,6 @@ public class UserController {
 		 userService.updateUserdisable(user.getUserId());
 		return "성공";
 	 }
-	 
-//	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
-//	 public String publicMypagesetting() {}
 	 
 	 
 	 
