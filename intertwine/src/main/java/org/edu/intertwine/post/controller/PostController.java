@@ -191,7 +191,6 @@ public class PostController {
 		
 	}
 	
-	
 	//남의 페이지 검색
 	@RequestMapping(value="searchothermypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
 	public ModelAndView searchOtherMyPage(HttpSession session, @RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
@@ -449,7 +448,7 @@ public class PostController {
 		return "redirect:mypage.do";
 	}
 	
-	//정렬을 위한 메소드
+	//정렬을 위한 메소드2
 	@RequestMapping(value = "sorting2.do", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	public String sortingPage2 (HttpSession session, HttpServletResponse response, HttpServletRequest request, ModelAndView mv, @RequestParam("dropdown")int value, @RequestParam("otherUserId")String friendId) {
@@ -524,18 +523,29 @@ public class PostController {
 		//공감을 업데이트
 		//가져온 값을 담음
 		
-		
 		Like like1 = new Like(userId, postId);
+		
+		//받아온 값이 어째서인지 ,를 계속 포함해서 제거함
 		String trimmedLikeType = likeType.replace(",", "");
-		Like like2 = new Like(userId, postId, trimmedLikeType);
-		logger.info("가져온 공감타입" + likeType);
+		//추가적으로 안보이는 부분들 제거
+		String trimmedLikeType2 = trimmedLikeType.trim();
+		
+		//이걸로 이전에 좋아요한 부분 확인
+		Like like2 = new Like(userId, postId, trimmedLikeType2);
+		
+		logger.info("가져온 공감타입" + trimmedLikeType2);
+		
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
+		//역시 가져온 값 트림함
 		
+
 		//이전에 이 포스트에 공감을 한 적이 있는 경우
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(trimmedLikeType)) {
+			String whatIsLiked2 = whatIsLiked.trim();
+			
+			if(whatIsLiked2.equals(trimmedLikeType2)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -559,7 +569,6 @@ public class PostController {
 		
 		
 	}
-	
 	
 	//공감업데이트2
 	@RequestMapping(value="updatereaction2.do", method = { RequestMethod.POST, RequestMethod.GET } )
@@ -954,7 +963,8 @@ public class PostController {
 		String result= postService.selectWhatIsLiked(like);
 		String whatIsLiked = null;
 		if ( result != null) {
-			whatIsLiked = postService.selectWhatIsLiked(like);
+			String whatIsLiked2 = postService.selectWhatIsLiked(like);
+			whatIsLiked = whatIsLiked2.trim();
 		}
 		Bookmark bookmark = new Bookmark(viewingUser.getUserId(), post.getPostId());
 		//이 포스트를 북마크 했는 지 여부 확인

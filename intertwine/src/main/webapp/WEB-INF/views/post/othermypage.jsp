@@ -137,13 +137,26 @@
                     <div class="dummy2" style="height: 50px;">
                     </div>
                     <c:if test="${ isFollowing eq 0 }">
-                    <a href="${pageContext.servletContext.contextPath}/insertmypage.do?userId=${user.userId}&friendId=${otheruser.userId}"style="text-decoration:none;color:black;">팔로우</a>
+                    <a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/insertmypage.do?userId=${user.userId}&friendId=${otheruser.userId}', 'follow')" style="text-decoration:none;color:black;">팔로우</a>
                     </c:if>
                     <c:if test="${ isFollowing ne 0 }">
-                    <a href="${pageContext.servletContext.contextPath}/unfollowingMyPage.do?userId=${user.userId}&friendId=${otheruser.userId}" style="text-decoration:none;color:black;">팔로우 해제</a>
+                   <a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/unfollowingMyPage.do?userId=${user.userId}&friendId=${otheruser.userId}', 'unfollow')" style="text-decoration:none;color:black;">팔로우 해제</a>
                     </c:if>
                 </div>
-                
+                <script>
+					function confirmAction(url, actionType) {
+					    var message = '';
+					    if (actionType === 'follow') {
+					        message = "${ otheruser.userId }님을 팔로우하시겠습니까? ";
+					    } else if (actionType === 'unfollow') {
+					        message = "${ otheruser.userId}님을 언팔로우하시겠습니까? ";
+					    }
+					
+					    if (confirm(message)) {
+					        window.location.href = url;
+					    }
+					}
+					</script>
             </div>
         </div>
 
