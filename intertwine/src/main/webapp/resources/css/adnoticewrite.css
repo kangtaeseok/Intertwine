@@ -1,6 +1,7 @@
 @charset "UTF-8";
 html {
 	font-size: 16px;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 * {
@@ -295,7 +296,7 @@ input[type="radio"] {
 input[type="submit"] {
 	position: relative;
     padding: 10px 20px;
-    background-color: #007bff;
+    background: #f99d9d;
     color: #fff;
 	font-size: 15px;
 	font-weight: bold;
@@ -307,5 +308,5 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #ff8888;
 }
