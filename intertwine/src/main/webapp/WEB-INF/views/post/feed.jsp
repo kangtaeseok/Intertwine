@@ -402,8 +402,8 @@ input.text::placeholder {
                             <a class="unfriend" href="#" style="text-decoration:none;color:black;">언팔로우</a>
 							</c:if>
 							<br>
-							<c:if test="${ not empty item.image.imageLon }">
-							<span><a href="#" style="text-decoration:none;color:black;">여기는 위치</a></span>
+							<c:if test="${ not empty item.user.nickname }">
+							<span><a href="#" style="text-decoration:none;color:black;">${ item.user.nickname }</a></span>
 							</c:if>
 						</h3>
 					</div>
@@ -420,7 +420,7 @@ input.text::placeholder {
 				<div class="bottom">
 					<div class="actionBtns">
 						<div class="left">
-							<span class="reaction" return false;> <!--여기 if태그로 아이콘 설정이 되면 아이콘 바뀜 -->
+							<span class="reaction"> <!--여기 if태그로 아이콘 설정이 되면 아이콘 바뀜 -->
 									<c:if test="${ item.isLiked == 1 }">
                                     <svg aria-label="Liked" color="#262626" fill="#262626" height="24" role="img" width="24" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM164.1 325.5C182 346.2 212.6 368 256 368s74-21.8 91.9-42.5c5.8-6.7 15.9-7.4 22.6-1.6s7.4 15.9 1.6 22.6C349.8 372.1 311.1 400 256 400s-93.8-27.9-116.1-53.5c-5.8-6.7-5.1-16.8 1.6-22.6s16.8-5.1 22.6 1.6zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
                                       </c:if>
@@ -433,7 +433,7 @@ input.text::placeholder {
 		                              	<input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
 		                              	<input type="hidden" name="postId" value="${ item.post.postId }">
 		                              	<input type="hidden" name="likeType" id="likeType">
-										<div class="reaction-box" id="reaction-box" style="display: none;position: absolute;top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center; justify-content: center;width: auto;flex-wrap: wrap;">
+										<div class="reaction-box" id="reaction-box" style="   display: none; top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center;justify-content: center;width: auto;flex-wrap: wrap;box-sizing: border-box;">
 	                                   
 			                                 <c:if test="${ not empty item.whatIsLiked }">
 			                                   <c:if test="${ whatIsLiked ne '0' }">
@@ -586,11 +586,11 @@ const frame = document.querySelector('.frame');
 	  if (reaction) {
 		event.stopPropagation();
 		const box = reaction.querySelector('.reaction-box');
-		const isDisplayed = box.style.display === 'flex';
+		const isDisplayed = box.style.display === 'block';
  
 		hideAllReactionBoxes();
 		
-		box.style.display = isDisplayed ? 'none' : 'flex';
+		box.style.display = isDisplayed ? 'none' : 'block';
 	  } else if (!event.target.closest('.reaction-box')) {
 
 		hideAllReactionBoxes();
