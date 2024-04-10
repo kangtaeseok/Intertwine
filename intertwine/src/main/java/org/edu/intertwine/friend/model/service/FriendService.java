@@ -8,21 +8,21 @@ public interface FriendService {
 
 	int insertFollowing(Friend friend);
 
-	int countFollowing(String userId);
+	int selectCountFollowing(String userId);
 
-	int countFollowers(String userId);
+	int selectCountFollowers(String userId);
 
 	int deleteFollowing(Friend friend);
 
 	int blockFollowing(Friend friend);
 
-	ArrayList<Friend> searchFollowing(Friend friend);
+	ArrayList<Friend> selectSearchFollowing(Friend friend);
 
-	ArrayList<Friend> FollowingList(String userId);
+	ArrayList<Friend> selectFollowingList(String userId);
 
-	ArrayList<Friend> FollowerList(String userId);
+	ArrayList<Friend> selectFollowerList(String userId);
 
-	ArrayList<Friend> searchFollower(Friend friend);
+	ArrayList<Friend> selectSearchFollower(Friend friend);
 
 	ArrayList<Friend> blockedList(String userId);
 
@@ -38,9 +38,7 @@ public interface FriendService {
 
 	String selectFollowerId(Friend friend);
 
-	/*
-	 * //나를 차단한/내가 차단한 차단계정 목록(팔로잉) ArrayList<String> blockedAllList(String userId);
-	 */
+
 	
 
 }
