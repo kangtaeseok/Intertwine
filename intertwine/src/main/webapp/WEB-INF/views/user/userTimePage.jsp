@@ -7,7 +7,8 @@
 <meta charset="UTF-8">
 <title>userTime</title>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<link rel="stylesheet" href="/intertwine/resources/css/userTimePage.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/user/userTimePage.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/common/menubar.css" />
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <script>
 function openPopup() {
@@ -18,6 +19,15 @@ function openPopup() {
 	function closePopup() {
 	  document.getElementById("popup").style.display = "none";
 	}
+	
+	function openPopup2() {
+		  document.getElementById("popup2").style.display = "block";
+		}
+
+		// 팝업 닫기 함수
+		function closePopup2() {
+		  document.getElementById("popup2").style.display = "none";
+		}
 </script>
 </head>
 <body>
@@ -56,46 +66,23 @@ function openPopup() {
 							    </form>
 							</div>
 						</div>
-						<div class="set1">
-							<div class="set2"><a href="userSetTime.do"><h4>기본 제공 알림보내기</h4></a></div>
-						</div>
-						<div class="set1">
-							<div class="set2"><h4>시간 알림 차단하기</h4> &nbsp; <input type="checkbox"></div>
+						<div class="set1">						
+							<div class="set2"><button onclick="openPopup2();"><h4>기본 제공 알림보내기</h4></a></div>
+							<div id="popup2" class="popup">
+							    <form class="popup-content" action="userSetTime.do">
+							        <input type="submit" value="확인" onclick="closePopup2();">
+							        <input type="reset" value="취소" onclick="closePopup2();">
+							    </form>
+							</div>
 						</div>
 						</center>
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
-				</div>
-            </div>
-        <div class="floating-button" id="floatingButton">
-        	<img src="/intertwine/resources/images/ai/chatbot2.png" alt="Chatbot">
-        </div>
-			<div class="layer" id="layer">
-			    <div class="chatbot-container" id="chatbotContainer">
-			        <div id="header">
-			            <img src="/intertwine/resources/images/ai/chatbot1.png">
-			            <h1>이벤트 챗봇</h1>
-			        </div>
-			        <div id="chatbot">
-			            <div id="conversation">
-			                <div class="chatbot-message">
-			                    <p class="chatbot-text">안녕하세요! 👋 무엇을 도와드릴까요?</p>
-			                </div>
-			            </div>
-			            <form id="input-aievent" action="aieventgo.do" method="post">
-			                <message-container>
-			                    <input id="input-aefield" type="text" name="keyword" placeholder="메세지를 입력하세요.">
-			                    <button id="submit-button" type="submit">
-			                      <img class="send-icon" src="/intertwine/resources/images/ai/send-message.png" alt="">
-			                    </button>
-			                </message-container>
-			            </form>
-			        </div>
-			    </div>
-			</div>
-
+</div>
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
 </main>
 
 <script>

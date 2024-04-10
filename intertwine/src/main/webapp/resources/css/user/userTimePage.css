@@ -1,0 +1,307 @@
+@charset "UTF-8";
+/* 페이지 전체 */
+body {
+	background-color: #f5f5f5;
+	width: 100%;
+	height: 90%;
+	
+ /* 사이트의 높이를 2000px로 만들어 스크롤 생성 */
+}
+
+
+main {
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* 필요하다면 flex-wrap 속성 추가하여 여러 줄로 배치되도록 설정 */
+    justify-content: flex-start;
+    align-items: stretch; /* .side-bar와 .bottom_right_contents의 높이를 동일하게 맞추기 위해 */
+    width: 100%; 
+}
+
+#bottom_right_contents {
+	margin-left: var(--aside.sidebar-width);
+	height: 400px;
+	width: val(100% - aside.sidebar-width);
+}
+
+
+
+#bottom_right_contents div li {
+	padding: 10px;
+	text-align: center;
+	background: #f7e9fa;
+}
+#bottom_right_contents div li:hover {
+		
+	padding: 10px;
+	text-align: center;
+	background: #ff80ff;
+
+}
+
+#feed {
+	width: inherit;
+	position: relative;
+	height: 400px;
+	margin: 1rem;
+	margin: 0 auto;
+    position: relative;
+    width: val(100% - aside.sidebar-width);
+ 	background: white;
+ 	display: flex;
+	 flex-direction: row;
+}
+
+.logo-box {
+	padding-bottom: 1rem;
+	padding-top: 20px;
+	display: flex;
+	justify-content: center;
+}
+
+.info-box {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.outer {
+    margin: 0 auto;
+    position: relative;
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+}
+
+
+
+#extraAddress {
+	display: none;
+}
+
+.outer td {
+	text-align: left;
+	white-space: nowrap;
+	text-align: left;
+	height: 20px;
+	width: 150px;
+	
+}
+
+.outer td input {
+      height: 30px;
+      width: 250px;
+      padding: 0 10px;
+      background-color: #F8F8F8;
+      border: none;
+      outline: #F9F9F9;
+}
+.outer input:focus {
+      outline: 2px solid #f8b1d5;
+      
+}
+
+
+ .outer td input[type="button"] {
+   outline: none;
+   background: #f99d9d;
+   border-radius: 6px;
+   border: none;
+   color: white;
+   font-weight: bold;
+   cursor: pointer;
+	width: 100px;
+     }
+
+
+ .submit-box {
+ 	margin: 10px;
+   	height: 30px;
+	display: flex;
+ 	justify-content: center;
+
+ }
+ 
+button.btn {
+	font-weight: bold;
+	background: #f99d9d;
+	border: none;
+	padding: 10px;
+	border-radius: 6px;
+	 cursor: pointer;
+	 color: white;
+	 display: flex;
+	 margin: auto 0 0 auto;
+	 
+}
+
+.time-box {
+	display: flex;
+	flex-direction: column;	
+	width: calc(60% - 10px);
+}
+h3 {
+	text-align: center;t
+}
+
+.chart-box {
+	padding: 20px;
+}
+
+.usage-time {
+	background: #f4f4f4;
+	font-size: 20px;
+    font-weight: bold;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+	width: 100%;
+}
+
+.time-setting-box {
+	width: calc(60% - 30px);
+
+}
+.time-set-box {
+	width: 420px;
+	padding: 1rem;
+	height: 100%;
+	display: flex;
+ 	justify-content: center;
+}
+
+.set-box {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	height: 80%;
+	border-radius: 0.5rem;
+}
+
+
+.set1 {
+	display: flex;
+	justify-content: center;
+	width: 80%;
+	height: 35%;
+	border: 2px solid gray;
+	align-items: center;
+	margin: 1rem;
+
+	background: gray;
+	
+}
+
+.set2 {
+	display: flex;
+	justify-content: center;
+	width: 90%;
+	height: 90%;
+	background: white;
+	align-items: center;
+	text-align: center;
+	cursor: pointer;
+}
+
+
+.popup, .overlay {
+    display: none;
+}
+
+.popup {
+	  display: none; /* 기본적으로 숨겨진 상태 */
+	  position: fixed; /* 화면에 고정된 위치에 배치 */
+	  z-index: 1; /* 다른 요소 위에 표시되도록 z-index 설정 */
+	  left: 0;
+	  top: 0;
+	  width: 100%;
+	  height: 100%;
+	  overflow: auto; /* 화면 크기를 넘어가면 스크롤 표시 */
+	  background-color: rgb(0,0,0); /* 배경색 */
+	  background-color: rgba(0,0,0,0.4); /* 배경색 및 투명도 */
+	}
+
+	/* 팝업 내부 스타일 */
+	.popup-content {
+	  position:relative;
+	  background-color: #fefefe;
+	  margin: 15% auto; /* 가운데 정렬 */
+	  padding: 30px;
+	  border: 1px solid #888;
+	  width: 600px; /* 팝업 너비 */
+	  border: 2px solid #ccc; /* 테두리 스타일 및 색상 지정 */
+	  border-radius: 10px; /* 테두리 둥글기 정도 설정 */
+	  text-align:center;
+	}
+	
+	#fbtext {
+	  padding: 10px; /* 내부 여백 */
+	  border: 1px solid #ccc; /* 테두리 */
+	  border-width: 0 0 1px;
+	  font-size: 12px; /* 텍스트 크기 */
+	  width: 200px; /* 너비 */
+	  box-sizing: border-box; /* 너비에 패딩과 테두리 포함 */
+	 }
+
+	.fbsubmit{
+	  display: inline-block;
+	  background-color: #6E6E6E; /* 기본 배경색 */
+	  color: white; /* 기본 텍스트 색상 */
+	  padding: 5px 10px; /* 내부 여백 */
+	  font-size: 12px; /* 텍스트 크기 */
+	  border: none; /* 테두리 없음 */
+	  border-radius: 5px; /* 테두리 반경 */
+	  cursor: pointer; /* 포인터 커서 */
+	  text-decoration: none; /* 텍스트에 밑줄 제거 */
+	}
+	
+button {
+	border: none;
+	background: none;
+}
+
+input[type="submit"] {
+      outline: none;
+      background: #f99d9d;
+      border-radius: 6px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px;
+      width: 100px;
+       margin: 0.8rem;
+       cursor: pointer;
+}
+
+input[type="reset"] {
+      outline: none;
+      background: #f99d9d;
+      border-radius: 6px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px;
+      width: 100px;
+      margin: 0.8rem;
+       cursor: pointer;
+}
+label {
+		margin: 0.8rem;
+}
+
+input#message {
+	margin: 0.8rem;
+	width: 60%;
+}
+
+.popup-content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}

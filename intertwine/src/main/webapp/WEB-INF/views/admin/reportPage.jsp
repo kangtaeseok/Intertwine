@@ -13,16 +13,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>reportPage</title>
-<link rel="stylesheet" href="/intertwine/resources/css/reportPage.css" />
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
-
+<title></title>
+<link rel="stylesheet" href="/intertwine/resources/css/admin/reportPage.css" />
+<c:import url="/WEB-INF/views/common/adcommon.jsp"></c:import>
 </head>
-
 <script type="text/javascript">
 $(function(){
     // select 태그의 변경을 감지합니다.
@@ -50,54 +44,9 @@ $(function(){
 });
 </script>
 <body>
-<header>
-<div class="header">
-	<div class="header-div">
-		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
-		<h2> <i class="fa-solid fa-clipboard"></i> 콘텐츠 관리 </h2>  
-	</div>
-</div>
-</header>
+
 <main>
-<aside class="side-bar">
-            <ul>
-                <li id="square">
-                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
-      
-                <li id="mypage">
-             	       
-             
-                <li id="friend">
-                	<li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>    
-                
-                <li id="chatting">
-                    <li><a href="#"><i class="fa-solid fa-q"></i> 고객센터</a></li>
-                
-                <li id="alarm">
-                    
-                
-            </ul>
-        </aside>
-        <div id="submenubars">
-            <div id="dummy_sub_menu" class="sub_menu">
-                더미 서브메뉴
-            </div>
-            <div id="mypage_sub_menu" class="sub_menu">
-                마이페이지 서브메뉴
-            </div>
-            <div id="chatting_sub_menu" class="sub_menu">
-                채팅 서브메뉴
-            </div>
-            <div id="alarm_sub_menu" class="sub_menu">
-                알림 서브메뉴
-            </div>
-            <div id="settings_sub_menu" class="sub_menu">
-                설정 서브메뉴
-            </div>
-
-        </div>
-        
-
+<c:import url="/WEB-INF/views/common/admenubar.jsp"></c:import>
 <div id="bottom_right_contents">
             <div id="abc">
                <div class="content-div">
@@ -177,10 +126,10 @@ $(function(){
 <button class="greylist" onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/rptlist.do?page=1';">목록  </button>
 </span>
 
+
+
 <br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp"></c:import>	
-                	
-                	
 				</div>
             </div>
         </div>

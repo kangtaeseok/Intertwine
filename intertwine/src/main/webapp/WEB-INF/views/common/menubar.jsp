@@ -5,6 +5,7 @@
 <html>
 <head>
 </head>
+<link rel="stylesheet" href="/intertwine/resources/css/common/menubar.css" />
 <meta charset="UTF-8">
 <title></title>
            <aside class="side-bar">
@@ -53,26 +54,25 @@
             </div>
             <div id="settings_sub_menu" class="sub_menu">
             	<ul>
-                		<li><a href="${pageContext.servletContext.contextPath}/userTime.do"> 이용시간 <i class="fa-solid fa-clock"></i></a></li>
+                		<li><a href="${pageContext.servletContext.contextPath}/userTime.do"><i class="fa-solid fa-clock"></i> 이용시간 </a></li>
 						<c:if test="${empty type}">
                         <li id="userInfo">
-                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"> 회원정보수정<i class="fa-solid fa-feather"></i></a>
+                        	<a href="${pageContext.servletContext.contextPath}/userInfo.do"><i class="fa-solid fa-feather"></i> 회원정보수정</a>
                        	</li>
                         </c:if>
                         <c:if test="${type eq 'kakao'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정 </a>
 						</li>
 						</c:if>
 						<c:if test="${type eq 'naver'}">
 						<li id="socialUserInfo">
-							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"> 회원정보수정 <i class="fa-solid fa-feather"></i></a>
+							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정 </a>
 						</li>
 						</c:if>
-						<li><a href="${ pageContext.servletContext.contextPath }/flist.do">고객센터</a></li>
-						<li><a href="${ pageContext.servletContext.contextPath }/noticelist.do">공지</a></li>
-						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do">문의</a></li>
-						<li><a href="${ pageContext.servletContext.contextPath }/aieventgo.do">이벤트</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-headset"></i> 고객센터</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/noticelist.do"><i class="fa-solid fa-circle-exclamation"></i> 공지</a></li>
+						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do"><i class="fa-regular fa-circle-question"></i> 문의</a></li>
 					</ul>
             </div>
         </div>
