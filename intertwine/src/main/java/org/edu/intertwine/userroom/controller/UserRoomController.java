@@ -168,7 +168,7 @@ public class UserRoomController {
 			if (myPage != null) {
 				jsonFriend.put("profile", myPage.getProfile()); // 프로필 이미지 URL 추가
 			} else {
-				jsonFriend.put("profile", "defaultProfile.png"); // 프로필이 없는 경우 기본 이미지
+				//jsonFriend.put("profile", "defaultProfile.png"); // 프로필이 없는 경우 기본 이미지
 			}
 
 			jsonFriendArray.add(jsonFriend);
