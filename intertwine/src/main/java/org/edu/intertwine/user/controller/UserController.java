@@ -632,7 +632,13 @@ public class UserController {
 		 	User loginUser = (User) session.getAttribute("loginUser");
 		 	String time = "";
 	        if (loginUser != null) {
+	        	
 	        	Notification notify = userService.selectNotify(loginUser.getUserId());
+	        	MyPage page = userService.selectMyPage(loginUser.getUserId());
+	        	userService.updateUserTime(page);
+	        	notify.setNotifyContent("접속 후" + page.getUserTime() + "분이 지났습니다.");
+	        	userService.updateCustonAlarm(notify);
+	        	
 	        	 if(Integer.parseInt(userService.selectUserTime(loginUser.getUserId()).trim()) % 60 == 0) {
 	        		 time = notify.getNotifyContent();
 	        		 return ResponseEntity.ok(URLEncoder.encode(time, "utf-8"));
