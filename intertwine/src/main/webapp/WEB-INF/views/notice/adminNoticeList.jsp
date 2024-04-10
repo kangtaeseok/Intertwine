@@ -9,8 +9,9 @@
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/intertwine/resources/css/adnoticepage.css" />
-
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header> <!-- 페이지 상단 -->
@@ -69,12 +70,14 @@
 				            <a id="notice" href="${pageContext.servletContext.contextPath}/adnlist.do">공  지  사  항</a>
 				        </center>
 				    </div>
+				    <span class="right">
+					<span> ▷ 총 ${listCount} 개의 공지사항이 있습니다. </span>
 				    <br>
 				    <div id="board-search">
 					    <div class="container">
 					        <div class="search-window">
 					            <!-- form 요소의 action 속성에 검색을 처리할 URL을 지정합니다. -->
-					           	<form action="noticesearchtitle.do" method="get">
+					           	<form action="adnsearchtitle.do" method="get">
 					                <div class="search-wrap">
 					                    <label for="search" class="blind">공지사항 내용 검색</label>
 					                    <!-- 검색어 입력 필드 -->

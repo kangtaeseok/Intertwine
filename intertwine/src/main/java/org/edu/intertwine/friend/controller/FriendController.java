@@ -39,9 +39,9 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	public String movefriendPage(Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
-		ArrayList<Friend> followinglist = friendService.FollowingList(loginUser.getUserId());
+		ArrayList<Friend> followinglist = friendService.selectFollowingList(loginUser.getUserId());
 		model.addAttribute("followingList", followinglist);
-		ArrayList<Friend> followerlist = friendService.FollowerList(loginUser.getUserId());
+		ArrayList<Friend> followerlist = friendService.selectFollowerList(loginUser.getUserId());
 		model.addAttribute("followerList", followerlist);
 		if (followinglist == null) {
 			followinglist = new ArrayList<>();
@@ -181,7 +181,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	@GetMapping("countFollowing.do")
 	@ResponseBody
 	public String countFollowing(@RequestParam("userId") String userId) {
-		int followeringCount = friendService.countFollowing(userId);
+		int followeringCount = friendService.selectCountFollowing(userId);
 		return String.valueOf(followeringCount);
 	}
 
@@ -189,7 +189,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	@GetMapping("countFollowers.do")
 	@ResponseBody
 	public String countFollowers(@RequestParam("userId") String userId) {
-		int followersCount = friendService.countFollowers(userId);
+		int followersCount = friendService.selectCountFollowers(userId);
 		return String.valueOf(followersCount);
 	}
 
@@ -211,7 +211,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		Friend friend = new Friend();
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
-		ArrayList<Friend> searchF = friendService.searchFollowing(friend);
+		ArrayList<Friend> searchF = friendService.selectSearchFollowing(friend);
 		model.addAttribute("searchF", searchF);
 		if (searchF != null) {
 			return "friend/friendMainView";
@@ -229,7 +229,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		Friend friend = new Friend();
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
-		ArrayList<Friend> searchFwer = friendService.searchFollower(friend);
+		ArrayList<Friend> searchFwer = friendService.selectSearchFollower(friend);
 		model.addAttribute("searchFwer", searchFwer);
 
 		return "friend/friendMainView";

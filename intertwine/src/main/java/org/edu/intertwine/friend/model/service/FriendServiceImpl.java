@@ -20,13 +20,13 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public int countFollowing(String userId) {
-		return friendDao.countFollowing(userId);
+	public int selectCountFollowing(String userId) {
+		return friendDao.selectCountFollowing(userId);
 	}
 
 	@Override
-	public int countFollowers(String userId) {
-		return friendDao.countFollowers(userId);
+	public int selectCountFollowers(String userId) {
+		return friendDao.selectCountFollowers(userId);
 	}
 
 	@Override
@@ -43,24 +43,24 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	
-	  @Override public ArrayList<Friend> searchFollowing(Friend friend) { return
-	  friendDao.searchFollowing(friend);
+	  @Override public ArrayList<Friend> selectSearchFollowing(Friend friend) { return
+	  friendDao.selectSearchFollowing(friend);
 	  
 	  }
 
 	@Override
-	public ArrayList<Friend> FollowingList(String userId) {
-		return friendDao.FollowingList(userId);
+	public ArrayList<Friend> selectFollowingList(String userId) {
+		return friendDao.selectFollowingList(userId);
 	}
 
 	@Override
-	public ArrayList<Friend> FollowerList(String userId) {
-		return friendDao.FollowerList(userId);
+	public ArrayList<Friend> selectFollowerList(String userId) {
+		return friendDao.selectFollowerList(userId);
 	}
 
 	@Override
-	public ArrayList<Friend> searchFollower(Friend friend) {
-		return friendDao.searchFollower(friend);
+	public ArrayList<Friend> selectSearchFollower(Friend friend) {
+		return friendDao.selectSearchFollower(friend);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class FriendServiceImpl implements FriendService {
 	
 	@Override
 	public int selectFollower(Friend friend) {
-		return friendDao.selectFollowing(friend);
+		return friendDao.selectFollower(friend);
 	}
 
 	@Override

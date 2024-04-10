@@ -36,13 +36,10 @@
 			},
 		})
 	}
-
-
-
 </script>
 
 
-<link rel="stylesheet" href="/intertwine/resources/css/login.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/common/login.css" />
 <title>intertwine</title>
 </head>
 <body>

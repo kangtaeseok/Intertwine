@@ -108,9 +108,9 @@
         
 
 
-<div class="container" style="margin: 0 auto; padding-left: 250px; width: 1000px;">
+<div class="container" style="margin: 0 auto; padding-left: 250px; width: 1200px;">
     <div class="top" style="margin-top: 30px; display: flex;">
-        <div class="profile"  style="padding-left: 10px;">
+        <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
                 <a href="${pageContext.servletContext.contextPath}/page.do?friendId=${otheruser.userId}"><img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;"></a>
             </div>
@@ -118,7 +118,7 @@
         <div class="profile-info" style="display: flex;">
             
             <div class="left" style="display: flex;">
-                <div class="personal">
+                <div class="personal"style="padding-right:30px;">
                     <ul>
                         <br>
                         <li style="list-style-type: none;"><h3>${ otheruser.userId } </h3></li>
@@ -148,7 +148,7 @@
         </div>
 
     </div>
-    <div class="middle" style="padding-top: 30px; display: flex;">
+    <div class="middle" style="padding-top: 30px;padding-bottom: 30px; display: flex;">
         <div class="search" style="display: flex; background-color: #FFF; border: 0px solid #FFF; border-radius: 5px; padding: 5px 10px;">
             <select class="search-condition" style="border: none; background: transparent; padding: 5px; margin-right: 5px; cursor: pointer;">
                 <option value="0" selected>전체</option>
@@ -167,24 +167,23 @@
 		        window.location.href = url;
 		    }
 		</script>
-        </div>
-        <div class="dummy3" style="width: calc(60%);">
-        </div>
-        <div class="sorting" style="display: flex; justify-content: space-between;">
+		<div class="dummy3" style="width: calc(60%);">
+	        </div>
+	    <div class="sorting" style="display: flex; justify-content: space-between;">
+	            <select name="dropdown" id="dropdown" style="padding: 8px 12px; margin-right: 10px; border: 0px solid #ccc; border-radius: 4px; background-color: #FFF; cursor: pointer; font-size: 16px;">
+	                <option value="0">최신순</option>
+	                <option value="1">오래된순</option>
+	                <option value="2">조회수 많은순</option>
+	            </select>
+	     </div>
+     </div>
         
-            <select name="dropdown" id="dropdown" style="padding: 8px 12px; margin-right: 10px; border: 0px solid #ccc; border-radius: 4px; background-color: #FFF; cursor: pointer; font-size: 16px;">
-                <option value="0">최신순</option>
-                <option value="1">오래된순</option>
-                <option value="2">조회수 많은순</option>
-            </select>
-        </div>
         
-    </div>
     <div class="bottom" style="display: flex;flex-wrap: wrap;width: 100%;">
         <!-- 이것들이 반복 됨 -->
        <c:forEach var="gallery" items="${galleries}">
         <c:if test="${ gallery.post.postVisible ne 2 }">
-        <div class="options" style="width: 237px; height:237px; margin-bottom: 100px;margin-right: 13px;position: relative"
+        <div class="options" style="width: 300px; height:300px; margin-bottom: 10px;margin-right: 13px;position: relative"
         data-id="${ gallery.post.postId }">
         <a href="detail.do?postId=${gallery.post.postId}">
             <div class="gallery" style="padding: 0px;height: 300px;padding: 0px;margin: 0px;justify-content: center;background-color: grey;">
@@ -258,6 +257,7 @@
         </div>
        </c:if>
        </c:forEach>
+	</div>
 	</div>
 </main>
 <!-- 정렬 -->
