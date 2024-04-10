@@ -69,6 +69,12 @@ public class PostController {
 		return "post/write";
 	}
 	
+	@RequestMapping("profileupdate.do")
+	public String moveProfileUpdate() {
+		
+		return "post/updateprofile";
+	}
+	
 	//전화면으로 돌아가기
 	@RequestMapping("back.do")
 	public String moveBack(@RequestParam("postId")int postId, HttpSession session, Model model) {
@@ -111,6 +117,81 @@ public class PostController {
 			
 	}
 	
+	//나의 페이지 검색
+	@RequestMapping(value="searchmypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
+	public ModelAndView searchMyPage(@RequestParam("userId")String userId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
+		
+		
+		logger.info(userId);
+		logger.info(keyword);
+		logger.info(String.valueOf(condition));
+		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
+		SearchMyPage searchMyPage = new SearchMyPage(userId, decodedKeyword);
+		logger.info(decodedKeyword);
+		
+		ArrayList<Post> posts = new ArrayList<Post>();
+		switch(condition) {
+
+		case 0:
+			//전체 검색
+			List<Post> postsByTag = postService.selectPostsBySearchTag(searchMyPage);
+	        List<Post> postsByKeyword = postService.selectPostsBySearchKeyword(searchMyPage);
+	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
+	        combinedPosts.addAll(postsByKeyword);
+	        posts = new ArrayList<>(combinedPosts);
+	        
+			break;				
+
+		case 1:
+			//태그 검색
+			posts = postService.selectPostsBySearchTag(searchMyPage);
+			break;
+			
+		case 2:
+			//콘텐츠 검색
+			posts = postService.selectPostsBySearchKeyword(searchMyPage);
+			break;
+		}
+		
+		User user = userService.selectUser(userId);
+		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		
+		
+		
+		//정렬을 거쳐올 경우 정렬 값을 담음
+		if(posts.size() > 0) {		
+			for (Post post : posts) {
+		        Gallery gallery = new Gallery();
+		        gallery.setPost(post);
+		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
+		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
+		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
+		        gallery.setImage(postService.selectOneImage(post.getPostId()));
+		        gallery.setTags(postService.selectTags(post.getPostId()));
+		        logger.info(gallery.toString());
+		        
+		        galleries.add(gallery);
+		        
+		    }
+		}
+		
+		int followingCount = friendService.selectCountFollowing(userId);
+		int followerCount = friendService.selectCountFollowers(userId);
+		
+		if(posts.size() > 0 ) {
+			mv.addObject("galleries", galleries);
+		}
+		mv.addObject("user", user);
+		mv.addObject("followingCount", followingCount);
+		mv.addObject("followerCount", followerCount);
+		mv.setViewName("post/mypage");
+		
+		return mv;
+		
+		
+	}
+	
+	
 	//남의 페이지 검색
 	@RequestMapping(value="searchothermypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
 	public ModelAndView searchOtherMyPage(HttpSession session, @RequestParam("friendId")String friendId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
@@ -123,6 +204,7 @@ public class PostController {
 	    
 	    int isFollowing = 0;
 	    isFollowing = friendService.selectFollowing(friend);
+	    logger.info(String.valueOf(isFollowing));
 	    int isFollower = friendService.selectFollower(friend);
 	    
 	    
@@ -186,7 +268,7 @@ public class PostController {
 			break;
 		}
 		
-		User user = userService.selectUser(friendId);
+		User otherUser = userService.selectUser(friendId);
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		
 		
@@ -208,16 +290,23 @@ public class PostController {
 		    }
 		}
 		
-		int followingCount = friendService.countFollowing(friendId);
-		int followerCount = friendService.countFollowers(friendId);
+		int followingCount = friendService.selectCountFollowing(friendId);
+		int followerCount = friendService.selectCountFollowers(friendId);
 		
 		if(posts.size() > 0 ) {
 			mv.addObject("galleries", galleries);
 		}
-		mv.addObject("user", user);
+		
+		
+	    mv.addObject("isFollowing", isFollowing);
+	    mv.addObject("FollowingId", FollowingId);
+	    mv.addObject("FollowerId", FollowerId);
+		mv.addObject("galleries", galleries);
+		mv.addObject("otheruser", otherUser);
+		mv.addObject("user", loginUser);
 		mv.addObject("followingCount", followingCount);
 		mv.addObject("followerCount", followerCount);
-		mv.setViewName("post/page.do?friendId=" + friendId );
+		mv.setViewName("post/othermypage");
 		
 		return mv;
 		
@@ -236,8 +325,8 @@ public class PostController {
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
 		//팔로잉 여부 확인
-		int followingCount = friendService.countFollowing(friendId);
-		int followerCount = friendService.countFollowers(friendId);
+		int followingCount = friendService.selectCountFollowing(friendId);
+		int followerCount = friendService.selectCountFollowers(friendId);
 		Friend friend = new Friend(loginUser.getUserId(), otherUser.getUserId());
 		String FollowingId = friendService.selectFollowingId(friend);
 	    String FollowerId = friendService.selectFollowerId(friend);
@@ -320,7 +409,7 @@ public class PostController {
 	
 	//배치액션
 	@RequestMapping(value="batchAction.do", method=RequestMethod.POST)
-	public String batchActions(@RequestParam("action")String action, @RequestParam("checks") List<String> postIds, Model model) {
+	public String batchActions(@RequestParam("action")String action, @RequestParam("checks") List<Integer> postIds, Model model) {
 		
 		logger.info("postIds" + postIds.toString());
 		
@@ -415,8 +504,8 @@ public class PostController {
 	        
 	    }
 		
-		int followingCount = friendService.countFollowing(user.getUserId());
-		int followerCount = friendService.countFollowers(user.getUserId());
+		int followingCount = friendService.selectCountFollowing(user.getUserId());
+		int followerCount = friendService.selectCountFollowers(user.getUserId());
 		
 		mv.addObject("galleries", galleries);
 		mv.addObject("user", user);
@@ -431,25 +520,22 @@ public class PostController {
 		
 	//공감업데이트
 	@RequestMapping(value="updatereaction.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	@ResponseBody
-	public String updateLike(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")int likeType, Model model) {
+	public String updateLike(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
-		System.out.println("User ID: " + userId);
-	    System.out.println("Post ID: " + postId);
-	    System.out.println("Like Type: " + likeType);
-	    String likeType2 = String.valueOf(likeType);
-	    
+		
+		
 		Like like1 = new Like(userId, postId);
-		Like like2 = new Like(userId, postId, likeType2);
-		logger.info("가져온 공감타입" + likeType2);
+		String trimmedLikeType = likeType.replace(",", "");
+		Like like2 = new Like(userId, postId, trimmedLikeType);
+		logger.info("가져온 공감타입" + likeType);
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
 		
 		//이전에 이 포스트에 공감을 한 적이 있는 경우
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(likeType2)) {
+			if(whatIsLiked.equals(trimmedLikeType)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -467,7 +553,7 @@ public class PostController {
 			int result = postService.insertLikeType(like2);
 		}
 		
-		
+		session.setAttribute("redirecting", "1");
 		return "redirect:detail.do?postId=" + postId;
 		
 		
@@ -477,20 +563,22 @@ public class PostController {
 	
 	//공감업데이트2
 	@RequestMapping(value="updatereaction2.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	@ResponseBody
 	public String updateLike2(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
 		Like like1 = new Like(userId, postId);
-		Like like2 = new Like(userId, postId, likeType);
+		String trimmedLikeType = likeType.replace(",", "");
+		Like like2 = new Like(userId, postId, trimmedLikeType);
 		logger.info("가져온 공감타입" + likeType);
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
-		
+		System.out.print(whatIsLiked);
+		System.out.print(whatIsLiked == trimmedLikeType);
 		//이전에 이 포스트에 공감을 한 적이 있는 경우
+		
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(likeType)) {
+			if(whatIsLiked.equals(trimmedLikeType)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -613,7 +701,7 @@ public class PostController {
 	}// 메소드
 
 	//피드
-	@RequestMapping(value = "getfeed.do", method = {RequestMethod.GET })
+	@RequestMapping(value = "getfeed.do", method = {RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView getFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 		
 		
@@ -717,7 +805,8 @@ public class PostController {
 
 	}
 	
-	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.GET })
+	//북마크 확인
+	@RequestMapping(value = "getbookmarkfeed.do", method = {RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView getBookmarkFeed(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) {
 		
 		
@@ -834,7 +923,15 @@ public class PostController {
 		
 		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
 		if(!viewingUser.getUserId().equals(post.getUserId())) {
-			postService.updatePostViews(post);
+			if(session.getAttribute("redirecting")!= null) {
+				if(!session.getAttribute("redirecting").equals("1")) {
+				postService.updatePostViews(post);
+				}else {
+					 session.removeAttribute("redirecting");
+				}
+			}else {
+				postService.updatePostViews(post);
+			}
 		}
 		//logger.info("post" + post.toString());
 		//포스트에 있는 태그들 가져옴
@@ -922,79 +1019,7 @@ public class PostController {
 	}
 	
 	
-	@RequestMapping(value="searchmypage.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	public ModelAndView searchMyPage(@RequestParam("userId")String userId, @RequestParam("keyword")String keyword, @RequestParam("condition")int condition, ModelAndView mv) throws UnsupportedEncodingException {
-		
-		
-		logger.info(userId);
-		logger.info(keyword);
-		logger.info(String.valueOf(condition));
-		String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8.toString());
-		SearchMyPage searchMyPage = new SearchMyPage(userId, decodedKeyword);
-		logger.info(decodedKeyword);
-		
-		ArrayList<Post> posts = new ArrayList<Post>();
-		switch(condition) {
 
-		case 0:
-			//전체 검색
-			List<Post> postsByTag = postService.selectPostsBySearchTag(searchMyPage);
-	        List<Post> postsByKeyword = postService.selectPostsBySearchKeyword(searchMyPage);
-	        Set<Post> combinedPosts = new HashSet<>(postsByTag);
-	        combinedPosts.addAll(postsByKeyword);
-	        posts = new ArrayList<>(combinedPosts);
-	        
-			break;				
-
-		case 1:
-			//태그 검색
-			posts = postService.selectPostsBySearchTag(searchMyPage);
-			break;
-			
-		case 2:
-			//콘텐츠 검색
-			posts = postService.selectPostsBySearchKeyword(searchMyPage);
-			break;
-		}
-		
-		User user = userService.selectUser(userId);
-		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
-		
-		
-		
-		//정렬을 거쳐올 경우 정렬 값을 담음
-		if(posts.size() > 0) {		
-			for (Post post : posts) {
-		        Gallery gallery = new Gallery();
-		        gallery.setPost(post);
-		        gallery.setLikeCount(postService.selectLikeCounts(post.getPostId())); 
-		        gallery.setCommentCount(commentService.selectCommentCounts(post.getPostId()));
-		        gallery.setVideo(postService.selectOneVideo(post.getPostId()));
-		        gallery.setImage(postService.selectOneImage(post.getPostId()));
-		        gallery.setTags(postService.selectTags(post.getPostId()));
-		        logger.info(gallery.toString());
-		        
-		        galleries.add(gallery);
-		        
-		    }
-		}
-		
-		int followingCount = friendService.countFollowing(userId);
-		int followerCount = friendService.countFollowers(userId);
-		
-		if(posts.size() > 0 ) {
-			mv.addObject("galleries", galleries);
-		}
-		mv.addObject("user", user);
-		mv.addObject("followingCount", followingCount);
-		mv.addObject("followerCount", followerCount);
-		mv.setViewName("post/mypage");
-		
-		return mv;
-		
-		
-	}
-	
 	
 
 }// 클래스

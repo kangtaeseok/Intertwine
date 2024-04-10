@@ -164,27 +164,27 @@ public class PostDao {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.insert("postMapper.insertLikeType", like2);
 	}
-	public int deleteBatchDelete(List<String> postIds) {
+	public int deleteBatchDelete(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.delete("postMapper.deleteBatchDelete", postIds);
 	}
-	public int updateBatchPublic(List<String> postIds) {
+	public int updateBatchPublic(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("postMapper.updateBatchPublic", postIds);
 	}
-	public int updateBatchFollowing(List<String> postIds) {
+	public int updateBatchFollowing(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("postMapper.updateBatchFollowing", postIds);
 	}
-	public int updateBatchPrivate(List<String> postIds) {
+	public int updateBatchPrivate(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("postMapper.updateBatchPrivate", postIds);
 	}
-	public int updateBatchPinOn(List<String> postIds) {
+	public int updateBatchPinOn(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("postMapper.updateBatchPinOn", postIds);
 	}
-	public int updateBatchPinOff(List<String> postIds) {
+	public int updateBatchPinOff(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("postMapper.updateBatchPinOff", postIds);
 	}

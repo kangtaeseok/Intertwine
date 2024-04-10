@@ -238,9 +238,6 @@
 				
 				<div class="friendmodal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
 					<div class="friendmodal-list" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;"></div>
-
-					
-
 				</div>
 				<div class="friendmodal-footer">
 					<button type="button" class="btn btn-secondary" id="canclefirendbtn" data-bs-dismiss="modal">취소</button>
@@ -250,6 +247,8 @@
 		</div>
 	</div>
 	<!-- 친구 리스트 모달 -->
+	
+	
 
 
 	<header>
@@ -322,7 +321,7 @@
 							보기</button>
 						<button id="btnselectalbum" class="bubbly-button">앨범 보기</button>
 						<c:if test="${userRoom.userId == sessionScope.loginUser.userId}">
-							<button id="btnupdateroom" class="bubbly-button">방꾸미기</button>
+							<button id="btnupdateroom" class="bubbly-button">방 꾸미기</button>
 						</c:if>
 						<c:forEach var="roomResource" items="${userRoom.rList}">
 							<img src="${roomResource.resourceURL}" alt="Room Resource Image"
@@ -370,6 +369,9 @@ $(function(){ // document.ready
 	    var currentHatId;
 	    var currentTopId;
 	    var currentBottomId;
+
+	    var roomHost = "${sessionScope.loginUser.userId}";
+	    console.log("현재 방의 주인: ", roomHost);
 	    
 		// ajax 사용
 		$.ajax({
@@ -395,7 +397,6 @@ $(function(){ // document.ready
 			    bottom.style.backgroundImage = "url('" + data.bottomImageURL + "')";
 			    bottom.style.backgroundSize = "cover";
 			    bottom.style.backgroundPosition = "center";
-			    
 			}, 
 			error: function(request, status, errorData){
 				 console.log("error code : " + request.status
@@ -600,50 +601,115 @@ $("#changeCharacterbtn").click(function() {
 	    });
 		
 		$("#btnupdateroom").click(function () {
-	        console.log("방꾸미기 버튼 클릭!");
-	        const modal = document.querySelector("#roomChangeModal");
-	        modal.style.display = "flex";
+			var buttonText = $(this).text();
+			
+			if (buttonText === "방 꾸미기") {
+		        console.log("방꾸미기 버튼 클릭!");
+		        const modal = document.querySelector("#roomChangeModal");
+		        modal.style.display = "flex";
 	        
-	        $.ajax({
-	            url: "getallroomreosource.do",
-	            type: "post",
-	            dataType: "json",
-	            success: function (data) {
-	            	var resourceList = data.jarr; // 컨트롤러에서 보낸 jarr 사용
+		        $.ajax({
+		            url: "getallroomreosource.do",
+		            type: "post",
+		            dataType: "json",
+		            success: function (data) {
+		            	var resourceList = data.jarr; // 컨트롤러에서 보낸 jarr 사용
+	
+		                var firstDivs = document.querySelectorAll('.roommodal-first-container > div');
+		                var secondDivs = document.querySelectorAll('.roommodal-second-container > div');
+		                var thirdDivs = document.querySelectorAll('.roommodal-third-container > div');
+		             
+		                // firstDivs에 첫 번째 10개의 리소스 적용
+		                resourceList.slice(0, 10).forEach(function(userRoomResource, index) {
+		                    var $div = $(firstDivs[index]); // jQuery 객체로 변환
+		                    $div.css('background-image', 'url(' + userRoomResource.resourceURL  + ')');
+		                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
+		                });
+		                
+		                // secondDivs에 다음 10개의 리소스 적용
+		                resourceList.slice(10, 20).forEach(function(userRoomResource, index) {
+		                    var $div = $(secondDivs[index]); // jQuery 객체로 변환
+		                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
+		                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
+		                });
+		                
+		                // thirdDivs에 마지막 10개의 리소스 적용
+		                resourceList.slice(20, 30).forEach(function(userRoomResource, index) {
+		                    var $div = $(thirdDivs[index]); // jQuery 객체로 변환
+		                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
+		                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
+		                });
+	
+		            },
+		            error: function (request, status, errorData) {
+		                console.log("error code : " + request.status
+		                    + "\nMessage : " + request.responseText
+		                    + "\nError : " + errorData);
+		            }
+		        });  // ajax
+		        
+		        
+			} else if (buttonText === "내 방 가기") {
+		        console.log("내 방 가기 버튼 클릭!");
+		        
+		        $.ajax({
+		            url: "getmyroom.do",
+		            type: "post",
+		            data: {
+		                "userId": userId
+		            },
+		            dataType: "json",
+		            success: function (response) {
+				        console.log("Room Move Success!", response);
+				        //var roomData = JSON.parse(response);
+				        roomHost = response.userId;
 
-	                var firstDivs = document.querySelectorAll('.roommodal-first-container > div');
-	                var secondDivs = document.querySelectorAll('.roommodal-second-container > div');
-	                var thirdDivs = document.querySelectorAll('.roommodal-third-container > div');
-	             
-	                // firstDivs에 첫 번째 10개의 리소스 적용
-	                resourceList.slice(0, 10).forEach(function(userRoomResource, index) {
-	                    var $div = $(firstDivs[index]); // jQuery 객체로 변환
-	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL  + ')');
-	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
-	                });
-	                
-	                // secondDivs에 다음 10개의 리소스 적용
-	                resourceList.slice(10, 20).forEach(function(userRoomResource, index) {
-	                    var $div = $(secondDivs[index]); // jQuery 객체로 변환
-	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
-	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
-	                });
-	                
-	                // thirdDivs에 마지막 10개의 리소스 적용
-	                resourceList.slice(20, 30).forEach(function(userRoomResource, index) {
-	                    var $div = $(thirdDivs[index]); // jQuery 객체로 변환
-	                    $div.css('background-image', 'url(' + userRoomResource.resourceURL + ')');
-	                    $div.attr('data-resource-id', userRoomResource.resourceId); // resourceId 저장
-	                });
-
-	            },
-	            error: function (request, status, errorData) {
-	                console.log("error code : " + request.status
-	                    + "\nMessage : " + request.responseText
-	                    + "\nError : " + errorData);
-	            }
-	        });  // ajax
-	        
+				        console.log("방 주인: " + roomHost);
+				        console.log("방 색상: " + response.roomColor);
+				        console.log("방명록 공개 여부: " + response.guestBookOpen);
+				
+				        // 기존의 .userroomresource 엘리먼트를 모두 제거
+				        $(".userroomresource").remove();
+				
+				        // #userroom의 배경색 변경
+				        $("#userroom").css("background-color", response.roomColor);
+				
+				        // rList 내의 각 리소스에 대하여 반복하여 .userroomresource를 새로 만들어 #userroom에 추가
+				        response.rList.forEach(function(resource) {
+				            var imgElement = $('<img>', {
+				                src: resource.resourceURL,
+				                alt: "Room Resource Image",
+				                class: "userroomresource",
+				                css: {
+				                    position: "absolute",
+				                    left: resource.resourcePositionX + "px",
+				                    top: resource.resourcePositionY + "px",
+				                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
+				                }
+				            });
+				            $("#userroom").append(imgElement);	
+				        });
+				        const modal = document.querySelector(".friendmodal");		
+				        modal.style.display="none";
+				        
+				        var updateRoomButton = $("#btnupdateroom");
+				        if (roomHost === window.globaluserId) {
+					    // 방의 주인이 현재 로그인한 사용자인 경우
+						    updateRoomButton.text("방 꾸미기"); // 버튼 텍스트 업데이트
+						} else {
+						    // 방의 주인이 현재 로그인한 사용자가 아닌 경우
+						    updateRoomButton.text("내 방 가기"); // 버튼 텍스트 업데이트
+						}
+					        
+				    },
+		            error: function (request, status, errorData) {
+		                console.log("error code : " + request.status
+		                    + "\nMessage : " + request.responseText
+		                    + "\nError : " + errorData);
+		            }
+		        });  // ajax
+		        
+		    }
 	    });
 		
 		
@@ -816,6 +882,75 @@ $("#changeCharacterbtn").click(function() {
 		            console.error("An error occurred:", error);
 		        }
 		    });
+		    
+		    $("#changeNicknamebtn").click(function() {
+		       	
+		        var renameNickname = $("#renamenicknameinput").val(); // 새 닉네임 입력 필드의 값
+		        
+		        if(renameNickname != null&&renameNickname != ''){
+		    	    console.log("닉네임수정버튼 클릭!");
+		        
+		        $.ajax({
+		        	
+		            url: "changenickname.do", // 요청을 보낼 서버의 URL
+		            type: "POST", // HTTP 요청 방식
+		            data: {
+		                "userId": userId, 
+		                "renameNickname": renameNickname 
+		            },
+		            success: function(response) {
+		                // 서버로부터의 응답 처리
+		                console.log("닉네임 변경 성공");
+		                
+		                // 모달창 닫기
+		                const modal = document.querySelector(".nicknamemodal");
+						modal.style.display="none";
+						$("#renamenicknameinput").val(''); // 입력 값 초기화
+						
+		                const nicknameDiv = document.querySelector("#mycharacternickname");
+						nicknameDiv.textContent = renameNickname;
+		            },
+		            error: function(request, status, error) {
+		                // 오류 처리
+		                
+		                console.log("error code : " + request.status
+		                    + "\nMessage : " + request.responseText
+		                    + "\nError : " + error); 
+		            }
+		        });
+		        }
+		    });
+		    
+		    
+		    
+		    $("#btnselectalbum").click(function() {
+		    	console.log("앨범보기 버튼 클릭!");
+		        
+		    	$.ajax({
+			        url: "getimagebyuserid.do",
+			        type: "POST",
+			        data: { "roomHost": roomHost },
+			        dataType: "json",
+			        success: function(response) {
+			            var images = response.images;
+			            images.forEach(function(image) {
+			                console.log(image.imageURL); // 이미지 URL 사용 예
+			                // 예를 들어, 이미지 URL을 사용하여 <img> 태그를 동적으로 생성하고 페이지에 추가하는 로직 구현
+			            });
+			        },
+			        error: function(request, status, error) {
+			            console.error("Error: ", error);
+			        }
+			    });
+		    	
+		    });
+		    
+		    
+		    
+		    
+		    
+		    
+		    
 	
 });  // document.ready
 

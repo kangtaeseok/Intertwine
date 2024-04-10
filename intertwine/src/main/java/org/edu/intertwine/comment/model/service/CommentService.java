@@ -17,6 +17,8 @@ public interface CommentService {
 	int deleteComment(Comment comment);
 
 	int deleteParentComment(int commentId);
+	
+	Comment selectCommentbyCommentId(int commentId);
 
 
 }

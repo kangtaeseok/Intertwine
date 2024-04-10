@@ -110,9 +110,9 @@
 
 
 
-<div class="container" style="margin: 0 auto; padding-left: 250px; width: 1000px;">
+<div class="container" style="margin: 0 auto; padding-left: 250px; width: 1200px;">
     <div class="top" style="margin-top: 30px; display: flex;">
-        <div class="profile"  style="padding-left: 10px;">
+        <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
                 <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
             </div>
@@ -120,7 +120,7 @@
         <div class="profile-info" style="display: flex;">
             
             <div class="left" style="display: flex;">
-                <div class="personal">
+                <div class="personal"style="padding-right:30px;">
                     <ul>
                         <br>
                         <li style="list-style-type: none;"><h3>${ user.userId } </h3></li>
@@ -137,6 +137,7 @@
             <div class="right" style="display: flex;">
                 <div class="dummy" style="height: 50px;">
                     <div class="dummy2" style="height: 50px;">
+                    <a href="profileupdate.do" style="text-decoration:none;color:black;">프로필 수정</a>
                     </div>
  					<button class="delete-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;">선택삭제</button>
                     <button class="public-button" style="padding: 5px 10px;border: none;border-radius: 5px;cursor: pointer;font-size: 15px;">선택 전체공개</button>
@@ -185,7 +186,7 @@
         <!-- 이것들이 반복 됨 -->
        <c:forEach var="gallery" items="${galleries}">
         <a href="detail.do?postId=${gallery.post.postId}">
-        <div class="options" style="width: 237px; height:235px; margin-bottom: 100px;margin-right: 13px;position: relative" data-id="${ gallery.post.postId }">
+        <div class="options" style="width: 300px; height:300px; margin-bottom: 30px;margin-right: 13px;position: relative" data-id="${ gallery.post.postId }">
             <input type="checkbox" id="${ gallery.post.postId }" name="checks" value="${ gallery.post.postId }" class="checkbox">
             <div class="gallery" style="padding: 0px;height: 300px;padding: 0px;margin: 0px;justify-content: center;background-color: grey;">
                 <div class="image-wrap" style="position: relative;width: 100%;height: 100%;">
