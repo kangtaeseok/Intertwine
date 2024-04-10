@@ -21,7 +21,7 @@ body {
 	overflow-x: hidden;
 	width: 100%;
 	height: 100%;
-	/* height: 900px; 사이트의 높이를 2000px로 만들어 스크롤 생성 */
+	height: 600px; /*사이트의 높이를 2000px로 만들어 스크롤 생성 */
 }
 
 /* 페이지 좌측 상단 홈버튼 */
@@ -95,6 +95,7 @@ main {
 	margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
+	
 }
 
 #bottom_right_contents.on {
@@ -165,7 +166,7 @@ main {
 
 #feed {
 	position: relative;
-	width: 1200px;
+	width: 1100px;
 	height: 800px;
 	background-color: white;
 	justify-content: center;

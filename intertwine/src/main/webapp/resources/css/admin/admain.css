@@ -306,7 +306,7 @@ h3 {
 
 .stat-div {
 	
-	background: #f4f4f4;
+background: #f9effa;
 	width: 30vw;
 	height: 100px;
 	border-radius: 6px;
@@ -324,7 +324,7 @@ h3 {
 	margin-top: 30px;
 	width: 100%;
 	height: 50%;
-	background: #f4f4f4;
+	background: #f9effa;
 	border-radius: 6px;
 }
 
@@ -337,7 +337,7 @@ h4 {
 	margin-left: 30px;
 	width: 550px;
 	height: 300px;
-	background: #f4f4f4;
+	background: #f9effa;
 	margin-botton: 30px;
 	display: flex;
 	flex-direction: column;
@@ -364,10 +364,10 @@ h4 {
 }
 
 .stat-div2 {
-	margin: 20px;
+	margin: 30px;
 	width: 30vw;
 	height: 400px;
-	background: #f4f4f4;
+	background: #f9effa;
 	border-radius: 6px;
 	
 }
@@ -375,7 +375,7 @@ h4 {
 	margin: 20px;
 	width: 550px;
 	height: 400px;
-	background: #f4f4f4;
+	background: #f9effa;
 	border-radius: 6px;
 	 overflow: scroll;
 }
@@ -391,7 +391,7 @@ th {
 }
 
 .alertStyle {
-        background-color: #ffffff;
+        background: #ffffff;
         color: black;
         padding: 10px;
         border-radius: 4px;

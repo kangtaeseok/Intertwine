@@ -59,5 +59,14 @@ public interface UserService {
 	void insertAlarm(String userId);
 	void updateDayTime(String userId);
 
+	//휴면계정 관리
+	int selectAccountStatus(String userId);
+
+	void updateUserStatus(String email);
+
+	void updateUserStop(String userId);
+
+	int selectAllUserCount();
+
 
 }

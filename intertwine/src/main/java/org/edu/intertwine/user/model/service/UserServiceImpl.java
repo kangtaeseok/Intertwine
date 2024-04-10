@@ -151,6 +151,29 @@ public class UserServiceImpl implements UserService {
 		userDao.updateDayTime(userId);
 	}
 
+	//휴면관리
+	@Override
+	public int selectAccountStatus(String userId) {
+		return userDao.selectAccountStatus(userId);	
+	}
+
+	@Override
+	public void updateUserStatus(String email) {
+		userDao.updateUserStatus(email);	
+		
+	}
+
+	@Override
+	public void updateUserStop(String userId) {
+		userDao.updateUserStop(userId);	
+		
+	}
+
+	@Override
+	public int selectAllUserCount() {
+		return userDao.selectAllUserCount();	
+	}
+
 	
 	
 	

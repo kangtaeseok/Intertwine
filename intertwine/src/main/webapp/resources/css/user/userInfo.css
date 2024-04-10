@@ -29,8 +29,7 @@ a {
 body {
 	background-color: #f5f5f5;
 	width: 100%;
-	height: 100%;
-	height: 2000px; /* 사이트의 높이를 2000px로 만들어 스크롤 생성 */
+	height: 100%; /* 사이트의 높이를 2000px로 만들어 스크롤 생성 */
 }
 
 /* 페이지 상단 */
@@ -124,6 +123,8 @@ header {
 	display: none;
 }
 
+height: 800px;
+
 main {
 	display: flex;
     flex-direction: row;
@@ -200,6 +201,7 @@ main {
     margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
+	height: 800px;
 }
 
 #bottom_right_contents.on {
@@ -433,16 +435,7 @@ main {
 	background: #ff80ff;
 }
 
-	
-.box {
-	white-space: nowrap;
-	position: fixed;
-	margin: 0 auto;
-    position: relative;
-    height: 100vh;
-    width: 40%;
- 	background: white;
-}
+
 
 .logo-box {
 	display: flex;
@@ -463,6 +456,10 @@ main {
     position: relative;
     border-collapse: separate;
     border-spacing: 10px 10px;
+}
+
+#feed {
+
 }
 
 

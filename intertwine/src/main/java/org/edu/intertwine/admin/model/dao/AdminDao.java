@@ -38,14 +38,13 @@ public class AdminDao {
 		
 	}
 
+	//그래프용
 	public VisitCount selectVisitCount() {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCount");
 	}
-
 	public int selectVisitCountAll() {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountAll");
 	}
-
 	public int selectVisitCountMonth(String string) {
 		return sqlSessionTemplate.selectOne("adminMapper.selectVisitCountMonth", string);
 	}

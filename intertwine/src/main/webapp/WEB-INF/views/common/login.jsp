@@ -37,8 +37,6 @@
 		})
 	}
 </script>
-
-
 <link rel="stylesheet" href="/intertwine/resources/css/common/login.css" />
 <title>intertwine</title>
 </head>
@@ -68,11 +66,6 @@
 			<c:url var="kurl" value="${requestScope.naverurl}" />
 			<a href="${ kurl }">
 				<img src="/intertwine/resources/images/naver_login.png"></a>
-			</a>
-			
-
-	 
-  	
 	      </div> 
     </div>
 </div>
@@ -82,9 +75,6 @@
 	<input type="hidden" name="kakaomail" id="kakaoemail"/>
 	<input type="hidden" name="kakaoId" id="kakaoId"/>
 </form>
-
-
-
 
 </body>
 </html>
