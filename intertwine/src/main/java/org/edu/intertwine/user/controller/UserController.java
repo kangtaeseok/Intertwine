@@ -687,7 +687,7 @@ public class UserController {
 				@RequestParam(name="ofile", required=false) MultipartFile mfile, Model model, HttpServletRequest request) {
 		 
 		String savePath = request.getSession().getServletContext().getRealPath(
-							"resources/profile");
+		 					"resources/profile");
 	
 		String fileName = mfile.getOriginalFilename();
 		String renameFileName = null;
