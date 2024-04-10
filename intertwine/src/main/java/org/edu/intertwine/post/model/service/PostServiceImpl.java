@@ -179,37 +179,37 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int deleteBatchDelete(List<String> postIds) {
+	public int deleteBatchDelete(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.deleteBatchDelete(postIds);
 	}
 
 	@Override
-	public int updateBatchPublic(List<String> postIds) {
+	public int updateBatchPublic(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPublic(postIds);
 	}
 
 	@Override
-	public int updateBatchFollowing(List<String> postIds) {
+	public int updateBatchFollowing(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchFollowing(postIds);
 	}
 
 	@Override
-	public int updateBatchPrivate(List<String> postIds) {
+	public int updateBatchPrivate(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPrivate(postIds);
 	}
 
 	@Override
-	public int updateBatchPinOn(List<String> postIds) {
+	public int updateBatchPinOn(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPinOn(postIds);
 	}
 
 	@Override
-	public int updateBatchPinOff(List<String> postIds) {
+	public int updateBatchPinOff(List<Integer> postIds) {
 		// TODO Auto-generated method stub
 		return postDao.updateBatchPinOff(postIds);
 	}
@@ -254,6 +254,66 @@ public class PostServiceImpl implements PostService {
 	public ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage) {
 		// TODO Auto-generated method stub
 		return postDao.selectPostsBySearchKeyword(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewestFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewestFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdOldestToNewestNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdOldestToNewestNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeastFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsByIdMostViewsToLeastNotFollower(String friendId) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsByIdMostViewsToLeastNotFollower(friendId);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTagFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTagFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchTagNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchTagNotFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeywordFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeywordFollower(searchMyPage);
+	}
+
+	@Override
+	public ArrayList<Post> selectPostsBySearchKeywordNotFollower(SearchMyPage searchMyPage) {
+		// TODO Auto-generated method stub
+		return postDao.selectPostsBySearchKeywordNotFollower(searchMyPage);
 	}
 
 

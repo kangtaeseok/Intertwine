@@ -66,17 +66,17 @@ public interface PostService {
 
 	int insertLikeType(Like like2);
 
-	int deleteBatchDelete(List<String> postIds);
+	int deleteBatchDelete(List<Integer> postIds);
 
-	int updateBatchPublic(List<String> postIds);
+	int updateBatchPublic(List<Integer> postIds);
 
-	int updateBatchFollowing(List<String> postIds);
+	int updateBatchFollowing(List<Integer> postIds);
 
-	int updateBatchPrivate(List<String> postIds);
+	int updateBatchPrivate(List<Integer> postIds);
 
-	int updateBatchPinOn(List<String> postIds);
+	int updateBatchPinOn(List<Integer> postIds);
 
-	int updateBatchPinOff(List<String> postIds);
+	int updateBatchPinOff(List<Integer> postIds);
 
 	ArrayList<Post> selectPostsByIdOldestToNewest(String userId);
 
@@ -91,6 +91,27 @@ public interface PostService {
 	ArrayList<Post> selectPostsBySearchTag(SearchMyPage searchMyPage);
 
 	ArrayList<Post> selectPostsBySearchKeyword(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsByIdFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdOldestToNewestFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdOldestToNewestNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeastFollower(String friendId);
+
+	ArrayList<Post> selectPostsByIdMostViewsToLeastNotFollower(String friendId);
+
+	ArrayList<Post> selectPostsBySearchTagFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchTagNotFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeywordFollower(SearchMyPage searchMyPage);
+
+	ArrayList<Post> selectPostsBySearchKeywordNotFollower(SearchMyPage searchMyPage);
+
 
 	//ArrayList<Post> selectPostsByIdMostReactionsToLeast(String userId);
 

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>changeIdPwd</title>
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
-<link rel="stylesheet" href="/intertwine/resources/css/finduserInfo.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/common/finduserInfo.css" />
 <script type="text/javascript">
 
 $(".auth-email").hide();

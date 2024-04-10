@@ -5,10 +5,11 @@
 <head>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<script src="https://kit.fontawesome.com/4b2098cb2a.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"></script>
 	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+		<script defer src="/intertwine/resources/js/mainpage.js"></script>
 	<script defer src="/intertwine/resources/js/mainpage.js"></script>
+	<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%> 
 <!-- 폰트어썸 가져오기 -->
 </head>
 <style>
@@ -67,14 +68,6 @@ cursor: pointer;
                 </ol>
             </nav>
         </div>
-
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
-        <div></div>
-        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
     </header>
 
 <body>
@@ -303,7 +296,7 @@ cursor: pointer;
                         return;
                     }
 
-                    const existingTags = document.querySelectorAll('.tags span');
+                    const existingTags = document.querySelectorAll('.tags div');
                     for (let tag of existingTags) {
                         if (tag.textContent.startsWith(tagValue)) {
                             alert('이미 존재하는 태그입니다.');
@@ -314,8 +307,8 @@ cursor: pointer;
                     const uniqueId = new Date().getTime(); // 태그에 유니크 아이디 부여
 
                     // 페이지에 태그 삽입
-                    const tagContainer = document.createElement('span');
-                    tagContainer.setAttribute('data-tag-id', uniqueId); // 유니크 아이디 설정
+                    const tagContainer = document.createElement('div');
+                    tagContainer.setAttribute('id', uniqueId); // 유니크 아이디 설정
                     tagContainer.textContent = tagValue;
                     tagContainer.style.marginRight = '5px';
 
@@ -326,13 +319,14 @@ cursor: pointer;
                     deleteButton.addEventListener('click', function() {
                         // 삭제 버튼 누를 시 유니크 아이디로 보여지는 태그와 숨겨진 인풋 둘다 삭제 
                         event.preventDefault();
-                        document.querySelector(`span[data-tag-id="${uniqueId}"]`).remove(); 
-                        document.querySelector(`input[data-tag-id="${uniqueId}"]`).remove();
+                        document.querySelector(`div[id="${uniqueId}"]`).remove(); 
+                        document.querySelector(`input[id="${uniqueId}"]`).remove();
                     });
                     tagContainer.appendChild(deleteButton);
 
                     document.querySelector('.tags').appendChild(tagContainer);
                     document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
+                    console.log('Inserted tag container:', tagContainer.outerHTML);
 
                     document.querySelector('.modal-content').remove();
                     input.value = ''; // 다이얼로그 비움
@@ -341,9 +335,10 @@ cursor: pointer;
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
                     hiddenInput.name = 'tagName'; //자바에서 꺼내 사용할 이름
-                    hiddenInput.setAttribute('data-tag-id', uniqueId); //유니크 아이디 사용
+                    hiddenInput.setAttribute('id', uniqueId); //유니크 아이디 사용
                     hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
                     document.querySelector('form').appendChild(hiddenInput);
+                    console.log('Inserted hidden input:', hiddenInput.outerHTML);
 
 
                 });
@@ -398,7 +393,7 @@ cursor: pointer;
     };
     form.addEventListener('submit', function(event) {
 
-        localStorage.removeItem("textArea"); //삭제
+        localStorage.removeItem("textArea"); //임시저장은 게시버튼 누를 시 삭제
     });
 
 </script>

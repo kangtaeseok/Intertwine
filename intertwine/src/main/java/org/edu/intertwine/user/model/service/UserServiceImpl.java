@@ -120,44 +120,35 @@ public class UserServiceImpl implements UserService {
 		userDao.updateUserNickname(user);
 	}
 
-	//시간설정
-	@Override
-	public Notification selectNotify(String userId) {
-		return userDao.selectNotify(userId);
-	}
-
-	@Override
-	public int updateCustonAlarm(Notification notify) {
-		return userDao.updateCustonAlarm(notify);
-		
-	}
-
-	@Override
-	public List<User> findAllUsers() {
-		return userDao.findAllUsers();
-	}
-
+	//탈퇴관련
 	@Override
 	public void updateUserdisable(String userId) {
 		userDao.updateUserdisable(userId);
 		
 	}
-
 	@Override
 	public void insertUserStop(String userId) {
 		userDao.insertUserStop(userId);
 	}
 
+	
+	
+	//시간설정
+	@Override
+	public Notification selectNotify(String userId) {
+		return userDao.selectNotify(userId);
+	}
+	@Override
+	public int updateCustonAlarm(Notification notify) {
+		return userDao.updateCustonAlarm(notify);	
+	}
 	@Override
 	public void insertAlarm(String userId) {
 		userDao.insertAlarm(userId);
-		
 	}
-
 	@Override
 	public void updateDayTime(String userId) {
 		userDao.updateDayTime(userId);
-		
 	}
 
 	

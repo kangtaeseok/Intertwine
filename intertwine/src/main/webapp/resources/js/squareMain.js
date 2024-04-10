@@ -308,7 +308,7 @@ window.addEventListener('load', function () {
     setTimeout(function () {
         document.getElementById('loadingview').classList.add('hidden');
         document.getElementById('squaretip').classList.add('hidden');
-    }, 0); // 1000ms = 1초
+    }, 1000); // 1000ms = 1초
 });
 
 
@@ -412,104 +412,104 @@ myCharacter.addEventListener('contextmenu', function (event) {
         modal.style.display = "flex";
     });
 
-    // "아바타 수정" 버튼 생성 및 위치 조정
+    // "캐릭터 수정" 버튼 생성 및 위치 조정
     const buttonHeight = 30; // 실제 높이에 따라 조절
     const changeCharacterButton = createButton('캐릭터 수정', '#exampleModal2', buttonHeight);
     changeCharacterButton.id = 'changeCharacterButton'; // id 속성 추가
     const currentTop = parseInt(changeCharacterButton.style.top, 10);
-    changeCharacterButton.style.top = `${currentTop - 7}px`;
+    changeCharacterButton.style.top = `${currentTop - 6}px`;
     myCharacter.appendChild(changeCharacterButton);
-    
+
     $("#changeCharacterButton").click(function () {
         console.log("캐릭터 수정 버튼 클릭!");
         const modal = document.querySelector("#characterChangeModal");
         modal.style.display = "flex";
-        
+
         $.ajax({
             url: "getcharacterreosource.do",
             type: "post",
             data: { "userId": window.globaluserId },
             dataType: "json",
             success: function (data) {
-				var hairList = data.hairjarr; // 컨트롤러에서 보낸 hairjarr 사용
-        		var hatList = data.hatjarr; // 컨트롤러에서 보낸 hairjarr 사용
-        		var topList = data.topjarr; // 컨트롤러에서 보낸 hairjarr 사용
-        		var bottomList = data.bottomjarr; // 컨트롤러에서 보낸 hairjarr 사용
-        			    		
-        		const previewcharacterhair = document.querySelector("#previewcharacterhair");
-			    previewcharacterhair.style.backgroundImage = "url('" + data.mycharacter.hairStyleImageURL + "')";
-			    previewcharacterhair.style.backgroundSize = "cover";
-			    previewcharacterhair.style.backgroundPosition = "center";
-			    const previewcharacterhat = document.querySelector("#previewcharacterhat");
-			    previewcharacterhat.style.backgroundImage = "url('" + data.mycharacter.hatImageURL + "')";
-			    previewcharacterhat.style.backgroundSize = "cover";
-			    previewcharacterhat.style.backgroundPosition = "center";
-			    const previewcharactertop = document.querySelector("#previewcharactertop");
-			    previewcharactertop.style.backgroundImage = "url('" + data.mycharacter.topImageURL + "')";
-			    previewcharactertop.style.backgroundSize = "cover";
-			    previewcharactertop.style.backgroundPosition = "center";
-			    const previewcharacterbottom = document.querySelector("#previewcharacterbottom");
-			    previewcharacterbottom.style.backgroundImage = "url('" + data.mycharacter.bottomImageURL + "')";
-			    previewcharacterbottom.style.backgroundSize = "cover";
-			    previewcharacterbottom.style.backgroundPosition = "center";
-        		
-		        // .charactermodal-hair-container의 자식 div를 모두 찾음
-		        var hairDivs = document.querySelectorAll('.charactermodal-hair-container > div');
-		        // .charactermodal-hat-container의 자식 div를 모두 찾음
-		        var hatDivs = document.querySelectorAll('.charactermodal-hat-container > div');
-		        // .charactermodal-top-container의 자식 div를 모두 찾음
-		        var topDivs = document.querySelectorAll('.charactermodal-top-container > div');
-		        // .charactermodal-bottom-container의 자식 div를 모두 찾음
-		        var bottomDivs = document.querySelectorAll('.charactermodal-bottom-container > div');
-		        
-		        // hairList의 각 항목에 대해 반복
-		        hairList.forEach(function(hair, index) {
-				    // 존재하는 div 수 내에서만 실행
-				    if (index < hairDivs.length) {
-				        var $div = $(hairDivs[index]); // jQuery 객체로 변환
-				        $div.data('hairId', hair.hairId); // 데이터 설정
-				        $div.data('index', index); // 인덱스 설정
-				        // 각 div의 배경 이미지 설정
-				        $div.css('background-image', 'url(' + hair.hairImageURL + ')');
-				    }
-				});
-        		
-        		// hatList의 각 항목에 대해 반복
-		        hatList.forEach(function(hat, index) {
-				    // 존재하는 div 수 내에서만 실행
-				    if (index < hatDivs.length) {
-				        var $div = $(hatDivs[index]); // jQuery 객체로 변환
-				        $div.data('hatId', hat.hatId); // 데이터 설정
-				        $div.data('index', index); // 인덱스 설정
-				        // 각 div의 배경 이미지 설정
-				        $div.css('background-image', 'url(' + hat.hatImageURL + ')');
-				    }
-				});
-        		
-        		// topList의 각 항목에 대해 반복
-		        topList.forEach(function(top, index) {
-				    // 존재하는 div 수 내에서만 실행
-				    if (index < topDivs.length) {
-				        var $div = $(topDivs[index]); // jQuery 객체로 변환
-				        $div.data('topId', top.topId); // 데이터 설정
-				        $div.data('index', index); // 인덱스 설정
-				        // 각 div의 배경 이미지 설정
-				        $div.css('background-image', 'url(' + top.topImageURL + ')');
-				    }
-				});
-        		
-        		// bottomList의 각 항목에 대해 반복
-		        bottomList.forEach(function(bottom, index) {
-				    // 존재하는 div 수 내에서만 실행
-				    if (index < bottomDivs.length) {
-				        var $div = $(bottomDivs[index]); // jQuery 객체로 변환
-				        $div.data('bottomId', bottom.bottomId); // 데이터 설정
-				        $div.data('index', index); // 인덱스 설정
-				        // 각 div의 배경 이미지 설정
-				        $div.css('background-image', 'url(' + bottom.bottomImageURL + ')');
-				    }
-				});
-        		
+                var hairList = data.hairjarr; // 컨트롤러에서 보낸 hairjarr 사용
+                var hatList = data.hatjarr; // 컨트롤러에서 보낸 hairjarr 사용
+                var topList = data.topjarr; // 컨트롤러에서 보낸 hairjarr 사용
+                var bottomList = data.bottomjarr; // 컨트롤러에서 보낸 hairjarr 사용
+
+                const previewcharacterhair = document.querySelector("#previewcharacterhair");
+                previewcharacterhair.style.backgroundImage = "url('" + data.mycharacter.hairStyleImageURL + "')";
+                previewcharacterhair.style.backgroundSize = "cover";
+                previewcharacterhair.style.backgroundPosition = "center";
+                const previewcharacterhat = document.querySelector("#previewcharacterhat");
+                previewcharacterhat.style.backgroundImage = "url('" + data.mycharacter.hatImageURL + "')";
+                previewcharacterhat.style.backgroundSize = "cover";
+                previewcharacterhat.style.backgroundPosition = "center";
+                const previewcharactertop = document.querySelector("#previewcharactertop");
+                previewcharactertop.style.backgroundImage = "url('" + data.mycharacter.topImageURL + "')";
+                previewcharactertop.style.backgroundSize = "cover";
+                previewcharactertop.style.backgroundPosition = "center";
+                const previewcharacterbottom = document.querySelector("#previewcharacterbottom");
+                previewcharacterbottom.style.backgroundImage = "url('" + data.mycharacter.bottomImageURL + "')";
+                previewcharacterbottom.style.backgroundSize = "cover";
+                previewcharacterbottom.style.backgroundPosition = "center";
+
+                // .charactermodal-hair-container의 자식 div를 모두 찾음
+                var hairDivs = document.querySelectorAll('.charactermodal-hair-container > div');
+                // .charactermodal-hat-container의 자식 div를 모두 찾음
+                var hatDivs = document.querySelectorAll('.charactermodal-hat-container > div');
+                // .charactermodal-top-container의 자식 div를 모두 찾음
+                var topDivs = document.querySelectorAll('.charactermodal-top-container > div');
+                // .charactermodal-bottom-container의 자식 div를 모두 찾음
+                var bottomDivs = document.querySelectorAll('.charactermodal-bottom-container > div');
+
+                // hairList의 각 항목에 대해 반복
+                hairList.forEach(function (hair, index) {
+                    // 존재하는 div 수 내에서만 실행
+                    if (index < hairDivs.length) {
+                        var $div = $(hairDivs[index]); // jQuery 객체로 변환
+                        $div.data('hairId', hair.hairId); // 데이터 설정
+                        $div.data('index', index); // 인덱스 설정
+                        // 각 div의 배경 이미지 설정
+                        $div.css('background-image', 'url(' + hair.hairImageURL + ')');
+                    }
+                });
+
+                // hatList의 각 항목에 대해 반복
+                hatList.forEach(function (hat, index) {
+                    // 존재하는 div 수 내에서만 실행
+                    if (index < hatDivs.length) {
+                        var $div = $(hatDivs[index]); // jQuery 객체로 변환
+                        $div.data('hatId', hat.hatId); // 데이터 설정
+                        $div.data('index', index); // 인덱스 설정
+                        // 각 div의 배경 이미지 설정
+                        $div.css('background-image', 'url(' + hat.hatImageURL + ')');
+                    }
+                });
+
+                // topList의 각 항목에 대해 반복
+                topList.forEach(function (top, index) {
+                    // 존재하는 div 수 내에서만 실행
+                    if (index < topDivs.length) {
+                        var $div = $(topDivs[index]); // jQuery 객체로 변환
+                        $div.data('topId', top.topId); // 데이터 설정
+                        $div.data('index', index); // 인덱스 설정
+                        // 각 div의 배경 이미지 설정
+                        $div.css('background-image', 'url(' + top.topImageURL + ')');
+                    }
+                });
+
+                // bottomList의 각 항목에 대해 반복
+                bottomList.forEach(function (bottom, index) {
+                    // 존재하는 div 수 내에서만 실행
+                    if (index < bottomDivs.length) {
+                        var $div = $(bottomDivs[index]); // jQuery 객체로 변환
+                        $div.data('bottomId', bottom.bottomId); // 데이터 설정
+                        $div.data('index', index); // 인덱스 설정
+                        // 각 div의 배경 이미지 설정
+                        $div.css('background-image', 'url(' + bottom.bottomImageURL + ')');
+                    }
+                });
+
 
             },
             error: function (request, status, errorData) {
@@ -521,11 +521,129 @@ myCharacter.addEventListener('contextmenu', function (event) {
 
     });
 
-    // "오프라인 전환" 버튼 생성 및 위치 조정
-    const thirdButton = createButton('오프라인 전환', '#exampleModal3', 2 * (buttonHeight));
-    const currentTop2 = parseInt(thirdButton.style.top, 10);
-    thirdButton.style.top = `${currentTop2 - 14}px`;
-    myCharacter.appendChild(thirdButton);
+    // 친구 목록 버튼 생성 및 위치 조정
+const friendListButton = createButton('친구 목록', '#exampleModal3', 2 * (buttonHeight));
+friendListButton.id = 'friendListButton'; // id 속성 추가
+const currentTop2 = parseInt(friendListButton.style.top, 10);
+friendListButton.style.top = `${currentTop2 - 12}px`;
+myCharacter.appendChild(friendListButton);
+
+friendListButton.addEventListener('click', function (event) {
+    console.log("친구목록버튼클릭!");
+    const modal = document.querySelector("#friendListModal");
+    modal.style.display = "flex";
+    var $friendModalList = $('.friendmodal-list');
+    $friendModalList.empty();
+
+    $.ajax({
+        url: "getfriendlist.do",
+        type: "POST",
+        data: { "userId": window.globaluserId },
+        dataType: "json",
+        success: function (data) {
+            console.log("success!");
+            var friends = data.friends;
+
+            $.each(friends, function (index, friend) {
+                var friendDiv = $("<div>", { class: "friend-info", "data-friend-id": friend.friendId }).css({
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                }).click(function() {
+                    // 모든 friend-info에서 selected 클래스 제거
+                    $(".friend-info").removeClass("selected-friend");
+                    // 클릭된 friend-info에만 selected 클래스 추가
+                    $(this).addClass("selected-friend");
+                });
+
+                var profilePic = $("<img>", {
+                    src: friend.profile,
+                    alt: "Profile Picture",
+                    width: "50px",
+                    height: "50px",
+                    css: {
+                        borderRadius: "50%",
+                        marginRight: "30px",
+                    }
+                });
+
+                var nickname = $("<div>").text(friend.friendId);
+
+                // 프로필 사진과 별명을 div에 추가
+                friendDiv.append(profilePic).append(nickname);
+
+                // 생성된 div를 페이지에 추가
+                $friendModalList.append(friendDiv);
+            });
+
+            // 이동 버튼 클릭 이벤트 추가
+            $("#gofirendroombtn").off("click").on("click", function() {
+                var selectedFriendId = $(".selected-friend").data("friend-id");
+                if(selectedFriendId) {
+                    $.ajax({
+					    url: "movetofriendroom.do",
+					    type: "POST",
+					    data: { "friendId": selectedFriendId },
+					    success: function (response) {
+					        console.log("Room Move Success!", response);
+					        var roomData = JSON.parse(response);
+					        roomHost = roomData.userId;
+
+					        console.log("방 주인: " + roomHost);
+					        console.log("방 색상: " + roomData.roomColor);
+					        console.log("방명록 공개 여부: " + roomData.guestBookOpen);
+					
+					        // 기존의 .userroomresource 엘리먼트를 모두 제거
+					        $(".userroomresource").remove();
+					
+					        // #userroom의 배경색 변경
+					        $("#userroom").css("background-color", roomData.roomColor);
+					
+					        // rList 내의 각 리소스에 대하여 반복하여 .userroomresource를 새로 만들어 #userroom에 추가
+					        roomData.rList.forEach(function(resource) {
+					            var imgElement = $('<img>', {
+					                src: resource.resourceURL,
+					                alt: "Room Resource Image",
+					                class: "userroomresource",
+					                css: {
+					                    position: "absolute",
+					                    left: resource.resourcePositionX + "px",
+					                    top: resource.resourcePositionY + "px",
+					                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
+					                }
+					            });
+					            $("#userroom").append(imgElement);	
+					        });
+					        const modal = document.querySelector(".friendmodal");		
+					        modal.style.display="none";
+					        
+					        var updateRoomButton = $("#btnupdateroom");
+					        if (roomHost === window.globaluserId) {
+						    // 방의 주인이 현재 로그인한 사용자인 경우
+							    updateRoomButton.text("방 꾸미기"); // 버튼 텍스트 업데이트
+							} else {
+							    // 방의 주인이 현재 로그인한 사용자가 아닌 경우
+							    updateRoomButton.text("내 방 가기"); // 버튼 텍스트 업데이트
+							}
+						        
+					    },
+					    error: function (request, status, errorData) {
+					        console.log("Error moving to room: " + errorData);
+					    }
+					});
+                } else {
+                    alert("친구를 선택해주세요.");
+                }
+            });
+        },
+        error: function (request, status, errorData) {
+            console.log("error code : " + request.status
+                + "\nMessage : " + request.responseText
+                + "\nError : " + errorData);
+        }
+    });  // ajax
+});
+    
 
     // 페이지의 다른 부분을 클릭하면 생성된 버튼들을 제거하는 이벤트 리스너 추가
     function outsideClickListener(event) {
@@ -535,4 +653,10 @@ myCharacter.addEventListener('contextmenu', function (event) {
         }
     }
     document.addEventListener('click', outsideClickListener);
+
+
+
+
+
+
 });

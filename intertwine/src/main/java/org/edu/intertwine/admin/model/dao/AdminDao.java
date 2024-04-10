@@ -141,5 +141,11 @@ public class AdminDao {
 		return sqlSessionTemplate.selectOne("adminMapper.selectReportCommentCount", commentId);
 	}
 
+	//신고관리 리스트담아오기
+	public List<ContentReport> selectContentReportList(Integer reportId) {
+		return sqlSessionTemplate.selectList("adminMapper.selectContentReportList", reportId);
+	}
+
+
 	
 }

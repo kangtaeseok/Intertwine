@@ -259,7 +259,6 @@ main {
 
 
 .sub_menu {
-
 	min-height: var(--side-bar-height);
 	width: var(--side-bar-width);
 	background-color: rgb(205, 79, 132);
