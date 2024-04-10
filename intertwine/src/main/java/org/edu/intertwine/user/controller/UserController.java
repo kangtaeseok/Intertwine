@@ -1,5 +1,6 @@
 package org.edu.intertwine.user.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.admin.model.service.AdminService;
+import org.edu.intertwine.common.FileNameChange;
 import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
@@ -44,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
@@ -677,10 +681,34 @@ public class UserController {
 		return "성공";
 	 }
 	 
+	 //마이페이지
+	 @RequestMapping(value="myprofileupdate.do", method=RequestMethod.POST)
+	 public String myPageselMethod (HttpSession session,User user, MyPage mypage,
+				@RequestParam(name="ofile", required=false) MultipartFile mfile, Model model, HttpServletRequest request) {
+		 
+		String savePath = request.getSession().getServletContext().getRealPath(
+							"resources/profile");
+	
+		String fileName = mfile.getOriginalFilename();
+		String renameFileName = null;
+	
+		if(fileName != null && fileName.length() > 0) {	
+			renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
+			try {	
+				mfile.transferTo(new File(savePath + "\\" + renameFileName));
+			} catch(Exception e) {
+				e.printStackTrace();
+				model.addAttribute("msg", "첨부파일 저장 실패!");
+				model.addAttribute("url", "mypage.do");
+				return "common/alert";
+			}
+		}
+		mypage.setProfile(fileName);
+		mypage.setProfileDraft(renameFileName);
+		return "redirect:mypage.do";
+	}
 	 
-	 
-	 
-	 
+	  
 } 
 	 
 	 
