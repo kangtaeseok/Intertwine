@@ -66,17 +66,17 @@ public interface PostService {
 
 	int insertLikeType(Like like2);
 
-	int deleteBatchDelete(List<String> postIds);
+	int deleteBatchDelete(List<Integer> postIds);
 
-	int updateBatchPublic(List<String> postIds);
+	int updateBatchPublic(List<Integer> postIds);
 
-	int updateBatchFollowing(List<String> postIds);
+	int updateBatchFollowing(List<Integer> postIds);
 
-	int updateBatchPrivate(List<String> postIds);
+	int updateBatchPrivate(List<Integer> postIds);
 
-	int updateBatchPinOn(List<String> postIds);
+	int updateBatchPinOn(List<Integer> postIds);
 
-	int updateBatchPinOff(List<String> postIds);
+	int updateBatchPinOff(List<Integer> postIds);
 
 	ArrayList<Post> selectPostsByIdOldestToNewest(String userId);
 

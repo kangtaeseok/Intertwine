@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 		<script defer src="/intertwine/resources/js/mainpage.js"></script>
 	<script defer src="/intertwine/resources/js/mainpage.js"></script>
+	<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%> 
 <!-- 폰트어썸 가져오기 -->
 </head>
 <style>

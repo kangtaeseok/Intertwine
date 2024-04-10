@@ -378,7 +378,7 @@ input.text::placeholder {
         <div id="bottom_right_contents">
 	<div class="frame">
 		<c:forEach items="${feedItems}" var="item">
-			<div class="card">
+			<div class="card" style="background-color:white;">
 				<!-- 카드 상부 구성 -->
 				<div class="top">
 					<div class="userDetails">
