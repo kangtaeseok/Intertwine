@@ -1,17 +1,12 @@
 package org.edu.intertwine.admin.controller;
 
-
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -22,10 +17,8 @@ import org.edu.intertwine.comment.model.service.CommentService;
 import org.edu.intertwine.comment.model.vo.Comment;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
-import org.edu.intertwine.common.Time;
 import org.edu.intertwine.post.model.service.PostService;
 import org.edu.intertwine.post.model.vo.Post;
-import org.edu.intertwine.user.controller.UserController;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -35,7 +28,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -376,13 +368,12 @@ public class AdminController {
 		}
 		
 	}
-	
+	 
 	//신고 내용받기
 	@ResponseBody
 	@RequestMapping(value="inPostReport.do", method=RequestMethod.POST)
 	public void inPostReport(@RequestParam("postId") int postId, @RequestParam("message") String message,  @RequestParam("userId") String userId){
-		ContentReport cpt = new ContentReport();
-		
+		ContentReport cpt = new ContentReport();	
 		cpt.setBoardNum(postId);
 		cpt.setReportReason(message);
 		cpt.setReportComment(0);
@@ -405,33 +396,66 @@ public class AdminController {
 		adminService.insertRptComment(cpt);
 	}
 	
-	//처리상태 변경
+	//삭제 혹은 비공개 처리
 	@RequestMapping(value="delContent.do", method=RequestMethod.POST)
 	public ResponseEntity<?> delContentMethod(@RequestParam("reportId") List<Integer> reportIds,
 	 Model model) {
 		
 		for (Integer reportId : reportIds) {
-			//게시물 비공개처리 로직추가필요함
-	        adminService.updateRptStatus(reportId);
+			List<ContentReport> cpt = adminService.selectContentReportList(reportId);
+			List<Integer> postIds = new ArrayList<>();
+			
+		  for (ContentReport contentReport : cpt) {
+		        Integer postId = contentReport.getBoardNum();
+		        Post post = postService.selectOnePost(postId);
+		        if (post != null) {
+		        	postIds.add(postId);
+		        }
+		  }
+			/* postService.updateBatchPrivate(postIds); */
+		  adminService.updateRptStatus(reportId);
 	    }
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	
 	}
 	
+	
+	//삭제 혹은 비공개 처리
+		@RequestMapping(value="delcomment.do", method=RequestMethod.POST)
+		public ResponseEntity<?> delCommentMethod(@RequestParam("reportId") List<Integer> reportIds,
+		 Model model) {
+			
+			for (Integer reportId : reportIds) {
+				List<ContentReport> cpt = adminService.selectContentReportList(reportId);
+				List<Integer> commentIds = new ArrayList<>();
+				
+			  for (ContentReport contentReport : cpt) {
+			        Integer commentId = contentReport.getReportComment();
+					/* Comment comment = commentService.selectComments(commentId);
+			        if (comment != null) {
+			        	commentIds.add(commentId);
+			        } */
+			  }
+				/* postService.updateBatchPrivate(postIds); */
+			  adminService.updateRptStatus(reportId);
+		    }
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+		
+		}
+	
+	//처리상태 변경(분류)
 	@RequestMapping(value="upStatus.do", method=RequestMethod.POST)
 	public ResponseEntity<?> rptUpdateMethod(@RequestParam("reportId") List<Integer> reportIds,
 	 Model model) {
-		
 		for (Integer reportId : reportIds) {
 	        adminService.updateRptStatus(reportId);
 	    }
-		
 		return new ResponseEntity<>(HttpStatus.OK);
-	
 	}
 	
-		
+	//알림띄우기
 	@RequestMapping(value="reportAlarm.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String reportAlarm() throws UnsupportedEncodingException {
@@ -441,14 +465,10 @@ public class AdminController {
 		
 		for(ContentReport cpt : list) {
 			JSONObject job = new JSONObject();
-			
 			job.put("rId", cpt.getReportId());
-			//한글 데이터는 반드시 인코딩 처리함
 			job.put("Nnum", cpt.getBoardNum());
-			//날짜데이터는 반드시 toString() 으로 바꾸어 저장해야 함 => 날짜 그대로 담으면 뷰에서 출력안됨
 			job.put("uId", cpt.getUserId());
 			job.put("reason", cpt.getReportReason());
-			
 			jarr.add(job);
 		}
 		

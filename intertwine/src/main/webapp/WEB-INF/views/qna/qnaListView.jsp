@@ -222,15 +222,6 @@ $(function(){
 	
 	</script>
 
-
-<hr>
-<c:import url="/WEB-INF/views/common/footer.jsp"/>
-
-
-
-
-
-
 </body>
 </html>
 

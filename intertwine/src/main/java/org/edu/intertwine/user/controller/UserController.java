@@ -1,7 +1,9 @@
 package org.edu.intertwine.user.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -16,8 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.admin.model.service.AdminService;
+import org.edu.intertwine.common.FileNameChange;
 import org.edu.intertwine.common.Notification;
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.NaverLoginAuth;
 import org.edu.intertwine.user.model.vo.SocialLogin;
 import org.edu.intertwine.user.model.vo.User;
@@ -43,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
@@ -83,6 +88,8 @@ public class UserController {
 	public String moveFindInfoPage() {
 		return "user/finduserInfo"; 
 	}
+	
+	
 	//일반유저 정보수정
 	@RequestMapping("userInfo.do")
 	public String moveUserInfoPage(Model model, HttpSession session) {
@@ -151,7 +158,7 @@ public class UserController {
 	if (loginUser != null  && this.bcryptPasswordEncoder.matches(user.getUserPwd(),
 							  loginUser.getUserPwd())
 							 ) {
-		
+		userService.updateDayTime(loginUser.getUserId());
 		session.setAttribute("loginUser", loginUser);
 		status.setComplete();
 		
@@ -289,6 +296,7 @@ public class UserController {
 	    	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	    	userService.insertSocial(social);
 	    	userService.insertMyPage(user.getUserId());
+	    	userService.insertAlarm(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		loginUser = user;
@@ -333,6 +341,7 @@ public class UserController {
         if(userService.selectEmailCount(email) > 0) {
         	User loginUser = userService.selectEmail(email);
         	session.setAttribute("loginUser", loginUser);
+        	userService.updateDayTime(loginUser.getUserId());
 			status.setComplete();
 			logger.info(loginUser.toString());
 			if(adminService.selectVisitCount() != null) {
@@ -350,7 +359,6 @@ public class UserController {
         	user.setPhone(phone);
         	user.setUserName(name);
         	result = userService.insertUser(user);
-        	userService.insertMyPage(user.getUserId());
 	    	
 	    	if(result > 0) {
 	    		SocialLogin social = new SocialLogin();
@@ -358,6 +366,8 @@ public class UserController {
 	        	social.setType("naver");
 	        	social.setUserTime(new java.sql.Date(new java.util.Date().getTime()));
 	        	userService.insertSocial(social);
+	        	userService.insertMyPage(user.getUserId());
+	        	userService.insertAlarm(user.getUserId());
 	        	
         		User loginUser = user;
     			session.setAttribute("loginUser", loginUser);
@@ -578,7 +588,7 @@ public class UserController {
 	 }
 	 
 	 
-	 
+	 //소셜로그인 정보수정
 	 @RequestMapping(value="usocialupdate.do", method=RequestMethod.POST)
 	 public String userSocialInfoUpdate(User user, HttpSession session) {
 		 User loginUser = (User) session.getAttribute("loginUser");
@@ -593,6 +603,23 @@ public class UserController {
 		userService.updateSocial(loginUser);
 		 return "common/main";
 	 }
+	 
+	 @RequestMapping(value="getUserTime.do", method= {RequestMethod.POST, RequestMethod.GET})
+	 public ResponseEntity<?> userUseTime(HttpSession session) throws UnsupportedEncodingException {
+		 	User loginUser = (User) session.getAttribute("loginUser");
+		 	String time = "";
+	        if (loginUser != null) {
+	        	Notification notify = userService.selectNotify(loginUser.getUserId());
+	        	 if(Integer.parseInt(userService.selectUserTime(loginUser.getUserId()).trim()) % 60 == 0) {
+	        		 time = notify.getNotifyContent();
+	        		 return ResponseEntity.ok(URLEncoder.encode(time, "utf-8"));
+	        	 } else {
+	        		 return ResponseEntity.notFound().build();
+	        	 }
+	        }
+	        return ResponseEntity.notFound().build();
+	    }
+	 
 	 
 	 //마이페이지 시간 설정
 	 @RequestMapping(value="customTime.do", method= {RequestMethod.POST,RequestMethod.GET})
@@ -654,13 +681,34 @@ public class UserController {
 		return "성공";
 	 }
 	 
-//	 @RequestMapping(value="publicuset.do", method=RequestMethod.POST)
-//	 public String publicMypagesetting() {}
+	 //마이페이지
+	 @RequestMapping(value="myprofileupdate.do", method=RequestMethod.POST)
+	 public String myPageselMethod (HttpSession session,User user, MyPage mypage,
+				@RequestParam(name="ofile", required=false) MultipartFile mfile, Model model, HttpServletRequest request) {
+		 
+		String savePath = request.getSession().getServletContext().getRealPath(
+		 					"resources/profile");
+	
+		String fileName = mfile.getOriginalFilename();
+		String renameFileName = null;
+	
+		if(fileName != null && fileName.length() > 0) {	
+			renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
+			try {	
+				mfile.transferTo(new File(savePath + "\\" + renameFileName));
+			} catch(Exception e) {
+				e.printStackTrace();
+				model.addAttribute("msg", "첨부파일 저장 실패!");
+				model.addAttribute("url", "mypage.do");
+				return "common/alert";
+			}
+		}
+		mypage.setProfile(fileName);
+		mypage.setProfileDraft(renameFileName);
+		return "redirect:mypage.do";
+	}
 	 
-	 
-	 
-	 
-	 
+	  
 } 
 	 
 	 

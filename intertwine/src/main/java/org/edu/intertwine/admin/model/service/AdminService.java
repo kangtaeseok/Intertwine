@@ -1,6 +1,7 @@
 package org.edu.intertwine.admin.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.edu.intertwine.admin.model.vo.Admin;
 import org.edu.intertwine.admin.model.vo.ContentReport;
@@ -63,6 +64,9 @@ public interface AdminService {
 	VisitCount selectVisitCount();
 	int selectVisitCountAll();
 	int selectVisitCountMonth(String string);
+
+	List<ContentReport> selectContentReportList(Integer reportId);
+	
 
 
 }

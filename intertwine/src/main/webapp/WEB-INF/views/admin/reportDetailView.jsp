@@ -14,13 +14,8 @@
 <head>
 <meta charset="UTF-8">
 <title>reportPage</title>
-<link rel="stylesheet" href="/intertwine/resources/css/reportDetailView.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
-<script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="/intertwine/resources/css/admin/reportDetailView.css" />
+<c:import url="/WEB-INF/views/common/adcommon.jsp"></c:import>
 <script>
 function updateButtonState() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -122,67 +117,19 @@ function sendCheckedIds2() {
 
 
 <body>
-<header>
-<div class="header">
-	<div class="header-div">
-		<a href="${ pageContext.servletContext.contextPath }/admain.do"><img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;"></a>
-		<h2> <i class="fa-solid fa-clipboard"></i> 콘텐츠 관리 </h2>
-	</div>
-</div>
-</header>
 <main>
-<aside class="side-bar">
-            <ul>
-                <li id="square">
-                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
-      
-                <li id="mypage">
-             		       
-             
-                <li id="friend">
-                	<li><a href="#"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>    
-                
-                <li id="chatting">
-                    <li><a href="#"><i class="fa-solid fa-q"></i> 고객센터</a></li>
-                
-                <li id="alarm">
-                    <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
-                    
-                
-            </ul>
-        </aside>
-        <div id="submenubars">
-            <div id="dummy_sub_menu" class="sub_menu">
-                더미 서브메뉴
-            </div>
-            <div id="mypage_sub_menu" class="sub_menu">
-                마이페이지 서브메뉴
-            </div>
-            <div id="chatting_sub_menu" class="sub_menu">
-                채팅 서브메뉴
-            </div>
-            <div id="alarm_sub_menu" class="sub_menu">
-                알림 서브메뉴
-            </div>
-            <div id="settings_sub_menu" class="sub_menu">
-                설정 서브메뉴
-            </div>
-
-        </div>
-        
-
+<c:import url="/WEB-INF/views/common/admenubar.jsp"></c:import>
 <div id="bottom_right_contents">
             <div id="abc">
-           
                 <div class="content-div">
                 
-<br>
-<div class="button-box">
-<button id="hideButton" onclick="sendCheckedIds();" disabled>비공개</button>
-<button id="hideButton2" onclick="sendCheckedIds2();" disabled>처리완료</button>
-</div>
-<table>
-    <tr>
+			<br>
+			<div class="button-box">
+			<button id="hideButton" onclick="sendCheckedIds();" disabled>비공개</button>
+			<button id="hideButton2" onclick="sendCheckedIds2();" disabled>처리완료</button>
+			</div>
+		<table>
+   		<tr>
     	<th><input type="checkbox" id="selectAll" onchange="toggleCheckboxes(this)"></th>
         <th>신고번호</th>
         <th>신고자</th>
@@ -191,39 +138,33 @@ function sendCheckedIds2() {
         <th>신고사유</th>
         <th>신고날짜</th>
         <th>분류</th>
-    </tr>
+    	</tr>
     
-    <c:forEach items="${report}" var="re">
-    <tr>
-    	<td class="center"><input type="checkbox" value="${re.reportId}" onchange="updateButtonState()"></td>
-        <td class="center">${re.reportId}</td>
-        <td class="center">${re.userId}</td>
-       	<td class="center">${re.boardNum}</td>
-        <td class="center">${post.postContent}</td>
-        <td class="center">${re.reportReason}</td>
-        <td class="center">${re.reportTime}</td>
-        <td class="center">${re.reportStatus}</td>
-    </tr>
-
-    </c:forEach>
+	    <c:forEach items="${report}" var="re">
+	    <tr>
+	    	<td class="center"><input type="checkbox" value="${re.reportId}" onchange="updateButtonState()"></td>
+	        <td class="center">${re.reportId}</td>
+	        <td class="center">${re.userId}</td>
+	       	<td class="center">${re.boardNum}</td>
+	        <td class="center">${post.postContent}</td>
+	        <td class="center">${re.reportReason}</td>
+	        <td class="center">${re.reportTime}</td>
+	        <td class="center">${re.reportStatus}</td>
+	    </tr>
+	    </c:forEach>
     
 </table>
-    
+	<span class="right-move-box">
+	<button class="greylist" onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/rptlist.do?page=1';">목록  </button>
+	</span>
 
-<span class="right-move-box">
-<button class="greylist" onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/rptlist.do?page=1';">목록  </button>
-</span>
-
-<br>
-<c:import url="/WEB-INF/views/common/pagingView.jsp"></c:import>               	
+	<br>
+	<c:import url="/WEB-INF/views/common/pagingView.jsp"></c:import>               	
                 	
 				</div>
             </div>
         </div>
 </main>
-
-    
-
 
 </body>
 

@@ -109,31 +109,30 @@ public class UserDao {
 		
 	}
 
-	public List<User> findAllUsers() {
-		List<User> list = sqlSessionTemplate.selectList("userMapper.findAllUsers");
-		return (ArrayList<User>)list;
+
+
+
+	//알림
+	public void insertAlarm(String userId) {
+		sqlSessionTemplate.insert("userMapper.insertAlarm", userId);		
+	}
+	public void updateDayTime(String userId) {
+		sqlSessionTemplate.update("userMapper.updateDayTime", userId);	
+	}
+	public void insertNotify(String userId) {
+		sqlSessionTemplate.insert("userMapper.insertNotify", userId);
+		
 	}
 
+	
+	//탈퇴
 	public void insertUserStop(String userId) {
-		sqlSessionTemplate.update("userMapper.insertUserStop", userId);
-		
+		sqlSessionTemplate.update("userMapper.insertUserStop", userId);		
 	}
 
 	public void updateUserdisable(String userId) {
-		sqlSessionTemplate.update("userMapper.updateUserdisable", userId);
-		
+		sqlSessionTemplate.update("userMapper.updateUserdisable", userId);		
 	}
-
-	public void insertAlarm(String userId) {
-		sqlSessionTemplate.insert("userMapper.insertAlarm", userId);
-		
-	}
-
-	public void updateDayTime(String userId) {
-		sqlSessionTemplate.update("userMapper.updateDayTime", userId);
-		
-	}
-
 
 	
 }

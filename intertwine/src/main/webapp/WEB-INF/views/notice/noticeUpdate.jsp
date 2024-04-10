@@ -9,8 +9,9 @@
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/intertwine/resources/css/adnoticeupdate.css" />
-
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header> <!-- 페이지 상단 -->
@@ -73,36 +74,20 @@
 				    <div id="board-search">
 					    <div class="container">
 					        <div class="search-window">
-					            <h1 align="center">공지사항 수정 페이지</h1>
-								<br>
-								<form action="noticeupdate.do" method="post">
-								    <input type="hidden" name="noticeId" value="${notice.noticeId}">
-								    
-								    <table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
-								        <tr>
-								            <th>제목</th>
-								            <td><input type="text" name="noticeTitle" size="50" value="${notice.noticeTitle}"></td>
-								        </tr>
-								        <tr>
-								            <th>중요도</th>
-								            <td>
-								                <input type="radio" name="noticeLevel" value="0" ${notice.noticeLevel == 0 ? 'checked' : ''}> 안중요
-								                <input type="radio" name="noticeLevel" value="1" ${notice.noticeLevel == 1 ? 'checked' : ''}> 중요
-								            </td>
-								        </tr>
-								        <tr>
-								            <th>내용</th>
-								            <td><textarea rows="5" cols="50" name="noticeContent">${notice.noticeContent}</textarea></td>
-								        </tr>
-								        <tr>
-								            <td colspan="2" align="center">
-								                <input type="submit" value="수정하기">
-								                <input type="reset" value="수정취소">
-								            </td>
-								        </tr>
-								    </table>
-								</form>
-
+					             <h1>공지사항 수정 페이지</h1>
+								    <form id="updateForm" action="${pageContext.request.contextPath}/noticeupdate.do" method="POST">
+								        <input type="hidden" id="noticeId" name="noticeId" value="${notice.noticeId}">
+								        <label for="noticeTitle">제목:</label><br>
+								        <input type="text" id="noticeTitle" name="noticeTitle" value="${notice.noticeTitle}"><br>
+								        <label for="noticeContent">내용:</label><br>
+								        <textarea id="noticeContent" name="noticeContent">${notice.noticeContent}</textarea><br>
+								        <label for="noticeLevel">중요도:</label><br>
+								        <input type="radio" id="noticeLevel1" name="noticeLevel" value="1" ${notice.noticeLevel == 1 ? 'checked' : ''}>
+								        <label for="noticeLevel1">중요</label>
+								        <input type="radio" id="noticeLevel0" name="noticeLevel" value="0" ${notice.noticeLevel == 0 ? 'checked' : ''}>
+								        <label for="noticeLevel0">보통</label>
+								        <input type="submit" value="수정">
+								    </form>
 					        </table>
 					    </div>
 					</div>

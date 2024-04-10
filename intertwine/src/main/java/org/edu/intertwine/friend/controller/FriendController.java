@@ -39,9 +39,9 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	public String movefriendPage(Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 		logger.info("loginUser:" + loginUser);
-		ArrayList<Friend> followinglist = friendService.FollowingList(loginUser.getUserId());
+		ArrayList<Friend> followinglist = friendService.selectFollowingList(loginUser.getUserId());
 		model.addAttribute("followingList", followinglist);
-		ArrayList<Friend> followerlist = friendService.FollowerList(loginUser.getUserId());
+		ArrayList<Friend> followerlist = friendService.selectFollowerList(loginUser.getUserId());
 		model.addAttribute("followerList", followerlist);
 		if (followinglist == null) {
 			followinglist = new ArrayList<>();
@@ -60,25 +60,24 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		return "Received userId: " + userId; // 클라이언트로 응답 보내기
 	}
 
-	// 차단 페이지 뷰 내보내기blockedPage.do
-	@RequestMapping(value = "blockedPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String blockedPage(Model model, HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		String userId = loginUser.getUserId();
-		logger.info("loginUser:" + loginUser);
-		ArrayList<Friend> blockedAllList = friendService.blockedList(userId);
-		if (blockedAllList == null) {
-			blockedAllList = new ArrayList<>();
-		}
-		model.addAttribute("blockedAllList", blockedAllList);
-		
-		return "friend/blockedViewPage";
-	}
+	// 차단 페이지 뷰 내보내기blockedPage.do 기능 구현 힘들듯
+	/*
+	 * @RequestMapping(value = "blockedPage.do", method = { RequestMethod.GET,
+	 * RequestMethod.POST }) public String blockedPage(Model model, HttpSession
+	 * session) { User loginUser = (User) session.getAttribute("loginUser"); String
+	 * userId = loginUser.getUserId(); logger.info("loginUser:" + loginUser);
+	 * ArrayList<Friend> blockedAllList = friendService.blockedList(userId); if
+	 * (blockedAllList == null) { blockedAllList = new ArrayList<>(); }
+	 * model.addAttribute("blockedAllList", blockedAllList);
+	 * 
+	 * return "friend/blockedViewPage"; }
+	 */
 	
 	
 	
 	//팔로우 메소드
-	@PostMapping("insertF.do")
+//	@PostMapping("insertF.do")
+	@RequestMapping(value = "insertF.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String addFollowing(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,
 			HttpSession session) {
 		Friend friend = new Friend();
@@ -98,6 +97,33 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		}
 		return "redirect:friendPage.do";
 	}
+	
+	//팔로우 메소드 detailView 로 리다이렉트하는 메소드
+//	@PostMapping("insertF.do")
+	@RequestMapping(value = "insertmypage.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String addFollowingA(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,
+			HttpSession session) {
+		Friend friend = new Friend();
+		friend.setUserId(userId);
+		friend.setFriendId(friendId);
+		System.out.println("userId:" + userId + "friendId : " + friendId);
+		logger.info("userId:" + userId + "friendId : " + friendId);
+		try {
+			int response = friendService.insertFollowing(friend);
+			if (response > 0) {
+				session.setAttribute("followMessage", "팔로우 성공!");
+			} else {
+				session.setAttribute("followMessage", "팔로우 실패. 이미 팔로우 중이거나 오류가 발생했습니다.");
+			}
+		} catch (Exception e) {
+			session.setAttribute("followMessage", "팔로우 실패. 이미 팔로우 중이거나 오류가 발생했습니다.");
+		}
+		return "redirect:page.do?friendId=" + friendId;
+	}
+	
+	
+	
+	
 
 	// 팔로잉 취소 메소드
 	@PostMapping("unfollowing.do")
@@ -107,6 +133,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		friend.setUserId(userId);
 		friend.setFriendId(friendId);
 		System.out.println("userId : " + friend.getUserId() + "friendId : " + friend.getFriendId());
+		
 		logger.info("userId:" + userId + "friendId : " + friendId + "ㅇ");
 		try {
 			int response = friendService.deleteFollowing(friend);
@@ -122,52 +149,39 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 
 		return "redirect:friendPage.do";
 	}
-
-	// 팔로잉 차단 메소드
-	@GetMapping("blockFollowing.do")
-	@ResponseBody
-	public String blockFollowing(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,
-			HttpSession session) {
-		logger.info("userId:" + userId + "friendId : " + friendId + "ㅇ");
-		Friend friend = new Friend();
-		friend.setUserId(userId);
-		friend.setFriendId(friendId);
-		int response = friendService.blockFollowing(friend);
-		if (response > 0) {
-			session.setAttribute("blockedMessage", userId + "님을 차단하였습니다");
-		} else {
-			session.setAttribute("blockedMessage", "이미 차단한 계정이거나 오류입니다");
-		}
-
-		return "redirect:friendPage.do";
-			
-	}
 	
-	// 팔로워 차단 메소드
-		@GetMapping("blockFollower.do")
-		@ResponseBody
-		public String blockFollower(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,
+	// 팔로잉 취소 메소드 detailView 로 리다이렉트하는 메소드
+		@RequestMapping(value = "unfollowingMyPage.do", method = { RequestMethod.GET, RequestMethod.POST })
+		public String unfollowingA(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId,
 				HttpSession session) {
-			logger.info("userId:" + userId + "friendId : " + friendId + "ㅇ");
 			Friend friend = new Friend();
 			friend.setUserId(userId);
 			friend.setFriendId(friendId);
-			int response = friendService.blockFollower(friend);
-			if (response > 0) {
-				session.setAttribute("blocked2Message", userId + "님을 차단하였습니다");
-			} else {
-				session.setAttribute("blocked2Message", "이미 차단한 계정이거나 오류입니다");
+			System.out.println("userId : " + friend.getUserId() + "friendId : " + friend.getFriendId());
+			
+			logger.info("userId:" + userId + "friendId : " + friendId + "ㅇ");
+			try {
+				int response = friendService.deleteFollowing(friend);
+				if (response > 0) {
+					session.setAttribute("dfollowMessage", "팔로우 취소!");
+				} else {
+					session.setAttribute("dfollowMessage", "이미 팔로우 취소 했거나 오류 발생");
+				}
+			} catch (Exception e) {
+				logger.error("팔로우 취소 처리 중 오류 발생", e);
+				session.setAttribute("dfollowMessage", "서버 오류로 인해 팔로우취소 처리를 완료하지 못했습니다.");
 			}
 
-			return "redirect:friendPage.do";
-
+			return "redirect:page.do?friendId=" + friendId;
 		}
+
+	
 
 	//팔로잉 수 카운트
 	@GetMapping("countFollowing.do")
 	@ResponseBody
 	public String countFollowing(@RequestParam("userId") String userId) {
-		int followeringCount = friendService.countFollowing(userId);
+		int followeringCount = friendService.selectCountFollowing(userId);
 		return String.valueOf(followeringCount);
 	}
 
@@ -175,18 +189,18 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	@GetMapping("countFollowers.do")
 	@ResponseBody
 	public String countFollowers(@RequestParam("userId") String userId) {
-		int followersCount = friendService.countFollowers(userId);
+		int followersCount = friendService.selectCountFollowers(userId);
 		return String.valueOf(followersCount);
 	}
 
 	// 차단 수 카운트
-
-	@GetMapping("countBlock.do")
-	@ResponseBody
-	public String countBlock(@RequestParam("userId") String userId) {
-		int blockedCount = friendService.countBlocks(userId);
-		return String.valueOf(blockedCount);
-	}
+//
+//	@GetMapping("countBlock.do")
+//	@ResponseBody
+//	public String countBlock(@RequestParam("userId") String userId) {
+//		int blockedCount = friendService.countBlocks(userId);
+//		return String.valueOf(blockedCount);
+//	}
 
 	// 팔로잉 중인 계정 검색(완)
 	@RequestMapping("searchFollowing.do")
@@ -197,7 +211,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		Friend friend = new Friend();
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
-		ArrayList<Friend> searchF = friendService.searchFollowing(friend);
+		ArrayList<Friend> searchF = friendService.selectSearchFollowing(friend);
 		model.addAttribute("searchF", searchF);
 		if (searchF != null) {
 			return "friend/friendMainView";
@@ -215,7 +229,7 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		Friend friend = new Friend();
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
-		ArrayList<Friend> searchFwer = friendService.searchFollower(friend);
+		ArrayList<Friend> searchFwer = friendService.selectSearchFollower(friend);
 		model.addAttribute("searchFwer", searchFwer);
 
 		return "friend/friendMainView";

@@ -37,10 +37,12 @@ a:hover {
 }
 
 .header-div {
+	position: fixed;
 	display: flex;
 	gap: 20px;
 	align-items: center;
 	text-align: center;
+	margin-botton: 10px;
 }
 
 h2 { 
@@ -255,13 +257,10 @@ main {
 	background-color: Aquamarine;
 	display: flex;
 	justify-content: center;
-	padding-top: 10px;
 }
 
 .content-div {
-	margin-top: 2rem;
 	position: relative;
-	/* background-color: Aquamarine; */
 	display: flex;
 	justify-content: center;
 	padding-top: 10px;
@@ -279,7 +278,7 @@ main {
 }
 
 .content-first-div {
-	margin-left: 250px;
+	margin-left: 270px;
 	display: flex;
 	flex-direction: row;
 	align-items: space-between; 

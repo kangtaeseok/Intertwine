@@ -7,7 +7,7 @@
 <title>socialUpdate</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
-<link rel="stylesheet" href="/intertwine/resources/css/socialPage.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/common/socialPage.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">

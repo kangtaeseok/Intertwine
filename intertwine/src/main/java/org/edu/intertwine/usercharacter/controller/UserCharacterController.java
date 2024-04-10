@@ -37,15 +37,14 @@ public class UserCharacterController {
 		if (userCharacter != null) { // 처음 접속은 아닌 경우
 			userCharacter = userCharacterService.selectUserCharacter(userId);
 			if (userCharacter != null) { // 방이 꾸며져있는 유저의 경우
-
-			} else { // 방이 안 꾸며져있는 유저의 경우
+			} else { 
 				userCharacter = userCharacterService.selectUserCharacterFirst(userId);
-
 			}
 		} else { // 처음 접속하는 유저의 경우
-			userCharacterService.insertUserCharacterFirst(userId);
-			userCharacter = userCharacterService.selectUserCharacterFirst(userId);
-
+			int result = userCharacterService.insertUserCharacterFirst(userId);
+			if(result>0) {
+				userCharacter = userCharacterService.selectUserCharacter(userId);
+			}
 		}
 		// 받은 userCharacter 를 JSONObject 에 옮겨 담기 처리
 		JSONObject job = new JSONObject();
