@@ -422,87 +422,85 @@ input.text::placeholder {
 						<div class="left">
 							<span class="reaction"> <!--여기 if태그로 아이콘 설정이 되면 아이콘 바뀜 -->
 									<c:if test="${ item.isLiked == 1 }">
-                                    <svg aria-label="Liked" color="#262626" fill="#262626" height="24" role="img" width="24" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM164.1 325.5C182 346.2 212.6 368 256 368s74-21.8 91.9-42.5c5.8-6.7 15.9-7.4 22.6-1.6s7.4 15.9 1.6 22.6C349.8 372.1 311.1 400 256 400s-93.8-27.9-116.1-53.5c-5.8-6.7-5.1-16.8 1.6-22.6s16.8-5.1 22.6 1.6zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
-                                      </c:if>
+                                    <i class="fa-solid fa-face-smile" style="font-size: 30px; color:black;padding-right: 7px;"></i>
+                             		 </c:if>
                                       <c:if test="${ item.isLiked == 0 }">
-                                      <svg aria-label="Like"color="#262626" fill="#262626" height="24" role="img"width="24" viewBox="0 0 512 512">
-									<path
-										d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
-									</c:if>
+                                      <i class="fa-regular fa-face-smile"style="font-size: 30px;color:black;padding-right: 7px;"></i>
+                             		 </c:if>
 									<form action="updatereaction2.do" method="post" id="reactionForm">
 		                              	<input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
 		                              	<input type="hidden" name="postId" value="${ item.post.postId }">
 		                              	<input type="hidden" name="likeType" id="likeType">
-										<div class="reaction-box" id="reaction-box" style="   display: none; top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center;justify-content: center;width: auto;flex-wrap: wrap;box-sizing: border-box;">
+										<div class="reaction-box" id="reaction-box" style=" display: none;left: 45%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center;justify-content: center;width: auto;flex-wrap: wrap;box-sizing: border-box;">
 	                                   
-	                                 <c:if test="${ not empty whatIsLiked }">
-	                                   <c:if test="${ whatIsLiked ne '0' }">
+	                                 <c:if test="${ not empty item.whatIsLiked }">
+	                                   <c:if test="${ item.whatIsLiked ne '0' }">
 	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
-						                    ${ whatIsLiked }
+						                    <i class="fa-regular fa-thumbs-up" style="font-size: 30px;"></i>
+						                    
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked eq '0' }">
+	                                   <c:if test="${ item.whatIsLiked eq '0' }">
 	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-solid fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-thumbs-up" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked ne '1' }">
+	                                   <c:if test="${ item.whatIsLiked ne '1' }">
 	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-heart" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked eq '1' }">
+	                                   <c:if test="${ item.whatIsLiked eq '1' }">
 	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-solid fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-heart" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked ne '2' }">
+	                                   <c:if test="${ item.whatIsLiked ne '2' }">
 	                                   <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-sad-tear" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked eq '2' }">
+	                                   <c:if test="${ item.whatIsLiked eq '2' }">
 	                                  <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-solid fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-sad-tear" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked ne '3' }">
+	                                   <c:if test="${ item.whatIsLiked ne '3' }">
 	                                    <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-angry" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked eq '3' }">
+	                                   <c:if test="${ item.whatIsLiked eq '3' }">
 	                                  <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-solid fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-angry" style="font-size: 30px;"></i>
 						                </button>
 	                                   </c:if>
-	                                   <c:if test="${ whatIsLiked ne '4' }">
+	                                   <c:if test="${ item.whatIsLiked ne '4' }">
 	                                   <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px;"></i>
 						                </button>
 	                             	   </c:if>
 		                               <c:if test="${ whatIsLiked eq '4' }">
 		                                <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px;"></i>
 						                </button>
 		                               </c:if>
 	                             	</c:if>
-	                             	<c:if test="${ empty whatIsLiked }">
+	                             	<c:if test="${ empty item.whatIsLiked }">
 	                             		 <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-							                <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-thumbs-up" style="font-size: 30px; "></i>
 							            </button>
 	                             		<button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-							                <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-heart" style="font-size: 30px; "></i>
 							            </button>
 							            <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-							                <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; "></i>
 							            </button>
-							            <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: nonecursor:pointer;;">
-							                <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+							            <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;cursor:pointer;;">
+							                <i class="fa-regular fa-face-angry" style="font-size: 30px; "></i>
 							            </button>
 							            <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;cursor:pointer;">
-							                <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; "></i>
 							            </button>
 	                             	</c:if>
 	                             		</div>
@@ -512,21 +510,14 @@ input.text::placeholder {
 							
 							<span class="comment"  return false;>
 								<a href="${pageContext.servletContext.contextPath}/detail.do?postId=${ item.post.postId }">
-								<svg class="_8-yf5" color="#262626" fill=transparent;
-									height="24" role="img" viewBox="0 0 512 512" width="24">
-									<path
-										d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z" /></svg>
+								<i class="fa-regular fa-comment"style="cursor:pointer;font-size: 30px;color:black;padding-right: 7px;"></i>
 								</a>
 							</span> 
 							
 							
 							<span class="share" id="${ item.post.postId }"> 
-							<svg class="_8-yf5" color="#262626" fill=transparent; height="24"
-									role="img" width="24" viewBox="0 0 448 512">
-									<path
-										d="M352 224c53 0 96-43 96-96s-43-96-96-96s-96 43-96 96c0 4 .2 8 .7 11.9l-94.1 47C145.4 170.2 121.9 160 96 160c-53 0-96 43-96 96s43 96 96 96c25.9 0 49.4-10.2 66.6-26.9l94.1 47c-.5 3.9-.7 7.8-.7 11.9c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-25.9 0-49.4 10.2-66.6 26.9l-94.1-47c.5-3.9 .7-7.8 .7-11.9s-.2-8-.7-11.9l94.1-47C302.6 213.8 326.1 224 352 224z" /></svg>
-							</span>
-							
+							 <i class="fa-solid fa-share-nodes" style="cursor:pointer;font-size: 30px;color:black;padding-right: 7px;"></i>
+							 </span>
 							<!-- 복사  -->
 							<script>
 							document.addEventListener("DOMContentLoaded", function() {
@@ -562,18 +553,14 @@ input.text::placeholder {
 							<span class="bookmark" return false;> <!-- if 문으로 북마크 저장여부 확인 메소드 만들기-->
 								<c:if test="${item.isBookmarked == 0}">
 									 <a href="${pageContext.servletContext.contextPath}/insertBookmark2.do?postId=${item.post.postId}&userId=${sessionScope.loginUser.userId}">
-									<svg aria-label="Save" class="_8-yf5 " color="#262626"
-										fill="#262626" height="24" role="img" width="24"
-										viewBox="0 0 384 512">
-										<path
-											d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
+									<i class="fa-regular fa-bookmark"style="cursor:pointer;font-size: 30px"></i>
 									</a>
 									</c:if>
 								
 									<c:if test="${item.isBookmarked == 1}">
                                        <a href="${pageContext.servletContext.contextPath}/deleteBookmark2.do?postId=${item.post.postId}&userId=${sessionScope.loginUser.userId}">
-                                        <svg  aria-label="Saved" class="_8-yf5" color="#262626" fill="#262626" height="24" role="img" width="24" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg>
-                                   		</a>
+                                        <i class="fa-solid fa-bookmark"style="cursor:pointer;font-size: 30px"></i>
+                                        </a>
                                    </c:if>
 							</span>
 						</div>

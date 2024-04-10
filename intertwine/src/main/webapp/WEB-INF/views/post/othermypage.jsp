@@ -176,6 +176,10 @@
 		        var keyword = document.getElementById("search-input").value;
 		        var selectedOption = document.querySelector(".search-condition").value;
 		        var friendId = "${otheruser.userId}";
+		        if (keyword.trim() === "") {
+		            alert("키워드를 입력하세요.");
+		            return false;
+		        }
 		        var url = "searchothermypage.do?friendId=" + friendId + "&keyword=" + encodeURIComponent(keyword) + "&condition=" + encodeURIComponent(selectedOption);
 		        window.location.href = url;
 		    }
