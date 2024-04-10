@@ -57,5 +57,11 @@ public class CommentServiceImpl implements CommentService{
 		return commentDao.selectCommentbyCommentId(commentId);
 	}
 
+	@Override
+	public int deleteBatchCommentsbyCommentIds(ArrayList<Integer> comments) {
+		// TODO Auto-generated method stub
+		return commentDao.deleteBatchCommentsbyCommentIds(comments);
+	}
+
 
 }
