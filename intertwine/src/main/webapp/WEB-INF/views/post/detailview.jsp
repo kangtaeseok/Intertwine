@@ -5,12 +5,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-
-	<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%> 
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <title>Post Viewer</title>
 
 <!--스크롤바 디자인 -->
@@ -268,19 +265,21 @@ button {
 		 to {opacity: 1}
 	}
 </style>
-<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
 
     <main>
+    <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
         
-
-  <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
-
+        <div id="bottom_right_contents">
 
 
 
-<div class="container-detail" style="display: flex; padding-top: 5vw; padding-left: 20vw;">
+
+
+
+
+<div class="container-detail" style="display: flex; padding-top: 5vw; padding-left: 10vw;">
      <div class="left" style="max-width: 800px; height: 800px; width: 35vw; border: 1px grey solid; position: relative; background-color: black; display: flex; align-items: center; justify-content: center;">
             <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"><i class="fa-solid fa-arrow-left" style="position: absolute;top: 0;left: 0;padding: 10px;color: white;font-size: 24px;cursor: pointer;"></i></a>
             <!-- this part will be repeated  -->
@@ -653,6 +652,7 @@ document.addEventListener('DOMContentLoaded', function() {
      </div>
 </div>
 </div>
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
 </main>
 
 <!-- 댓글 신고 -->
