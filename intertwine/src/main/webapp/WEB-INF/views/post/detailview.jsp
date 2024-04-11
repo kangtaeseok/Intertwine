@@ -511,75 +511,75 @@ document.addEventListener('DOMContentLoaded', function() {
 	                              <input type="hidden" name="userId" value="${ viewingUser.userId }">
 	                              <input type="hidden" name="postId" value="${ post.postId }">
 	                              <input type="hidden" name="likeType" id="likeType">
-	                              <div class="reaction-box" id="reaction-box" style="display: none;position: absolute;top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center; justify-content: center;width: auto;flex-wrap: wrap;">
+	                              <div class="reaction-box" id="reaction-box" style="display: none;position: absolute;top: 120%;left: 50%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center; justify-content: center;width: auto;flex-wrap: wrap;">
 	                                  
 	                                 <c:if test="${ not empty whatIsLiked }">
 	                                   <c:if test="${ whatIsLiked ne '0' }">
 	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '0' }">
 	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-solid fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-thumbs-up" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '1' }">
 	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '1' }">
 	                                   <button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-solid fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-heart" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '2' }">
 	                                   <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '2' }">
 	                                  <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-solid fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '3' }">
 	                                    <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked eq '3' }">
 	                                  <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-solid fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-angry" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                                   </c:if>
 	                                   <c:if test="${ whatIsLiked ne '4' }">
 	                                   <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 	                             	   </c:if>
 		                               <c:if test="${ whatIsLiked eq '4' }">
 		                                <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
-						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 						                </button>
 		                               </c:if>
 	                             	</c:if>
 	                             	<c:if test="${ empty whatIsLiked }">
 	                             		 <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
-							                <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-thumbs-up" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 							            </button>
 	                             		<button type="submit" name="likeType" value="1" class="reaction-button" style="border: none; background: none;">
-							                <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-heart" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 							            </button>
 							            <button type="submit" name="likeType" value="2" class="reaction-button" style="border: none; background: none;">
-							                <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-face-sad-tear" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 							            </button>
 							            <button type="submit" name="likeType" value="3" class="reaction-button" style="border: none; background: none;">
-							                <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-face-angry" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 							            </button>
 							            <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;">
-							                <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;"></i>
+							                <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px; padding-left: 7px;padding-bottom:5px;"></i>
 							            </button>
 	                             	</c:if>
 	                              </div>
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
                          </div>
                     </div>
 
-                    <a href="#" class="reactioncount"  style="text-decoration: none; color: black;">공감 ${ likeCount }개</a><br>
+                    공감 ${ likeCount }개<br>
                     조회수 ${ post.postView }<br>
                     <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"  style="text-decoration: none; color: black;"><b>${post.userId}</b></a> &nbsp; 
                     	${ post.postContent }
@@ -673,8 +673,8 @@ document.addEventListener('DOMContentLoaded', function() {
          <div class="commentbox" style="height: 100%; border-top: gray 1px solid;">
                     <!-- 반복 -->
                   
-			<c:if test="${!empty comments}">
-			    <c:forEach var="comment" items="${comments}">
+			<c:if test="${!empty commentProfiles}">
+			    <c:forEach var="comment" items="${commentProfiles}">
 			    <div class="comment"style=" display: flex;padding-top: 5px;padding-bottom: 5px;">
 						<c:if test="${ comment.commentLevel eq '1' }">
 						<div class="reply" style="margin-left: 10px;margin-right: 10px;font-size: 20px;">
@@ -683,7 +683,14 @@ document.addEventListener('DOMContentLoaded', function() {
                          </c:if>
  						<div class="left-2">
                               <div class="pic-2" style="width: 30px; height: 30px;border-radius: 50%;border: 0px solid black;overflow: hidden;margin-left: 5px;">
-                                   <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${ comment.userId }"><img src="https://www.w3schools.com/html/img_girl.jpg" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;"></a>
+                                   <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${ comment.userId }">
+                                   <c:if test="${ empty comment.profileDraft }">
+                                   <img src="resources/profile/images.jpg" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;">
+                                   </c:if>
+                                   <c:if test="${ not empty comment.profileDraft }">
+                                   <img src="${ comment.profileDraft }" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;">
+                                   </c:if>
+                                   </a>
                               </div>
                          </div>
                          <div class="right-2"style="flex-grow: 1;flex-shrink: 1;padding-left: 5px;">

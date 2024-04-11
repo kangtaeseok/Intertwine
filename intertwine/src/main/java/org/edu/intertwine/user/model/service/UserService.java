@@ -68,5 +68,7 @@ public interface UserService {
 
 	int selectAllUserCount();
 
+	int updateMyPage(MyPage mypage);
+
 
 }

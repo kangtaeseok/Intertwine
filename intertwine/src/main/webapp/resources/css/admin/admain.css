@@ -18,6 +18,7 @@ ul,ol,li {
 }
 
 a {
+	
 	color:black;
     text-decoration: none;
 }
@@ -335,8 +336,8 @@ h4 {
 
 .noti-div {
 	margin-left: 30px;
-	width: 550px;
-	height: 300px;
+	width: 850px;
+	height: 400px;
 	background: #f9effa;
 	margin-botton: 30px;
 	display: flex;
@@ -373,11 +374,11 @@ h4 {
 }
 .noti-div2 {
 	margin: 20px;
-	width: 550px;
+	width: 850px;
 	height: 400px;
 	background: #f9effa;
 	border-radius: 6px;
-	 overflow: scroll;
+
 }
 table#report {
 	 width: 100%;
@@ -388,9 +389,17 @@ table#report {
 
 th { 
 	padding: 1rem;
+	width: 100px;
+	
 }
 
+td {
+	
+	
+	}
+
 .alertStyle {
+	width: 100px;
         background: #ffffff;
         color: black;
         padding: 10px;
@@ -402,7 +411,7 @@ th {
     }
     
 .noti-box {
-	
+	width: 50rem;
 	display: flex;
 	flex-direction: column;	
 }

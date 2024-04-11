@@ -717,23 +717,30 @@ public class UserController {
 		 
 		String savePath = request.getSession().getServletContext().getRealPath(
 		 					"resources/profile");
+		logger.info(mfile.toString());
+		if(!mfile.isEmpty()) {
+				
+			String fileName = mfile.getOriginalFilename();
+			
+			String renameFileName = null;
 	
-		String fileName = mfile.getOriginalFilename();
-		String renameFileName = null;
-	
-		if(fileName != null && fileName.length() > 0) {	
-			renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
-			try {	
-				mfile.transferTo(new File(savePath + "\\" + renameFileName));
-			} catch(Exception e) {
-				e.printStackTrace();
-				model.addAttribute("msg", "첨부파일 저장 실패!");
-				model.addAttribute("url", "mypage.do");
-				return "common/alert";
+			if(fileName != null && fileName.length() > 0) {	
+				renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
+				try {	
+					mfile.transferTo(new File(savePath + "\\" + renameFileName));
+				} catch(Exception e) {
+					e.printStackTrace();
+					model.addAttribute("msg", "첨부파일 저장 실패!");
+					model.addAttribute("url", "mypage.do");
+					return "common/alert";
+				}
 			}
+			mypage.setProfile(fileName);
+			mypage.setProfileDraft("resources/profile/" + renameFileName);
+			userService.updateMyPage(mypage);
+				
+			
 		}
-		mypage.setProfile(fileName);
-		mypage.setProfileDraft(renameFileName);
 		return "redirect:mypage.do";
 	}
 	 
