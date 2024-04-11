@@ -451,8 +451,8 @@ public class AdminController {
 			        	commentIds.add(commentId);
 			        }
 			  }
-			  //댓글삭제 추가예정
-				/* commentService. */
+			  
+			  commentService.deleteBatchCommentsbyCommentIds((ArrayList<Integer>)commentIds);
 			  adminService.updateRptStatus(reportId);
 		    }
 			
