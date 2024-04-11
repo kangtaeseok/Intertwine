@@ -110,13 +110,6 @@ function kakaoLogout() {
                 </ol>
             </nav>
         </div>
-
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
-        <div></div>
         <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
     </header>
 </body>
