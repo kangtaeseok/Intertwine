@@ -174,6 +174,11 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectAllUserCount();	
 	}
 
+	@Override
+	public int updateMyPage(MyPage mypage) {
+		return userDao.updateMyPage(mypage);	
+	}
+
 	
 	
 	

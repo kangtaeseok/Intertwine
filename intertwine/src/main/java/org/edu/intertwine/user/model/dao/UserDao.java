@@ -155,5 +155,9 @@ public class UserDao {
 		
 	}
 
+	public int updateMyPage(MyPage mypage) {
+		return sqlSessionTemplate.update("userMapper.updateMyPage", mypage);
+	}
+
 	
 }
