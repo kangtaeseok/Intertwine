@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.edu.intertwine.admin.model.vo.Admin;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ public class LoginCheckIntercepter extends HandlerInterceptorAdapter {
 			Object handler) throws Exception {
 		//session 안에 저장된 loginMember 라는 이름의 저장 객체가 존재하는지 확인
 		HttpSession session = request.getSession();
+		Admin loginAdmin = (Admin) session.getAttribute("loginAdmin");
 		User loginUser = (User)session.getAttribute("loginUser");
 		
 		if(loginUser != null) {
@@ -54,10 +56,18 @@ public class LoginCheckIntercepter extends HandlerInterceptorAdapter {
 			
 			logger.info(location);
 			
-			request.setAttribute("url", "/intertwine/login.do");
-			request.setAttribute("msg", "로그인해야 이용할 수 있는 서비스입니다.");
-			request.getRequestDispatcher("/WEB-INF/views/common/alert.jsp").forward(request, response);
-			return false;
+			if(loginAdmin != null) {
+				request.setAttribute("url", "/intertwine/adminLogin.do");
+				request.setAttribute("msg", "로그인해야 이용할 수 있는 서비스입니다.");
+				request.getRequestDispatcher("/WEB-INF/views/common/alert.jsp").forward(request, response);
+				return false;
+			} else {
+				request.setAttribute("url", "/intertwine/login.do");
+				request.setAttribute("msg", "로그인해야 이용할 수 있는 서비스입니다.");
+				request.getRequestDispatcher("/WEB-INF/views/common/alert.jsp").forward(request, response);
+				return false;
+			}
+			
 		}
 		
 		//로그인 상태의 요청이라면 컨트롤러로 넘김

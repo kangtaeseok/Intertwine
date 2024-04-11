@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -98,6 +99,18 @@ public class AdminController {
 			return "admin/reportPage";
 		}
 	}
+	
+	//로그아웃
+		@RequestMapping("alogout.do")
+		public String adminLogout(HttpServletRequest request) {
+			HttpSession session = request.getSession(false);
+			if(session != null) {
+					session.invalidate();
+					return "redirect:adminLogin.do";
+				}
+			
+			return "common/admain";
+		}
 	
 	
 	@Autowired
