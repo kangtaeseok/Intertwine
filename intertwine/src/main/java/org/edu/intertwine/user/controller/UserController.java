@@ -735,6 +735,9 @@ public class UserController {
 					return "common/alert";
 				}
 			}
+			User loginUser = (User) session.getAttribute("loginUser");
+			loginUser.setNickname(user.getNickname());
+			
 			mypage.setProfile(fileName);
 			mypage.setProfileDraft("resources/profile/" + renameFileName);
 			userService.updateMyPage(mypage);
