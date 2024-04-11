@@ -494,11 +494,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					    }
 					}
 					</script>
-                         <c:if test="${ not empty image.imageLon }">
-                         <a href="" class="owner-address"  style="text-decoration: none; color: black;font-size: 12px;">주소</a>
-                         </c:if>
                          <!-- 주소가 있으면 안나타남 -->
-                         <a href="" class="owner-id"  style="text-decoration: none; color: black; font-size: 12px;"><b><%-- ${postUser.userId} --%></b></a>
+                         <c:if test="${ not empty user.nickname }">
+                         <a href="" class="owner-id"  style="text-decoration: none; color: black; font-size: 12px;"><b>${ postUser.nickname }</b></a>
+                    	 </c:if>
                     </div>
                     &nbsp;
                </div>
