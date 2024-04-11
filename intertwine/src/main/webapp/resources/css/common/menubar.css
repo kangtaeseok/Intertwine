@@ -9,7 +9,7 @@ a{
 }
 
 
-#settings_sub_menu > ul > li {
+#settings_sub_menu > ul > li, #mypage_sub_menu > ul > li {
 	height: 4rem;
 	font-size: 18px;
 	font-weight: bold;
@@ -32,3 +32,25 @@ a{
 }
 
 
+#mypage_sub_menu > ul > li {
+	height: 4rem;
+	font-size: 18px;
+	font-weight: bold;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: left;
+	
+}
+
+#mypage_sub_menu > ul > li > a {
+	display: block;
+	color: #a84fea;
+}
+
+
+#mypage_sub_menu ul > li > a:hover {
+	background-color: #f2f2f2;
+	border-radius: 6px;
+	margin-right: 5px;
+}
