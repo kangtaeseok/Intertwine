@@ -178,7 +178,7 @@ public class UserController {
 			adminService.insertVisitCount();
 		}
 		
-		  return "common/main";
+		  return "redirect:main.do";
 	} else {
 		model.addAttribute("msg", "암호나 아이디가 일치하지 않습니다. 다시 확인해주세요.");
 		model.addAttribute("url", "login.do");
