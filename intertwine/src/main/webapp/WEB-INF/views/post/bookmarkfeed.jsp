@@ -391,18 +391,22 @@ input.text::placeholder {
 						</div>
 						<h3>
 							<!-- 여기를 누르면 친구 상태페이지 연결-->
+							<c:if test="${ item.user.userId ne sessionScope.loginUser.userId }">
 							<a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }">${ item.user.userId }</a> &nbsp;
+							</c:if>
+							<c:if test="${ item.user.userId eq sessionScope.loginUser.userId }">
+							<a href="${pageContext.servletContext.contextPath}/mypage.do">${ item.user.userId }</a> &nbsp;
+							</c:if>
 							<!-- 친구여부 여기서 확인 c:if 넘겨야 할 정보 내아이디 정보 상대 아이디 정보-->
 							<!-- 친구가 아닐 시-->
-							<c:if test="${ isFollowing eq 0 }">
-							<a class="friend" href="#" style="text-decoration:none;color:black;">팔로우</a>
-							</c:if>
-							<c:if test="${ isFollowing eq 1 }">
-                            <a class="unfriend" href="#" style="text-decoration:none;color:black;">언팔로우</a>
-							</c:if>
 							<br>
-							<c:if test="${ not empty item.image.imageLon }">
-							<span><a href="#" style="text-decoration:none;color:black;">여기는 위치</a></span>
+							<c:if test="${ not empty item.user.nickname }">
+							<c:if test="${ item.user.userId ne sessionScope.loginUser.userId }">
+							<span><a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }" style="text-decoration:none;color:black;">${ item.user.nickname }</a></span>
+							</c:if>
+							<c:if test="${ item.user.userId eq sessionScope.loginUser.userId }">
+							<span><a href="${pageContext.servletContext.contextPath}/mypage.do" style="text-decoration:none;color:black;">${ item.user.nickname }</a></span>
+							</c:if>
 							</c:if>
 						</h3>
 					</div>

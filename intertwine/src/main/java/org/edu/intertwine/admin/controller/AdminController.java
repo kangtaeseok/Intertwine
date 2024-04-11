@@ -17,8 +17,10 @@ import org.edu.intertwine.comment.model.service.CommentService;
 import org.edu.intertwine.comment.model.vo.Comment;
 import org.edu.intertwine.common.Paging;
 import org.edu.intertwine.common.Search;
+import org.edu.intertwine.common.Time;
 import org.edu.intertwine.post.model.service.PostService;
 import org.edu.intertwine.post.model.vo.Post;
+import org.edu.intertwine.user.model.service.UserService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -98,6 +100,8 @@ public class AdminController {
 	}
 	
 	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("admain.do")
 	public ModelAndView moveadadMainPage(ModelAndView mv) {
@@ -110,26 +114,36 @@ public class AdminController {
 		mv.addObject("May", adminService.selectVisitCountMonth("05"));
 		mv.addObject("Jun", adminService.selectVisitCountMonth("06"));
 		
-		/*
-		 * Time time = new Time(); if(adminService.selectVisitCountToday() == 0) {
-		 * mv.addObject("nine", 0); mv.addObject("twe", 0); mv.addObject("fity", 0);
-		 * mv.addObject("eight", 0); mv.addObject("twone", 0); mv.addObject("twofo", 0);
-		 * } else { time.setStartTime("09"); time.setEndTime("12"); mv.addObject("nine",
-		 * adminService.selectVisitCountTime(time)); time.setStartTime("12");
-		 * time.setEndTime("15"); mv.addObject("twe",
-		 * adminService.selectVisitCountTime(time)); time.setStartTime("15");
-		 * time.setEndTime("18"); mv.addObject("fity",
-		 * adminService.selectVisitCountTime(time)); time.setStartTime("18");
-		 * time.setEndTime("21"); mv.addObject("eight",
-		 * adminService.selectVisitCountTime(time)); time.setStartTime("21");
-		 * time.setEndTime("24"); mv.addObject("twone",
-		 * adminService.selectVisitCountTime(time)); time.setStartTime("24");
-		 * time.setEndTime("09"); mv.addObject("twofo",
-		 * adminService.selectVisitCountTime(time)); }
-		 */
+		
+		  Time time = new Time(); 
+		  if(adminService.selectVisitCountToday() == 0) {
+		  mv.addObject("nine", 0); mv.addObject("twe", 0); mv.addObject("fity", 0);
+		  mv.addObject("eight", 0); mv.addObject("twone", 0); mv.addObject("twofo", 0);
+		  
+		  } else { 
+			  time.setStartTime("09"); time.setEndTime("12"); 
+			  mv.addObject("nine",adminService.selectVisitCountTime(time));
+			  
+			  time.setStartTime("12"); time.setEndTime("15"); 
+			  mv.addObject("twe", adminService.selectVisitCountTime(time)); 
+			  
+			  time.setStartTime("15"); time.setEndTime("18"); 
+			  mv.addObject("fity", adminService.selectVisitCountTime(time)); 
+			  
+			  time.setStartTime("18");	time.setEndTime("21"); 
+			  mv.addObject("eight", adminService.selectVisitCountTime(time)); 
+			  
+			  time.setStartTime("21"); time.setEndTime("24");
+			  mv.addObject("twone", adminService.selectVisitCountTime(time)); 
+			  
+			  time.setStartTime("24"); time.setEndTime("09"); 
+			  mv.addObject("twofo", adminService.selectVisitCountTime(time)); }
 
-		mv.setViewName("admin/admain");
-		return mv; 
+		  mv.addObject("userCount", userService.selectAllUserCount());
+		  
+		  mv.setViewName("admin/admain");
+
+		  	  return mv; 
 	}
 	
 	
@@ -412,7 +426,7 @@ public class AdminController {
 		        	postIds.add(postId);
 		        }
 		  }
-			/* postService.updateBatchPrivate(postIds); */
+		  postService.updateBatchPrivate(postIds);
 		  adminService.updateRptStatus(reportId);
 	    }
 		
@@ -432,12 +446,13 @@ public class AdminController {
 				
 			  for (ContentReport contentReport : cpt) {
 			        Integer commentId = contentReport.getReportComment();
-					/* Comment comment = commentService.selectComments(commentId);
+					Comment comment = commentService.selectCommentbyCommentId(commentId);
 			        if (comment != null) {
 			        	commentIds.add(commentId);
-			        } */
+			        }
 			  }
-				/* postService.updateBatchPrivate(postIds); */
+			  //댓글삭제 추가예정
+				/* commentService. */
 			  adminService.updateRptStatus(reportId);
 		    }
 			

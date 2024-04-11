@@ -60,6 +60,7 @@ $(function(){
 			
 			values = "";			
 			for(var i in json.rlist){
+				
 				values += "<tr><td class='alertStyle'>" + data.rlist[i].rId
 	              + "</td><td class='alertStyle'><a href='rptdetail.do?pnum=" 
 	              + data.rlist[i].Nnum + "'>" + data.rlist[i].Nnum + "</a></td><td class='alertStyle'>"
@@ -67,7 +68,22 @@ $(function(){
 	              + "</td><td class='alertStyle'>"
 	              + data.rlist[i].reason + "</td></tr>";
 			}
+			
+			var dataCount = json.rlist.length;
+			var emptyCellsNeeded = 3 - dataCount;
+
+			if(emptyCellsNeeded > 0) {
+			    for(var j = 0; j < emptyCellsNeeded; j++) {
+			        values += "<tr>";
+			        for(var k = 0; k < 4; k++) {
+			            values += "<td class='alertStyle'>-</td>";
+			        }
+			        values += "</tr>";
+			    }
+			}
+			
 			$('#report').html($('#report').html() + values);
+			$('#rlistCount').text(dataCount);
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
@@ -97,7 +113,13 @@ $(function(){
 							<div id="time" class="stat-div">	
 							</div>
 							<div class="stat-div-2">
-							<h4>오늘의 방문자 수 : ${visitCount.visitCount} &nbsp; 누적 방문자 수 : ${ sumCount }</h4> 
+							<p>
+							처리할 신고 수 : <span id="rlistCount">0</span> 명 &nbsp; &nbsp;
+							오늘의 가입자 수 : ${userCount } 명
+							<br>
+							오늘의 방문자 수 : ${visitCount.visitCount} 명 &nbsp; &nbsp;
+							누적 방문자 수 : ${ sumCount } 명 <br>
+							</p>
 							</div>
 						</div>
 						<div class="noti-box">
@@ -114,12 +136,12 @@ $(function(){
 					<div class="stat-div-3">
 						<div class="stat-div2">
 						<h3>월별 방문자 수</h3>
-				<canvas ID="myChart" width="400" height="250"></canvas>
+				<canvas ID="myChart" width="400" height="250" style="background:white;"></canvas>
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 						</div>
 						<div class="noti-div2">
 							<h3>회원수</h3>
-					<canvas ID="myChart2" width="400" height="250"></canvas>
+					<canvas ID="myChart2" width="400" height="250"style="background:white;"></canvas>
 					<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>		
 						</div>
 					</div>

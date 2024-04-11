@@ -7,14 +7,14 @@
 <meta charset="UTF-8">
 <title>userTime</title>
 <link rel="stylesheet" href="/intertwine/resources/css/user/userStopPage.css" />
-<script defer src="/intertwine/resources/js/mainpage.js"></script>
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
+
 <script>
 function openPopup() {
 	  document.getElementById("popup").style.display = "block";
 }
 
-// 팝업 닫기 함수
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
@@ -22,27 +22,29 @@ function disableButton() {
 	var confirmAction = confirm("계정을 비활성화하시겠습니까?");
 	 if (confirmAction) {
 		 $.ajax({
-			 url: 'udisable.do'
+			 url: 'udisable.do',
 			 type: 'POST'
 		 });
 		 
-		 alert("계정이 비활성화되었습니다."); 
+		 alert("계정이 비활성화되었습니다.");
+		 location.href="ulogout.do"
 	 } else {
 		 alert("계정 비활성화가 취소되었습니다.");
 		 
 	 }
 }
 function stopButton() {
-	var confirm = confirm("계정을 탈퇴하시겠습니까?");
-	 if (confirm) {
+	var confirm2 = confirm("계정을 탈퇴하시겠습니까?");
+	 if (confirm2) {
 		 $.ajax({
-			 url: 'ustopdel.do'
+			 url: 'ustopdel.do',
 			 type: 'POST'
 		 });
 		 
-		 alert("계정이 비활성화되었습니다."); 
+		 alert("탈퇴되었습니다."); 
+		 location.href="ulogout.do"
 	 } else {
-		 alert("계정 비활성화가 취소되었습니다.");
+		 alert("계정 탈퇴가 취소되었습니다.");
 		 
 	 }
 }
@@ -55,13 +57,14 @@ function stopButton() {
  <div id="bottom_right_contents">
 	<div id="abc">
 	    <div id="feed">        
-			<div class="box">      
+ 		<div class="box">
 			<div class="logo-box">
-				<h3>계정 비활성화</h3>
+			<img src="/intertwine/resources/images/intertwinelogo.png" width="180px;" height="30px;">
+			&nbsp;	&nbsp; <h3>계정 비활성화</h3>
 			</div>
 			<div class="body-box">
 			<br><br>
-			<h4>${sessionScope.loginUser.userName } 님, 안녕하세요.</h4>
+			<h4>${sessionScope.loginUser.userId } 님, 안녕하세요.</h4>
 			<br> 
 				계정을 탈퇴하지 않고 비활성화할 수 있습니다. <br> 
 				비활성화 설정시 게시물은 비공개 상태로 전환됩니다.<br><br>
