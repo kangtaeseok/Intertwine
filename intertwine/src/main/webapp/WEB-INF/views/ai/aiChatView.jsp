@@ -6,7 +6,8 @@
 <head>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+<link rel="stylesheet" href="/intertwine/resources/css/aichat.css">
+<script defer src="/intertwine/resources/js/aichat.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 디자인을 지원하기 위한 뷰포트 설정 -->
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
@@ -18,7 +19,6 @@
         <div id="bottom_right_contents">
             <div id="abc">
 	            <div id="feed">
-	            
 	            	<div class="chatbot-container">
 					    <div id="header">
 					    	<img src="/intertwine/resources/images/ai/chatbot1.png">
@@ -43,7 +43,6 @@
 				</div>
             </div>
         </div>
-    </main>
-    <!--<script src="/intertwine/resources/js/aichat.js" />  이 jsp파일의 js파일 연결 -->
+    </main>    
 </body>
 </html>
