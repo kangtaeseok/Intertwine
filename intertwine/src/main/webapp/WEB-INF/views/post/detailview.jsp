@@ -443,7 +443,14 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="scroll" style="height: 776px; overflow: auto;">
                <div class="owner" style="display: flex; margin-top:3 px;border-bottom: 1px black solid; padding-bottom: 5px;"> 
                     <div class="pic" style="margin-left: 5px;">
-                         <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}"><img src="https://www.w3schools.com/html/img_girl.jpg" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"></a>
+                         <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${post.userId}">
+                         <c:if test="${ empty myProfile.profileDraft }">
+                         <img src="resources/profile/images.jpg" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;">
+                         </c:if>
+                         <c:if test="${ not empty myProfile.profileDraft }">
+                         <img src="${ myProfile.profileDraft }" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;">
+                         </c:if>
+                         </a>
                     </div>
                     <div class="owner-info" style="padding-left: 5px;">
                          <div class="dummy" style="display: flex; margin-top: 5px; margin-bottom: 3px;">
@@ -583,9 +590,9 @@ document.addEventListener('DOMContentLoaded', function() {
 							            </button>
 	                             	</c:if>
 	                              </div>
-	                          </form>
+	                          </form> 
                          </div> 
-                         
+                          
                          
                          
 						 <script>
@@ -742,7 +749,7 @@ $(document).ready(function() {
         // Retrieve the commentId stored in the data-comment-id attribute
         var commentId = $(this).data('comment-id');
         var userId = "${viewingUser.userId}";
-        var postId = $(this).data('post-id');
+        var postId = "${post.postId}";
         var message = prompt("신고 사유를 적어주세요: ");
 
         if (message) {

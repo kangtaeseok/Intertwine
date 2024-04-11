@@ -1004,7 +1004,7 @@ public class PostController {
 		//logger.info("viewingUser" + viewingUser.toString());
 		//포스트 아이디로 포스트 정보를 가져옴(포스트 게시글, 핀여부 등등)
 		Post post = postService.selectOnePost(postId);
-		
+		MyPage myPageForMyself = userService.selectMyPage(post.getUserId());
 		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
 		if(!viewingUser.getUserId().equals(post.getUserId())) {
 			if(session.getAttribute("redirecting")!= null) {
@@ -1058,6 +1058,7 @@ public class PostController {
 		int isPinned = postService.selectIsPinned(pincheck);
 		
 		//모두 담아 보냄
+		mv.addObject("myProfile", myPageForMyself);
 	    mv.addObject("images", images);
 	    mv.addObject("video", video);
 	    mv.addObject("viewingUser", viewingUser);

@@ -129,7 +129,8 @@
                     <ul>
                         <br>
                         <li style="list-style-type: none;"><h3>${ otheruser.userId } </h3></li>
-                        <li style="list-style-type: none;">${ mypage.statusMessage }</li>
+                        <li style="list-style-type: none;"><h3>${ otheruser.nickname } </h3></li>
+                        <li style="list-style-type: none;"><div style="width: 300px;">${ myPage.statusMessage }</div></li>
                         <br>
                         <li style="list-style-type: none;"><a><b>팔로잉 </b>${ followingCount }</a>&nbsp;&nbsp;<a><b>팔로워 </b>${ followerCount }</a> &nbsp;<a></a></li>
                     </ul>
