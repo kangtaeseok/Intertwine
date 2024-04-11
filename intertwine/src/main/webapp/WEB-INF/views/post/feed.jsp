@@ -398,23 +398,15 @@ input.text::placeholder {
 						<h3>
 							<!-- 여기를 누르면 친구 상태페이지 연결-->
 							<a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }">${ item.user.userId }</a> &nbsp;
-							<!-- 친구여부 여기서 확인 c:if 넘겨야 할 정보 내아이디 정보 상대 아이디 정보-->
-							<!-- 친구가 아닐 시-->
-							<c:if test="${ isFollowing eq 0 }">
-							<a class="friend" href="#" style="text-decoration:none;color:black;">팔로우</a>
-							</c:if>
-							<c:if test="${ isFollowing eq 1 }">
-                            <a class="unfriend" href="#" style="text-decoration:none;color:black;">언팔로우</a>
-							</c:if>
 							<br>
 							<c:if test="${ not empty item.user.nickname }">
-							<span><a href="#" style="text-decoration:none;color:black;">${ item.user.nickname }</a></span>
+							<span><a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }" style="text-decoration:none;color:black;">${ item.user.nickname }</a></span>
 							</c:if>
 						</h3>
 					</div>
 				</div>
 				<!-- 누르면 포스트 상세보기 페이지 연결 -->
-				<div class="imgBox" onclick="">
+				<div class="imgBox">
 					<c:if test="${ not empty item.image.imageURL }">
 					<img src="${ item.image.imageURL }">
 					</c:if>
