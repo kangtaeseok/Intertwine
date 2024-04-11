@@ -109,7 +109,12 @@
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
+                <c:if test="${ empty myPage.profileDraft }">
                 <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                <c:if test="${ not empty myPage.profileDraft }">
+                <img src="${ myPage.profileDraft }"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
             </div>
         </div>
         <div class="profile-info" style="display: flex;">

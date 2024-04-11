@@ -112,7 +112,14 @@
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
-                <a href="${pageContext.servletContext.contextPath}/page.do?friendId=${otheruser.userId}"><img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;"></a>
+                <a href="${pageContext.servletContext.contextPath}/page.do?friendId=${otheruser.userId}">
+                <c:if test="${ empty myPage.profileDraft }">
+                <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                <c:if test="${ not empty myPage.profileDraft }">
+                <img src="${ myPage.profileDraft }"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                </a>
             </div>
         </div>
         <div class="profile-info" style="display: flex;">
@@ -122,7 +129,7 @@
                     <ul>
                         <br>
                         <li style="list-style-type: none;"><h3>${ otheruser.userId } </h3></li>
-                        <li style="list-style-type: none;"><%-- 여기 유저 바이오 --%></li>
+                        <li style="list-style-type: none;">${ mypage.statusMessage }</li>
                         <br>
                         <li style="list-style-type: none;"><a><b>팔로잉 </b>${ followingCount }</a>&nbsp;&nbsp;<a><b>팔로워 </b>${ followerCount }</a> &nbsp;<a></a></li>
                     </ul>

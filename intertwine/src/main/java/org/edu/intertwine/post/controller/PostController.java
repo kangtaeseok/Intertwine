@@ -24,6 +24,7 @@ import org.edu.intertwine.common.GPS;
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.friend.model.vo.Friend;
 import org.edu.intertwine.post.model.service.PostService;
+import org.edu.intertwine.post.model.vo.CommentProfile;
 import org.edu.intertwine.post.model.vo.FeedItem;
 import org.edu.intertwine.post.model.vo.Gallery;
 import org.edu.intertwine.post.model.vo.Image;
@@ -33,6 +34,7 @@ import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -320,6 +322,10 @@ public class PostController {
 		User otherUser = userService.selectUser(friendId);
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
+		
+		//프로필 사진, 상태메시지 받아옴
+		MyPage mypage = userService.selectMyPage(friendId);
+		
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
@@ -390,7 +396,7 @@ public class PostController {
 	    }
 		//팔로잉 팔로워 횟수 셈
 
-	    
+	    mv.addObject("myPage", mypage);
 	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
@@ -465,6 +471,8 @@ public class PostController {
 		
 		User user = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		//프로필 사진과 상태메시지 가져오기
+		MyPage myPage = userService.selectMyPage(user.getUserId());
 		
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
@@ -506,6 +514,7 @@ public class PostController {
 		int followingCount = friendService.selectCountFollowing(user.getUserId());
 		int followerCount = friendService.selectCountFollowers(user.getUserId());
 		
+		mv.addObject("myPage", myPage);
 		mv.addObject("galleries", galleries);
 		mv.addObject("user", user);
 		mv.addObject("followingCount", followingCount);
@@ -820,12 +829,11 @@ public class PostController {
 				String eachPostId = String.valueOf(postIds.get(i));
 				int each = Integer.parseInt(eachPostId);
 				 //포스트 아이디로 유저 아이디 찾아옴
-				
 				String findUserId = postService.selectFindUserId(each);
-	       
-				//  Mypage mypage = userService.(무언가)
 				// 유저정보 담음
 				User user = userService.selectUser(findUserId);
+				//유저 사진 가져옴
+				MyPage myPage = userService.selectMyPage(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
 				// 이미지 정보 담음
@@ -858,7 +866,7 @@ public class PostController {
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed, myPage);
 				feedItems.add(feedItem);
 				
 			}
@@ -918,9 +926,11 @@ public class PostController {
 				
 				String findUserId = postService.selectFindUserId(each);
 	       
-				//  Mypage mypage = userService.(무언가)
+				
 				// 유저정보 담음
 				User user = userService.selectUser(findUserId);
+				//유저 사진 가져옴
+				MyPage myPage = userService.selectMyPage(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
 				// 이미지 정보 담음
@@ -954,7 +964,7 @@ public class PostController {
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed, myPage);
 				feedItems.add(feedItem);
 				
 			}
@@ -1013,6 +1023,7 @@ public class PostController {
 		//logger.info("tags" + tags.toString());
 		//포스트에 있는 댓글들 가져옴
 		ArrayList<Comment> comments = commentService.selectComments(postId);
+	
 		//logger.info("comments" + comments.toString());
 		// 총 공감 갯수 세서 가져옴
 		int likeCount = postService.selectLikeCounts(postId);

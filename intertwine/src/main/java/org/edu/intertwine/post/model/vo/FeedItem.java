@@ -2,6 +2,7 @@ package org.edu.intertwine.post.model.vo;
 
 import java.io.Serializable;
 
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.User;
 
 public class FeedItem implements Serializable{
@@ -20,17 +21,14 @@ public class FeedItem implements Serializable{
     private int isBookmarked; //북마크 아님(0) 북마크임 (1)
     private int isFollowing;
     private int isFollower;
-    
-    
-    
-	public FeedItem() {
+    private MyPage myPage; //프로필 사진과 상태메시지 가져오기
+	
+    public FeedItem() {
 		super();
 	}
-	
-	
-	
+
 	public FeedItem(User user, Post post, Image image, Video video, int likeCount, int isLiked, String whatIsLiked,
-			int isBookmarked, int isFollowing, int isFollower) {
+			int isBookmarked, int isFollowing, int isFollower, MyPage myPage) {
 		super();
 		this.user = user;
 		this.post = post;
@@ -42,84 +40,109 @@ public class FeedItem implements Serializable{
 		this.isBookmarked = isBookmarked;
 		this.isFollowing = isFollowing;
 		this.isFollower = isFollower;
+		this.myPage = myPage;
 	}
-
 
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public Post getPost() {
 		return post;
 	}
+
 	public void setPost(Post post) {
 		this.post = post;
 	}
+
 	public Image getImage() {
 		return image;
 	}
+
 	public void setImage(Image image) {
 		this.image = image;
 	}
+
 	public Video getVideo() {
 		return video;
 	}
+
 	public void setVideo(Video video) {
 		this.video = video;
 	}
+
 	public int getLikeCount() {
 		return likeCount;
 	}
+
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
+
 	public int getIsLiked() {
 		return isLiked;
 	}
+
 	public void setIsLiked(int isLiked) {
 		this.isLiked = isLiked;
 	}
+
 	public String getWhatIsLiked() {
 		return whatIsLiked;
 	}
+
 	public void setWhatIsLiked(String whatIsLiked) {
 		this.whatIsLiked = whatIsLiked;
 	}
+
 	public int getIsBookmarked() {
 		return isBookmarked;
 	}
+
 	public void setIsBookmarked(int isBookmarked) {
 		this.isBookmarked = isBookmarked;
 	}
+
 	public int getIsFollowing() {
 		return isFollowing;
 	}
+
 	public void setIsFollowing(int isFollowing) {
 		this.isFollowing = isFollowing;
 	}
+
 	public int getIsFollower() {
 		return isFollower;
 	}
+
 	public void setIsFollower(int isFollower) {
 		this.isFollower = isFollower;
 	}
+
+	public MyPage getMyPage() {
+		return myPage;
+	}
+
+	public void setMyPage(MyPage myPage) {
+		this.myPage = myPage;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
- 
-
 
 	@Override
 	public String toString() {
 		return "FeedItem [user=" + user + ", post=" + post + ", image=" + image + ", video=" + video + ", likeCount="
 				+ likeCount + ", isLiked=" + isLiked + ", whatIsLiked=" + whatIsLiked + ", isBookmarked=" + isBookmarked
-				+ ", isFollowing=" + isFollowing + ", isFollower=" + isFollower + "]";
+				+ ", isFollowing=" + isFollowing + ", isFollower=" + isFollower + ", myPage=" + myPage + "]";
 	}
-	
-	
-	
+    
+    
     
     
 }

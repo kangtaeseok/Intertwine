@@ -385,7 +385,12 @@ input.text::placeholder {
 						<div class="profile_img">
 						<a href="${pageContext.servletContext.contextPath}/page.do?friendId=${ item.user.userId }">
 							<div class="image">
+								<c:if test="${ empty item.myPage.profileDraft }">
 								<img src="resources/profile/images.jpg">
+								</c:if>
+								<c:if test="${ not empty item.myPage.profileDraft }">
+									<img src="${ item.myPage.profileDraft }">
+								</c:if>
 							</div>
 						</a>
 						</div>
