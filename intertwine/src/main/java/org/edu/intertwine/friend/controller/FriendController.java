@@ -7,12 +7,13 @@ import javax.servlet.http.HttpSession;
 
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.friend.model.vo.Friend;
+import org.edu.intertwine.friend.model.vo.friendProfile;
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import oracle.net.aso.f;
 
 @Controller
 public class FriendController { // 로그 객체 생성 (메소드 동작 확인 및 전달값, 리턴값확인)
@@ -38,11 +41,32 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 	@RequestMapping(value = "friendPage.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String movefriendPage(Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
-		logger.info("loginUser:" + loginUser);
+		logger.info("loginUser:" + friendService.selectFollowingList(loginUser.getUserId()));
+		logger.info("ㅇㅇ:" + loginUser);
 		ArrayList<Friend> followinglist = friendService.selectFollowingList(loginUser.getUserId());
-		model.addAttribute("followingList", followinglist);
 		ArrayList<Friend> followerlist = friendService.selectFollowerList(loginUser.getUserId());
-		model.addAttribute("followerList", followerlist);
+		
+		
+		ArrayList<friendProfile> fProfile = new ArrayList<friendProfile>();
+		ArrayList<friendProfile> fProfileFollowers = new ArrayList<>();
+
+		for(Friend f : followinglist) {
+			MyPage mypage = userService.selectMyPage(f.getFriendId());
+			friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+			fProfile.add(fprofile);
+		}
+		
+		for (Friend f : followerlist) {
+	        MyPage mypage = userService.selectMyPage(f.getUserId());
+	        friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+	        fProfileFollowers.add(fprofile);
+	    }
+		
+//		model.addAttribute("followingList", followinglist);
+		
+//		model.addAttribute("followerList", followerlist);
+		model.addAttribute("fProfile", fProfile);
+		model.addAttribute("fProfileFollowers", fProfileFollowers);
 //		ArrayList<User> friendProfile = userService.selectMyFriendPage(loginUser.getUserId());
 //		model.addAttribute("friendProfile", friendProfile);
 		if (followinglist == null) {
@@ -56,29 +80,6 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 //		}
 		return "friend/friendMainView";
 	}
-
-	// 로그인 세션 동작 확인 테스트용
-	@PostMapping("test.do")
-	@ResponseBody // HTTP 응답 바디에 직접 데이터를 작성하기 위해 사용
-	public String receiveUserId(@RequestParam("userId") String userId) {
-		System.out.println("Received userId: " + userId);
-		return "Received userId: " + userId; // 클라이언트로 응답 보내기
-	}
-
-	// 차단 페이지 뷰 내보내기blockedPage.do 기능 구현 힘들듯
-	/*
-	 * @RequestMapping(value = "blockedPage.do", method = { RequestMethod.GET,
-	 * RequestMethod.POST }) public String blockedPage(Model model, HttpSession
-	 * session) { User loginUser = (User) session.getAttribute("loginUser"); String
-	 * userId = loginUser.getUserId(); logger.info("loginUser:" + loginUser);
-	 * ArrayList<Friend> blockedAllList = friendService.blockedList(userId); if
-	 * (blockedAllList == null) { blockedAllList = new ArrayList<>(); }
-	 * model.addAttribute("blockedAllList", blockedAllList);
-	 * 
-	 * return "friend/blockedViewPage"; }
-	 */
-	
-	
 	
 	//팔로우 메소드
 //	@PostMapping("insertF.do")
@@ -217,13 +218,38 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
 		ArrayList<Friend> searchF = friendService.selectSearchFollowing(friend);
-		model.addAttribute("searchF", searchF);
+		ArrayList<friendProfile> fProfile = new ArrayList<friendProfile>();
+		for(Friend f : searchF) {
+			MyPage mypage = userService.selectMyPage(f.getFriendId());
+			friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+			fProfile.add(fprofile);
+		}
+		model.addAttribute("searchfProfile", fProfile);
 		if (searchF != null) {
 			return "friend/friendMainView";
 		} else {
 			return "redirect:friendPage.do";
 		}
 	}
+	
+	/*ArrayList<Friend> followinglist = friendService.selectFollowingList(loginUser.getUserId());
+		ArrayList<Friend> followerlist = friendService.selectFollowerList(loginUser.getUserId());
+		
+		
+		ArrayList<friendProfile> fProfile = new ArrayList<friendProfile>();
+		ArrayList<friendProfile> fProfileFollowers = new ArrayList<>();
+
+		for(Friend f : followinglist) {
+			MyPage mypage = userService.selectMyPage(f.getFriendId());
+			friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+			fProfile.add(fprofile);
+		}
+		
+		for (Friend f : followerlist) {
+	        MyPage mypage = userService.selectMyPage(f.getUserId());
+	        friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+	        fProfileFollowers.add(fprofile);
+	    }*/
 
 	// 팔로워 계정 검색 (완)
 	@RequestMapping("searchFollower.do")
@@ -235,6 +261,13 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		friend.setUserId(userId);
 		friend.setKeyword(keyword);
 		ArrayList<Friend> searchFwer = friendService.selectSearchFollower(friend);
+		ArrayList<friendProfile> fProfile = new ArrayList<friendProfile>();
+		for(Friend f : searchFwer) {
+			MyPage mypage = userService.selectMyPage(f.getUserId());
+			friendProfile fprofile = new friendProfile(f.getUserId(), f.getFriendId(), f.getStatus(), mypage.getProfileDraft());
+			fProfile.add(fprofile);
+		}
+		model.addAttribute("searchfProfile2", fProfile);
 		model.addAttribute("searchFwer", searchFwer);
 
 		return "friend/friendMainView";
