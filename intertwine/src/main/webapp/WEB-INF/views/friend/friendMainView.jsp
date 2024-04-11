@@ -21,6 +21,7 @@
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
+
 <main>
 <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
 		<div class="content">

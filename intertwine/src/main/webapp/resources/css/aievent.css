@@ -224,7 +224,6 @@ main {
     padding: 20px;
     display: flex;
     flex-direction: column;
-        margin-right: 5rem;
   }
 
   @keyframes message-fade-in {
@@ -290,6 +289,7 @@ main {
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
   }
   
   #input-form {
