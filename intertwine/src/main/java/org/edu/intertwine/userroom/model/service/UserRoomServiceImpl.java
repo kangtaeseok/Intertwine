@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service("userRoomService")
 public class UserRoomServiceImpl implements UserRoomService {
 	@Autowired
-	   private UserRoomDao userRoomDao;
-	
+	private UserRoomDao userRoomDao;
+
 	@Override
 	public UserRoom selectUserRoomFirst(String userId) {
 		return userRoomDao.selectUserRoomFirst(userId);
@@ -28,19 +28,19 @@ public class UserRoomServiceImpl implements UserRoomService {
 	public ArrayList<UserRoomResource> selectAllRoomResource() {
 		return userRoomDao.selectAllRoomResource();
 	}
-	
+
 	@Override
 	public int updateUserRoom(UserRoom userRoom) {
 		return userRoomDao.updateUserRoom(userRoom);
 	}
-	
+
 	@Override
 	public int insertUserRoomFirst(String userId) {
 		return userRoomDao.insertUserRoomFirst(userId);
 	}
 
 	@Override
-	public void insertUserRoom(String userId, UserRoomResource item)  {
+	public void insertUserRoom(String userId, UserRoomResource item) {
 		userRoomDao.insertUserRoom(userId, item);
 	}
 

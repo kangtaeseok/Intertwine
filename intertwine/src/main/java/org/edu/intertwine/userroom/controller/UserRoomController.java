@@ -163,12 +163,16 @@ public class UserRoomController {
 		for (Friend friend : friendList) {
 			JSONObject jsonFriend = new JSONObject();
 			jsonFriend.put("friendId", friend.getFriendId());
-
+			
 			MyPage myPage = userService.selectMyPage(friend.getFriendId());
 			if (myPage != null) {
-				jsonFriend.put("profile", myPage.getProfile()); // 프로필 이미지 URL 추가
+				if (myPage.getProfile() != "비어있음" || myPage.getProfile() != null) {
+					jsonFriend.put("profile", myPage.getProfile()); // 프로필 이미지 URL 추가
+				} else {
+					jsonFriend.put("profile", "/intertwine/resources/images/defaultProfile.png");
+				}
 			} else {
-				//jsonFriend.put("profile", "defaultProfile.png"); // 프로필이 없는 경우 기본 이미지
+				jsonFriend.put("profile", "/intertwine/resources/images/defaultProfile.png"); // 프로필이 없는 경우 기본 이미지
 			}
 
 			jsonFriendArray.add(jsonFriend);
@@ -211,6 +215,11 @@ public class UserRoomController {
 				rListJson.add(resourceJson);
 			}
 			job.put("rList", rListJson);
+		} else {
+			userRoom = userRoomService.selectUserRoomFirst(userId);
+			job.put("userId", userRoom.getUserId());
+			job.put("roomColor", userRoom.getRoomColor());
+			job.put("guestBookOpen", userRoom.getGuestBookOpen());
 		}
 
 		return job.toJSONString();
@@ -221,15 +230,15 @@ public class UserRoomController {
 	public String moveToFriendRoom(@RequestParam("friendId") String friendId, HttpServletResponse response) {
 
 		UserRoom userRoom = userRoomService.selectUserRoom(friendId);
-
+		
 		JSONObject job = new JSONObject();
-		if (userRoom != null) {
+		JSONArray rListJson = new JSONArray();
+		
+		if (userRoom != null) { // 방이 꾸며져있는 경우
 			job.put("userId", userRoom.getUserId());
 			job.put("roomColor", userRoom.getRoomColor());
 			job.put("guestBookOpen", userRoom.getGuestBookOpen());
 
-			// UserRoomResource 리스트를 JSON 배열로 변환
-			JSONArray rListJson = new JSONArray();
 			for (UserRoomResource resource : userRoom.getrList()) {
 				JSONObject resourceJson = new JSONObject();
 				resourceJson.put("resourceId", resource.getResourceId());
@@ -241,8 +250,16 @@ public class UserRoomController {
 				resourceJson.put("resourceURL", resource.getResourceURL());
 
 				rListJson.add(resourceJson);
-			}
+			} 
+			
 			job.put("rList", rListJson);
+		}else { // 방이 안꾸며져있는경우
+			userRoom = userRoomService.selectUserRoomFirst(friendId);
+			if (userRoom != null) { // 한번 접속은 했던 유저의 경우
+				job.put("userId", userRoom.getUserId());
+				job.put("roomColor", userRoom.getRoomColor());
+				job.put("guestBookOpen", userRoom.getGuestBookOpen());
+			}
 		}
 
 		return job.toJSONString();
