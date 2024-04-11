@@ -13,6 +13,7 @@
 <script defer src="/intertwine/resources/js/noticepage.js"></script>
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
     <main>
