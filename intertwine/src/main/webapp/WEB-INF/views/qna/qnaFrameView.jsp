@@ -29,12 +29,16 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
+   
+ 
 }
 
 .container {
     display: flex;
     flex-direction: column;
     height: 100%;
+     min-width: 1200px;
+    
 }
 
 header, footer {
@@ -46,25 +50,44 @@ header, footer {
 main {
     flex: 1;
     display: flex;
+    
 }
 
 .left {
     flex: 1; /* 왼쪽 요소를 오른쪽 요소의 1/4 크기로 설정 */
     padding: 20px;
     border: 0px solid #333;
+    position : relative;
+    left : 250px;
+    
 }
 
 .right {
     flex: 3; /* 오른쪽 요소를 왼쪽 요소의 4배 크기로 설정 */
     padding: 20px;
     border: 0px solid #333;
+    position : relative;
+    left : 250px;
 }
+
+@media screen and (max-width: 1280px) {
+    .left {
+        left: 100px;
+    }
+    .right {
+        left: 100px;
+    }
+}
+
+
 
 hr {
     border: none;
     height: 4px;
     background-color: black;
 }
+
+
 
 /* 마우스를 올릴 때 밑줄 효과 */
 #faq:hover, #qna:hover {
@@ -145,6 +168,30 @@ function moveLoginPage(){
 
 <div class="container">
 	<header>
+	
+	        <!-- 페이지 상단 -->
+        <div> <!-- 홈 버튼 -->
+            <nav class="homebutton_nav">
+                <ul>
+                    <li class="homebutton"></li>
+                </ul>
+                <ol>
+                    <a href="#"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                </ol>
+            </nav>
+        </div>
+
+        <div class="search"> <!-- 검색창 -->
+            <input type="text" placeholder="검색어 입력">
+            <img src="/intertwine/resources/images/search.png">
+        </div>
+
+        <div></div>
+        <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
+ 
+	
+	
+	
 	<div id="header_logo">
 		<!-- <img src="/intertwine/resources/images/faq/intertwinelogo.png" width="100px" height="40px" onclick="moveMainPage()"> -->
 		<!-- <a href="${ pageContext.servletContext.contextPath }/main.do">Home</a> -->
@@ -158,15 +205,71 @@ function moveLoginPage(){
 
 	</header>
 
-  <%--   <c:import url="/WEB-INF/views/common/menubar.jsp" /> --%>
-    <br>
+    <%-- <c:import url="/WEB-INF/views/qna/menubar.jsp" /> --%>
+
     <main>
+    
+    
+            <div>
+            <aside class="side-bar">
+                <ul>
+                    <li id="a">
+                        <a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>
+                        <ul>
+                            <li><a href="#">text1</a></li>
+                            <li><a href="#">text2</a></li>
+                            <li><a href="#">text3</a></li>
+                            <li><a href="#">text4</a></li>
+                        </ul>
+                    </li>
+                    <li id="mypage">
+                        <a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+                        <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> --><!-- 색칠된 아이콘 -->
+                    </li>
+                    <li id="c">
+                        <a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>
+                    </li>
+                    <li id="chatting">
+                        <a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>
+                    </li>
+                    <li id="alarm">
+                        <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                    </li>
+                    <li id="f">
+                        <a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>
+                    </li>
+
+                </ul>
+            </aside>
+ 
+    
+            
+            
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         <div class="left">
             <h1>고객센터</h1>
             <hr>
             <ul>
                 <!-- 문의하기(Q&A)와 자주묻는질문(FAQ)에 ID 추가 -->
                 <%-- 관리자 로그인한 경우 :  --%>
+                <br>
 
                 <li><h2 id="faq">자주묻는질문(FAQ)</h2></li>
                 <li><h2 id="qna">문의하기(Q&A)</h2></li>

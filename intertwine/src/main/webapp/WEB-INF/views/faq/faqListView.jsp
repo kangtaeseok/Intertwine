@@ -131,7 +131,7 @@ $(function(){
 `; 
 });
 
-
+/* 
 document.getElementById("faq").addEventListener("click", function() {
     // 자주묻는질문(FAQ) 클릭 시 오른쪽 창의 내용이 변경됩니다.
 	<c:url var="fl" value="flist.do">
@@ -152,7 +152,7 @@ document.getElementById("qna").addEventListener("click", function() {
  	</c:url>   
 	location.href='${ ql }'; 
 
-});
+}); */
 
 
 function showWriteForm(){
