@@ -43,12 +43,17 @@ public class FriendController { // 로그 객체 생성 (메소드 동작 확인
 		model.addAttribute("followingList", followinglist);
 		ArrayList<Friend> followerlist = friendService.selectFollowerList(loginUser.getUserId());
 		model.addAttribute("followerList", followerlist);
+//		ArrayList<User> friendProfile = userService.selectMyFriendPage(loginUser.getUserId());
+//		model.addAttribute("friendProfile", friendProfile);
 		if (followinglist == null) {
 			followinglist = new ArrayList<>();
 		}
 		if (followerlist == null) {
 			followinglist = new ArrayList<>();
 		}
+//		if (friendProfile == null) {
+//			friendProfile = new ArrayList<>();
+//		}
 		return "friend/friendMainView";
 	}
 

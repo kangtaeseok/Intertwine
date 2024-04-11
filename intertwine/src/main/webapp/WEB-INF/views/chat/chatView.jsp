@@ -8,50 +8,101 @@
 <head>
 <meta charset="UTF-8">
 <title>채팅</title>
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+<!-- <link rel="stylesheet" href="/intertwine/resources/css/user/userTimePage.css" /> -->
 <script type="text/javascript"
 	src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <!-- <script src="/path/to/sockjs.min.js"></script>
 <script src="/path/to/stomp.min.js"></script> -->
 <style>
+/* 채팅 목록 스타일 */
+#chattingList {
+    position: absolute;
+    left: 300px;
+    width: 350px; /* 채팅 리스트 너비 설정 */
+    height: 600px;
+    overflow-y: auto;
+    max-height: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 20px;
+    border-radius: 10px;
+}
 
-	#chatbox {
-		display: block;
-		background-color: #ffffff;
-		border: 1px solid black;
-		border-radius: 10px;
-		max-width: 600px;
-		height:460px;
-		padding: 10px;
-		margin: 10px;
-		box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
-	}
+.item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 2px solid lightgray;
+}
 
-	#messageWindow {
-		background-color: #fff;
-		height: 300px;
-		overflow-y: auto;
-		padding: 10px;
-		margin-bottom: 10px;
-	}
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
-	#inputMessage {
-		width : 60%;
-		 flex-grow: 1;
-    padding: 8px 12px;
-    border: 2px solid #dcdcdc; /* 경계선 스타일 */
-    border-radius: 25px; /* 둥근 모서리 */
-    margin-right: 10px; /* 오른쪽 여백 */
-    outline: none; /* 선택 시 테두리 제거 */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* 내부 그림자 */
-	}
+.chat-btn, .endchat {
+    text-decoration: none;
+    background-color: #cc2e72;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 12px;
+    display: inline-block;
+}
 
-	.chat_content {
+.chat-btn:hover, .endchat:hover {
+    background-color: #be315b;
+}
+
+/* 채팅방 스타일 */
+#chatbox {
+    display: block;
+    position: absolute;
+    left: 720px; /* 채팅박스 왼쪽에서의 위치 */
+    width: 600px; /* 채팅박스 너비 */
+    height: 600px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eee;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px 10px 0 0;
+}
+
+#messageWindow {
+    height: 450px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+#inputMessage {
+    width: calc(100% - 70px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.chat_content {
 		margin: 5px 0;
 		padding: 5px;
 		border-radius: 17px;
 		box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 	}
-
 	.my-side {
 		background-color: #f9f9f9;
 		text-align: right;
@@ -67,115 +118,70 @@
 	clear: both;
 	margin-right: 50%; /* 화면의 절반을 기준으로 왼쪽에 배치 */
 	}
-	#sendButton, #endBtn{
-	   padding: 8px 16px;
-    background-color: #cc2e72; /* 배경 색상 */
-    color: white; /* 텍스트 색상 */
-    border: none; /* 경계선 제거 */
-    border-radius: 25px; /* 둥근 모서리 */
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-    transition: background-color 0.2s; /* 배경 색상 변화 효과 */
-    
-	}
+	
 
-	/* #endBtn {
-		background-color: #f9f9f9;
-		color: white;
-		padding: 5px 10px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	} */
 
-.content {
-	display: flex;
-	flex-direction: row;
-	/* Aligns children (chat list and chat box) horizontally */
-	justify-content: space-between;
-	/* Distributes space between and around content items */
-	padding: 20px;
-	align-items: flex-start;
+/* #sendButton, #endBtn {
+    background-color: #cc2e72;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-#chattingList {
-	width: 30%; /* Adjust the width as necessary */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
-	overflow-y: auto; /* Enables scrolling for overflow content */
-	margin-bottom: 20px;
-	background-color: #f9f9f9;
-	border: 1px solid #ccc;
-	border-radius: 10px; /* Rounds the corners */
+#sendButton:hover, #endBtn:hover {
+    background-color: #be315b;
+} */
+#sendButton {
+    background-color:white;
+    color: blue;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
 }
-
-
-
-.item {
-	display: flex;
-	align-items: center;
-	border-bottom: 1px solid #eee;
-	padding: 10px;
+#endBtn {
+    background-color: #cc2e72;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
-.profile-img {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	margin-right: 10px;
+.chat-container {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: start; /* 상단 정렬 */
+    padding: 10px;
+    gap: 20px; /* 요소 사이 간격 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 중앙 배치 */
 }
-
-.chat-btn {
-	padding: 5px 10px; /* 버튼 내부의 패딩 줄임 */
-	margin-right: 3px; /* 버튼 사이의 마진 줄임 */
-	border: none;
-	border-radius: 4px;
-	background-color: #cc2e72; /* 기본 회색 */
-	color: #fff; /* 버튼 내 텍스트 색상 */
-	font-size: 0.75rem; /* 텍스트 크기를 줄임 */
-	text-transform: uppercase; /* 텍스트를 대문자로 */
-	font-weight: bold; /* 글씨 두껍게 */
-	cursor: pointer;
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 박스 그림자 추가 */
-	transition: background-color 0.3s, box-shadow 0.3s;
-	/* 부드러운 색상 및 그림자 변화 */
+#inputContainer {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
 }
-
-.chat-btn:hover {
-	background-color: #be315b; /* 호버 시 진한 회색 */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 변화 */
-}
-
-#chattingList th, #chattingList td {
-	text-align: left; /* Align text to the left */
-	/* padding: 8px; */
-	border-bottom: 1px solid #ccc; /* Add a bottom border to each cell */
-	border: none; /* 셀의 테두리 제거 */
-	padding: 12px 15px; /* 셀 내부의 패딩 조정 */
-}
-
-#chattingList th {
-	background-color: #f9f9f9; /* Add a background color to header cells */
-	color: #333; /* Header cell text color */
-	text-align: left;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%;
+#chatFriendId {
+    flex: 1; /* 유연하게 공간 차지 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-weight: bold;
 }
 </style>
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
+<c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+<main class="chat-container">
 	
+       
 	<div class="content">
 		<table id="chattingList" class="followerList-table">
 			<thead>
 				<tr>
 					<th>${loginUser}님의채팅목록</th>
-				</tr>
-				<tr>
-					<th>Profile</th>
-					<th>Username</th>
-					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -211,7 +217,7 @@ table {
 
 							<td><button class="chat-btn" data-chat-id="${ chat.chatId }"
 									data-friend-id="${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}">채팅하기</button>
-								<a
+								<a class="endchat"
 								href="${pageContext.servletContext.contextPath}/deleteChat.do?otherUserId=${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}">나가기</a>
 							<td>
 						</tr>
@@ -237,29 +243,33 @@ table {
 		 <div id="chatHeader" style="text-align: center; border-bottom: 1px solid black; padding: 10px;">
         <!-- 상대방 유저 아이디 표시 -->
         <span id="chatFriendId" style="font-size: 16px;">${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}</span>
+        <button type="button" id="endBtn">X</button>
         </div>
 			<div id="messageWindow"></div>
 			
-			<br> <input type="text" id="inputMessage" onkeyup="enterKey()" placeholder="메세지를 입력하세요" />
-			<input id="sendButton" type="submit" value="send" >
-			<button type="button" id="endBtn">나가기</button>
+			<br> <div id="inputContainer"><input type="text" id="inputMessage" onkeyup="enterKey()" placeholder="메세지를 입력하세요" />
+			<input id="sendButton" type="submit" value="send" ></div>
+			
 	</div>
-
-
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
+</main>
 	<script>
 	var loginUser = '${loginUser}';
-	var friendId = '${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}'
+	var friendId = '${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}';
+	var chatId;
 	/* var friendId = '${chat.userId2 == loginUser ? chat.userId1 : chat.userId2}' */
 	
 	
 	
-	// 로컬 스토리지에서 채팅 내역을 불러오는 함수
-function loadMessages() {
-    var savedMessages = localStorage.getItem('chatMessages');
+/* 	// 로컬 스토리지에서 채팅 내역을 불러오는 함수
+/* function loadMessages() {
+   /*  var savedMessages = localStorage.getItem('chatMessages');
     if (savedMessages) {
         $('#messageWindow').html(savedMessages);
-    }
-}
+    } *//*
+    var chatId = $('#chatId').val(); // 현재 페이지의 chatId 가져오기
+    loadMessages(chatId); // 현재 채팅방의 메시지를 불러옵니다.
+} */ 
 	
 //엔터키를 누를 경우 메세지 보내기
 function enterKey(event){
@@ -267,19 +277,42 @@ function enterKey(event){
 		send();
 }
 $(document).ready(function() {
-    loadMessages(); // 페이지 로딩 시 저장된 메시지를 불러옵니다.
+   
     $('#sendButton').on('click', send); // 'send' 버튼에 클릭 이벤트 핸들러를 추가합니다.
 	
 	$(document).on('click', '.chat-btn', function() {
 	    var friendId = $(this).data('friend-id');
-	    var chatId = $(this).data('chat-id');// 상대방 사용자 ID를 가져옵니다.
-	    
+	    chatId = $(this).data('chat-id');// 상대방 사용자 ID를 가져옵니다.
+	    console.log("Chat ID: " + chatId); // 콘솔에 채팅 ID 로깅
 	    $('#chatbox').show(); // 채팅창을 보이게 합니다.
 	    $('#chatFriendId').text(friendId); // 채팅방 최상단에 상대방의 아이디를 표시합니다.
 
 	    connection(chatId, loginUser, friendId); // 웹소켓 연결을 초기화합니다.
+	    loadMessages(chatId); // 채팅방의 메시지를 불러옵니다.
 	});
     
+	function saveMessage(chatId, sender, message, timestamp) {
+		var chatKey = 'chatMessages_' + chatId; // 채팅방 별 고유 키 생성
+        //var currentContent = $('#messageWindow').html();
+		var currentContent = localStorage.getItem(chatKey) || ''; // 현재 채팅방 내역 불러오기
+		var messageEntry = "<p class='chat_content " + (sender === loginUser ? "my-side" : "other-side") + "'><strong>" + sender + "</strong><span> " + timestamp + "</span><br>" + message + "</p>";
+        localStorage.setItem(chatKey, currentContent + messageEntry);
+        console.log('Message saved in localStorage for chatId ' + chatId);
+    }
+    
+	 // loadMessages 함수 정의
+    function loadMessages(chatId) {
+        var chatKey = 'chatMessages_' + chatId; // 채팅방 별 고유 키 생성
+        $('#messageWindow').html('');
+        var savedMessages = localStorage.getItem(chatKey);
+        if (savedMessages) {
+            $('#messageWindow').html(savedMessages);
+        }
+        else {
+            $('#messageWindow').html('');
+        }
+        console.log('Messages loaded from localStorage for chatId ' + chatId);
+    }
 	
 	
 	/* /*  $('.chat-btn').on('click',function(){
@@ -353,8 +386,9 @@ $(document).ready(function() {
 				 var messageToSend = loginUser  + "|" + $inputMessage.val() + "|" + timestamp; // `friendId`는 메시지 수신자 ID
 			        webSocket.send(messageToSend);
            /*  $textarea.append("<p class='chat_content'>" + loginUser + " : " + $inputMessage.val() + "</p>"); */
-           saveMessage(loginUser, $inputMessage.val(), timestamp); // 메시지와 시간 저장
+           saveMessage(chatId, loginUser, $inputMessage.val(), timestamp); // 메시지와 시간 저장
             $inputMessage.val('');
+            console.log('Message sent and saved for chatId ' + chatId);
 		} else{
 			 console.error("WebSocket is not open.");	
 		}
@@ -362,11 +396,7 @@ $(document).ready(function() {
 		$textarea.scrollTop($textarea.height());
 	}
 	
-	function saveMessage(sender, message) {
-        var currentContent = $('#messageWindow').html();
-        var messageEntry = "<p class='chat_content " + (sender === loginUser ? "my-side" : "other-side") + "'><strong>" + sender + "</strong><br> " + message + "</p>";
-        localStorage.setItem('chatMessages', currentContent + messageEntry);
-    }
+	
 	
 	// 서버로부터 메시지를 받을 때 수행할 메소드
 	function onMessage(event) {
@@ -391,15 +421,15 @@ $(document).ready(function() {
 		var messageClass = sender === loginUser ? 'my-side' : 'other-side';
 	    var messageDisplay = "<p class='chat_content " + messageClass + "'><strong>" + sender + "</strong><span> " + timestamp + "</span><br>" + content + "</p>";
 	    $textarea.append(messageDisplay);
-		saveMessage(sender, content, timestamp, messageClass); // 메시지 받을 때 로컬 스토리지에 저장
+		saveMessage(chatId, sender, content, timestamp, messageClass); // 메시지 받을 때 로컬 스토리지에 저장
 		$textarea.scrollTop($textarea.prop("scrollHeight"));
 	}
 	
-	 function saveMessage(sender, message, timestamp, messageClass) {
+	/*  function saveMessage(chatId, sender, message, timestamp, messageClass) {
 	        var currentContent = $('#messageWindow').html();
 	        var messageEntry = "<p class='chat_content " + (sender === loginUser ? "my-side" : "other-side") + "'><strong>" + sender + "</strong> <span> " + timestamp + "</span><br> " + message + "</p>";
 	        localStorage.setItem('chatMessages', currentContent + messageEntry);
-	    }
+	    } */
 	
 	function onError(event) {
 		alert(event.data);
