@@ -5,16 +5,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
+   
     <title>
        마이 페이지
     </title>
-<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
+
 </head>
 <body>
 
     <main>
     <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+        
+
 <div class="container" style="margin: 0 auto; padding-left: 250px; width: 1200px;">
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;padding-right:30px;">
@@ -180,6 +185,7 @@
        </c:forEach>      
     </div>
 </div>
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
 </main>
 <script>
 //개개 체크박스에 포스트 아이디 담음
