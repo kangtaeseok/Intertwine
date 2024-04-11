@@ -224,7 +224,6 @@ main {
     padding: 20px;
     display: flex;
     flex-direction: column;
-        margin-right: 5rem;
   }
 
   @keyframes message-fade-in {

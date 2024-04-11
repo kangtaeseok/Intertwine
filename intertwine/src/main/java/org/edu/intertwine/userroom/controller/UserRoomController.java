@@ -165,15 +165,7 @@ public class UserRoomController {
 			jsonFriend.put("friendId", friend.getFriendId());
 			
 			MyPage myPage = userService.selectMyPage(friend.getFriendId());
-			if (myPage != null) {
-				if (myPage.getProfile() != "비어있음" || myPage.getProfile() != null) {
-					jsonFriend.put("profile", myPage.getProfile()); // 프로필 이미지 URL 추가
-				} else {
-					jsonFriend.put("profile", "/intertwine/resources/images/defaultProfile.png");
-				}
-			} else {
-				jsonFriend.put("profile", "/intertwine/resources/images/defaultProfile.png"); // 프로필이 없는 경우 기본 이미지
-			}
+			jsonFriend.put("profiledraft", myPage.getProfileDraft()); // 프로필 이미지 URL 추가
 
 			jsonFriendArray.add(jsonFriend);
 		}

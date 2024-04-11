@@ -37,6 +37,7 @@ public class ChatController {
 		chat.setUserId1(loginUser.getUserId());
 		/* chat.setUserId2(otherUserId); */
 		ArrayList<Chat> myAllChatRoomList = chatService.selectAllChatRoomList(chat);
+		
 		if (myAllChatRoomList == null) {
 			myAllChatRoomList = new ArrayList<Chat>();
 		}

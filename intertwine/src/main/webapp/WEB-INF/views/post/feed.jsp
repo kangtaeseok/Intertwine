@@ -5,12 +5,14 @@
 <html>
 <head>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
-
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>   
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>   
 <meta charset="UTF-8">
 <title>피드</title>
 <style>
+
+#feed {
+background: none;
+}
 .container-feed {
     width: auto; 
     max-width: 1000px; 
@@ -286,11 +288,11 @@ input.text::placeholder {
 </style>
 </head>
 <body>
-
     <main>
-       <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+    <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+       
         <div id="bottom_right_contents">
-	<div class="frame" id="feed">
+	<div class="frame" id="feed" style="width:512px;">
 		<c:forEach items="${feedItems}" var="item">
 
 			<div class="card" style="background-color:white;" >
