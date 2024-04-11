@@ -414,10 +414,8 @@
 				<div class="writeguestbookmodal-body">
 					<form>
 						<div class="mb-3">
-							<!--  <label for="nickname-input" class="col-form-label"></label> -->
-							<input type="text" class="form-control" id="writeguestbookinput"
-								autocomplete="off" placeholder="방명록 작성"
-								style="width: 320px; height: 320px;">
+						    <!-- input 대신 textarea 사용 -->
+						    <textarea class="form-control" id="writeguestbookinput" autocomplete="off" placeholder="방명록 작성" style="width: 320px; height: 320px; resize: none; overflow: auto; text-align: center; white-space: pre-wrap; word-wrap: break-word; font-size: 24px;" maxlength="50"></textarea>
 						</div>
 					</form>
 				</div>
@@ -441,10 +439,10 @@
 			<nav class="homebutton_nav">
 				<!-- 홈 버튼 -->
 				<ul>
-					<li class="homebutton"></li>
+					<li class="homebutton"><a href="${ pageContext.servletContext.contextPath }/main.do"></a></li>
 				</ul>
 				<ol>
-					<a href="#"><i class="fa-solid fa-house"></i></a>
+					<a href="${ pageContext.servletContext.contextPath }/main.do"><i class="fa-solid fa-house"></i></a>
 					<!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
 				</ol>
 			</nav>
@@ -1310,7 +1308,7 @@ $("#changeCharacterbtn").click(function() {
 
 			    // 선택된 색상의 배경색을 변수에 저장
 			    var selectedColor = $(this).css('background-color');
-			    
+			    $('#writeguestbookinput').css('background-color', selectedColor);
 			    // 선택된 색상을 'backgroundColor' 변수에 저장하는 코드를 추가
 			    $('#writeguestbookModal').data('backgroundColor', selectedColor);
 			});
