@@ -156,6 +156,7 @@ public class PostController {
 		}
 		
 		User user = userService.selectUser(userId);
+		MyPage myPage = userService.selectMyPage(userId);
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		
 		
@@ -183,6 +184,7 @@ public class PostController {
 		if(posts.size() > 0 ) {
 			mv.addObject("galleries", galleries);
 		}
+		mv.addObject("myPage", myPage);
 		mv.addObject("user", user);
 		mv.addObject("followingCount", followingCount);
 		mv.addObject("followerCount", followerCount);
@@ -270,6 +272,7 @@ public class PostController {
 		}
 		
 		User otherUser = userService.selectUser(friendId);
+		MyPage myPage = userService.selectMyPage(friendId);
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		
 		
@@ -298,7 +301,7 @@ public class PostController {
 			mv.addObject("galleries", galleries);
 		}
 		
-		
+		mv.addObject("myPage", myPage);
 	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
@@ -634,7 +637,7 @@ public class PostController {
 	
 	//공감업데이트3
 		@RequestMapping(value="updatereaction3.do", method = { RequestMethod.POST, RequestMethod.GET } )
-		public String updateLike3(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
+	public String updateLike3(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 			//공감을 업데이트
 			//가져온 값을 담음
 			
@@ -1005,6 +1008,7 @@ public class PostController {
 		//포스트 아이디로 포스트 정보를 가져옴(포스트 게시글, 핀여부 등등)
 		Post post = postService.selectOnePost(postId);
 		MyPage myPageForMyself = userService.selectMyPage(post.getUserId());
+		User postUser = userService.selectUser(post.getUserId());
 		//포스트 조회수 1 늘림(본인이 보는 것이 아닐때만 반달방지)
 		if(!viewingUser.getUserId().equals(post.getUserId())) {
 			if(session.getAttribute("redirecting")!= null) {
@@ -1058,6 +1062,7 @@ public class PostController {
 		int isPinned = postService.selectIsPinned(pincheck);
 		
 		//모두 담아 보냄
+		mv.addObject("postUser", postUser);
 		mv.addObject("myProfile", myPageForMyself);
 	    mv.addObject("images", images);
 	    mv.addObject("video", video);
@@ -1112,9 +1117,6 @@ public class PostController {
 		
 		
 	}
-	
-	
-
 	
 
 }// 클래스
