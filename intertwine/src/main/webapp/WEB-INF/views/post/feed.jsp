@@ -393,7 +393,7 @@ input.text::placeholder {
 						                    <i class="fa-regular fa-face-laugh-squint" style="font-size: 30px;"></i>
 						                </button>
 	                             	   </c:if>
-		                               <c:if test="${ whatIsLiked eq '4' }">
+		                               <c:if test="${ item.whatIsLiked eq '4' }">
 		                                <button type="submit" name="likeType" value="4" class="reaction-button" style="border: none; background: none;cursor:pointer;">
 						                    <i class="fa-solid fa-face-laugh-squint" style="font-size: 30px;"></i>
 						                </button>
@@ -421,7 +421,7 @@ input.text::placeholder {
 							</span> 
 							
 							
-							<span class="comment"  return false;>
+							<span class="comment" >
 								<a href="${pageContext.servletContext.contextPath}/detail.do?postId=${ item.post.postId }">
 								<i class="fa-regular fa-comment"style="cursor:pointer;font-size: 30px;color:black;padding-right: 7px;"></i>
 								</a>
