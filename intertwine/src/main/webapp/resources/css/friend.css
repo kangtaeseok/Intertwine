@@ -91,7 +91,7 @@ h2 {
 
 	
 } 
-.followingList, .followList {
+.followingList, .followList, #searchResults {
    left: 240px;
     flex-direction: row;
     position: relative;
@@ -105,6 +105,8 @@ h2 {
     overflow-y: auto;
     
 }
+
+
 
 .searchFollowing, .searchFollower {
     flex-grow: 0; /* 수정: 입력 필드의 크기를 고정하기 위해 */
