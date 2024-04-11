@@ -202,7 +202,7 @@ public class UserController {
 				return "common/login";
 			}
 		}
-		return "common/main";
+		return "redirect:main.do";
 	}
 	
 	//아이디체크
@@ -255,7 +255,7 @@ public class UserController {
 		if(userService.insertUser(user) > 0) {
 			userService.insertMyPage(user.getUserId());
 			userService.insertAlarm(user.getUserId());
-			return "common/main";
+			return "redirect:main.do";
 		}
 		return "user/enroll";
 	}
@@ -267,7 +267,7 @@ public class UserController {
 		String result = "";
 		result = userService.selectSocialType(user.getUserId());
 		model.addAttribute("type", result);
-		return "commom/main";
+		return "redirect:main.do";
 	}
 			
 	@RequestMapping("kakao_loginP.do")
@@ -607,7 +607,7 @@ public class UserController {
 			 }
 		 }
 		 
-		 return "common/main";
+		 return "redirect:main.do";
 	 }
 	 
 	 
@@ -624,7 +624,7 @@ public class UserController {
 
 		 }
 		userService.updateSocial(loginUser);
-		 return "common/main";
+		 return "redirect:main.do";
 	 }
 	 
 	 @RequestMapping(value="getUserTime.do", method= {RequestMethod.POST, RequestMethod.GET})
