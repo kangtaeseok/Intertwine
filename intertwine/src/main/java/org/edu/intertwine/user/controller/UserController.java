@@ -739,7 +739,7 @@ public class UserController {
 			loginUser.setNickname(user.getNickname());
 			
 			mypage.setProfile(fileName);
-			mypage.setProfileDraft("resources/profile/" + renameFileName);
+			mypage.setProfileDraft("resources/profile/" + renameFileName);			
 			userService.updateMyPage(mypage);
 				
 			
