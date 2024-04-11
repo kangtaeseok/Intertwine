@@ -740,7 +740,7 @@ public class UserController {
 			}
 			loginUser.setNickname(nickname);
 			
-			if(statusMessage != null) {
+			if(statusMessage == null) {
 				mypage.setStatusMessage(statusMessage);	
 			}
 			
