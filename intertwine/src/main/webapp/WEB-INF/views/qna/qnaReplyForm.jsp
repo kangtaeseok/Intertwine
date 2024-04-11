@@ -24,12 +24,15 @@ $(function(){
 		
 		<h1>문의하기(Q&A)</h1>
 		<hr>
+		<br>
 
-		<h1 align="center">${ requestScope.qnum }번글 답변 | 답답변 등록 페이지</h1>
+		<h2 align="left">${ requestScope.qnum }번글 답변 등록 페이지</h2>
+		
 		<br>
 		
 		<form action="qreply.do" method="post">
 			<input type="hidden" name="qnum" value="${ requestScope.qnum }">
+			<input type="hidden" name="qwriter" value="${ requestScope.qwriter }">
 			<input type="hidden" name="page" value="${ requestScope.currentPage }">
 		
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
@@ -38,13 +41,13 @@ $(function(){
 				<td><input type="text" name="qnaTitle" size="50"></td>
 			</tr>
 			<tr>
-				<th>작성자</th>
+				<th>문의자</th>
 			    <c:if test="${ !empty loginUser and empty loginAdmin }">	
 			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginUser.userId }"></td>
 			    </c:if>
 			    			    
 			    <c:if test="${ !empty loginAdmin }">	
-			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginAdmin.adminId }"></td>
+			    <td><input type="text" name="qnaWriter" readonly value="${ requestScope.qwriter }"></td>
 			    </c:if>				</tr>	
 			<tr>
 				<th>내 용</th>

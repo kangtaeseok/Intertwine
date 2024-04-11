@@ -16,6 +16,7 @@
 
 <c:url var="replyf" value="qreplyform.do">
 	<c:param name = "qnum" value="${ qna.qnaNum }" />
+	<c:param name = "qwriter" value="${ qna.qnaWriter }" />
 	<c:param name = "page" value="${ currentPage }"/>
 </c:url>
 
@@ -57,8 +58,9 @@ $(function(){
 
 		<h1>문의하기(Q&A)</h1>
 		<hr>
+		<br>
 		
-		<h1 align="center">${ qna.qnaNum } 번 게시글 상세보기</h1>
+		<h2 align="left">${ qna.qnaNum } 번 게시글 상세보기</h2>
 		<br>
 		
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">

@@ -46,14 +46,17 @@ public class QnaController {
 	@RequestMapping("qreplyform.do")
 	public ModelAndView moveReplyPage(
 			@RequestParam("qnum") int qnaNum, 
-			@RequestParam("page") int currentPage, ModelAndView mv) {
+			@RequestParam("qwriter") String qnaWriter, 
+			@RequestParam("page") int currentPage,
+			ModelAndView mv) {
 		mv.addObject("qnum", qnaNum);
+		mv.addObject("qwriter", qnaWriter);
 		mv.addObject("currentPage", currentPage);
 		mv.setViewName("qna/qnaReplyForm");
 		
 		return mv;
-	} 
-	
+	}    
+	  
 	//게시글(원글, 댓글, 대댓글) 수정페이지로 이동 처리용
 	@RequestMapping("qupview.do")
 	public String moveQnaUpdatePage(
@@ -186,10 +189,17 @@ public class QnaController {
 				
 				mv.setViewName("qna/qnaListView");
 				
+				
+			}else if(list.size() <= 0) {
+				mv.addObject("message", keyword + " 민원내역이 존재하지 않습니다.");
+				mv.setViewName("qna/qnaError");			
+				 
+				
 			}else {
-				mv.addObject("message", action + "에 대한 " + keyword + " 검색 결과가 존재하지 않습니다.");
-				//mv.setViewName("common/error");
-				mv.setViewName("qna/qnaError");
+				mv.addObject("message", keyword + " 검색 결과가 존재하지 않습니다.");
+				mv.setViewName("common/error");
+				//mv.setViewName("qna/qnaError");
+		
 
 			}
 			
@@ -626,9 +636,15 @@ public class QnaController {
 		return "qna/kakaoMessage";
 	}
 	
+	@RequestMapping("moveShareData.do")
+	public String kakaoShareDataMethod() {
+		return "qna/kakaoShareData";
+	}
+	
+	
 	@RequestMapping("movePushAlarm.do")
 	public String kakaoPushAlarmMethod() {
-		return "qna/kakaoShareData";
+		return "qna/pushAlarm";
 	}
 	
 }
