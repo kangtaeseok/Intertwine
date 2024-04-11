@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>second</title>
-<link rel="stylesheet" href="/intertwine/resources/css/enroll.css" />
+<link rel="stylesheet" href="/intertwine/resources/css/common/enroll.css" />
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://kit.fontawesome.com/40acfae8f0.js" crossorigin="anonymous"></script>
@@ -234,7 +234,7 @@ function daumPostcode() {
 							<div class="id-check-box"></div>
 						</td>
 						<td>
-							<input type="button" value="중복체크" onclick="return checkId();"> &nbsp;
+							<input type="button" value="중복체크" onclick="return checkId();" required> &nbsp;
 						</td>
 					</tr>
 					
