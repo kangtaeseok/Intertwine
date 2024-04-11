@@ -55,7 +55,7 @@ function sendCheckedIds() {
     if (checkboxes.length > 0) {
         const reportIds = Array.from(checkboxes).map(checkbox => checkbox.value);
         
-        fetch('delContent.do', {
+        fetch('delcomment.do', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -125,7 +125,7 @@ function sendCheckedIds2() {
 
 <br>
 <div class="button-box">
-<button id="hideButton" onclick="sendCheckedIds();" disabled>비공개</button>
+<button id="hideButton" onclick="sendCheckedIds();" disabled>삭제</button>
 <button id="hideButton2" onclick="sendCheckedIds2();" disabled>처리완료</button>
 </div>
 <table>

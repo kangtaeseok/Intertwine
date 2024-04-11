@@ -15,19 +15,21 @@ function openPopup() {
 	  document.getElementById("popup").style.display = "block";
 	}
 
-	// 팝업 닫기 함수
-	function closePopup() {
-	  document.getElementById("popup").style.display = "none";
-	}
+// 팝업 닫기 함수
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
 	
-	function openPopup2() {
-		  document.getElementById("popup2").style.display = "block";
-		}
+function openPopup2() {
+	  document.getElementById("popup2").style.display = "block";
+	}
 
-		// 팝업 닫기 함수
-		function closePopup2() {
-		  document.getElementById("popup2").style.display = "none";
-		}
+// 팝업 닫기 함수
+function closePopup2() {
+  document.getElementById("popup2").style.display = "none";
+}
+
+
 </script>
 </head>
 <body>
@@ -38,25 +40,32 @@ function openPopup() {
 	            <div id="feed">     
 		<div class="time-box">
 			<div class="logo-box">
-				<h3>이용시간</h3>
+				<img src="/intertwine/resources/images/intertwinelogo.png" width="150px;" height="30px;"> &nbsp;&nbsp;  <h3>이용시간</h3>
 			</div>
+				<center>
 				<div class="usage-time">
-					 ${time} 분
+					 ${loginUser.userName } 님의
+					 <br> 이용시간은 ${time} 분 입니다.
 				</div>
 				<div class="chart-box">
 					<canvas ID="myChart"></canvas>
 				 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 				</div>
+				</center>
 			</div>
+			
 			<div class="time-setting-box">
 				<div class="logo-box">
-				<h3>시간 설정</h3>
+				
 				</div>
 				<div class="time-set-box">
 					<div class="set-box">
 					<center>
+					<h3>알림 설정</h3>
+					
+					
 						<div class="set1">
-							<div class="set2"><button onclick="openPopup();"><h4>커스텀 알림보내기 <i class="fa-solid fa-pen"></i></h4></button></div>
+							<div class="set2"><button onclick="openPopup();"><h3>커스텀 알림보내기 <i class="fa-solid fa-pen"></i></h3></button></div>
 							<div id="popup" class="popup">
 							    <form class="popup-content" action="customTime.do">
 							        <label for="message">메시지 :</label>
@@ -67,14 +76,16 @@ function openPopup() {
 							</div>
 						</div>
 						<div class="set1">						
-							<div class="set2"><button onclick="openPopup2();"><h4>기본 제공 알림보내기</h4></a></div>
+							<div class="set2"><button onclick="openPopup2();"><h3>기본 제공 알림보내기</h3></a></div>
 							<div id="popup2" class="popup">
 							    <form class="popup-content" action="userSetTime.do">
+							    			<div>기본 제공알림으로 바꾸시겠습니까?</div>
 							        <input type="submit" value="확인" onclick="closePopup2();">
-							        <input type="reset" value="취소" onclick="closePopup2();">
 							    </form>
 							</div>
 						</div>
+						
+						
 						</center>
 					</div>
 				</div>

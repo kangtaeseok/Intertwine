@@ -19,6 +19,8 @@ public interface CommentService {
 	int deleteParentComment(int commentId);
 	
 	Comment selectCommentbyCommentId(int commentId);
+	
+	int deleteBatchCommentsbyCommentIds(ArrayList<Integer> comments);
 
 
 }

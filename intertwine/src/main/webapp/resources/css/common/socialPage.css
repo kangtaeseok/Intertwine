@@ -17,12 +17,10 @@
 }
 
 .box {
-    margin: 0 auto;
     position: relative;
     height: 90vh;
     white-space: nowrap;
 	 width: 100%;
-	 height: 100%;
 	 position: fixed;
 }
 
