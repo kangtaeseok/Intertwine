@@ -47,7 +47,7 @@ public class AiChatController {
 	
 	private String extractKeyword(String input) {
 	    // 정규식 패턴을 이용하여 특정 키워드를 추출
-		 Pattern pattern = Pattern.compile("안녕|날씨|음식|게시물|그래|Hello|여행|사진|스퀘어|친구|나는");
+		 Pattern pattern = Pattern.compile("안녕|날씨|음식|피드|스퀘어|친구|나는|이름");
 	    Matcher matcher = pattern.matcher(input);
 
 	    // 키워드를 찾으면 반환, 못 찾으면 입력된 키워드 그대로 반환
