@@ -24,6 +24,7 @@ import org.edu.intertwine.common.GPS;
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.friend.model.vo.Friend;
 import org.edu.intertwine.post.model.service.PostService;
+import org.edu.intertwine.post.model.vo.CommentProfile;
 import org.edu.intertwine.post.model.vo.FeedItem;
 import org.edu.intertwine.post.model.vo.Gallery;
 import org.edu.intertwine.post.model.vo.Image;
@@ -33,6 +34,7 @@ import org.edu.intertwine.post.model.vo.SearchMyPage;
 import org.edu.intertwine.post.model.vo.Tag;
 import org.edu.intertwine.post.model.vo.Video;
 import org.edu.intertwine.user.model.service.UserService;
+import org.edu.intertwine.user.model.vo.MyPage;
 import org.edu.intertwine.user.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -320,6 +322,10 @@ public class PostController {
 		User otherUser = userService.selectUser(friendId);
 		//로그인 유저
 		User loginUser = (User) session.getAttribute("loginUser");
+		
+		//프로필 사진, 상태메시지 받아옴
+		MyPage mypage = userService.selectMyPage(friendId);
+		
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
@@ -390,7 +396,7 @@ public class PostController {
 	    }
 		//팔로잉 팔로워 횟수 셈
 
-	    
+	    mv.addObject("myPage", mypage);
 	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("FollowingId", FollowingId);
 	    mv.addObject("FollowerId", FollowerId);
@@ -465,6 +471,8 @@ public class PostController {
 		
 		User user = (User) session.getAttribute("loginUser");
 		ArrayList<Gallery> galleries = new ArrayList<Gallery>();
+		//프로필 사진과 상태메시지 가져오기
+		MyPage myPage = userService.selectMyPage(user.getUserId());
 		
 		ArrayList<Post> posts = new ArrayList<Post>();
 		
@@ -506,6 +514,7 @@ public class PostController {
 		int followingCount = friendService.selectCountFollowing(user.getUserId());
 		int followerCount = friendService.selectCountFollowers(user.getUserId());
 		
+		mv.addObject("myPage", myPage);
 		mv.addObject("galleries", galleries);
 		mv.addObject("user", user);
 		mv.addObject("followingCount", followingCount);
@@ -572,22 +581,33 @@ public class PostController {
 	
 	//공감업데이트2
 	@RequestMapping(value="updatereaction2.do", method = { RequestMethod.POST, RequestMethod.GET } )
-	public String updateLike2(@RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
+	public String updateLike2(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
 		//공감을 업데이트
 		//가져온 값을 담음
+		
 		Like like1 = new Like(userId, postId);
+		
+		//받아온 값이 어째서인지 ,를 계속 포함해서 제거함
 		String trimmedLikeType = likeType.replace(",", "");
-		Like like2 = new Like(userId, postId, trimmedLikeType);
-		logger.info("가져온 공감타입" + likeType);
+		//추가적으로 안보이는 부분들 제거
+		String trimmedLikeType2 = trimmedLikeType.trim();
+		
+		//이걸로 이전에 좋아요한 부분 확인
+		Like like2 = new Like(userId, postId, trimmedLikeType2);
+		
+		logger.info("가져온 공감타입" + trimmedLikeType2);
+		
 		//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
 		String whatIsLiked = postService.selectWhatIsLiked(like1);
-		System.out.print(whatIsLiked);
-		System.out.print(whatIsLiked == trimmedLikeType);
-		//이전에 이 포스트에 공감을 한 적이 있는 경우
+		//역시 가져온 값 트림함
 		
+
+		//이전에 이 포스트에 공감을 한 적이 있는 경우
 		if(whatIsLiked != null) {
 			
-			if(whatIsLiked.equals(trimmedLikeType)) {
+			String whatIsLiked2 = whatIsLiked.trim();
+			
+			if(whatIsLiked2.equals(trimmedLikeType2)) {
 				//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
 				//공감 삭제 delete
 				int result = postService.deleteLikeType(like1);
@@ -605,12 +625,65 @@ public class PostController {
 			int result = postService.insertLikeType(like2);
 		}
 		
-		
+		session.setAttribute("redirecting", "1");
 		return "redirect:getfeed.do";
 		
 		
 		
 	}
+	
+	//공감업데이트3
+		@RequestMapping(value="updatereaction3.do", method = { RequestMethod.POST, RequestMethod.GET } )
+		public String updateLike3(HttpSession session, @RequestParam("userId")String userId, @RequestParam("postId")int postId, @RequestParam("likeType")String likeType, Model model) {
+			//공감을 업데이트
+			//가져온 값을 담음
+			
+			Like like1 = new Like(userId, postId);
+			
+			//받아온 값이 어째서인지 ,를 계속 포함해서 제거함
+			String trimmedLikeType = likeType.replace(",", "");
+			//추가적으로 안보이는 부분들 제거
+			String trimmedLikeType2 = trimmedLikeType.trim();
+			
+			//이걸로 이전에 좋아요한 부분 확인
+			Like like2 = new Like(userId, postId, trimmedLikeType2);
+			
+			logger.info("가져온 공감타입" + trimmedLikeType2);
+			
+			//먼저 이 포스트에 이 사람이 전에 무슨 공감을 했는 지 확인
+			String whatIsLiked = postService.selectWhatIsLiked(like1);
+			//역시 가져온 값 트림함
+			
+
+			//이전에 이 포스트에 공감을 한 적이 있는 경우
+			if(whatIsLiked != null) {
+				
+				String whatIsLiked2 = whatIsLiked.trim();
+				
+				if(whatIsLiked2.equals(trimmedLikeType2)) {
+					//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 같은 경우
+					//공감 삭제 delete
+					int result = postService.deleteLikeType(like1);
+					
+				}else {
+					//DB에서 가져온 공감타입이 뷰에서 가져온 공감타입과 다른 경우
+					//공감 변경 update
+					int result = postService.updateLikeType(like2);
+				}
+				
+				
+			}else {
+				//이전에 이 포스트에 공감을 한적이 없는 경우
+				//공감 삽입 insert
+				int result = postService.insertLikeType(like2);
+			}
+			
+			session.setAttribute("redirecting", "1");
+			return "redirect:getbookmarkfeed.do";
+			
+			
+			
+		}
 
 	//포스트 생성
 	@RequestMapping(value = "posting.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -756,12 +829,11 @@ public class PostController {
 				String eachPostId = String.valueOf(postIds.get(i));
 				int each = Integer.parseInt(eachPostId);
 				 //포스트 아이디로 유저 아이디 찾아옴
-				
 				String findUserId = postService.selectFindUserId(each);
-	       
-				//  Mypage mypage = userService.(무언가)
 				// 유저정보 담음
 				User user = userService.selectUser(findUserId);
+				//유저 사진 가져옴
+				MyPage myPage = userService.selectMyPage(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
 				// 이미지 정보 담음
@@ -782,19 +854,19 @@ public class PostController {
 				int isLiked = postService.selectIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
 				
+				//무슨 버튼이 클릭되었는지 확인(한번도 상호작용을 한 적이 없을 시 null일 수 있음)
+				String result = postService.selectWhatIsLiked(like);
 				String whatIsLiked = null;
-				
-				if(isLiked == 1) {
-					whatIsLiked = postService.selectWhatIsLiked(like);
-				} else {
-					whatIsLiked = null;
+				if ( result != null) {
+					String whatIsLiked2 = postService.selectWhatIsLiked(like);
+					whatIsLiked = whatIsLiked2.trim();
 				}
 
 				Bookmark bookmark = new Bookmark(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed, myPage);
 				feedItems.add(feedItem);
 				
 			}
@@ -854,9 +926,11 @@ public class PostController {
 				
 				String findUserId = postService.selectFindUserId(each);
 	       
-				//  Mypage mypage = userService.(무언가)
+				
 				// 유저정보 담음
 				User user = userService.selectUser(findUserId);
+				//유저 사진 가져옴
+				MyPage myPage = userService.selectMyPage(findUserId);
 				// 포스트 정보 담음
 				Post post = postService.selectOnePost(Integer.parseInt(eachPostId));
 				// 이미지 정보 담음
@@ -877,19 +951,20 @@ public class PostController {
 				int isLiked = postService.selectIsLiked(like);
 				// 1이면 이미 공감중 0이면 공감안하고 있음
 				
+				//무슨 버튼이 클릭되었는지 확인(한번도 상호작용을 한 적이 없을 시 null일 수 있음)
+				String result = postService.selectWhatIsLiked(like);
 				String whatIsLiked = null;
-				
-				if(isLiked == 1) {
-					whatIsLiked = postService.selectWhatIsLiked(like);
-				} else {
-					whatIsLiked = null;
+				if ( result != null) {
+					String whatIsLiked2 = postService.selectWhatIsLiked(like);
+					whatIsLiked = whatIsLiked2.trim();
 				}
+				
 
 				Bookmark bookmark = new Bookmark(loginUser.getUserId(), Integer.parseInt(eachPostId));
 				int isBookmarked = bookmarkService.selectIsBookmarked(bookmark);
 				// 1이면 이미 북마크함 북마크 검정버튼 0이면 북마크 안함 북마크 하얀버튼
 				
-				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed);
+				FeedItem feedItem = new FeedItem(user, post, image, video, likeCount, isLiked, whatIsLiked, isBookmarked, isFollowing, isFollowed, myPage);
 				feedItems.add(feedItem);
 				
 			}
@@ -948,6 +1023,7 @@ public class PostController {
 		//logger.info("tags" + tags.toString());
 		//포스트에 있는 댓글들 가져옴
 		ArrayList<Comment> comments = commentService.selectComments(postId);
+	
 		//logger.info("comments" + comments.toString());
 		// 총 공감 갯수 세서 가져옴
 		int likeCount = postService.selectLikeCounts(postId);
@@ -960,7 +1036,7 @@ public class PostController {
 		//이 포스트에 공감을 했는 지 여부 확인
 		int isLiked = postService.selectIsLiked(like);
 		//무슨 버튼이 클릭되었는지 확인(한번도 상호작용을 한 적이 없을 시 null일 수 있음)
-		String result= postService.selectWhatIsLiked(like);
+		String result = postService.selectWhatIsLiked(like);
 		String whatIsLiked = null;
 		if ( result != null) {
 			String whatIsLiked2 = postService.selectWhatIsLiked(like);
