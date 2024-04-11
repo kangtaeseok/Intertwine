@@ -139,11 +139,14 @@ $(function(){
 				<canvas ID="myChart" width="400" height="250" style="background:white;"></canvas>
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 						</div>
+					<center>
+					<h3>회원수</h3>
 						<div class="noti-div2">
-							<h3>회원수</h3>
+							
 					<canvas ID="myChart2" width="400" height="250"style="background:white;"></canvas>
 					<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>		
 						</div>
+						</center>
 					</div>
 				</div>
             </div>
