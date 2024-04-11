@@ -106,7 +106,7 @@ function kakaoLogout() {
                     <li class="homebutton"></li>
                 </ul>
                 <ol>
-                    <a href="#"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
+                    <a href="${pageContext.servletContext.contextPath}/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
                 </ol>
             </nav>
         </div>
