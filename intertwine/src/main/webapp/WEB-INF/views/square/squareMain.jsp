@@ -18,6 +18,22 @@
 <link rel="stylesheet" href="/intertwine/resources/css/squareMain.css">
 <!-- 이 jsp파일의 css파일 연결 -->
 <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet"> -->
+<script type="text/javascript">
+	var userId = "${userRoom.userId}";
+	var userIdFromJSP = "${userRoom.userId}"; // JSP 변수를 JavaScript 변수로 변환
+	window.globaluserId = userIdFromJSP; // 이 변수를 window 객체의 프로퍼티로 설정하여 전역으로 사용 가능하게 함
+	var currentHairId;
+	var currentHatId;
+	var currentTopId;
+	var currentBottomId;
+
+	
+	window.roomHost = "${sessionScope.loginUser.userId}";
+	console.log("현재 방의 주인: ", roomHost);
+	
+	
+</script>
+
 <script defer src="/intertwine/resources/js/squareMain.js"></script>
 <!-- 이 jsp파일의 js파일 연결 -->
 <script src="https://kit.fontawesome.com/4b2098cb2a.js"
@@ -28,6 +44,7 @@
 <%-- jquery 파일 로드 --%>
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+<script src="/intertwine/resources/js/isotope.pkgd.min.js"></script>
 </head>
 <body>
 
@@ -159,18 +176,21 @@
 					<h5 class="roommodal-title" id="roomChangeModalLabel">방 꾸미기</h5>
 					<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
 					<ul class="roomcolor">
+						
 						<li class="green"></li>
 						<li class="blue"></li>
 						<li class="red"></li>
 						<li class="purple"></li>
 						<li class="cyan"></li>
 						<li class="yellow"></li>
+						
 						<li class="orange"></li>
 						<li class="lime"></li>
 						<li class="pink"></li>
 						<li class="yeonpink"></li>
 						<li class="olive"></li>
 						<li class="gray"></li>
+						
 					</ul>
 					<div class="roommodal-preview">
 						<!-- <div id="previewroom" style="width: 70px; height: 120px; position: absolute; top:65px; left: 42px; /* background: blue; */ padding:10px;"></div> -->
@@ -235,20 +255,184 @@
 				<div class="friendmodal-header">
 					<h5 class="friendmodal-title" id="friendListModalLabel">친구 목록</h5>
 				</div>
-				
-				<div class="friendmodal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
-					<div class="friendmodal-list" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;"></div>
+
+				<div class="friendmodal-body"
+					style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
+					<div class="friendmodal-list"
+						style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;"></div>
 				</div>
 				<div class="friendmodal-footer">
-					<button type="button" class="btn btn-secondary" id="canclefirendbtn" data-bs-dismiss="modal">취소</button>
+					
+					<button type="button" class="btn btn-secondary"
+						id="canclefirendbtn" data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-primary" id="gofirendroombtn">이동</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- 친구 리스트 모달 -->
+
+
+	<!-- 앨범 모달 -->
+	<div class="albummodal" id="albumModal" tabindex="-1"
+		aria-labelledby="albumModalLabel" aria-hidden="true">
+		<div class="albumodal-dialog">
+			<div class="albummodal-content">
+				<div class="albummodal-header">
+					<h5 class="albummodal-title" id="albumListModalLabel">앨범</h5>
+				</div>
+				<div class="albummodal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
+					<section>
+						<article class="odd">
+							<div>
+								<!-- <img src="img/p1.jpg" alt=""> -->
+							</div>
+						</article>
+						<article class="even">
+							<div>
+								<!-- <img src="img/p2.jpg" alt=""> -->
+							</div>
+						</article>
+						<article class="odd">
+							<div>
+								<!-- <img src="img/p3.jpg" alt=""> -->
+							</div>
+						</article>
+						<article class="even">
+							<div>
+								<!-- <img src="img/p4.jpg" alt=""> -->
+							</div>
+						</article>
+						<article class="odd">
+							<div>
+								<!-- <img src="img/p5.jpg" alt=""> -->
+							</div>
+						</article>
+						
+					</section>
+				</div>
+				<div class="albummodal-footer">
+					<button type="button" class="btn btn-secondary" id="canclealbumbtn"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 앨범 모달 -->
+
+<!-- 방명록 모달 -->
+<div class="guestbookmodal" id="guestbookModal" tabindex="-1"
+		aria-labelledby="guestbookModalLabel" aria-hidden="true">
+		<div class="guestbookmodal-dialog">
+			<div class="guestbookmodal-content">
+				<div class="guestbookmodal-header">
+				<button type="button" id="cancleguestbookbtn" class="btn-close" data-dismiss="modal" aria-label="Close">
+ 				<span aria-hidden="true" style="font-size: 3.0rem;">×</span></button>
+					<h5 class="guestbookmodal-title" id="guestbookModalLabel">방명록</h5>
+				</div>
+				<div class="guestbookmodal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
+					
+						<div class="guestbookcontainer">
+							<div id="roomresource0" class="guestbookcontentborder">
+								<div id="guestbookcontent" class="guestbookcontent">guestbookContent</div>
+								<div id="guestbookfooter" class="guestbookfooter">writer</div>
+							</div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource1" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource2" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource3" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource4" class="guestbookcontentborder"></div>
+						</div>
+				
+					
+					
+						<div class="guestbookcontainer">
+							<div id="roomresource0" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource1" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource2" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource3" class="guestbookcontentborder"></div>
+						</div>
+						<div class="guestbookcontainer">
+							<div id="roomresource4" class="guestbookcontentborder"></div>
+						</div>
+					</div>
+					
+					
+					
+				</div>
+				<div class="guestbookmodal-footer">
+					<!-- <button type="button" class="btn btn-secondary" id="cancleguestbookbtn" data-bs-dismiss="modal">닫기</button> -->
+					<div class="guestbook-write-btn">
+				    <button id="writeGuestbookBtn" class="btn-floating">
+				        <i class="fas fa-plus"></i> <!-- FontAwesome 아이콘 사용 -->
+				    </button>
+				</div>
+				
+				</div>
+			</div>
+		</div>
 	
-	
+<!-- 방명록 모달 -->
+
+<!-- 방명록 작성 모달 -->
+	<div class="writeguestbookmodal" id="writeguestbookModal" tabindex="-1"
+		aria-labelledby="writeguestbookModalLabel" aria-hidden="true">
+		<div class="writeguestbookmodal-dialog">
+			<div class="writeguestbookmodal-content">
+				<div class="writeguestbookmodal-header">
+					<h5 class="writeguestbookmodal-title" id="writeguestbookModalLabel">방명록 작성</h5>
+					<ul class="guestbookcolor">
+						<li class="green"></li>
+						<li class="blue"></li>
+						<li class="red"></li>
+						<li class="purple"></li>
+						<li class="cyan"></li>
+						<li class="yellow"></li>
+						</ul>
+						<ul class="guestbookcolor">
+						<li class="orange"></li>
+						<li class="lime"></li>
+						<li class="pink"></li>
+						<li class="yeonpink"></li>
+						<li class="olive"></li>
+						<li class="gray"></li>
+					</ul>
+				</div>
+				<div class="writeguestbookmodal-body">
+					<form>
+						<div class="mb-3">
+							<!--  <label for="nickname-input" class="col-form-label"></label> -->
+							<input type="text" class="form-control" id="writeguestbookinput"
+								autocomplete="off" placeholder="방명록 작성"
+								style="width: 320px; height: 320px;">
+						</div>
+					</form>
+				</div>
+				<div class="writeguestbookmodal-footer">
+					<button type="button" class="btn btn-secondary"
+						id="canclewriteguestbookbtn" data-bs-dismiss="modal">작성 취소</button>
+					<button type="button" class="btn btn-primary"
+						id="writeguestbookebtn">작성 완료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 방명록 작성 모달 -->
+
+
 
 
 	<header>
@@ -265,7 +449,7 @@
 				</ol>
 			</nav>
 		</div>
-
+			
 		<div class="search">
 			<!-- 검색창 -->
 			<input type="text" placeholder="검색어 입력"> <img
@@ -323,13 +507,40 @@
 						<c:if test="${userRoom.userId == sessionScope.loginUser.userId}">
 							<button id="btnupdateroom" class="bubbly-button">방 꾸미기</button>
 						</c:if>
+						
+
 						<c:forEach var="roomResource" items="${userRoom.rList}">
-							<img src="${roomResource.resourceURL}" alt="Room Resource Image"
-								class="userroomresource"
-								style="position: absolute; 
-									            left: ${roomResource.resourcePositionX}px; 
-									            top: ${roomResource.resourcePositionY}px; 
-									            transform: rotate(${roomResource.resourceRotation}deg) scale(${roomResource.resourceScale});" />
+						    <c:set var="scaleValue" value="${roomResource.resourceScale}" />
+						    <c:if test="${fn:contains(roomResource.resourceURL, '0')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="1.5" />
+						    </c:if>
+						    <c:if test="${fn:contains(roomResource.resourceURL, '25')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="0.3" />
+						    </c:if>
+						    <c:if test="${fn:contains(roomResource.resourceURL, '26')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="0.3" />
+						    </c:if>
+						    <c:if test="${fn:contains(roomResource.resourceURL, '27')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="0.3" />
+						    </c:if>
+						    <c:if test="${fn:contains(roomResource.resourceURL, '28')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="0.3" />
+						    </c:if>
+						    <c:if test="${fn:contains(roomResource.resourceURL, '29')}">
+						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
+						        <c:set var="scaleValue" value="0.3" />
+						    </c:if>
+						    <img src="${roomResource.resourceURL}" alt="Room Resource Image"
+						        class="userroomresource"
+						        style="position: absolute; 
+						               left: ${roomResource.resourcePositionX * 2.3}px; 
+						               top: ${roomResource.resourcePositionY * 2.3}px; 
+						               transform: rotate(${roomResource.resourceRotation}deg) scale(${scaleValue});" />
 						</c:forEach>
 						<div id="mycharacter"
 							style="width: 70px; height: 100px; position: absolute; top: 200px; left: 670px;">
@@ -362,16 +573,21 @@
 	<script type="text/javascript">
 $(function(){ // document.ready
 	
-		var userId = "${userRoom.userId}";
-	    var userIdFromJSP = "${userRoom.userId}"; // JSP 변수를 JavaScript 변수로 변환
-	    window.globaluserId = userIdFromJSP; // 이 변수를 window 객체의 프로퍼티로 설정하여 전역으로 사용 가능하게 함
-	    var currentHairId;
-	    var currentHatId;
-	    var currentTopId;
-	    var currentBottomId;
+	var tips = [
+        "알고 계셨나요? 팀 세미콜론은 8명의 멤버로 이루어져 있답니다.",
+        "알고 계셨나요? Intertwine은 두 가지 이상의 것이 서로 얽히거나 엮이는 것을 의미합니다.",
+        "알고 계셨나요? 스퀘어에는 모든 요청이 Ajax요청이랍니다.",
+        "알고 계셨나요? 모달창이란 현재 활성화된 페이지 또는 창 위에 떠서 나타나는 창을 말합니다.",
+        "알고 계셨나요? visibility: hidden;은 보이지는 않지만 공간은 차지하고 있답니다.",
+        "알고 계셨나요? 알고 계셨군요..."
+    ];
 
-	    var roomHost = "${sessionScope.loginUser.userId}";
-	    console.log("현재 방의 주인: ", roomHost);
+    // 팁 배열에서 랜덤한 팁을 선택
+    var randomTip = tips[Math.floor(Math.random() * tips.length)];
+
+    // 선택된 팁으로 #squaretip의 텍스트 변경
+    $('#squaretip').text(randomTip);
+	    
 	    
 		// ajax 사용
 		$.ajax({
@@ -539,6 +755,22 @@ $("#changeCharacterbtn").click(function() {
 			modal.style.display="none";
 		});
 		
+		$("#canclealbumbtn").click(function() {
+			const modal = document.querySelector(".albummodal");
+			modal.style.display="none";
+		});
+		
+		$("#cancleguestbookbtn").click(function() {
+			const modal = document.querySelector(".guestbookmodal");
+			modal.style.display="none";
+		});	
+		
+		$("#canclewriteguestbookbtn").click(function() {
+			const modal = document.querySelector(".writeguestbookmodal");
+			modal.style.display="none";
+		});	
+		
+		
 		
 		$('.charactermodal-hair-container > div').each(function() {
 	        // 각 hairdiv에 클릭 이벤트 리스너 추가
@@ -663,7 +895,7 @@ $("#changeCharacterbtn").click(function() {
 				        console.log("Room Move Success!", response);
 				        //var roomData = JSON.parse(response);
 				        roomHost = response.userId;
-
+				        
 				        console.log("방 주인: " + roomHost);
 				        console.log("방 색상: " + response.roomColor);
 				        console.log("방명록 공개 여부: " + response.guestBookOpen);
@@ -675,20 +907,29 @@ $("#changeCharacterbtn").click(function() {
 				        $("#userroom").css("background-color", response.roomColor);
 				
 				        // rList 내의 각 리소스에 대하여 반복하여 .userroomresource를 새로 만들어 #userroom에 추가
+				        if (response.rList && response.rList.length > 0) {
 				        response.rList.forEach(function(resource) {
+				        	var scaleValue = resource.resourceURL.includes('0') ? 1.5 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('25') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('26') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('27') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('28') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('29') ? 0.3 : resource.resourceScale; 
+				        	console.log(resource.resourceURL +  " " + scaleValue);
 				            var imgElement = $('<img>', {
 				                src: resource.resourceURL,
 				                alt: "Room Resource Image",
 				                class: "userroomresource",
 				                css: {
 				                    position: "absolute",
-				                    left: resource.resourcePositionX + "px",
-				                    top: resource.resourcePositionY + "px",
-				                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
+				                    left: resource.resourcePositionX*2.3 + "px",
+				                    top: resource.resourcePositionY*2.3 + "px",
+				                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + scaleValue  + ")"
 				                }
 				            });
 				            $("#userroom").append(imgElement);	
 				        });
+				        }
 				        const modal = document.querySelector(".friendmodal");		
 				        modal.style.display="none";
 				        
@@ -848,7 +1089,14 @@ $("#changeCharacterbtn").click(function() {
 				                $('#userroom').find('img').remove();
 
 				                // rList 배열을 순회합니다.
+				                 if (data.rList && data.rList.length > 0) {
 				                data.rList.forEach(function(resource) {
+				                	var scaleValue = resource.resourceURL.includes('0') ? 1.5 : resource.resourceScale; 
+						        	scaleValue = resource.resourceURL.includes('25') ? 0.3 : resource.resourceScale; 
+						        	scaleValue = resource.resourceURL.includes('26') ? 0.3 : resource.resourceScale; 
+						        	scaleValue = resource.resourceURL.includes('27') ? 0.3 : resource.resourceScale; 
+						        	scaleValue = resource.resourceURL.includes('28') ? 0.3 : resource.resourceScale; 
+						        	scaleValue = resource.resourceURL.includes('29') ? 0.3 : resource.resourceScale; 
 				                    var posx = resource.resourcePositionX*2.3;
 				                    var posy = resource.resourcePositionY*2.3;
 				                    // 이미지 URL에 타임스탬프를 추가하여 캐싱 방지
@@ -862,7 +1110,7 @@ $("#changeCharacterbtn").click(function() {
 				                            position: 'absolute',
 				                            left: posx + 'px',
 				                            top: posy + 'px',
-				                            transform: 'rotate(' + resource.resourceRotation + 'deg) scale(' + resource.resourceScale + ')'
+				                            transform: 'rotate(' + resource.resourceRotation + 'deg) scale(' + scaleValue + ')'
 				                        }
 				                    });
 				                    
@@ -871,6 +1119,7 @@ $("#changeCharacterbtn").click(function() {
 				                    // 생성된 <img> 태그를 #userroom에 추가합니다.
 				                    $('#userroom').append(img);
 				                });
+				                 }
 		                },
 		                error: function(request, status, error) {
 		                    console.log("error code : " + request.status
@@ -925,17 +1174,33 @@ $("#changeCharacterbtn").click(function() {
 		    
 		    $("#btnselectalbum").click(function() {
 		    	console.log("앨범보기 버튼 클릭!");
-		        
+		    	console.log(roomHost);
 		    	$.ajax({
 			        url: "getimagebyuserid.do",
 			        type: "POST",
 			        data: { "roomHost": roomHost },
 			        dataType: "json",
 			        success: function(response) {
+			            const modal = $("#albumModal").css("display", "flex");
+			            $("#albumListModalLabel").text(roomHost + "'s Album");
+			            
+			            // 앨범 내용을 담을 section을 비웁니다.
+			            const albumSection = $(".albummodal-body > section").empty(); // 기존 내용을 비움
+
 			            var images = response.images;
-			            images.forEach(function(image) {
-			                console.log(image.imageURL); // 이미지 URL 사용 예
-			                // 예를 들어, 이미지 URL을 사용하여 <img> 태그를 동적으로 생성하고 페이지에 추가하는 로직 구현
+			            images.forEach(function(image, index) {
+			                // article, div, img 태그 생성
+			                let articleClass = (index % 2 === 0) ? "odd" : "even";
+			                let article = $('<article>').addClass(articleClass);
+
+			                let div = $('<div>');
+			                let img = $('<img>').attr('src', image.imageURL).attr('alt', 'Album Image');
+
+			                // 생성된 태그들을 조립
+			                article.append(div.append(img));
+
+			                // 최종적으로 section에 추가
+			                albumSection.append(article);
 			            });
 			        },
 			        error: function(request, status, error) {
@@ -943,14 +1208,216 @@ $("#changeCharacterbtn").click(function() {
 			        }
 			    });
 		    	
+		    	const grid = new Isotope("section", {
+		    		itemSelector: "article",
+		    		columnWidth: "article",
+		    		transitionDuration: "0.5s"
+		    	});
+		    	
 		    });
 		    
 		    
+		    $("#btnselectguestbook").click(function() {
+		        console.log("방명록 보기 버튼 클릭!");
+		        const modal = document.querySelector("#guestbookModal");
+		        modal.style.display = "flex";
+
+		        // 모달 내부의 기존 방명록 리스트를 지우기
+		        $(".guestbookmodal-body").empty(); // 모달 바디 내부를 비웁니다.
+
+		        $.ajax({
+		            url: "selectguestbook.do", // 요청을 보낼 서버의 URL
+		            type: "POST", // HTTP 요청 방식
+		            data: {
+		                "roomHost": roomHost,
+		            },
+		            dataType: "json", 
+		            success: function(response) {
+		            	$("#guestbookModalLabel").text(roomHost + "'s 방명록");
+		                $.each(response.jarr, function(index, guestBook) {
+		                    // Create the outer container
+		                    var guestbookContainer = $('<div class="guestbookcontainer"></div>').css({
+		                        display: 'flex',
+		                        justifyContent: 'center',
+		                        alignItems: 'center',
+		                        width: '213px',
+		                        height: '200px',
+		                        border: '1px solid #ced4da',
+		                        borderRadius: '10px',
+		                        margin: '7px',
+		                        backgroundColor: 'rgb(255, 255, 255)',
+		                    });
+
+		                    // Create the content border container
+		                    var contentBorder = $('<div class="guestbookcontentborder"></div>').css({
+		                        width: '180px',
+		                        height: '160px',
+		                        borderRadius: '10px',
+		                        padding: '5px',
+		                        margin: '5px',
+		                        backgroundColor: guestBook.backgroundColor, // Using the color from the response
+		                        display: 'flex',
+		                        flexDirection: 'column',
+		                    });
+
+		                    // Create the content div
+		                    var contentDiv = $('<div class="guestbookcontent"></div>').text(guestBook.guestbookContent).css({
+		                        flexGrow: 1,
+		                        wordWrap: 'break-word',
+		                    });
+
+		                    // Create the footer div
+		                    var footerDiv = $('<div class="guestbookfooter"></div>').text(guestBook.writer);
+
+		                    // Append content and footer to the content border container
+		                    contentBorder.append(contentDiv, footerDiv);
+
+		                    // Append the content border container to the outer container
+		                    guestbookContainer.append(contentBorder);
+
+		                    // Append the outer container to the modal body
+		                    $(".guestbookmodal-body").append(guestbookContainer);
+		                });
+		            },
+		            error: function(request, status, error) {
+		                // 오류 처리
+		                console.log("error code : " + request.status
+		                    + "\nMessage : " + request.responseText
+		                    + "\nError : " + error);
+		            }
+		        });
+		    });
 		    
+			
+			$("#writeGuestbookBtn").click(function() {
+		    	console.log("방명록 작성 버튼 클릭!");
+		    	if(roomHost != userId) {
+		    		const modal = document.querySelector("#writeguestbookModal");
+			        modal.style.display = "flex";
+		    	} else {
+		    		alert("방명록은 본인이 작성 불가능합니다.");
+		    	}
+		     
+		   });
+		   
+			
+			$('.guestbookcolor > li').click(function() {
+			    // 모든 li 요소의 테두리를 초기화
+			    $('.guestbookcolor > li').css('border', 'none');
+
+			    // 선택된 li에 대한 테두리 설정
+			    $(this).css('border', '4px solid green');
+
+			    // 선택된 색상의 배경색을 변수에 저장
+			    var selectedColor = $(this).css('background-color');
+			    
+			    // 선택된 색상을 'backgroundColor' 변수에 저장하는 코드를 추가
+			    $('#writeguestbookModal').data('backgroundColor', selectedColor);
+			});
+			
+			
+			$("#writeguestbookebtn").click(function() {
+		    	console.log("방명록 저장 버튼 클릭!");
+		    	
 		    
-		    
-		    
-		    
+		        var guestbookContent = $('#writeguestbookinput').val();
+		        var backgroundColor = $('#writeguestbookModal').data('backgroundColor');
+		    	
+		       
+		        $.ajax({
+		        	
+		            url: "insertguestbook.do", // 요청을 보낼 서버의 URL
+		            type: "POST", // HTTP 요청 방식
+		            data: {
+		            	"roomHost": roomHost,
+		                "userId": userId,
+		                "guestbookContent": guestbookContent,
+		                "backgroundColor": backgroundColor
+		            },
+		            success: function(response) {
+		              
+		            	$('.guestbookcolor > li').css('border', 'none');
+		            	 $('#writeguestbookinput').val('');
+		            	
+		            	const modal = document.querySelector("#writeguestbookModal");
+						modal.style.display="none";
+						
+						$.ajax({
+				            url: "selectguestbook.do", // 요청을 보낼 서버의 URL
+				            type: "POST", // HTTP 요청 방식
+				            data: {
+				                "roomHost": roomHost,
+				            },
+				            dataType: "json", 
+				            success: function(response) {
+				            	$(".guestbookcontainer").remove();
+				            	$("#guestbookModalLabel").text(roomHost + "'s 방명록");
+				                $.each(response.jarr, function(index, guestBook) {
+				                    // Create the outer container
+				                    var guestbookContainer = $('<div class="guestbookcontainer"></div>').css({
+				                        display: 'flex',
+				                        justifyContent: 'center',
+				                        alignItems: 'center',
+				                        width: '205px',
+				                        height: '200px',
+				                        border: '1px solid #ced4da',
+				                        borderRadius: '10px',
+				                        margin: '7px',
+				                        backgroundColor: 'rgb(255, 255, 255)',
+				                    });
+
+				                    // Create the content border container
+				                    var contentBorder = $('<div class="guestbookcontentborder"></div>').css({
+				                        width: '180px',
+				                        height: '160px',
+				                        borderRadius: '10px',
+				                        padding: '5px',
+				                        margin: '5px',
+				                        backgroundColor: guestBook.backgroundColor, // Using the color from the response
+				                        display: 'flex',
+				                        flexDirection: 'column',
+				                    });
+
+				                    // Create the content div
+				                    var contentDiv = $('<div class="guestbookcontent"></div>').text(guestBook.guestbookContent).css({
+				                        flexGrow: 1,
+				                        wordWrap: 'break-word',
+				                    });
+
+				                    // Create the footer div
+				                    var footerDiv = $('<div class="guestbookfooter"></div>').text(guestBook.writer);
+
+				                    // Append content and footer to the content border container
+				                    contentBorder.append(contentDiv, footerDiv);
+
+				                    // Append the content border container to the outer container
+				                    guestbookContainer.append(contentBorder);
+
+				                    // Append the outer container to the modal body
+				                    $(".guestbookmodal-body").append(guestbookContainer);
+				                });
+				            },
+				            error: function(request, status, error) {
+				                // 오류 처리
+				                console.log("error code : " + request.status
+				                    + "\nMessage : " + request.responseText
+				                    + "\nError : " + error);
+				            }
+				        });
+						
+						
+						
+						console.log("방명록 저장 성공");
+		            },
+		            error: function(request, status, error) {
+		                // 오류 처리
+		                
+		                console.log("error code : " + request.status
+		                    + "\nMessage : " + request.responseText
+		                    + "\nError : " + error); 
+		            }
+		        });
+		   });
 	
 });  // document.ready
 
