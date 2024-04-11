@@ -134,5 +134,30 @@ public class UserDao {
 		sqlSessionTemplate.update("userMapper.updateUserdisable", userId);		
 	}
 
+	//휴면관리
+	public int selectAccountStatus(String userId) {
+		return sqlSessionTemplate.selectOne("userMapper.selectAccountStatus", userId);		
+	
+	}
+
+	public void updateUserStatus(String email) {
+		sqlSessionTemplate.update("userMapper.updateUserStatus", email);		
+		
+	}
+
+	public void updateUserStop(String userId) {
+		sqlSessionTemplate.update("userMapper.updateUserStop", userId);	
+		
+	}
+
+	public int selectAllUserCount() {
+		return sqlSessionTemplate.selectOne("userMapper.selectAllUserCount");
+		
+	}
+
+	public int updateMyPage(MyPage mypage) {
+		return sqlSessionTemplate.update("userMapper.updateMyPage", mypage);
+	}
+
 	
 }

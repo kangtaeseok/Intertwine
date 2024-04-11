@@ -340,7 +340,7 @@ main {
     left: 50%;
     transform: translateX(-50%); 
     z-index: 1000;
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     font-weight: bold;
 }
 
@@ -961,7 +961,7 @@ main {
 
 
 
-/* 방 수정 모달 전반에 대한 스타일 */
+/* 친구 리스트 모달 전반에 대한 스타일 */
 .friendmodal {
             position:absolute;
             display:none;
@@ -1046,12 +1046,33 @@ main {
     padding:10px;   
 }
 
+/* 스크롤바 */
+.friendmodal-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+.friendmodal-list::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px;
+}
+.friendmodal-list::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+.friendmodal-list::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; 
+    
+}
+
 .friend-info {
     display: flex; /* flexbox 레이아웃 사용 */
     align-items: center; /* 수직 중앙 정렬 */
     justify-content: start; 
     border-radius: 10px;
-    border: 1px solid #ced4da;
+    
     margin: 1px;
     background: #f5f5f5; 
     padding: 10px; /* 좌우 여백 추가 */
@@ -1077,8 +1098,506 @@ main {
 }
 
 .selected-friend {
-    border: 4px solid green;
+    border: 4px solid green !important;
 }
+
+
+
+
+
+
+
+
+/*  앨범 모달 전반에 대한 스타일 */
+.albummodal {
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+}
+
+.albumodal-dialog {
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 1200px;
+}
+
+.albummodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+.albummodal-header {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 5px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self: center; /* 자기 자신을 중앙에 정렬 */
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.albummodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.albummodal-body {
+	display: flex;
+	max-height: calc(100vh - 200px);
+    overflow-y: auto;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	position: relative;
+	text-align: center;
+	background: #efefef;
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+    flex-wrap: nowrap;
+    height: 600px;
+    width: 1200px;
+}
+
+.albummodal-footer {
+	position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.albummodal-body {
+	background: #efefef;
+}
+.albummodal-body {
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.albummodal-body section {
+	position: relative;
+	width: 100%;
+}
+.albummodal-body section::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.albummodal-body section article {
+	width: 20%;
+	float: left;
+	box-sizing: border-box;
+	padding: 5px;
+}
+.albummodal-body section article div {
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	padding: 14px;
+}
+.albummodal-body section article div img {
+	width: 100%;
+}
+.albummodal-body section article div h2 {
+	margin-top: 15px;
+	font: bold 11px/1 'orbitron';
+	letter-spacing: 1px;
+	color: #444;
+	margin-bottom: 5px;
+} 
+.albummodal-body section article div p {
+	font: 10px/1.2 'arial';
+	color: #777;
+	margin-bottom: 15px;
+}
+
+/* 스크롤바 */
+.albummodal-body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+.albummodal-body::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px;
+}
+.albummodal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+.albummodal-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; 
+    
+}
+
+
+
+/*  방명록 모달 전반에 대한 스타일 */
+.guestbookmodal {
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1050;
+
+            background-color: rgba(0,0,0,0.4);
+}
+
+.guestbookmodal-dialog {
+	
+	display: flex;
+	display-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 1000px;
+}
+
+.guestbookmodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap:wrap;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+.guestbookmodal-header {
+	display: flex;
+	flex-direction: column; /* 수평 정렬을 위해 row로 설정 */
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center; /* 교차 축에서 중앙 정렬 */
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self: center; /* 자기 자신을 중앙에 정렬 */
+	position: relative;
+    background-color: rgb(255,255,255); 
+    width: 100%;
+}
+
+.guestbookmodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.guestbookmodal-body {
+	display: flex;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    flex-direction: row;
+    align-items: flex-start;
+    top: 10px;
+    position: relative;
+    text-align: center;
+    background: #efefef;
+    padding: 20px;
+    height: 600px;
+    width: 1200px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+/* 스크롤바 */
+.guestbookmodal-body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+.guestbookmodal-body::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px;
+}
+.guestbookmodal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+.guestbookmodal-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; 
+}
+
+.guestbookcontainer {
+	display: flex;
+	justify-content: center; /* 주 축에서 중앙 정렬 */
+	align-items: center;
+	width: 220px;
+    height: 200px;
+    border-radius: 10px;
+    margin: 7px;
+    background-color: rgb(255, 255, 255);
+}
+.guestbookcontentborder {
+	width: 180px;
+    height: 160px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #999;
+    display:flex;
+    flex-direction:column;
+}
+
+.guestbookcontent {
+	flex-grow: 1;
+	word-wrap: break-word;
+}
+
+.guestbookfooter {
+    align-self: flex-end; /* 요소를 부모 컨테이너의 오른쪽 끝으로 정렬 */
+	padding: 10px;
+}
+.guestbookmodal-footer {
+    position: relative;
+    top: 300px;
+    left: -60px;	
+}
+
+.guestbook-write-btn {
+    /* margin-left: 20px; Add space between the button and whatever is to its left */
+   margin-left: auto; /* 오른쪽 정렬을 위해 자동 마진 적용 */
+}
+
+
+
+
+.btn-floating {
+    display: flex; /* Use Flexbox for the button itself if you want to center its content */
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.btn-floating:hover {
+    background-color: #0056b3;
+}
+
+.btn-close {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    opacity:0.8;
+    transition: opacity 0.3s;
+}
+
+.btn-close:hover, .btn-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+
+
+
+
+/* 방명록 수정 모달 전반에 대한 스타일 */
+.writeguestbookmodal{
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            z-index: 1051;
+
+            background-color: rgba(0,0,0,0.4);
+        }
+
+.writeguestbookmodal-dialog {
+	
+	display: flex;
+	display-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	top: 0px;
+	left: 0px;
+	width: 1000px;
+}
+
+
+.writeguestbookmodal-content {
+	background-color: rgb(255,255,255); 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+    border-radius: 8px; /* 모달 테두리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+
+.writeguestbookmodal-header {
+	top: 10px;
+	font-weight: bold;
+	font-size: 30px;
+	text-align: center;
+	align-self : center;
+	justify-content: center;
+	position: relative;
+    background-color: rgb(255,255,255); 
+}
+
+.writeguestbookmodal-title {
+	position: relative;
+    color: #333; /* 타이틀 텍스트 색상 */
+    padding: 10px;
+}
+
+.writeguestbookmodal-body {
+
+	text-align: center;
+
+	background-color: rgb(255,255,255); 
+	border-radius:10px;
+    padding: 20px; /* 적당한 패딩으로 내용물과의 간격 조정 */
+}
+
+.writeguestbookmodal-footer {
+	position: relative;
+    flex-direction: row;
+    /* border-top: 1px solid #eeeeee; */
+    /* background-color: #f8f9fa; */
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+
+
+/* 입력 필드 스타일 */
+.mb3 #writeguestbookinput {
+    border-radius: 5px; /* 입력 필드 테두리 둥글게 */
+    border: 1px solid #ced4da; /* 테두리 색상 */
+    padding: 10px; /* 내부 패딩 */
+    width: 300px;
+}
+
+
+.guestbookcolor {
+    width: 600px;
+    margin: 0 auto;
+    display: block;
+    margin-block-start: 0.2em;
+    margin-block-end: 0.6em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+    box-sizing: border-box;
+}
+
+.guestbookcolor > li {
+    margin: 0 15px 0 0;
+    width: 30px;
+    height: 30px;
+    display: inline-block; /* 또는 inline */
+  	margin-right: 10px; /* 요소 사이의 간격 조정 */
+    border-radius: 100%;
+    box-sizing: border-box;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+    cursor: pointer;
+}
+
+.guestbookcolor .green {
+    background: #82c8a0;    
+}
+.guestbookcolor .blue {
+    background: #6698cb;
+}
+.guestbookcolor .red {
+    background: #fa5a5a;
+}
+.guestbookcolor .purple {
+    background: #cb99c5;
+}
+.guestbookcolor .cyan {
+    background: #7fccde;
+}
+.guestbookcolor .yellow {
+    background: #f0d264;
+}
+.guestbookcolor .orange {
+    background: #f5a623;
+}
+.guestbookcolor .lime {
+    background: #b8e986;
+}
+.guestbookcolor .pink {
+    background: #ff7bac;
+}
+.guestbookcolor .yeonpink {
+    background: #F2B3B3;
+}
+.guestbookcolor .olive {
+    background: #808000;
+}
+.guestbookcolor .gray {
+    background: #7e8c8d;
+}
+
+
+
+
 
 
 

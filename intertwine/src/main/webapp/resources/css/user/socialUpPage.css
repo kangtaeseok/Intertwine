@@ -202,6 +202,7 @@ main {
     margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
+		height: 800px;
 }
 
 #bottom_right_contents.on {
