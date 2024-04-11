@@ -48,13 +48,6 @@ function kakaoLogout() {
                 </ol>
             </nav>
         </div>
-
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
-        <div></div>
         <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
     </header>
 
@@ -130,14 +123,14 @@ function kakaoLogout() {
         </div>
         <div id="bottom_right_contents" style="padding-top:30px">
 <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; margin: auto;">
-    <form action="myprofileupdate.do" method="post">
+    <form action="myprofileupdate.do" method="post" enctype="multipart/form-data">
     <input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
         <div id="profilePicPreview" style="position: relative; width: 150px; height: 150px; border-radius: 50%; background-color: #eee; text-align: center; line-height: 150px; margin: 20px auto; color: #666; font-size: 16px; overflow: hidden;">
             프리뷰
         </div>
         <label style="display: block; background-color: plum; color: white; text-align: center; padding: 8px 16px; margin: 10px auto; border: none; border-radius: 4px; cursor: pointer;">
             사진 업로드
-            <input type="file" name="profile" id="profilePicInput" accept="image/*" style="display: none;">
+            <input type="file" name="ofile" id="profilePicInput" accept="image/*" style="display: none;">
         </label>
 
         <div style="margin-bottom: 15px;">

@@ -304,11 +304,11 @@ $(document).ready(function () {
 });
 
 window.addEventListener('load', function () {
-    // 최소 7초 후 로딩 이미지 숨김 처리
+    // 최소 6초 후 로딩 이미지 숨김 처리
     setTimeout(function () {
         document.getElementById('loadingview').classList.add('hidden');
         document.getElementById('squaretip').classList.add('hidden');
-    }, 1000); // 1000ms = 1초
+    }, 6000); // 1000ms = 1초
 });
 
 
@@ -522,128 +522,138 @@ myCharacter.addEventListener('contextmenu', function (event) {
     });
 
     // 친구 목록 버튼 생성 및 위치 조정
-const friendListButton = createButton('친구 목록', '#exampleModal3', 2 * (buttonHeight));
-friendListButton.id = 'friendListButton'; // id 속성 추가
-const currentTop2 = parseInt(friendListButton.style.top, 10);
-friendListButton.style.top = `${currentTop2 - 12}px`;
-myCharacter.appendChild(friendListButton);
+    const friendListButton = createButton('친구 목록', '#exampleModal3', 2 * (buttonHeight));
+    friendListButton.id = 'friendListButton'; // id 속성 추가
+    const currentTop2 = parseInt(friendListButton.style.top, 10);
+    friendListButton.style.top = `${currentTop2 - 12}px`;
+    myCharacter.appendChild(friendListButton);
 
-friendListButton.addEventListener('click', function (event) {
-    console.log("친구목록버튼클릭!");
-    const modal = document.querySelector("#friendListModal");
-    modal.style.display = "flex";
-    var $friendModalList = $('.friendmodal-list');
-    $friendModalList.empty();
+    friendListButton.addEventListener('click', function (event) {
+        console.log("친구목록버튼클릭!");
+        const modal = document.querySelector("#friendListModal");
+        modal.style.display = "flex";
+        var $friendModalList = $('.friendmodal-list');
+        $friendModalList.empty();
 
-    $.ajax({
-        url: "getfriendlist.do",
-        type: "POST",
-        data: { "userId": window.globaluserId },
-        dataType: "json",
-        success: function (data) {
-            console.log("success!");
-            var friends = data.friends;
+        $.ajax({
+            url: "getfriendlist.do",
+            type: "POST",
+            data: { "userId": window.globaluserId },
+            dataType: "json",
+            success: function (data) {
+                console.log("success!");
+                var friends = data.friends;
 
-            $.each(friends, function (index, friend) {
-                var friendDiv = $("<div>", { class: "friend-info", "data-friend-id": friend.friendId }).css({
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                }).click(function() {
-                    // 모든 friend-info에서 selected 클래스 제거
-                    $(".friend-info").removeClass("selected-friend");
-                    // 클릭된 friend-info에만 selected 클래스 추가
-                    $(this).addClass("selected-friend");
+                $.each(friends, function (index, friend) {
+                    var friendDiv = $("<div>", { class: "friend-info", "data-friend-id": friend.friendId }).css({
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "10px",
+                    }).click(function () {
+                        // 모든 friend-info에서 selected 클래스 제거
+                        $(".friend-info").removeClass("selected-friend");
+                        // 클릭된 friend-info에만 selected 클래스 추가
+                        $(this).addClass("selected-friend");
+                    });
+
+                    var profilePic = $("<img>", {
+                        src: friend.profile,
+                        alt: "Profile Picture",
+                        width: "50px",
+                        height: "50px",
+                        css: {
+                            borderRadius: "50%",
+                            marginRight: "30px",
+                        }
+                    });
+
+                    var nickname = $("<div>").text(friend.friendId);
+
+                    // 프로필 사진과 별명을 div에 추가
+                    friendDiv.append(profilePic).append(nickname);
+
+                    // 생성된 div를 페이지에 추가
+                    $friendModalList.append(friendDiv);
                 });
 
-                var profilePic = $("<img>", {
-                    src: friend.profile,
-                    alt: "Profile Picture",
-                    width: "50px",
-                    height: "50px",
-                    css: {
-                        borderRadius: "50%",
-                        marginRight: "30px",
+                // 이동 버튼 클릭 이벤트 추가
+                $("#gofirendroombtn").off("click").on("click", function () {
+                    var selectedFriendId = $(".selected-friend").data("friend-id");
+                    if (selectedFriendId) {
+                        $.ajax({
+                            url: "movetofriendroom.do",
+                            type: "POST",
+                            data: { "friendId": selectedFriendId },
+                            dataType: "json", // 이 설정으로 인해 response는 이미 JSON 객체입니다.
+                            success: function(response) {
+							    console.log("Room Move Success!", response);
+							    if (!$.isEmptyObject(response) && response.userId) {
+							        var roomData = response;
+							        roomHost = roomData.userId;
+							        
+							        
+							        console.log("방 주인: " + roomHost);
+							        console.log("방 색상: " + roomData.roomColor);
+							        console.log("방명록 공개 여부: " + roomData.guestBookOpen);
+							
+							        // 기존의 .userroomresource 엘리먼트를 모두 제거
+							        $(".userroomresource").remove();
+							
+							        // #userroom의 배경색 변경
+							        $("#userroom").css("background-color", roomData.roomColor);
+							
+							        // rList가 비어있지 않다면 리소스를 페이지에 추가
+							        if (roomData.rList && roomData.rList.length > 0) {
+							            roomData.rList.forEach(function(resource) {
+							                var imgElement = $('<img>', {
+							                    src: resource.resourceURL,
+							                    alt: "Room Resource Image",
+							                    class: "userroomresource",
+							                    css: {
+							                        position: "absolute",
+							                        left: resource.resourcePositionX + "px",
+							                        top: resource.resourcePositionY + "px",
+							                        transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
+							                    }
+							                });
+							                $("#userroom").append(imgElement);
+							            });
+							        }
+							
+							        // Modal과 버튼 업데이트는 rList의 내용과 관계없이 실행
+							        const modal = document.querySelector(".friendmodal");
+							        modal.style.display = "none";
+							
+							        var updateRoomButton = $("#btnupdateroom");
+							        if (roomHost === window.globaluserId) {
+							            // 방의 주인이 나인 경우
+							            updateRoomButton.text("방 꾸미기"); // 버튼 텍스트 업데이트
+							        } else {
+							            // 방의 주인이 내가 아닌 경우
+							            updateRoomButton.text("내 방 가기"); // 버튼 텍스트 업데이트
+							        }
+							    } else {
+							        console.log("해당 유저의 방 정보가 존재하지 않습니다.");
+							        alert("스퀘어에 한번도 접속하지 않은 친구입니다.");
+							    }
+							},
+                            error: function (request, status, errorData) {
+                                console.log("Error moving to room: ", errorData);
+                            }
+                        });
+                    } else {
+                        alert("친구를 선택해주세요.");
                     }
                 });
+            },
+            error: function (request, status, errorData) {
+                console.log("error code : " + request.status
+                    + "\nMessage : " + request.responseText
+                    + "\nError : " + errorData);
+            }
+        });  // ajax
+    });
 
-                var nickname = $("<div>").text(friend.friendId);
-
-                // 프로필 사진과 별명을 div에 추가
-                friendDiv.append(profilePic).append(nickname);
-
-                // 생성된 div를 페이지에 추가
-                $friendModalList.append(friendDiv);
-            });
-
-            // 이동 버튼 클릭 이벤트 추가
-            $("#gofirendroombtn").off("click").on("click", function() {
-                var selectedFriendId = $(".selected-friend").data("friend-id");
-                if(selectedFriendId) {
-                    $.ajax({
-					    url: "movetofriendroom.do",
-					    type: "POST",
-					    data: { "friendId": selectedFriendId },
-					    success: function (response) {
-					        console.log("Room Move Success!", response);
-					        var roomData = JSON.parse(response);
-					        roomHost = roomData.userId;
-
-					        console.log("방 주인: " + roomHost);
-					        console.log("방 색상: " + roomData.roomColor);
-					        console.log("방명록 공개 여부: " + roomData.guestBookOpen);
-					
-					        // 기존의 .userroomresource 엘리먼트를 모두 제거
-					        $(".userroomresource").remove();
-					
-					        // #userroom의 배경색 변경
-					        $("#userroom").css("background-color", roomData.roomColor);
-					
-					        // rList 내의 각 리소스에 대하여 반복하여 .userroomresource를 새로 만들어 #userroom에 추가
-					        roomData.rList.forEach(function(resource) {
-					            var imgElement = $('<img>', {
-					                src: resource.resourceURL,
-					                alt: "Room Resource Image",
-					                class: "userroomresource",
-					                css: {
-					                    position: "absolute",
-					                    left: resource.resourcePositionX + "px",
-					                    top: resource.resourcePositionY + "px",
-					                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
-					                }
-					            });
-					            $("#userroom").append(imgElement);	
-					        });
-					        const modal = document.querySelector(".friendmodal");		
-					        modal.style.display="none";
-					        
-					        var updateRoomButton = $("#btnupdateroom");
-					        if (roomHost === window.globaluserId) {
-						    // 방의 주인이 현재 로그인한 사용자인 경우
-							    updateRoomButton.text("방 꾸미기"); // 버튼 텍스트 업데이트
-							} else {
-							    // 방의 주인이 현재 로그인한 사용자가 아닌 경우
-							    updateRoomButton.text("내 방 가기"); // 버튼 텍스트 업데이트
-							}
-						        
-					    },
-					    error: function (request, status, errorData) {
-					        console.log("Error moving to room: " + errorData);
-					    }
-					});
-                } else {
-                    alert("친구를 선택해주세요.");
-                }
-            });
-        },
-        error: function (request, status, errorData) {
-            console.log("error code : " + request.status
-                + "\nMessage : " + request.responseText
-                + "\nError : " + errorData);
-        }
-    });  // ajax
-});
-    
 
     // 페이지의 다른 부분을 클릭하면 생성된 버튼들을 제거하는 이벤트 리스너 추가
     function outsideClickListener(event) {
@@ -653,10 +663,6 @@ friendListButton.addEventListener('click', function (event) {
         }
     }
     document.addEventListener('click', outsideClickListener);
-
-
-
-
 
 
 });

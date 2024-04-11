@@ -139,7 +139,7 @@ cursor: pointer;
             </div>
         </div>
 
-    <div class="container-write" style="margin: 0 auto;  padding-left: 250px; width: 550px;">
+    <div class="container-write" style="margin: 0 auto;  padding-left: 250px; width: 800px;">
         <form id ="postFrom" action="posting.do" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
             <div class="top" style="max-width: 550px;position: relative;margin: auto;">
@@ -262,87 +262,84 @@ cursor: pointer;
 <div class="tags">
 </div>
               <script>
-                document.getElementById('tagSettings').addEventListener('click', function() {
-                event.preventDefault();
-                var existingDialog = document.querySelector('.modal-content');
-                if (existingDialog) {
-                    existingDialog.remove();
-                    return;
-                }
+              document.getElementById('tagSettings').addEventListener('click', function(event) {
+            	    event.preventDefault(); // 폼 전송 방지
+            	    var existingDialog = document.querySelector('.modal-content');
+            	    if (existingDialog) {
+            	        existingDialog.remove();
+            	        return;
+            	    }
 
-                var dialogHTML = `<div class="modal-content" style="position: relative;">
-                                    <input type="text" id="newTagInput" placeholder="#새 태그">
-                                    <button id="confirmTag" return="false">확인</button>
-                                    <button id="cancelTag" return="false">취소</button>
-                                  </div>`;
-                document.querySelector('.tag').insertAdjacentHTML('afterend', dialogHTML);
+            	    var dialogHTML = `<div class="modal-content" style="position: relative;">
+            	                        <input type="text" id="newTagInput" placeholder="#새 태그">
+            	                        <button id="confirmTag">확인</button>
+            	                        <button id="cancelTag">취소</button>
+            	                      </div>`;
+            	    document.querySelector('.tag').insertAdjacentHTML('afterend', dialogHTML);
 
-                document.getElementById('cancelTag').addEventListener('click', function() {
-                	 event.preventDefault(); 
-                    document.querySelector('.modal-content').remove();
-                });
+            	    document.getElementById('cancelTag').addEventListener('click', function(event) {
+            	        event.preventDefault(); 
+            	        document.querySelector('.modal-content').remove();
+            	    });
 
-                document.getElementById('confirmTag').addEventListener('click', function() {
-                	event.preventDefault(); 
-                	const input = document.getElementById('newTagInput');
-                    const tagValue = input.value.trim();
-                    if (!tagValue.startsWith('#')) {
-                        alert('태그는 #으로 시작해야 합니다.');
-                        return;
-                    }
+            	    document.getElementById('confirmTag').addEventListener('click', function(event) {
+            	        event.preventDefault(); 
+            	        const input = document.getElementById('newTagInput');
+            	        const tagValue = input.value.trim();
+            	        if (!tagValue.startsWith('#')) {
+            	            alert('태그는 #으로 시작해야 합니다.');
+            	            return;
+            	        }
 
-                    if (tagValue.includes(' ')) {
-                        alert('태그에는 공백이 포함될 수 없습니다.');
-                        return;
-                    }
+            	        if (tagValue.includes(' ')) {
+            	            alert('태그에는 공백이 포함될 수 없습니다.');
+            	            return;
+            	        }
 
-                    const existingTags = document.querySelectorAll('.tags div');
-                    for (let tag of existingTags) {
-                        if (tag.textContent.startsWith(tagValue)) {
-                            alert('이미 존재하는 태그입니다.');
-                            return;
-                        }
-                    }
+            	        const existingTags = document.querySelectorAll('.tags div');
+            	        for (let tag of existingTags) {
+            	            if (tag.textContent === tagValue) {
+            	                alert('이미 존재하는 태그입니다.');
+            	                return;
+            	            }
+            	        }
 
-                    const uniqueId = new Date().getTime(); // 태그에 유니크 아이디 부여
+            	        const uniqueId = tagValue.slice(1); // '#' 제거 후 유니크 아이디 부여
 
-                    // 페이지에 태그 삽입
-                    const tagContainer = document.createElement('div');
-                    tagContainer.setAttribute('id', uniqueId); // 유니크 아이디 설정
-                    tagContainer.textContent = tagValue;
-                    tagContainer.style.marginRight = '5px';
+            	        // 페이지에 태그 삽입
+            	        const tagContainer = document.createElement('div');
+            	        tagContainer.setAttribute('id', uniqueId);
+            	        tagContainer.textContent = tagValue;
+            	        tagContainer.style.marginRight = '5px';
 
-                    // 삭제 버튼 추가
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'X';
-                    deleteButton.style.marginLeft = '5px';
-                    deleteButton.addEventListener('click', function() {
-                        // 삭제 버튼 누를 시 유니크 아이디로 보여지는 태그와 숨겨진 인풋 둘다 삭제 
-                        event.preventDefault();
-                        document.querySelector(`div[id="${uniqueId}"]`).remove(); 
-                        document.querySelector(`input[id="${uniqueId}"]`).remove();
-                    });
-                    tagContainer.appendChild(deleteButton);
+            	        // 삭제 버튼 추가
+            	        const deleteButton = document.createElement('button');
+            	        deleteButton.textContent = 'X';
+            	        deleteButton.style.marginLeft = '5px';
+            	        
+            	        deleteButton.addEventListener('click', function(event) {
+            	            event.preventDefault(); // 폼 전송 방지
+            	            const tagId = this.parentNode.getAttribute('id');
+            	            document.getElementById(tagId).remove(); // 태그 컨테이너 삭제
+            	            document.getElementById('input-' + tagId).remove(); // 숨겨진 입력 삭제
+            	        });
+            	        tagContainer.appendChild(deleteButton);
 
-                    document.querySelector('.tags').appendChild(tagContainer);
-                    document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
-                    console.log('Inserted tag container:', tagContainer.outerHTML);
+            	        document.querySelector('.tags').appendChild(tagContainer);
+            	        document.querySelector('.tags').appendChild(document.createTextNode(' ')); // 스페이싱 삽입
 
-                    document.querySelector('.modal-content').remove();
-                    input.value = ''; // 다이얼로그 비움
+            	        document.querySelector('.modal-content').remove();
+            	        input.value = ''; // 다이얼로그 비움
 
-                    // 숨겨진 input 삽입
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'tagName'; //자바에서 꺼내 사용할 이름
-                    hiddenInput.setAttribute('id', uniqueId); //유니크 아이디 사용
-                    hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
-                    document.querySelector('form').appendChild(hiddenInput);
-                    console.log('Inserted hidden input:', hiddenInput.outerHTML);
-
-
-                });
-            });
+            	        // 숨겨진 input 삽입
+            	        const hiddenInput = document.createElement('input');
+            	        hiddenInput.type = 'hidden';
+            	        hiddenInput.name = 'tagName';
+            	        hiddenInput.setAttribute('id', 'input-' + uniqueId); // 입력 아이디는 태그 아이디와 연결
+            	        hiddenInput.value = tagValue; // value값을 사용된 글자로 삽입
+            	        document.querySelector('form').appendChild(hiddenInput);
+            	    });
+            	});
                 </script>
               <div>
                 <br>

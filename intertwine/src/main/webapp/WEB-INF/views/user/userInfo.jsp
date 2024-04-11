@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <link rel="stylesheet" href="/intertwine/resources/css/user/userInfo.css" />
-<script defer src="/intertwine/resources/js/mainpage.js"></script>
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <script type="text/javascript">

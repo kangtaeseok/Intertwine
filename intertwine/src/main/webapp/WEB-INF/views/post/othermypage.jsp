@@ -112,7 +112,14 @@
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
-                <a href="${pageContext.servletContext.contextPath}/page.do?friendId=${otheruser.userId}"><img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;"></a>
+                <a href="${pageContext.servletContext.contextPath}/page.do?friendId=${otheruser.userId}">
+                <c:if test="${ empty myPage.profileDraft }">
+                <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                <c:if test="${ not empty myPage.profileDraft }">
+                <img src="${ myPage.profileDraft }"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                </a>
             </div>
         </div>
         <div class="profile-info" style="display: flex;">
@@ -122,7 +129,7 @@
                     <ul>
                         <br>
                         <li style="list-style-type: none;"><h3>${ otheruser.userId } </h3></li>
-                        <li style="list-style-type: none;"><%-- 여기 유저 바이오 --%></li>
+                        <li style="list-style-type: none;">${ mypage.statusMessage }</li>
                         <br>
                         <li style="list-style-type: none;"><a><b>팔로잉 </b>${ followingCount }</a>&nbsp;&nbsp;<a><b>팔로워 </b>${ followerCount }</a> &nbsp;<a></a></li>
                     </ul>
@@ -137,13 +144,26 @@
                     <div class="dummy2" style="height: 50px;">
                     </div>
                     <c:if test="${ isFollowing eq 0 }">
-                    <a href="${pageContext.servletContext.contextPath}/insertmypage.do?userId=${user.userId}&friendId=${otheruser.userId}"style="text-decoration:none;color:black;">팔로우</a>
+                    <a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/insertmypage.do?userId=${user.userId}&friendId=${otheruser.userId}', 'follow')" style="text-decoration:none;color:black;">팔로우</a>
                     </c:if>
                     <c:if test="${ isFollowing ne 0 }">
-                    <a href="${pageContext.servletContext.contextPath}/unfollowingMyPage.do?userId=${user.userId}&friendId=${otheruser.userId}" style="text-decoration:none;color:black;">팔로우 해제</a>
+                   <a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/unfollowingMyPage.do?userId=${user.userId}&friendId=${otheruser.userId}', 'unfollow')" style="text-decoration:none;color:black;">팔로우 해제</a>
                     </c:if>
                 </div>
-                
+                <script>
+					function confirmAction(url, actionType) {
+					    var message = '';
+					    if (actionType === 'follow') {
+					        message = "${ otheruser.userId }님을 팔로우하시겠습니까? ";
+					    } else if (actionType === 'unfollow') {
+					        message = "${ otheruser.userId}님을 언팔로우하시겠습니까? ";
+					    }
+					
+					    if (confirm(message)) {
+					        window.location.href = url;
+					    }
+					}
+					</script>
             </div>
         </div>
 
@@ -163,6 +183,10 @@
 		        var keyword = document.getElementById("search-input").value;
 		        var selectedOption = document.querySelector(".search-condition").value;
 		        var friendId = "${otheruser.userId}";
+		        if (keyword.trim() === "") {
+		            alert("키워드를 입력하세요.");
+		            return false;
+		        }
 		        var url = "searchothermypage.do?friendId=" + friendId + "&keyword=" + encodeURIComponent(keyword) + "&condition=" + encodeURIComponent(selectedOption);
 		        window.location.href = url;
 		    }

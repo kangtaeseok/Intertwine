@@ -69,10 +69,23 @@
 						<li id="socialUserInfo">
 							<a href="${pageContext.servletContext.contextPath}/socialUpdatePage.do"><i class="fa-solid fa-feather"></i> 회원정보수정 </a>
 						</li>
+						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do"><i class="fa-regular fa-circle-question"></i> 문의</a></li>
 						</c:if>
+						<li><a href="${ pageContext.servletContext.contextPath }/userStopPage.do"><i class="fa-solid fa-circle-stop"></i> 계정 비활성화</a></li>
 						<li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-headset"></i> 고객센터</a></li>
 						<li><a href="${ pageContext.servletContext.contextPath }/noticelist.do"><i class="fa-solid fa-circle-exclamation"></i> 공지</a></li>
-						<li><a href="${ pageContext.servletContext.contextPath }/aichatgo.do"><i class="fa-regular fa-circle-question"></i> 문의</a></li>
+						
+						
+						<c:if test="${empty type}">
+                        	<button class="btn" onclick="javascript:location.href='ulogout.do';">logout</button>
+						</c:if>
+						<c:if test="${type eq 'kakao'}">
+							<button class="btn" id="kbtn" onclick="kakaoLogout();">logout</button>
+						</c:if>
+						<c:if test="${type eq 'naver'}">
+							<button class="btn" id="nbtn" onclick="location.href='ulogout.do'">logout</button>
+						</c:if>
+						
 					</ul>
             </div>
         </div>

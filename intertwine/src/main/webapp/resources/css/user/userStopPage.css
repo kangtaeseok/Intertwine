@@ -2,6 +2,7 @@
 
 
 html {
+	font-family: "Noto Sans KR", sans-serif;
 	font-size: 16px; /* rem 단위 사용을 위해 가장 상위요소의 px값 지정 */
 	height: 100%;
 }
@@ -164,19 +165,7 @@ main {
 }
 
 /* 모든 메뉴의 a에 속성값 부여 */
-.side-bar ul > li > a {
-	display: block;
-	color: rgb(205, 79, 132);
-	font-size: 1.2rem;
-	font-weight: bold;
-	padding-top: 15px;
-	padding-bottom: 15px;
-	padding-left: 0.8rem;
-	margin-top: 5px;
-	margin-bottom: 15px;
-	border-radius: 10px;
-	transition: background-color 0.8s ease;
-}
+
 
 /* 사이드바 각 메뉴에 마우스 올렸을 때 background 회색 효과 */
 .side-bar ul > li:hover > a {
@@ -204,6 +193,7 @@ main {
     margin-left: var(--side-bar-width); /* .side-bar의 너비만큼 마진을 줌 */
 	left: -240px;
 	transition: left 1s ease;
+		height: 800px;
 }
 
 #bottom_right_contents.on {
@@ -280,7 +270,7 @@ main {
 }
 
 .feed {
-	
+
 	position: relative;
 	width: 1000px;
 	height: 600px;
@@ -460,10 +450,9 @@ li {
 .box {
 	white-space: nowrap;
 	position: fixed;
-	margin: 0 auto;
     position: relative;
-    height: 100vh;
-    width: 50%;
+    width: inherit;
+    height: 90vh;
  	background: white;
  	display: flex;
 	 flex-direction: column;
@@ -473,6 +462,8 @@ li {
 
 
 .logo-box {
+	display: flex;
+	 flex-direction: row;
 	padding-bottom: 1rem;
 	padding-top: 20px;
 	justify-content: center;
@@ -482,7 +473,7 @@ li {
 .body-box {
 	heigt: 100vh;
 	align-items: center;
-	width: 80%;
+	width: 700px;
 	text-align: left;
 
 }
