@@ -50,4 +50,9 @@ public class CommentDao {
 		return sqlSessionTemplate.selectOne("commentMapper.selectCommentbyCommentId", commentId);
 	}
 
+	public int deleteBatchCommentsbyCommentIds(ArrayList<Integer> comments) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("commentMapper.deleteBatchCommentsbyCommentIds", comments);
+	}
+
 }

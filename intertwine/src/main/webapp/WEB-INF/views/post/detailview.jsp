@@ -465,16 +465,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                    <ul class="settings-menu" style="display:flex;">
                                    		<c:if test="${ isPinned eq 0 }">
                                    		<!-- 핀이 안되어있을 경우  -->
-                                        <li><a href="${pageContext.servletContext.contextPath}/updatepin.do?value=0&postId=${post.postId}&userId=${post.userId}">핀하기</a></li>&nbsp;
+                                        <li><a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/updatepin.do?value=0&postId=${post.postId}&userId=${post.userId}', 'pin')">핀하기</a></li>&nbsp;
                                         </c:if>
                                         <c:if test="${ isPinned eq 1 }">
-                                        <li><a href="${pageContext.servletContext.contextPath}/updatepin.do?value=1&postId=${post.postId}&userId=${post.userId}">핀제거</a></li>&nbsp;
+                                        <li><a href="javascript:void(0);" onclick="confirmAction('${pageContext.servletContext.contextPath}/updatepin.do?value=1&postId=${post.postId}&userId=${post.userId}', 'unpin')">핀제거</a></li>&nbsp;
                                         </c:if>
-                                        <li><a href="${pageContext.servletContext.contextPath}/deletepost.do?postId=${post.postId}&userId=${post.userId}">삭제하기</a></li>
+                                        <li><a href="javascript:void(0);" onclick="confirmAction2('${pageContext.servletContext.contextPath}/deletepost.do?postId=${post.postId}&userId=${post.userId}')">삭제하기</a></li>
                                    </ul>
                               </c:if>
                          </div>
-                         
+                  <script>
+					function confirmAction(url, actionType) {
+					    var message = (actionType === 'pin') ? "이 게시물을 핀하시겠습니까?" : "이 게시물의 핀을 제거하시겠습니까?";
+					    if (confirm(message)) {
+					        window.location.href = url;
+					    }
+					}
+					function confirmAction2(url) {
+					    if (confirm("정말로 삭제하시겠습니까?")) {
+					        window.location.href = url;
+					    }
+					}
+					</script>
                          <c:if test="${ not empty image.imageLon }">
                          <a href="" class="owner-address"  style="text-decoration: none; color: black;font-size: 12px;">주소</a>
                          </c:if>
@@ -500,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	                              <input type="hidden" name="postId" value="${ post.postId }">
 	                              <input type="hidden" name="likeType" id="likeType">
 	                              <div class="reaction-box" id="reaction-box" style="display: none;position: absolute;top: 150%;left: 25%;transform: translateX(-50%);background-color: #fff;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);padding: 10px;z-index: 5;flex-direction: row;align-items: center; justify-content: center;width: auto;flex-wrap: wrap;">
-	                                   
+	                                  
 	                                 <c:if test="${ not empty whatIsLiked }">
 	                                   <c:if test="${ whatIsLiked ne '0' }">
 	                                   <button type="submit" name="likeType" value="0" class="reaction-button" style="border: none; background: none;">
