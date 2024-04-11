@@ -21,16 +21,7 @@
 </head>
 <body>
 
-	<%-- 사용자 세션 확인 --%>
-	<c:choose>
-		<c:when test="${not empty sessionScope.loginUser}">
-			<%-- 로그인한 사용자의 userId 표시 --%>
-			<h2>Welcome, ${sessionScope.loginUser.userId}!</h2>
-		</c:when>
-		<c:otherwise>
-			<h2>Please login.</h2>
-		</c:otherwise>
-	</c:choose>
+
 	<header>
 		<!-- 페이지 상단 -->
 		<div>

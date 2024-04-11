@@ -27,11 +27,6 @@
             </nav>
         </div>
 
-        <div class="search"> <!-- 검색창 -->
-            <input type="text" placeholder="검색어 입력">
-            <img src="/intertwine/resources/images/search.png">
-        </div>
-
         <div></div>
         <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
     </header>
@@ -114,7 +109,12 @@
     <div class="top" style="margin-top: 30px; display: flex;">
         <div class="profile"  style="padding-left: 10px;padding-right:30px;">
             <div class="pic" style="width: 200px; height: 200px; border-radius: 50%; border: 0px solid black; overflow: hidden;">
+                <c:if test="${ empty myPage.profileDraft }">
                 <img src="resources/profile/images.jpg"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
+                <c:if test="${ not empty myPage.profileDraft }">
+                <img src="${ myPage.profileDraft }"style="width: 100%; height: 100%; object-fit: cover;">
+                </c:if>
             </div>
         </div>
         <div class="profile-info" style="display: flex;">
@@ -163,9 +163,13 @@
         </div>
         <script>
 		    function performSearch() {
-		        var keyword = document.getElementById("search-input").value;
+		    	var keyword = document.getElementById("search-input").value;
 		        var selectedOption = document.querySelector(".search-condition").value;
 		        var userId = "${user.userId}";
+		        if (keyword.trim() === "") {
+		            alert("키워드를 입력하세요.");
+		            return false;
+		        }
 		        var url = "searchmypage.do?userId=" + userId + "&keyword=" + encodeURIComponent(keyword) + "&condition=" + encodeURIComponent(selectedOption);
 		        window.location.href = url;
 		    }
