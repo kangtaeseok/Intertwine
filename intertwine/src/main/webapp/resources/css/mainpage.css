@@ -226,7 +226,7 @@ main {
 	transition: left 1s ease;
 	opacity: 0;
 	transition: opacity 1s ease;
-	background-color: Pink;
+	background-color: white;
 	align-items: center;
 	text-align: center;
 	padding-top: 10px;
@@ -238,7 +238,7 @@ main {
 	transition: left 1s ease;
 	opacity: 0;
 	transition: opacity 1s ease;
-	background-color: LightSkyBlue;
+	background-color: white;
 	align-items: center;
 	text-align: center;
 	padding-top: 10px;
@@ -250,7 +250,7 @@ main {
 	transition: left 1s ease;
 	opacity: 0;
 	transition: opacity 1s ease;
-	background-color: LightSalmon;
+	background-color: white;
 	align-items: center;
 	text-align: center;
 	padding-top: 10px;

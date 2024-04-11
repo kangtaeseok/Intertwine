@@ -53,7 +53,7 @@ public class AiEventController {
 	
 	private String extractKeyword(String input) {
 	    // 정규식 패턴을 이용하여 특정 키워드를 추출
-		 Pattern pattern = Pattern.compile("안녕|날씨|음식|게시물|그래|Hello|구글|네이버|다음|나는");
+		 Pattern pattern = Pattern.compile("안녕|날씨|음식|네이버|구글|다음|공지사항|친구|나는|글쓰기|마이페이지|피드확인|회원정보|스퀘어|문의");
 	    Matcher matcher = pattern.matcher(input);
 
 	    // 키워드를 찾으면 반환, 못 찾으면 입력된 키워드 그대로 반환
