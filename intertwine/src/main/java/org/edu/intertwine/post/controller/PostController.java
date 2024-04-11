@@ -1023,6 +1023,14 @@ public class PostController {
 		//logger.info("tags" + tags.toString());
 		//포스트에 있는 댓글들 가져옴
 		ArrayList<Comment> comments = commentService.selectComments(postId);
+		ArrayList<CommentProfile> commentProfiles = new ArrayList<CommentProfile>();
+		for (Comment c: comments) {
+
+			MyPage mypage = userService.selectMyPage(c.getUserId());
+			CommentProfile commentProfile = new CommentProfile(c.getCommentId(), c.getPostId(), c.getUserId(), c.getCommentContent(), c.getCommentLevel(), c.getParentCommentId(), c.getCommentTime(), mypage.getProfile(), mypage.getProfileDraft());
+			commentProfiles.add(commentProfile);
+
+		}
 	
 		//logger.info("comments" + comments.toString());
 		// 총 공감 갯수 세서 가져옴
@@ -1055,7 +1063,7 @@ public class PostController {
 	    mv.addObject("viewingUser", viewingUser);
 	    mv.addObject("post", post);
 	    mv.addObject("tags", tags);
-		mv.addObject("comments", comments);
+		mv.addObject("commentProfiles", commentProfiles);
 	    mv.addObject("likeCount", likeCount);
 	    mv.addObject("isFollowing", isFollowing);
 	    mv.addObject("isLiked", isLiked);

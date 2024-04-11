@@ -673,8 +673,8 @@ document.addEventListener('DOMContentLoaded', function() {
          <div class="commentbox" style="height: 100%; border-top: gray 1px solid;">
                     <!-- 반복 -->
                   
-			<c:if test="${!empty comments}">
-			    <c:forEach var="comment" items="${comments}">
+			<c:if test="${!empty commentProfiles}">
+			    <c:forEach var="comment" items="${commentProfiles}">
 			    <div class="comment"style=" display: flex;padding-top: 5px;padding-bottom: 5px;">
 						<c:if test="${ comment.commentLevel eq '1' }">
 						<div class="reply" style="margin-left: 10px;margin-right: 10px;font-size: 20px;">
@@ -683,7 +683,14 @@ document.addEventListener('DOMContentLoaded', function() {
                          </c:if>
  						<div class="left-2">
                               <div class="pic-2" style="width: 30px; height: 30px;border-radius: 50%;border: 0px solid black;overflow: hidden;margin-left: 5px;">
-                                   <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${ comment.userId }"><img src="https://www.w3schools.com/html/img_girl.jpg" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;"></a>
+                                   <a href="${pageContext.servletContext.contextPath}/back2.do?userId=${ comment.userId }">
+                                   <c:if test="${ empty comment.profileDraft }">
+                                   <img src="resources/profile/images.jpg" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;">
+                                   </c:if>
+                                   <c:if test="${ not empty comment.profileDraft }">
+                                   <img src="${ comment.profileDraft }" style="cursor: pointer;width: 100%;height: 100%;object-fit: cover;">
+                                   </c:if>
+                                   </a>
                               </div>
                          </div>
                          <div class="right-2"style="flex-grow: 1;flex-shrink: 1;padding-left: 5px;">
