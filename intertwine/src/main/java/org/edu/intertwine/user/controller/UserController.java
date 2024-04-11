@@ -118,7 +118,7 @@ public class UserController {
 		String result = "";
 		result = userService.selectSocialType(user.getUserId());
 		model.addAttribute("type", result);
-		return "common/main";
+		return "redirect:getfeed.do";
 	}
 	
 	//회원가입후 이동페이지

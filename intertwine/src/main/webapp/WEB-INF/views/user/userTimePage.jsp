@@ -8,7 +8,6 @@
 <title>userTime</title>
 <link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
 <link rel="stylesheet" href="/intertwine/resources/css/user/userTimePage.css" />
-<link rel="stylesheet" href="/intertwine/resources/css/common/menubar.css" />
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <script>
 function openPopup() {
