@@ -712,9 +712,12 @@ public class UserController {
 	 
 	 //마이페이지
 	 @RequestMapping(value="myprofileupdate.do", method=RequestMethod.POST)
-	 public String myPageselMethod (HttpSession session,User user, MyPage mypage,
+	 public String myPageselMethod (HttpSession session,@RequestParam(name="nickname", required=false)String nickname, @RequestParam(name="statusMessage2", required=false)
+	 String statusMessage,
 				@RequestParam(name="ofile", required=false) MultipartFile mfile, Model model, HttpServletRequest request) {
-		 
+		
+		 User loginUser = (User) session.getAttribute("loginUser");
+		 MyPage mypage = userService.selectMyPage(loginUser.getUserId());
 		String savePath = request.getSession().getServletContext().getRealPath(
 		 					"resources/profile");
 		logger.info(mfile.toString());
@@ -735,20 +738,25 @@ public class UserController {
 					return "common/alert";
 				}
 			}
-			User loginUser = (User) session.getAttribute("loginUser");
-			loginUser.setNickname(user.getNickname());
+			loginUser.setNickname(nickname);
+			
+			if(statusMessage != null) {
+				mypage.setStatusMessage(statusMessage);	
+			}
 			
 			mypage.setProfile(fileName);
 			mypage.setProfileDraft("resources/profile/" + renameFileName);
 			userService.updateMyPage(mypage);
-				
+		} else {
+			if(statusMessage == null) {
+				mypage.setStatusMessage(statusMessage);	
+			}
+			loginUser.setNickname(nickname);
+			
+			userService.updateMyPage(mypage);
 			
 		}
 		
-		User loginUser = (User) session.getAttribute("loginUser");
-		loginUser.setNickname(user.getNickname());
-					
-		userService.updateMyPage(mypage);
 		
 		return "redirect:mypage.do";
 	}

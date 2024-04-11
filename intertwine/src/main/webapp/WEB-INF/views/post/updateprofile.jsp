@@ -139,7 +139,7 @@ function kakaoLogout() {
         </div>
         <div style="margin-bottom: 15px;">
             <label>바이오</label>
-            <textarea name="statusMessage" placeholder="바이오를 입력해주세요" style="width: calc(100% - 20px); padding: 10px; border-radius: 4px; border: 1px solid #ccc; height: 60px; resize: none;"></textarea>
+            <textarea name="statusMessage2" placeholder="바이오를 입력해주세요" style="width: calc(100% - 20px); padding: 10px; border-radius: 4px; border: 1px solid #ccc; height: 60px; resize: none;"></textarea>
         </div>
         <button type="submit" style="background-color: plum; color: white; border: none; padding: 10px 20px; margin-right: 10px; border-radius: 4px; cursor: pointer;">정보수정</button>
         <button type="button" class="back-btn" onclick="window.history.back();" style="background-color: #666; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">뒤로가기</button>
