@@ -390,7 +390,7 @@ input.text::placeholder {
 								<img src="resources/profile/images.jpg">
 							</c:if>
 							<c:if test="${ not empty item.myPage.profileDraft }">
-								<img src="resources/profile/images.jpg">
+								<img src="${ item.myPage.profileDraft }">
 							</c:if>
 							</div>
 						</a>
