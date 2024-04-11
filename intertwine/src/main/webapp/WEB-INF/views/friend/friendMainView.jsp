@@ -18,203 +18,11 @@
 	src="/intertwine/resources/js/jquery-3.7.0.min.js"></script>
 <!-- 이 jsp파일의 css파일 연결 -->
 <link rel="stylesheet" href="/intertwine/resources/css/friend.css">
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
-
-
-	<header>
-		<!-- 페이지 상단 -->
-		<div>
-			<!-- 홈 버튼 -->
-			<nav class="homebutton_nav">
-				<ul>
-					<li class="homebutton"></li>
-				</ul>
-				<ol>
-					<a href="#"><i class="fa-solid fa-house"></i></a>
-					<!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->
-				</ol>
-				<script>
-					// jQuery를 사용하여 미디어 쿼리를 적용
-					$(document)
-							.ready(
-									function() {
-										var originalContents = { // 원래 속성을 변수에 저장
-											a : '<a href="#"><i class="fa-solid fa-gamepad"></i> 스퀘어</a>',
-											b : '<a href="#"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>',
-											c : '<a href="#"><i class="fa-solid fa-user-group"></i> 친구</a>',
-											d : '<a href="#"><i class="fa-solid fa-comment"></i> 채팅</a>',
-											e : '<a href="#"><i class="fa-solid fa-bell"></i> 알림</a>',
-											f : '<a href="#"><i class="fa-solid fa-bookmark"></i> 북마크</a>',
-											g : '<a href="#"><i class="fa-solid fa-gear"></i> 설정</a>'
-										};
-
-										// 페이지 크기가 1279px 이하일 때 '스퀘어' 텍스트를 지우고 아이콘만 남깁니다.
-										/*  JavaScript 코드와 CSS의 미디어 쿼리 사이에 일치하지 않는 부분이 있을 수 있습니다. 이는 화면 너비를 검사하는 방식의 차이 때문에 발생할 수 있습니다. 조정이 필요할 수 있습니다.*/
-										if ($(window).width() <= 1262) {
-											// 사이드 바 메뉴 아이콘 변경
-											$('.side-bar > ul > li > a')
-													.each(
-															function() {
-																// 해당 메뉴의 아이콘 클래스를 가져와서 변경
-																var iconClass = $(
-																		this)
-																		.children(
-																				'i')
-																		.attr(
-																				'class');
-																$(this)
-																		.html(
-																				'<i class="' + iconClass + '"></i>');
-															});
-										} else {
-											// 페이지 크기가 축소되지 않으면 아이콘을 원래 텍스트로 변경
-											$('.side-bar > ul > li > a')
-													.each(
-															function() {
-																var originalText = $(
-																		this)
-																		.parent()
-																		.attr(
-																				'original-text');
-																$(this)
-																		.html(
-																				originalText);
-															});
-										}
-
-										$(window)
-												.resize(
-														function() {
-															if ($(window)
-																	.width() <= 1262) {
-																$(
-																		'.side-bar > ul > li#a > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-gamepad"></i>');
-																				});
-																$(
-																		'.side-bar > ul > li#b > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-circle-user"></i>');
-																				});
-																$(
-																		'.side-bar > ul > li#c > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-user-group"></i>');
-																				});
-																$(
-																		'.side-bar > ul > li#d > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-comment"></i>');
-																				});
-																$(
-																		'.side-bar > ul > li#e > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-bell">');
-																				});
-																$(
-																		'.side-bar > ul > li#f > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-bookmark"></i>');
-																				});
-																$(
-																		'.side-bar > ul > li#g > a')
-																		.each(
-																				function() {
-																					$(
-																							this)
-																							.html(
-																									'<i class="fa-solid fa-gear"></i>');
-																				});
-
-															} else {
-
-																$(
-																		'.side-bar > ul > li')
-																		.each(
-																				function() {
-																					var id = $(
-																							this)
-																							.attr(
-																									'id');
-																					$(
-																							this)
-																							.html(
-																									originalContents[id]);
-																				});
-
-															}
-														});
-									});
-				</script>
-			</nav>
-		</div>
-
-		<div class="search">
-			<!-- 검색창 -->
-			<input type="text" placeholder="검색어 입력"> <img
-				src="/intertwine/resources/images/search.png">
-		</div>
-
-		<div></div>
-		<!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
-	</header>
-	<main>
-		<aside class="side-bar">
-			<ul>
-				<li id="a"><a href="#"><i class="fa-solid fa-gamepad"></i>
-						스퀘어</a>
-					<ul>
-						<li><a href="#">text1</a></li>
-						<li><a href="#">text2</a></li>
-						<li><a href="#">text3</a></li>
-						<li><a href="#">text4</a></li>
-					</ul></li>
-				<li id="b"><a href="#"><i class="fa-solid fa-circle-user"></i>
-						마이페이지</a> <!-- <a href="#"><i class="fa-solid fa-user"></i> 마이페이지</a> -->
-					<!-- 색칠된 아이콘 --></li>
-				<li id="c"> <a href="${pageContext.servletContext.contextPath}/friendPage.do">
-				<i class="fa-solid fa-user-group"></i> 친구</a></li>
-				
-
-
-				<li id="d"><a href="#"><i class="fa-solid fa-comment"></i>
-						채팅</a></li>
-				<li id="e"><a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
-				</li>
-				<li id="f"><a href="#"><i class="fa-solid fa-bookmark"></i>
-						북마크</a></li>
-				<li id="g"><a href="#"><i class="fa-solid fa-gear"></i> 설정</a>
-				</li>
-			</ul>
-		</aside>
-
-
+<main>
+<c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
 		<div class="content">
 			<!-- 팔로잉, 팔로워 리스트를 담는 부모 div -->
 
@@ -244,13 +52,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${followingList}" var="friend">
+						<c:forEach items="${fProfile}" var="friend">
 							
 							<tr>
+								<c:if test="${empty friend.profileDraft}">
 								<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+				
 								<img src="resources/profile/images.jpg"
 									alt="Profile Image" class="profile-img"></a></td>
-									
+									</c:if>
+									<c:if test="${not empty friend.profileDraft}">
+								<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+				
+								<img src="${friend.profileDraft}"
+									alt="Profile Image" class="profile-img"></a></td>
+									</c:if>
 								<td>${friend.friendId}</td>
 								<td>
 								<!-- 언팔로우 버튼 폼 태그 -->
@@ -261,7 +77,7 @@
 									<button class="unfollow-btn"
 										data-friend-id="${friend.friendId}">Unfollow</button>
 										</form>
-										<a href="${pageContext.request.contextPath}/insertChat.do?otherUserId=${friend.friendId}" >chat</a>
+										<a class="chat-btn" href="${pageContext.request.contextPath}/insertChat.do?otherUserId=${friend.friendId}" >chat</a>
 								<%-- 	<button class="block-btn" onclick="javascript:location.href='blockFollowing.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.friendId}'">Block</button>
 									<button class="chat-btn" data-friend-id="${friend.friendId}">Chat</button> --%>
 								</td>
@@ -271,33 +87,36 @@
 					</tbody>
 				</table>
 
-				<script>
-				//언팔로잉 버튼 클릭시 출력 메세지
-<%-- document.addEventListener("DOMContentLoaded", function() {
-    var dfollowMessage = "<c:out value='${sessionScope.dfollowMessage}'/>";
-    if (dfollowMessage) {
-        alert(dfollowMessage); // 팝업으로 메시지 보여주기
-        <% session.removeAttribute("dfollowMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
-    }
-}); --%>
-// 차단 버튼 클릭시 출력 메세지				
-document.addEventListener("DOMContentLoaded", function() {
-    var blockedMessage = "<c:out value='${sessionScope.blockedMessage}'/>";
-    if (blockedMessage) {
-        alert(blockedMessage); // 팝업으로 메시지 보여주기
-        <% session.removeAttribute("blockedMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
-    }
-});
-</script>
+				
 				<!-- 팔로잉 계정 검색 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-				<div id="searchResults">
+				<c:if test="${ empty searchfProfile }"></c:if>
+		<c:if test="${not empty searchfProfile}">
+				<div id="followingList">
+					<table class="followingList-table">
+					<thead>
+						<!-- <tr>
+							<th>Profile</th>
+							<th>Username</th>
+							<th>Actions</th>
+						</tr> -->
+					</thead>
+					<tbody>
 
-				<c:forEach items="${searchF}" var="friend">
+				<c:forEach items="${searchfProfile}" var="friend">
 					
 						<tr>
-							<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
-							<img src="resources/profile/images.jpg"
-								alt="Profile Image" class="profile-img"></a></td>
+							<c:if test="${empty friend.profileDraft}">
+								<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+				
+								<img src="resources/profile/images.jpg"
+									alt="Profile Image" class="profile-img"></a></td>
+									</c:if>
+								<c:if test="${not empty friend.profileDraft}">
+								<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.friendId}">
+				
+								<img src="${friend.profileDraft}"
+									alt="Profile Image" class="profile-img"></a></td>
+									</c:if>	
 							<td>${friend.friendId}</td>
 							<!-- Assuming friendId is what you want to display -->
 							<td>
@@ -307,14 +126,17 @@ document.addEventListener("DOMContentLoaded", function() {
 							type="hidden" name="friendId" value="${friend.friendId}">
 								<button class="unfollow-btn" data-friend-id="${friend.friendId}">Unfollow</button>
 								</form>
+								<a class="chat-btn" href="${pageContext.request.contextPath}/insertChat.do?otherUserId=${friend.friendId}" >chat</a>
 							</td>
 						</tr>
 						
 					
 				</c:forEach>
-				
+				</tbody>
+				</table>
 				<!-- 검색 결과를 표시할 영역 -->
 				</div>
+				</c:if>
 			</div>
 
 
@@ -334,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function() {
 						</div>
 					</form>
 				</div>
-
 				<!-- 팔로우 리스트 테이블 화면출력 -->
 				<table class="followerList-table">
 					<thead>
@@ -345,11 +166,15 @@ document.addEventListener("DOMContentLoaded", function() {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${followerList}" var="friend">
-								<tr>
+						<c:forEach items="${fProfileFollowers}" var="friend">
+								<tr><c:if test="${empty friend.profileDraft }">
 									<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
 									<img src="resources/profile/images.jpg"
-										alt="Profile Image" class="profile-img"></a></td>
+										alt="Profile Image" class="profile-img"></a></td></c:if>
+										<c:if test="${not empty friend.profileDraft }">
+									<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
+									<img src="${friend.profileDraft}"
+										alt="Profile Image" class="profile-img"></a></td></c:if>
 									<td>${friend.userId}</td>
 									<td>
 									<form action="insertF.do" method="post">
@@ -358,10 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
 									type="hidden" name="friendId" value="${friend.userId}">
 										<button type="submit" class="follow-btn">Follow</button>
 										</form>
-										<%-- <button type="button" class="block-btn" onclick="javascript:location.href='blockFollower.do?userId=${sessionScope.loginUser.userId}&friendId=${friend.userId}'"> 									
-						Block</button>
-										<button type="button" class="chat-btn"
-											data-friend-id="${friend.userId}">Chat</button> --%>
+										<a class="chat-btn" href="${pageContext.request.contextPath}/insertChat.do?otherUserId=${friend.userId}" >chat</a>
 									</td>
 								</tr>
 						</c:forEach>
@@ -369,34 +191,32 @@ document.addEventListener("DOMContentLoaded", function() {
 					</tbody>
 				</table>
 			
-		
-		<script>
-d<%-- ocument.addEventListener("DOMContentLoaded", function() {
-    var followMessage = "<c:out value='${sessionScope.followMessage}'/>";
-    if (followMessage) {
-        alert(followMessage); // 팝업으로 메시지 보여주기
-        <% session.removeAttribute("followMessage"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
-    }
-});
-//팔로워 차단 버튼 클릭시 출력 메세지				
-document.addEventListener("DOMContentLoaded", function() {
-    var blocked2Message = "<c:out value='${sessionScope.blocked2Message}'/>";
-    if (blocked2Message) {
-        alert(blocked2Message); // 팝업으로 메시지 보여주기
-        <% session.removeAttribute("blocked2Message"); %> // 메시지를 보여준 후 세션에서 메시지 삭제
-    }
-}); --%>
-</script>
 		<!-- 팔로워 계정 검색 결과 필드 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-		<div id="searchResults"></div>
-		<c:forEach items="${searchFwer}" var="friend">
+		<c:if test="${ empty searchfProfile2 }"></c:if>
+		<c:if test="${not empty searchfProfile2}">
+		<div id="followList">
+		<table class="followerList-table">
+					<thead>
+						<!-- <tr>
+							<th>Profile</th>
+							<th>Username</th>
+							<th>Actions</th>
+						</tr> -->
+					</thead>
+					<tbody>
+		<c:forEach items="${searchfProfile2}" var="friend">
 		
 		<!-- 검색 결과에 대한 화면 출력 및 팔로우 버튼 기능 -->
 			
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
-					<img src="resources/profile/images.jpg" alt="Profile Image"
-						class="profile-img"></a></td>
+					<c:if test="${empty friend.profileDraft }">
+									<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
+									<img src="resources/profile/images.jpg"
+										alt="Profile Image" class="profile-img"></a></td></c:if>
+										<c:if test="${not empty friend.profileDraft }">
+									<td><a href="${pageContext.request.contextPath}/page.do?friendId=${friend.userId}">
+									<img src="${friend.profileDraft}"
+										alt="Profile Image" class="profile-img"></a></td></c:if>
 					<td>${friend.userId}</td>
 					<td>
 					<form action="insertF.do" method="post">
@@ -409,6 +229,11 @@ document.addEventListener("DOMContentLoaded", function() {
 				</tr>
 			
 		</c:forEach>
+		
+					</tbody>
+				</table>
+				</div>
+				</c:if>
 		</div>
 		</div>
 	</main>
