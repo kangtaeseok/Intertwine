@@ -20,7 +20,6 @@ import org.edu.intertwine.bookmark.model.vo.Bookmark;
 import org.edu.intertwine.comment.model.service.CommentService;
 import org.edu.intertwine.comment.model.vo.Comment;
 import org.edu.intertwine.common.FileNameChange;
-import org.edu.intertwine.common.GPS;
 import org.edu.intertwine.friend.model.service.FriendService;
 import org.edu.intertwine.friend.model.vo.Friend;
 import org.edu.intertwine.post.model.service.PostService;
@@ -47,8 +46,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.drew.imaging.ImageProcessingException;
 
 @Controller
 public class PostController {
@@ -693,7 +690,7 @@ public class PostController {
 	public ModelAndView createPost(HttpSession session, HttpServletRequest request, HttpServletResponse response, Post post,
 			@RequestParam(name = "files", required = false) List<MultipartFile> files,
 			@RequestParam(name = "tagName", required = false) String[] tags, ModelAndView mv)
-			throws IllegalStateException, IOException, ImageProcessingException {
+			throws IllegalStateException, IOException{
 
 		logger.info("files : " + files.toString());
 		logger.info("userId : " + post.getUserId());
@@ -739,21 +736,7 @@ public class PostController {
 						logger.info("저장위치 확인: " + savePath);
 						mf.transferTo(new File(savePath + "\\" + uniqueSuffix +renameFileName));
 
-						GPS gps = new GPS(); // 이거 확정아님
-						double[] gpsdata = gps.getGPS(savePath + "\\" + uniqueSuffix +renameFileName);
-
-						if (gpsdata == null) {
-							// 위도 경도 없을 시
-							Image image = new Image(p.getPostId(), "resources/postimage" + "\\" + uniqueSuffix +renameFileName);
-							postService.insertImage2(image);
-
-						} else { // 위도 경도 있을 시
-							double lon = gpsdata[0];
-							double lat = gpsdata[1];
-							Image image = new Image(p.getPostId(), lon, lat, "resources/postimage" + "\\" + uniqueSuffix + renameFileName);
-							postService.insertImage1(image);
-
-						}
+					
 
 					} // if
 				} // 사진확장자
