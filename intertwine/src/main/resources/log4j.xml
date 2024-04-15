@@ -12,7 +12,7 @@
 	
 	<!-- 파일에 로그 메세지 저장하는 appender -->
 	<appender name="fileLogger" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="C:\\spring_workspace\\first\\src\\main\\resources\\logs\\system.log" />		
+		<param name="file" value="C:\\spring_workspace\\intertwine\\src\\main\\resources\\logs\\system.log" />		
 		<param name="Append" value="true" />
 		<param name="DatePattern" value="yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -61,7 +61,7 @@
 	 -->
 	
 	<!-- Application Loggers -->
-	<logger name="org.myweb.first">
+	<logger name="org.edu.intertwine">
 		<level value="info" />
 	</logger>
 	
