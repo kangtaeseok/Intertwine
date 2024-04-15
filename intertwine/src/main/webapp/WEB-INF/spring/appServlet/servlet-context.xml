@@ -5,99 +5,136 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+      http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
-	<!-- Enables the Spring MVC @Controller programming model -->
-	<!--  
-		Spring MVC에서 애노테이션 기반의 컨트롤러를 활성화함.
-		이를 통해 @Controller, @RequestMapping 등의 애노테이션을 사용하여 컨트롤러를 정의가능.  
-	-->
-	<annotation-driven /> 
+  
+   <annotation-driven /> 
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<!--  
-		정적 자원(static resources)에 대한 처리를 정의함.
-		/resources/** 패턴의 요청은 /resources/ 디렉토리에서 정적 자원을 찾아 제공함.
-	-->
-	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<!-- 뷰 리졸버(View Resolver)를 정의함. -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" /> <!-- JSP 파일의 경로를 지정함 -->
-		<beans:property name="suffix" value=".jsp" />  <!-- JSP 파일의 확장자를 지정함 -->
-		 <!-- 뷰 리졸버(View Resolver)의 우선 순위를 지정함, 여러 개의 뷰 리졸버가 등록되어 있을 때, 우선 순위를 통해 어떤 뷰 리졸버가 먼저 적용될지 결정함  -->
-		<beans:property name="order" value="1" />
-	</beans:bean>
-	
-	<!-- 컴포넌트 스캔을 통해 지정된 패키지의 컴포넌트를 검색하고 빈으로 등록함. 여기서는 org.myweb.first 패키지의 컴포넌트를 스캔하여 빈으로 등록함.  -->
-	<!-- 해당 패키지에서 DispatcherServlet이 @Controller, @Service, @Repository 등과 같은 어노테이션이 붙은 클래스를 검색하고 등록함. -->
-	<!--  
-		DispatcherServlet은 클라이언트의 요청이 들어올 때, 요청을 처리할 컨트롤러를 결정하는데
-		<context:component-scan>에 지정된 패키지 내에 있는 @Controller로 등록된 컨트롤러 클래스 중에서 적절한 컨트롤러를 찾아 사용함. 
-		어노테이션이 붙은 클래스를 찾아 빈으로 등록함
-	-->
-	<context:component-scan base-package="org.myweb.first" />
-	
-	
-	<!-- 
-		파일 다운을 위한 뷰클래스 실행하는 뷰리졸버 등록함
-		주의 : id 속성을 지정하면 안됨
-		여러 개의 뷰리졸버를 등록할 때는 실행 순서를 정해야 함
-		파일 다운용 뷰리졸버가 반드시 맨처음 실행되게 순서를 지정함
-		컨트롤러 메소드가 리턴하는 뷰이름과 일치하는 뷰클래스가 있으면, 
-		자동으로 해당 뷰클래스가 실행되게 함
-		파일 업로드를 위한 CommonsMultipartResolver를 등록하고 파일 크기 제한을 설정
-		
-		파일 다운로드와 같은 특정 기능을 위해 추가된 뷰 리졸버는   일반적인 뷰 리졸버보다 우선순위가 높아야 함. 
-		파일 다운로드와 같은 특정 기능에 대한 처리가 우선적으로 이루어져야 하기 때문임. 
-	 -->
-	 <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-	 	<beans:property name="order" value="0" /> <!-- 제일 먼저 실행되도록 순번 지정함 -->
-	 </beans:bean>
-	
-	<!-- 
-		컨트롤러가 리턴한 jsonString 내보내는 뷰리졸버를 추가 등록해야 함
-		pom.xml 에 dependency 로 추가해서 사용해야 함
-		JSON 형식의 데이터를 렌더링하기 위한 뷰를 빈으로 등록
-	 -->
-	<beans:bean class="net.sf.json.spring.web.servlet.view.JsonView" id="jsonView"></beans:bean>
+   <resources mapping="/resources/**" location="/resources/" />
 
-	<!--
-		파일 업로드를 지원하기 위한 CommonsMultipartResolver를 빈으로 등록
-		파일업로드용 클래스 등록 : 업로드시 파일 용량 제한 설정도 함께 해야 함 (대략 10메가바이트) 
-	-->
-	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		<beans:property name="maxUploadSize" value="10000000" />	
-	</beans:bean>
-	
-	<!-- Spring AOP를 사용하여 프록시를 생성하도록 설정  -->
-	<!-- AOP는 애플리케이션의 트랜잭션, 보안, 로깅 등과 같은 관심사(Concern)를 모듈화하여 코드의 중복을 줄이고, 관련 코드를 한 곳에서 관리할 수 있게 해주는 프로그래밍 기법 -->
-	<!-- proxy-target-class="true"는 프록시 생성 방법을 지정하는 옵션 중 하나임. 이 옵션을 설정하면 Spring AOP가 클래스 기반의 프록시를 생성함. -->
-	<!-- AOP 내용은 root-context.xml과 관련 -->
-	<!-- 관점 지향 프로그래밍 -->
-	<aop:aspectj-autoproxy proxy-target-class="true" />
-	
-	<!-- mvc 탭에서 등록 처리함 -->
-	<!--  인터셉터 부분 오류나서 다 주석 처리함!!!!!!!!!!!!!!!
-		<interceptor>
-			<mapping path="/bwform.do" /> 
-			<mapping path="/myinfo.do" />
-			<mapping path="/moveup.do" />
-			<mapping path="/breplyform.do" />
-			<beans:bean class="org.edu.intertwine.common.intercepter.LoginCheckIntercepter" id="loginCheckIntercepter" /> 
-		</interceptor>
-		
-		<interceptor>
-			<mapping path="/**" />  
-			<exclude-mapping path="/main.do" /> 
-			<beans:bean class="org.edu.intertwine.common.intercepter.LoggerInterceptor" id="loggerInterceptor" />
-		</interceptor>
-	</interceptors>
-	-->
+
+   <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <beans:property name="prefix" value="/WEB-INF/views/" /> 
+      <beans:property name="suffix" value=".jsp" />  
+      <beans:property name="order" value="1" />
+   </beans:bean>
+   
+   <context:component-scan base-package="org.edu.intertwine" />
+   
+    <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+       <beans:property name="order" value="0" />
+    </beans:bean>
+   
+   <beans:bean class="net.sf.json.spring.web.servlet.view.JsonView" id="jsonView"></beans:bean>
+
+   <beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+      <beans:property name="maxUploadSize" value="10000000" />   
+   </beans:bean>
+ 
+   <aop:aspectj-autoproxy proxy-target-class="true" />
+   
+<beans:bean id="mailSender"
+   	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+   		<beans:property name="host" value="smtp.gmail.com" />
+        <beans:property name="port" value="587" />
+        <beans:property name="username" value="gpfla7375@gmail.com" />
+        <beans:property name="password" value="zfdb tfbn hstt oith" />
+        <beans:property name="javaMailProperties">
+            <beans:props>           
+                <beans:prop key="mail.smtp.auth">true</beans:prop>
+                <beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+            </beans:props>
+        </beans:property>
+   </beans:bean>
+   
+<interceptors>
+   <interceptor>
+  	 	<mapping path="/**" />
+
+		<exclude-mapping path="/enrollPage.do" />
+		<exclude-mapping path="/idchk.do" />
+  	 	<exclude-mapping path="/phonesearchpwd.do" />
+  	 	<exclude-mapping path="/changePwd.do" />
+  	 	<exclude-mapping path="/updatePwd.do" />
+  	 	<exclude-mapping path="/ulogout.do" />
+  		<exclude-mapping path="/main.do" />
+  		<exclude-mapping path="/uinsert.do" />
+  		<exclude-mapping path="/emailAuth.do" />
+  		<exclude-mapping path="/postEmail.do" />
+  		<exclude-mapping path="/phonesearch.do" />
+  		<exclude-mapping path="/emailsearch.do" />
+		<exclude-mapping path="/findInfo.do" />
+  		<exclude-mapping path="/alogout.do" />
+  	 	<exclude-mapping path="/alogin.do" />
+  	 	<exclude-mapping path="/adminLogin.do" />
+  	 	<exclude-mapping path="/naver_login.do" />
+  	 	<exclude-mapping path="/kakao_loginP.do" />
+  	 	<exclude-mapping path="/emailchk.do" />
+  	 	<exclude-mapping path="/ulogin.do" />
+  	 	<exclude-mapping path="/ustopclear.do" />
+  	 	<exclude-mapping path="/socialPage.do" />
+    	<exclude-mapping path="/login.do" />
+    	<exclude-mapping path="/admain.do" />
+    	<exclude-mapping path="/RptPage.do" />
+    	
+    	
+    	
+    	
+    	<exclude-mapping path="/flist.do" />
+    	<exclude-mapping path="/ftop3.do" />
+    	<exclude-mapping path="/fdetail.do" />
+    	<exclude-mapping path="/fwform.do" />
+    	<exclude-mapping path="/finsert.do" />
+    	<exclude-mapping path="/fupview.do" />
+    	<exclude-mapping path="/foriginupdate.do" />
+    	<exclude-mapping path="/fdelete.do" />
+
+    	
+    	<exclude-mapping path="/qwform.do" />
+    	<exclude-mapping path="/qreplyform.do" />
+    	<exclude-mapping path="/qupview.do" />
+    	<exclude-mapping path="/qsearchTitle.do" />
+    	<exclude-mapping path="/qsearchWriter.do" />
+    	<exclude-mapping path="/qsearchDate.do" />
+    	<exclude-mapping path="/qoriginupdate.do" />
+    	
+    	<exclude-mapping path="/qreplyupdate.do" />
+    	<exclude-mapping path="/qdelete.do" />
+    	<exclude-mapping path="/qdown.do" />
+    	<exclude-mapping path="/qreply.do" />
+    	
+    	
+    	<exclude-mapping path="/qdetail.do" />
+    	<exclude-mapping path="/qinsert.do" />
+    	<exclude-mapping path="/qtop3.do" />
+    	<exclude-mapping path="/qlist.do" />
+    	<exclude-mapping path="/qreply.do" />
+    		
+    	<exclude-mapping path="/userRptPage.do" />
+    	<exclude-mapping path="/rptlist.do" />
+    	<exclude-mapping path="/rsearchStatus.do" />
+    	<exclude-mapping path="/rsearchboardNum.do" />
+    	<exclude-mapping path="/rptdetail.do" />
+    	<exclude-mapping path="/rptCommentdetail.do" />
+    	<exclude-mapping path="/inPostReport.do" />
+    	<exclude-mapping path="/inComReport.do" />
+    	<exclude-mapping path="/delcomment.do" />
+    	<exclude-mapping path="/upStatus.do" />
+    	<exclude-mapping path="/delContent.do" />
+    	<exclude-mapping path="/reportAlarm.do" />
+  
+         <beans:bean class="org.edu.intertwine.common.intercepter.LoginCheckIntercepter" id="loginCheckIntercepter" /> 
+      </interceptor>
+      
+        
+     <!-- <interceptor>
+         <mapping path="/**" />  
+    	<exclude-mapping path="/login.do" /> 
+         <beans:bean id="loggerInterceptor" class="org.edu.intertwine.common.intercepter.LoggerInterceptor" />
+      </interceptor> -->
+</interceptors>
 </beans:beans>
 
