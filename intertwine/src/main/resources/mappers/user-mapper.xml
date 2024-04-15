@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+	
+	<resultMap id="UserOne" type="User">
+		<id property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="userPwd" column="USER_PWD" />
+		<result property="nickname" column="NICKNAME" />
+		<result property="email" column="EMAIL" />
+		<result property="phone" column="PHONE" />
+		<result property="address" column="ADDRESS" />
+		<result property="birthday" column="BIRTHDAY" />
+		<result property="gender" column="GENDER" />
+		<result property="registerTime" column="REGISTER_TIME" />
+		<result property="accoutStatus" column="ACCOUNTSTATUS" />
+		<result property="visible" column="VISIBLE" />
+		<result property="userStatus" column="USER_STATUS" />
+		<result property="userStop" column="USER_STOP" />
+	</resultMap>
+	
+	<resultMap id="UserList" type="User">
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="userPwd" column="USER_PWD" />
+		<result property="nickname" column="NICKNAME" />
+		<result property="email" column="EMAIL" />
+		<result property="phone" column="PHONE" />
+		<result property="address" column="ADDRESS" />
+		<result property="birthday" column="BIRTHDAY" />
+		<result property="gender" column="GENDER" />
+		<result property="registerTime" column="REGISTER_TIME" />
+		<result property="accoutStatus" column="ACCOUNTSTATUS" />
+		<result property="visible" column="VISIBLE" />
+		<result property="userStatus" column="USER_STATUS" />
+		<result property="userStop" column="USER_STOP" />
+	</resultMap>
+
+	<!-- 마이페이지 -->
+	<resultMap id="MypageList" type="MyPage">
+		<id property="userId" column="USER_ID" />
+		<result property="userUseTime" column="USER_USE_TIME" />
+		<result property="userTime" column="USER_TIME" />
+		<result property="statusMessage" column="STATUSMESSAGE" />
+		<result property="profile" column="PROFILE" />
+		<result property="profileDraft" column="PROFILE_DRAFT" />
+	</resultMap>
+	
+	<resultMap id="notiList" type="Notification">
+		<id property="userId" column="USER_ID" />
+		<result property="notifyId" column="NOTIFY_ID" />
+		<result property="type" column="TYPE" />
+		<result property="notifyTime" column="NOTIFY_TIME" />
+		<result property="notifyContent" column="NOTIFY_CONTENT" />
+		<result property="notifyCheck" column="NOTIFY_CHECK" />
+	</resultMap>
+	
+	<select id="selectAllUserCount" resultType="_int">
+		select COUNT(*) from tb_users
+		where ACCOUNTSTATUS = 'Y'
+		AND to_char(sysdate, 'YYMMDD') = to_char( REGISTER_TIME, 'YYMMDD')
+	</select>
+
+	<select id="selectUser" parameterType="string" resultMap="UserOne">
+		select * from tb_users
+		left join TB_USER_STOP on tb_users.user_Id = TB_USER_STOP.user_Id
+		where tb_users.user_id = #{userId}
+		and ACCOUNTSTATUS = 'Y'
+		AND TB_USER_STOP.user_Id IS NULL
+	</select>
+	
+	<select id="selectUserCount" parameterType="string" resultType="_int">
+		select count(*) from tb_users
+		left join TB_USER_STOP on tb_users.user_Id = TB_USER_STOP.user_Id
+		where tb_users.user_id = #{userId}
+		and ACCOUNTSTATUS = 'Y'
+		AND TB_USER_STOP.user_Id IS NULL
+	</select>
+	
+	<!-- 휴면 유저 관리 -->
+	<select id="selectAccountStatus" parameterType="string" resultType="_int">
+		select count(*) from tb_users
+		left join TB_USER_STOP on tb_users.user_Id = TB_USER_STOP.user_Id
+		where tb_users.user_id = #{userId}
+		and ACCOUNTSTATUS = 'N'
+		AND TB_USER_STOP.user_Id IS NULL
+	</select>
+	
+	
+	<select id="selectEmail" parameterType="string" resultMap="UserList">
+		select * from tb_users
+		left join TB_USER_STOP on tb_users.user_Id = TB_USER_STOP.user_Id
+		where email = #{email}
+		and ACCOUNTSTATUS = 'Y'
+		AND TB_USER_STOP.user_Id IS NULL
+	</select>
+	
+	<select id="selectEmailCount" parameterType="string" resultType="_int">
+		select count(*) from tb_users
+		where email = #{email}
+	</select>
+	
+	<select id="selectPhone" parameterType="string" resultMap="UserList">
+		select * from tb_users
+		where phone = #{phone}
+	</select>
+	
+	<select id="selectSocialType" parameterType="string" resultType="String">
+		select type
+			from tb_users 
+			left join tb_social_login using (user_id)
+            where user_id = #{userId}
+	</select>
+	
+	
+	<!-- dml -->
+	<!-- 유저 추가 -->
+	<insert id="insertUser" parameterType="User">
+		insert into tb_users values( #{ userId }, #{userName}, #{userPwd} ,#{nickname}, #{email}, #{phone}, 
+		#{address}, default, default, default, default, default, default, default )
+	</insert>
+	
+	<!-- 소셜 수정 -->
+	<update id="updateSocial" parameterType="User">
+		update tb_users
+		set nickname = #{nickname}, address = #{address}, phone = #{phone}, USER_NAME = #{userName}
+		where email = #{email}
+	</update>
+	
+	<!-- 일반 유저 수정 -->
+	<update id="updateUser" parameterType="User">
+		update tb_users
+		set USER_NAME = #{userName }, nickname = #{nickname}, address = #{address}, phone = #{phone}
+		where user_id = #{userId}
+	</update>
+	
+	<update id="updateUserStatus" parameterType="String">
+		update tb_users
+		set ACCOUNTSTATUS = 'Y'
+		where email = #{email}
+	</update>
+	
+	
+	
+	<!-- 비번변경 -->
+	<update id="updatePwd" parameterType="User">
+		update tb_users
+		set user_pwd = #{userPwd}
+		where email = #{email}
+	</update>
+	
+	<!-- 소셜 추가 처리 -->
+	<insert id="insertSocial" parameterType="SocialLogin">
+		insert into tb_social_login values( #{userId}, #{type}, #{userTime} )
+	</insert>
+	
+	<!-- 마이페이지 -->	
+	<insert id="insertMyPage" parameterType="String">
+		insert into tb_Mypage 
+		values(#{userId}, sysdate, '0', '비어있음','비어있음', '')
+	</insert>
+	
+	<!-- 유저시간 업뎃 -->
+	<update id="updateUserTime" parameterType="MyPage">
+		update tb_Mypage 
+		set USER_TIME = to_char((TO_NUMBER( TO_CHAR(sysdate, 'HH24')) * 60 + TO_NUMBER(TO_CHAR(sysdate, 'MI'))) -  (TO_NUMBER( TO_CHAR(#{userUseTime}, 'HH24')) * 60 + TO_NUMBER(TO_CHAR(#{userUseTime}, 'MI'))), '999')
+		where user_id = #{userId}
+		and to_char(sysdate, 'YY/MM/dd') = to_char(USER_USE_TIME, 'YY/MM/dd')
+	</update>
+	
+	<update id="updateDayTime" parameterType="MyPage">
+		update tb_Mypage 
+		set USER_TIME = 0, USER_USE_TIME = sysdate
+		where user_id = #{userId}
+		and to_char(sysdate, 'YY/MM/dd') != to_char(USER_USE_TIME, 'YY/MM/dd')
+	</update>
+	
+	
+	<!-- 유저시간 확인 -->
+	<select id="selectUserTime" parameterType="string" resultType="String">
+		select  USER_TIME
+		from tb_Mypage  
+        where user_id = #{userId}
+		and to_char(sysdate, 'YY/MM/dd') = to_char(USER_USE_TIME, 'YY/MM/dd')
+	</select>
+	
+	<!-- 마이페이지 변경/확인 -->
+	<update id="updateMyPage" parameterType="MyPage">
+		update tb_Mypage
+		set STATUSMESSAGE = #{statusMessage}, PROFILE = #{profile}, PROFILE_DRAFT = #{profileDraft}
+		where user_id = #{userId}
+	</update>
+	
+	
+	
+	<!-- 본인조회용 -->
+	<select id="selectMyPage" parameterType="String" resultMap="MypageList">
+			select *
+			from tb_myPage 
+            where user_id = #{userId}
+	</select>
+	
+	<!-- 친구조회용 -->
+	<select id="selectMyFriendPage" parameterType="String" resultMap="MypageList">
+			select *
+			from tb_myPage
+			where user_id = (select friend_id
+                        	from tb_friend
+                        	where user_id = #{user_id})
+	</select>
+	
+	
+	<select id="selectUserNickname" parameterType="string" resultType="String">
+			SELECT NICKNAME 
+			FROM TB_USERS
+			WHERE USER_ID = #{userId}
+	</select>
+
+	<update id="updateUserNickname" parameterType="User">
+		UPDATE TB_USERS
+		SET NICKNAME = #{nickname}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	
+	
+	<!-- 유저시간 설정 -->
+	<select id="selectNotify" parameterType="string" resultMap="notiList">
+		SELECT * 
+		FROM TB_NOTIFICATION
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	
+	
+	<update id="updateCustonAlarm" parameterType="Notification">
+		UPDATE TB_NOTIFICATION
+		SET NOTIFY_CONTENT = #{notifyContent}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<insert id="insertAlarm" parameterType="String">
+		insert into TB_NOTIFICATION 
+		values(SEQ_NOTIFY.NEXTVAL, #{userId}, 1,sysdate,'접속후 0 분이 지났습니다', 'Y')
+	</insert>
+	
+	<select id="findAllUsers" resultMap="UserList">
+		SELECT user_id 
+		FROM TB_USERS
+	</select>
+	
+	<update id="insertUserStop" parameterType="String">
+		insert INTO TB_USER_STOP
+		values (#{userId}, sysdate)
+	</update>
+	
+	<update id="updateUserdisable" parameterType="String">
+		UPDATE TB_USERS
+		SET ACCOUNTSTATUS = 'N'
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateUserStop" parameterType="String">
+		UPDATE TB_USERS
+		SET USER_STOP = 'Y'
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	
+
+</mapper>

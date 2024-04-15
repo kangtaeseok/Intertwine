@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qnaMapper">
+
+	<resultMap type="Qna" id ="resultList">
+		<result property="qnaNum" column="QNA_NUM"/>
+		<result property="qnaWriter" column="QNA_WRITER"/>
+		<result property="qnaTitle" column="QNA_TITLE"/>
+		<result property="qnaContent" column="QNA_CONTENT"/>
+		<result property="qnaOriginalFileName" column="QNA_ORIGINAL_FILENAME"/>
+		<result property="qnaRenameFileName" column="QNA_RENAME_FILENAME"/>
+		<result property="qnaRef" column="QNA_REF"/>
+		<result property="qnaReplyRef" column="QNA_REPLY_REF"/>
+		<result property="qnaLev" column="QNA_LEV"/>
+		<result property="qnaReplySeq" column="QNA_REPLY_SEQ"/>
+		<result property="qnaReadCount" column="QNA_READCOUNT"/>
+		<result property="qnaDate" column="QNA_DATE"/>	
+	</resultMap>
+
+	<resultMap id="resultQnaTop3" type="Qna">
+		<result property="qnaNum" column="QNA_NUM" />
+		<result property="qnaTitle" column="QNA_TITLE" />
+		<result property="qnaReadCount" column="QNA_READCOUNT" />
+	</resultMap>
+	
+	<!-- 
+		비교연산자를 쿼리문에 사용하면
+		태그 엘리면트 꺽쇠괄호 등(<, >, &)과 혼동하는 문제가 발생할 수 있음
+		이 문제를 방지하기 위해 xml 코드 중 xml parser 에 의해 해석하지 말고, 
+		문장 그대로 해석하라는 뜻으로 <![CDATA[ 쿼리문장 ]]> 사용함
+	 -->
+	<select id="selectTop3" resultMap="resultQnaTop3">
+		<![CDATA[
+		select * from (select rownum rnum, qna_num, qna_title, qna_readcount 
+				          from (select * from tb_qna 
+				          where qna_lev = 1 
+				          order by qna_readcount desc)) 
+		where rnum <= 3
+		]]>
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		select count(*) from tb_qna
+	</select>
+	
+	<select id="selectList" parameterType="Paging" resultMap = "resultList">
+		select *
+		from (select rownum rnum, qna_num, qna_writer, qna_title, qna_content,
+    			qna_original_filename, qna_rename_filename, QNA_REF, QNA_REPLY_REF,
+    			QNA_LEV, QNA_REPLY_SEQ, QNA_READCOUNT, QNA_DATE
+				from (select * from tb_qna 
+    					order by QNA_REF desc, QNA_REPLY_REF desc,
+    					QNA_LEV asc, QNA_REPLY_SEQ asc))
+		where rnum between ${ startRow } and ${ endRow } 
+	</select>
+	
+	<select id="selectQna" parameterType="_int" resultMap = "resultList">
+		select * from tb_qna
+		where qna_num = #{ qnaNum }
+	</select>
+	
+	<!-- 검색 관련 쿼리문 ******************************** -->
+	<select id="selectSearchTitleCount" parameterType="string" resultType="_int">
+		select count(*) from tb_qna
+		where qna_lev = 1
+		and qna_title like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSearchWriterCount" parameterType="string" resultType="_int">
+		select count(*) from tb_qna
+		where qna_writer like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSearchDateCount" parameterType="SearchDate" resultType="_int">
+		select count(*) from tb_qna
+		where qna_lev = 1
+		and qna_date between #{ begin } and #{ end }
+	</select>
+	
+	
+	<select id="selectSearchTitle" parameterType="Search" resultMap="resultList">
+		select *
+		from (select rownum rnum, qna_num, qna_writer, qna_title, qna_content,
+    			qna_original_filename, qna_rename_filename, QNA_REF, QNA_REPLY_REF,
+    			QNA_LEV, QNA_REPLY_SEQ, QNA_READCOUNT, QNA_DATE
+				from (select * from tb_qna 
+					  where qna_lev = 1
+							and qna_title like '%' || #{keyword} || '%'
+    				  order by QNA_REF desc, QNA_REPLY_REF desc,
+    				  QNA_LEV asc, QNA_REPLY_SEQ asc))
+		where rnum between ${ startRow } and ${ endRow }	
+	</select>
+	
+		<select id="selectSearchWriter" parameterType="Search" resultMap="resultList">
+		select *
+		from (select rownum rnum, qna_num, qna_writer, qna_title, qna_content,
+    			qna_original_filename, qna_rename_filename, QNA_REF, QNA_REPLY_REF,
+    			QNA_LEV, QNA_REPLY_SEQ, QNA_READCOUNT, QNA_DATE
+				from (select * from tb_qna 
+					  where qna_writer = #{keyword}
+    				  order by QNA_REF desc, QNA_REPLY_REF desc,
+    				  		QNA_LEV asc, QNA_REPLY_SEQ asc))
+		where rnum between ${ startRow } and ${ endRow }	
+	</select>
+	
+		<select id="selectSearchDate" parameterType="Search" resultMap="resultList">
+		select *
+		from (select rownum rnum, qna_num, qna_writer, qna_title, qna_content,
+    			qna_original_filename, qna_rename_filename, QNA_REF, QNA_REPLY_REF,
+    			QNA_LEV, QNA_REPLY_SEQ, QNA_READCOUNT, QNA_DATE
+				from (select * from tb_qna 
+					  where qna_lev = 1
+							and qna_date between #{ begin } and #{ end }
+    				  order by QNA_REF desc, QNA_REPLY_REF desc,
+    				  		QNA_LEV asc, QNA_REPLY_SEQ asc))
+		where rnum between ${ startRow } and ${ endRow }	
+	</select>
+	
+	
+	
+	<!-- dml ******************************************************** -->
+	<insert id="insertOriginQna" parameterType="Qna">
+		insert into tb_qna
+		values ((select max(qna_num)+1 from tb_qna), #{qnaWriter}, #{qnaTitle},
+		 	#{qnaContent}, #{qnaOriginalFileName}, #{qnaRenameFileName},
+		  	(select max(qna_num)+1 from tb_qna), 
+		  	null, default, default, default, default)
+	</insert>
+	
+	<update id="updateAddReadCount" parameterType="_int">
+		update tb_qna
+		set qna_readcount = qna_readcount + 1
+		where qna_num = #{ qnaNum }
+	</update>
+	
+	<update id= "updateReplySeq1" parameterType="Qna">
+	    update tb_qna
+	    set qna_reply_seq = qna_reply_seq + 1
+	    where qna_ref=#{ qnaRef }
+	    and qna_lev = #{ qnaLev }
+	</update>
+	
+	<update id= "updateReplySeq2" parameterType="Qna">
+	    update tb_qna
+	    set qna_reply_seq = qna_reply_seq + 1
+	    where qna_ref=#{ qnaRef }
+	    and qna_lev = #{ qnaLev }
+	    and qna_reply_ref = #{ qnaReplyRef }
+	</update>
+	
+	<insert id= "insertReply1" parameterType="Qna">
+		insert into tb_qna
+		values ((select max(qna_num)+1 from tb_qna), #{qnaWriter}, #{qnaTitle},
+		 	#{qnaContent}, 
+		 	null, null,
+		  	#{qnaRef},
+		  	(select max(qna_num)+1 from tb_qna), 
+		  	#{qnaLev}, #{qnaReplySeq}, default, sysdate)
+		
+	
+	</insert>
+	
+	<insert id= "insertReply2" parameterType="Qna">
+		insert into tb_qna
+		values ((select max(qna_num)+1 from tb_qna), #{qnaWriter}, #{qnaTitle},
+		 	#{qnaContent}, 
+		 	null, null,
+		  	#{qnaRef},
+		  	#{qnaReplyRef}, 
+		  	#{qnaLev}, #{qnaReplySeq}, default, sysdate)	
+	</insert>
+	
+	<delete id="deleteQna" parameterType="Qna">
+		delete from tb_qna
+		<if test="qnaLev == 1">
+			where qna_ref = #{ qnaNum }
+		</if>
+		<if test="qnaLev == 2">
+			where qna_reply_ref = #{ qnaNum }
+		</if>
+		<if test="qnaLev == 3">
+			where qna_num = #{ qnaNum }
+		</if>
+		
+	</delete>
+	
+	<update id="updateReply" parameterType="Qna">
+		update tb_qna
+		set qna_title = #{qnaTitle}, 
+			qna_content = #{qnaContent}
+		where qna_num =#{qnaNum} 
+	</update>
+
+	<update id="updateOrigin" parameterType="Qna">
+		update tb_qna
+		set qna_title = #{qnaTitle}, 
+			qna_content = #{qnaContent}
+		<if test="qnaOriginalFileName != null">
+			, qna_original_filename = #{ qnaOriginalFileName }
+			, qna_rename_filename = #{ qnaRenameFileName }
+		</if>
+		<if test="qnaOriginalFileName == null">
+			, qna_original_filename = null
+			, qna_rename_filename = null
+		</if>
+		where qna_num =#{ qnaNum } 
+	</update>
+
+</mapper>

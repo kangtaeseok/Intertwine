@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="commentMapper">
+
+	<resultMap id="CommentList" type="Comment">
+		<result property="commentId" column="COMMENT_ID" />
+		<result property="postId" column="POST_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="commentContent" column="COMMENT_CONTENT" />
+		<result property="commentLevel" column="COMMENT_LEVEL" />
+		<result property="parentCommentId" column="PARENT_COMMENT_ID" />
+		<result property="commentTime" column="COMMENT_TIME" />
+	</resultMap>
+	
+	<!--  SELECT  -->
+	<select id="selectCommentbyCommentId" parameterType="_int" resultMap="CommentList">
+		SELECT *  
+		FROM TB_COMMENT  
+		WHERE COMMENT_ID = #{commentId} 
+	</select>	
+ 	<select id="selectCommentCounts" parameterType="_int" resultType="_int">
+ 		SELECT COUNT(*)   
+ 		FROM TB_COMMENT 
+ 		WHERE POST_ID = #{postId}  
+ 	</select>
+ 	<select id="selectComments" parameterType="_int" resultMap="CommentList">
+ 		WITH RecursiveComments (COMMENT_ID, POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_LEVEL, PARENT_COMMENT_ID, COMMENT_TIME, RootCommentID, CommentHierarchy, CommentOrder) AS (
+  SELECT 
+    c1.COMMENT_ID, 
+    c1.POST_ID, 
+    c1.USER_ID, 
+    c1.COMMENT_CONTENT, 
+    c1.COMMENT_LEVEL, 
+    c1.PARENT_COMMENT_ID, 
+    c1.COMMENT_TIME, 
+    c1.COMMENT_ID AS RootCommentID, 
+    1 AS CommentHierarchy, 
+    ROW_NUMBER() OVER(PARTITION BY c1.POST_ID ORDER BY c1.COMMENT_TIME ASC) AS CommentOrder 
+  FROM TB_COMMENT c1 
+  WHERE c1.COMMENT_LEVEL = '0' 
+    AND c1.POST_ID = #{postId} 
+  
+  UNION ALL
+  
+  SELECT 
+    c2.COMMENT_ID, 
+    c2.POST_ID, 
+    c2.USER_ID, 
+    c2.COMMENT_CONTENT, 
+    c2.COMMENT_LEVEL, 
+    c2.PARENT_COMMENT_ID, 
+    c2.COMMENT_TIME, 
+    rc.RootCommentID,  
+    rc.CommentHierarchy + 1 AS CommentHierarchy,  
+    rc.CommentOrder  
+  FROM TB_COMMENT c2 
+  JOIN RecursiveComments rc ON c2.PARENT_COMMENT_ID = rc.COMMENT_ID 
+  WHERE c2.COMMENT_LEVEL = '1'  
+) 
+SELECT COMMENT_ID, POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_LEVEL, PARENT_COMMENT_ID, COMMENT_TIME, RootCommentID, CommentHierarchy, CommentOrder 
+FROM RecursiveComments 
+ORDER BY CommentOrder, CommentHierarchy, COMMENT_TIME ASC 
+ 	</select>
+ 	
+ 	<!-- INSERT -->
+ 	
+ 	<insert id="insertComment1" parameterType="Comment">
+ 		INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT.NEXTVAL, #{postId}, #{userId}, #{commentContent}, 0, NULL, SYSDATE)
+ 	</insert>
+	<insert id="insertComment2" parameterType="Comment">
+		INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT.NEXTVAL, #{postId}, #{userId}, #{commentContent}, 1, #{parentCommentId}, SYSDATE)
+	</insert> 	
+	
+	
+	<!--  DELETE -->
+	<delete id="deleteParentComment" parameterType="_int">
+		DELETE FROM TB_COMMENT WHERE PARENT_COMMENT_ID = #{commentId}
+	</delete>
+	<delete id="deleteComment" parameterType="Comment">
+		DELETE FROM TB_COMMENT
+		WHERE COMMENT_ID = #{commentId} AND USER_ID = #{userId}
+	</delete>
+	
+	<delete id="deleteBatchCommentsbyCommentIds" parameterType="list">
+		DELETE FROM TB_COMMENT
+		WHERE COMMENT_ID IN
+		<foreach item="commentId" collection="list" open="(" separator="," close=")">
+    	#{commentId} 
+  		</foreach>
+	</delete>
+	
+</mapper>

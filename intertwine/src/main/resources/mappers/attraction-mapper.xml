@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attractionMapper">
+
+	<resultMap type="Attraction" id="resultAttraction">
+		<result property="attractionId" column="ATTRACTION_ID" />
+		<result property="attractionName" column="ATTRACTION_NAME" />
+		<result property="attractionAddress" column="ATTRACTION_ADDRESS" />
+		<result property="attractionLat" column="ATTRACTION_LAT" />
+		<result property="attractionLon" column="ATTRACTION_LON" />
+		<result property="attractionPark" column="ATTRACTION_PARK" />
+		<result property="attractionDescription" column="ATTRACTION_DESCRIPTION" />
+		<result property="attractionInstitutionName" column="ATTRACTION_INSTITUTION_NAME" />
+		<result property="attractionInstitutionPhone" column="ATTRACTION_INSTITUTION_PHONE" />
+		<result property="attractiondate" column="ATTRACTION_DATE" />
+	</resultMap>
+
+	<select id="selectAttraction" resultMap="resultAttraction">
+     SELECT * 
+		   FROM TB_ATTRACTION 
+		   ORDER BY ATTRACTION_DATE DESC
+   	</select>
+   	
+   	<!-- 검색 관련 쿼리문 **************************************************** -->
+	<select id="selectSearchTitle" parameterType="string" resultMap="resultAttraction">
+		select * from TB_ATTRACTION
+		where ATTRACTION_NAME like '%' || #{ keyword } || '%'
+	</select>
+	
+	<!-- 검색 관련 쿼리문 카운터 *********************************************** -->
+	<select id="selectSearchTitleCount" parameterType="string" resultType="_int">
+		select count(*) from TB_ATTRACTION
+		where ATTRACTION_NAME like '%' || #{ keyword } || '%'
+	</select>
+	
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
