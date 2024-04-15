@@ -12,8 +12,6 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String address;
-	private java.sql.Date birthday;
-	private String gender;
 	private java.sql.Date registerTime;
 	private String accoutStatus;
 	private int visible;
@@ -62,18 +60,7 @@ public class User implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public java.sql.Date getBirthday() {
-		return birthday;
-	}
-	public void setBirthday(java.sql.Date birthday) {
-		this.birthday = birthday;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+	
 	public java.sql.Date getRegisterTime() {
 		return registerTime;
 	}
@@ -108,7 +95,7 @@ public class User implements Serializable {
 		return serialVersionUID;
 	}
 	public User(String userId, String userName, String userPwd, String nickname, String email, String phone,
-			String address, Date birthday, String gender, Date registerTime, String accoutStatus, int visible,
+			String address, Date registerTime, String accoutStatus, int visible,
 			int userStatus, String userStop) {
 		super();
 		this.userId = userId;
@@ -117,9 +104,8 @@ public class User implements Serializable {
 		this.nickname = nickname;
 		this.email = email;
 		this.phone = phone;
-		this.address = address;
-		this.birthday = birthday;
-		this.gender = gender;
+		this.address = address;	
+		
 		this.registerTime = registerTime;
 		this.accoutStatus = accoutStatus;
 		this.visible = visible;
@@ -129,8 +115,8 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", userPwd=" + userPwd + ", nickname=" + nickname
-				+ ", email=" + email + ", phone=" + phone + ", address=" + address + ", birthday=" + birthday
-				+ ", gender=" + gender + ", registerTime=" + registerTime + ", accoutStatus=" + accoutStatus
+				+ ", email=" + email + ", phone=" + phone + ", address=" + address 
+				+ ", registerTime=" + registerTime + ", accoutStatus=" + accoutStatus
 				+ ", visible=" + visible + ", userStatus=" + userStatus + ", userStop=" + userStop + "]";
 	}
 	public User() {

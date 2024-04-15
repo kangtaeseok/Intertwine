@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +27,7 @@
                     <a href="${ pageContext.servletContext.contextPath }/chatViewMain.do"><i class="fa-solid fa-comment"></i> 채팅</a>
                 </li>
                 <li id="alarm">
-                    <a href="#"><i class="fa-solid fa-bell"></i> 알림</a>
+                    <a href="movemap.do"><i class="fa-solid fa-map-location-dot">지도</i></a>
                 </li>
                 <li id="bookmark">
                     <a href="${ pageContext.servletContext.contextPath }/getbookmarkfeed.do"><i class="fa-solid fa-bookmark"></i> 북마크</a>
@@ -48,7 +51,7 @@
             <div id="chatting_sub_menu" class="sub_menu">
                 채팅 서브메뉴
             </div>
-            <div id="alarm_sub_menu" class="sub_menu">
+            <div  >
                 알림 서브메뉴
             </div>
             <div id="settings_sub_menu" class="sub_menu">

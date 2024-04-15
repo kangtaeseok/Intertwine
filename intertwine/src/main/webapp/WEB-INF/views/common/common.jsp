@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +20,7 @@
 
 <!-- js 파일 -->
 <script defer src="/intertwine/resources/js/aievent.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
+<script defer src="/intertwine/resources/js/mainpage.js"></script> <!-- 이 jsp파일의 js파일 연결 -->
 <script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script> <!-- 폰트어썸 가져오기 -->
 <script src="/intertwine/resources/js/kakao.min.js"></script>
 <script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>
@@ -103,7 +107,7 @@ function kakaoLogout() {
         <div> <!-- 홈 버튼 -->
             <nav class="homebutton_nav">
                 <ul>
-                    <li class="homebutton"></li>
+                    <li class="homebutton"><a href="${pageContext.servletContext.contextPath}/main.do" style="width:100px; height:35px;"></a></li>
                 </ul>
                 <ol>
                     <a href="${pageContext.servletContext.contextPath}/main.do"><i class="fa-solid fa-house"></i></a> <!-- 웹페이지 축소했을때 나오는 집 모양 아이콘 -->

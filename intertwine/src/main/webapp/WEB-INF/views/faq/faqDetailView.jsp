@@ -31,7 +31,7 @@
 <script type="text/javascript">
 function requestReply(){
 	//댓글달기 요청 함수
-	location.href="${ replyf }";
+	location.href="${ freplyf }";
 }
 
 function requestDelete(){
@@ -94,21 +94,15 @@ $(function(){
 						<c:if test="${!empty loginAdmin }">
 							<button onclick="moveUpdatePage(); return false;">수정페이지로 이동</button>&nbsp;
 							<button onclick="requestDelete(); return false;">글삭제</button> &nbsp;
-							<c:if test="${ faq.faqLev < 3 }">
-								<button onclick="requestReply(); return false;">댓글달기</button> &nbsp;
-							</c:if>
-						</c:if>
 						
 
-					
+						</c:if>
 
-					     
-					     
 					     
 					 <c:url var="fl" value="flist.do">
 					 	<c:param name="page" value="${ currentPage }" /> 
 					 </c:url>   
-					 <button onclick="javascript:location.href='${ fl }';">목록</button> 
+					 <button onclick="location.href='${ fl }';">목록</button> 
 				</th>		
 			</tr>
 		</table>

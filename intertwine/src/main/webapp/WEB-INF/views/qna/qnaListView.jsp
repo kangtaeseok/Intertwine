@@ -194,7 +194,7 @@ $(function(){
 		<br>
 		
 		<%-- 페이징 처리 뷰 포함 처리 --%>
-		<c:import url="/WEB-INF/views/common/pagingView.jsp" />
+		<c:import url="/WEB-INF/views/qna/pagingView.jsp" />
 
 
 

@@ -20,7 +20,7 @@ document.getElementById("faqContent").innerHTML = `
 <h1>자주묻는질문(FAQ)</h1>
 <hr>
 <br>
-<h2 align="center">${ faq.faqNum }번 게시글 수정 페이지</h2>
+<h2 align="left">${ faq.faqNum }번 게시글 수정 페이지</h2>
 
 <%-- 원글 수정 폼 : 첨부파일 수정 기능 포함 --%>
 <%-- <% if(faq.getFaqLev()  == 1){ %> --%>

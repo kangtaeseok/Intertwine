@@ -779,7 +779,7 @@ public class PostController {
 		} // 파일이 있다면
 
 		mv.addObject("포스트가 생성되었습니다.");
-		mv.setViewName("common/main");
+		mv.setViewName("redirect:main.do");
 
 		return mv;
 

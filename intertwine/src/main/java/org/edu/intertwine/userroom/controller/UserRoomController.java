@@ -48,7 +48,7 @@ public class UserRoomController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PostService postService;
 
@@ -67,23 +67,23 @@ public class UserRoomController {
 				// 세션에 저장된 User 객체를 가져와서 캐스팅
 				user = (User) attributeValue;
 
-				userId = user.getUserId();
+				userId = user.getUserId(); // userId 뽑아오기
 			}
 		}
 
 		UserRoom userRoom = userRoomService.selectUserRoomFirst(userId);
 
 		if (userRoom != null) { // 처음 접속은 아닌 경우
-			userRoom = userRoomService.selectUserRoom(userId);
+			userRoom = userRoomService.selectUserRoom(userId); // 리소스 배치정보까지 전부 조회
 			if (userRoom != null) { // 방이 꾸며져있는 유저의 경우
 				model.addAttribute("userRoom", userRoom);
 			} else { // 방이 안 꾸며져있는 유저의 경우
-				userRoom = userRoomService.selectUserRoomFirst(userId);
+				userRoom = userRoomService.selectUserRoomFirst(userId); // 리소스 배치정보는 빼고 조회
 				model.addAttribute("userRoom", userRoom);
 			}
 		} else { // 처음 접속하는 유저의 경우
-			userRoomService.insertUserRoomFirst(userId);
-			userRoom = userRoomService.selectUserRoomFirst(userId);
+			userRoomService.insertUserRoomFirst(userId); // default값으로 insert
+			userRoom = userRoomService.selectUserRoomFirst(userId); 
 			model.addAttribute("userRoom", userRoom);
 		}
 		return "square/squareMain";
@@ -163,7 +163,7 @@ public class UserRoomController {
 		for (Friend friend : friendList) {
 			JSONObject jsonFriend = new JSONObject();
 			jsonFriend.put("friendId", friend.getFriendId());
-			
+
 			MyPage myPage = userService.selectMyPage(friend.getFriendId());
 			jsonFriend.put("profiledraft", myPage.getProfileDraft()); // 프로필 이미지 URL 추가
 
@@ -222,10 +222,10 @@ public class UserRoomController {
 	public String moveToFriendRoom(@RequestParam("friendId") String friendId, HttpServletResponse response) {
 
 		UserRoom userRoom = userRoomService.selectUserRoom(friendId);
-		
+
 		JSONObject job = new JSONObject();
 		JSONArray rListJson = new JSONArray();
-		
+
 		if (userRoom != null) { // 방이 꾸며져있는 경우
 			job.put("userId", userRoom.getUserId());
 			job.put("roomColor", userRoom.getRoomColor());
@@ -242,10 +242,10 @@ public class UserRoomController {
 				resourceJson.put("resourceURL", resource.getResourceURL());
 
 				rListJson.add(resourceJson);
-			} 
-			
+			}
+
 			job.put("rList", rListJson);
-		}else { // 방이 안꾸며져있는경우
+		} else { // 방이 안꾸며져있는경우
 			userRoom = userRoomService.selectUserRoomFirst(friendId);
 			if (userRoom != null) { // 한번 접속은 했던 유저의 경우
 				job.put("userId", userRoom.getUserId());
@@ -256,30 +256,29 @@ public class UserRoomController {
 
 		return job.toJSONString();
 	}
-	
-	
+
 	@RequestMapping(value = "getimagebyuserid.do", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	public String getImageByUserId(@RequestParam("roomHost") String roomHost, HttpServletResponse response) {
-	    ArrayList<Post> posts = postService.selectPostsById(roomHost);
-	    JSONArray imagesJsonArray = new JSONArray(); // 이미지 URL을 담을 JSON 배열 생성
+		ArrayList<Post> posts = postService.selectPostsById(roomHost);
+		JSONArray imagesJsonArray = new JSONArray(); // 이미지 URL을 담을 JSON 배열 생성
 
-	    if (posts != null) {
-	        for (Post post : posts) {
-	            Image image = postService.selectOneImage(post.getPostId());
-	            if (image != null) {
-	                // 각 이미지의 URL만을 추출하여 JSON 배열에 추가
-	                JSONObject imageJson = new JSONObject();
-	                imageJson.put("imageURL", image.getImageURL());
-	                imagesJsonArray.add(imageJson);
-	            }
-	        }
-	    }
+		if (posts != null) {
+			for (Post post : posts) {
+				Image image = postService.selectOneImage(post.getPostId());
+				if (image != null) {
+					// 각 이미지의 URL만을 추출하여 JSON 배열에 추가
+					JSONObject imageJson = new JSONObject();
+					imageJson.put("imageURL", image.getImageURL());
+					imagesJsonArray.add(imageJson);
+				}
+			}
+		}
 
-	    JSONObject job = new JSONObject();
-	    job.put("images", imagesJsonArray); // 생성된 JSON 배열을 최종 JSON 객체에 추가
+		JSONObject job = new JSONObject();
+		job.put("images", imagesJsonArray); // 생성된 JSON 배열을 최종 JSON 객체에 추가
 
-	    return job.toJSONString(); // JSON 객체를 문자열로 변환하여 반환
+		return job.toJSONString(); // JSON 객체를 문자열로 변환하여 반환
 	}
 
 }
