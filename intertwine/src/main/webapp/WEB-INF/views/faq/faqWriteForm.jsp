@@ -53,7 +53,7 @@ $(function(){
 				<th colspan="2">
 					<input type="submit" value="등록하기">
 					<input type="reset" value="작성취소">
-					<input type="button" value="목록" onclick="javascrpt.location.href='${ fl }'; return false;" }>
+					<input type="button" value="목록" onclick="location.href='${ fl }'; return false;" }>
 				</th>
 			</tr>
 		</table>

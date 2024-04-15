@@ -616,15 +616,21 @@ myCharacter.addEventListener('contextmenu', function (event) {
                     // rList가 비어있지 않다면 리소스를 페이지에 추가
                     if (roomData.rList && roomData.rList.length > 0) {
                         roomData.rList.forEach(function(resource) {
+                        var scaleValue = resource.resourceURL.includes('0') ? 1.5 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('25') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('26') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('27') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('28') ? 0.3 : resource.resourceScale; 
+				        	scaleValue = resource.resourceURL.includes('29') ? 0.3 : resource.resourceScale; 
                             var imgElement = $('<img>', {
                                 src: resource.resourceURL,
                                 alt: "Room Resource Image",
                                 class: "userroomresource",
                                 css: {
                                     position: "absolute",
-                                    left: resource.resourcePositionX + "px",
-                                    top: resource.resourcePositionY + "px",
-                                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + resource.resourceScale + ")"
+                                    left: resource.resourcePositionX*2.3 + "px",
+                                    top: resource.resourcePositionY*2.3 + "px",
+                                    transform: "rotate(" + resource.resourceRotation + "deg) scale(" + scaleValue + ")"
                                 }
                             });
                             $("#userroom").append(imgElement);

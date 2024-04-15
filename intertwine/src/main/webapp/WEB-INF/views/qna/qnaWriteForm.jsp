@@ -14,23 +14,12 @@
 $(function(){
 	
 	document.getElementById("faqContent").innerHTML = `
-
-		
-		
 		<h1>문의하기(Q&A)</h1>
-		<hr>
-		<br>
-
-		
+		<hr><br>
 		<h1 align="center">QnA 원글 등록 페이지</h1>
 		<br>
-		
-		<!-- form  에서 입력값들과 파일을 함께 전송하려면 반드시 속성 추가해야 함 :
-		     enctype="multipart/form-data"
-		 -->
 		<form action="qinsert.do" method="post" enctype="multipart/form-data">
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
-		
 			<tr>
 			    <th>제목</th>
 			    <td><input type="text" name="qnaTitle"></td>
@@ -44,7 +33,6 @@ $(function(){
 			    <c:if test="${ !empty loginAdmin }">	
 			    <td><input type="text" name="qnaWriter" readonly value="${ sessionScope.loginAdmin.adminId }"></td>
 			    </c:if>			    
-			    
 			</tr>
 			<tr>
 			    <th>첨부파일</th>
@@ -55,8 +43,6 @@ $(function(){
 			    <td><textarea rows="5", cols="50" name="qnaContent"></textarea></td>
 			</tr>
 			<tr>
-
-				
 				<th colspan="2">
 					<input type="submit" value="등록하기">
 					<input type="reset" value="작성취소">
@@ -78,22 +64,11 @@ $(function(){
 				 	</c:url>
 					</c:if> 
 					<input type="button" value="목록" onclick="location.href='${ qsearchwriter }'; return false;" >
-					
-				
-
-	                
-					
-					
-					
 				</th>
 			</tr>
 		</table>
 		</form>
-		
 		<br>
-
-
-
 `; 
 });
 </script>

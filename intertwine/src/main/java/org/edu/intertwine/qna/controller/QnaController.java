@@ -55,8 +55,8 @@ public class QnaController {
 		mv.setViewName("qna/qnaReplyForm");
 		
 		return mv;
-	}    
-	  
+	} 
+	
 	//게시글(원글, 댓글, 대댓글) 수정페이지로 이동 처리용
 	@RequestMapping("qupview.do")
 	public String moveQnaUpdatePage(

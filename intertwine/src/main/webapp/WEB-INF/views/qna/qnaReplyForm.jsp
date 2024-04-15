@@ -19,22 +19,15 @@
 $(function(){
 	
 	document.getElementById("faqContent").innerHTML = `
-
-		
-		
 		<h1>문의하기(Q&A)</h1>
 		<hr>
 		<br>
-
 		<h2 align="left">${ requestScope.qnum }번글 답변 등록 페이지</h2>
-		
 		<br>
-		
 		<form action="qreply.do" method="post">
 			<input type="hidden" name="qnum" value="${ requestScope.qnum }">
 			<input type="hidden" name="qwriter" value="${ requestScope.qwriter }">
 			<input type="hidden" name="page" value="${ requestScope.currentPage }">
-		
 		<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
 			<tr>
 				<th>제 목</th>

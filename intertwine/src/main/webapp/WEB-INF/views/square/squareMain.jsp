@@ -482,8 +482,15 @@
 			</ul>
 		</aside>
 		<div id="submenubars">
-			<div id="dummy_sub_menu" class="sub_menu">더미 서브메뉴</div>
-			<div id="mypage_sub_menu" class="sub_menu">마이페이지 서브메뉴</div>
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+               	<ul>
+					<li><a href="create.do">글쓰기<i class="fa-solid fa-pencil"></i></a></li>
+					<li><a href="mypage.do">마이 페이지 확인</a></li>
+				</ul>
+            </div>
 			<div id="chatting_sub_menu" class="sub_menu">채팅 서브메뉴</div>
 			<div id="alarm_sub_menu" class="sub_menu">알림 서브메뉴</div>
 			<div id="settings_sub_menu" class="sub_menu">설정 서브메뉴</div>
@@ -495,8 +502,6 @@
 						<img src="/intertwine/resources/images/loading/loading3.gif"
 							alt="로딩 중...">
 						<div id="squaretip">알고 계셨나요? 팀 세미콜론은 8명의 멤버로 이루어져 있답니다.</div>
-						<!-- <div id="squaretip">알고 계셨나요? Intertwine은 두 가지 이상의 것이 서로 얽히거나 엮이는 것을 의미합니다. </div> -->
-						<!-- <div id="squaretip">알고 계셨나요? 알고 계셨군요.</div> -->
 					</div>
 					<div id="userroom" style="background-color:${userRoom.roomColor}">
 						<button id="btnselectguestbook" class="bubbly-button">방명록
@@ -508,31 +513,6 @@
 						
 
 						<c:forEach var="roomResource" items="${userRoom.rList}">
-						    <c:set var="scaleValue" value="${roomResource.resourceScale}" />
-						    <c:if test="${fn:contains(roomResource.resourceURL, '0')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="1.5" />
-						    </c:if>
-						    <c:if test="${fn:contains(roomResource.resourceURL, '25')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="0.3" />
-						    </c:if>
-						    <c:if test="${fn:contains(roomResource.resourceURL, '26')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="0.3" />
-						    </c:if>
-						    <c:if test="${fn:contains(roomResource.resourceURL, '27')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="0.3" />
-						    </c:if>
-						    <c:if test="${fn:contains(roomResource.resourceURL, '28')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="0.3" />
-						    </c:if>
-						    <c:if test="${fn:contains(roomResource.resourceURL, '29')}">
-						        <!-- URL에 '0'이 포함되어 있으면 scaleValue를 변경합니다. -->
-						        <c:set var="scaleValue" value="0.3" />
-						    </c:if>
 						    <img src="${roomResource.resourceURL}" alt="Room Resource Image"
 						        class="userroomresource"
 						        style="position: absolute; 
@@ -1233,7 +1213,6 @@ $("#changeCharacterbtn").click(function() {
 		            success: function(response) {
 		            	$("#guestbookModalLabel").text(roomHost + "'s 방명록");
 		                $.each(response.jarr, function(index, guestBook) {
-		                    // Create the outer container
 		                    var guestbookContainer = $('<div class="guestbookcontainer"></div>').css({
 		                        display: 'flex',
 		                        justifyContent: 'center',
@@ -1245,35 +1224,29 @@ $("#changeCharacterbtn").click(function() {
 		                        margin: '7px',
 		                        backgroundColor: 'rgb(255, 255, 255)',
 		                    });
-
-		                    // Create the content border container
+		                    
 		                    var contentBorder = $('<div class="guestbookcontentborder"></div>').css({
 		                        width: '180px',
 		                        height: '160px',
 		                        borderRadius: '10px',
 		                        padding: '5px',
 		                        margin: '5px',
-		                        backgroundColor: guestBook.backgroundColor, // Using the color from the response
+		                        backgroundColor: guestBook.backgroundColor, 
 		                        display: 'flex',
 		                        flexDirection: 'column',
 		                    });
 
-		                    // Create the content div
 		                    var contentDiv = $('<div class="guestbookcontent"></div>').text(guestBook.guestbookContent).css({
 		                        flexGrow: 1,
 		                        wordWrap: 'break-word',
 		                    });
 
-		                    // Create the footer div
 		                    var footerDiv = $('<div class="guestbookfooter"></div>').text(guestBook.writer);
 
-		                    // Append content and footer to the content border container
 		                    contentBorder.append(contentDiv, footerDiv);
 
-		                    // Append the content border container to the outer container
 		                    guestbookContainer.append(contentBorder);
 
-		                    // Append the outer container to the modal body
 		                    $(".guestbookmodal-body").append(guestbookContainer);
 		                });
 		            },
