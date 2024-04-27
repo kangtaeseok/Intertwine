@@ -70,6 +70,7 @@
   		<exclude-mapping path="/alogout.do" />
   	 	<exclude-mapping path="/alogin.do" />
   	 	<exclude-mapping path="/adminLogin.do" />
+  	 	<exclude-mapping path="/adnlist.do" />
   	 	<exclude-mapping path="/naver_login.do" />
   	 	<exclude-mapping path="/kakao_loginP.do" />
   	 	<exclude-mapping path="/emailchk.do" />
