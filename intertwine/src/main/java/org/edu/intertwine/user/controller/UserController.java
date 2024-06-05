@@ -121,7 +121,7 @@ public class UserController {
 		return "redirect:getfeed.do";
 	}
 	
-	//회원가입후 이동페이지
+	//소셜유저 정보수정페이지
 	@RequestMapping("socialUpdatePage.do")
 	public String moveSocialUpdatePage(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
@@ -132,7 +132,7 @@ public class UserController {
 	}
 
 	//이용시간 페이지로 이동
-	@RequestMapping("userTime.do")
+	@RequestMapping(value="userTime.do",method= {RequestMethod.POST,RequestMethod.GET})
 	public String moveUserTimePage(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
 		String result = "";
@@ -192,14 +192,15 @@ public class UserController {
 	public String userLogout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if(session != null) {
-			if(naverLoginAuth.getAccessToken() != null && naverLoginAuth.getAccessToken().toString() != null) {
+			if(naverLoginAuth.getAccessToken() != null && 
+					naverLoginAuth.getAccessToken().toString() != null) {
 				naverLoginAuth.logOut(naverLoginAuth.getAccessToken().toString());
 				session.invalidate();
-				return "common/login";
+				return "redirect:login.do";
 			} else {
 				logger.info(session.toString());
 				session.invalidate();
-				return "common/login";
+				return "redirect:login.do";
 			}
 		}
 		return "redirect:main.do";
@@ -271,8 +272,10 @@ public class UserController {
 	}
 			
 	@RequestMapping("kakao_loginP.do")
-	public String kakaoLoginMethod(HttpSession session, @RequestParam("kakaomail") String email, 
-			@RequestParam("kakaoId") String userId,  SessionStatus status, Model model) throws Exception {
+	public String kakaoLoginMethod(HttpSession session, 
+			@RequestParam("kakaomail") String email, 
+			@RequestParam("kakaoId") String userId,  
+			SessionStatus status, Model model) throws Exception {
 		User loginUser = null;
 		User user = null;
 		
@@ -335,7 +338,8 @@ public class UserController {
 	}
 	private String result = null;
 	//네이버 로그인 구현 ------------------------------------------------------------------------------------------
-	@RequestMapping(value ="naver_login.do", produces = "application/json", method = { RequestMethod.GET, 	RequestMethod.POST })
+	@RequestMapping(value ="naver_login.do", produces = "application/json", 
+			method = { RequestMethod.GET, 	RequestMethod.POST })
 	public String naverLogin(@RequestParam String code, SessionStatus status, Model model, 
 			HttpSession session, @RequestParam String state) throws Exception{
 		
@@ -483,25 +487,25 @@ public class UserController {
 		out.close();
 	 }
 	 
-	//비번찾기처리(phone)
-	 @RequestMapping(value="changePwdP.do", method=RequestMethod.POST)
-		public String userchangePwdP(@RequestParam("phone") String phone, Model model) throws IOException {
-		 
-		 if (phone.startsWith("02")) {
-	            if (phone.length() == 9) {
-	              phone = phone.replaceAll("(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3");
-	            } else if (phone.length() == 10) {
-	            	phone = phone.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
-	            }
-	        } else if (phone.length() == 10) {
-	        	phone = phone.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
-	        } else if (phone.length() == 11) {
-	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
-	        }
-		 User user = userService.selectPhone(phone);
-		 
-		 return "user/finduserInfo";
-	 }
+//	//비번찾기처리(phone)
+//	 @RequestMapping(value="changePwdP.do", method=RequestMethod.POST)
+//		public String userchangePwdP(@RequestParam("phone") String phone, Model model) throws IOException {
+//		 
+//		 if (phone.startsWith("02")) {
+//	            if (phone.length() == 9) {
+//	              phone = phone.replaceAll("(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3");
+//	            } else if (phone.length() == 10) {
+//	            	phone = phone.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
+//	            }
+//	        } else if (phone.length() == 10) {
+//	        	phone = phone.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+//	        } else if (phone.length() == 11) {
+//	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+//	        }
+//		 User user = userService.selectPhone(phone);
+//		 
+//		 return "user/finduserInfo";
+//	 }
 	 
 	 @RequestMapping(value="updatePwd.do", method=RequestMethod.POST)
 	 public String userchangePwdP(@RequestParam("userPwd") String pwd, @RequestParam("phone") String phone,
@@ -547,10 +551,12 @@ public class UserController {
 	//전화번호로 pwd 찾기
 	 @ResponseBody
 	 @RequestMapping(value="phonesearchpwd.do", method=RequestMethod.POST)
-	 public String sendSMS(HttpServletResponse response, @RequestParam("phone") String phone) throws Exception { // 휴대폰 문자보내기
+	 public String sendSMS(HttpServletResponse response, @RequestParam("phone") String phone) throws Exception {
+		 // 휴대폰 문자보내기
 		 String key = String.valueOf(new Random().nextInt(1000000));
 		
-		DefaultMessageService messageService = NurigoApp.INSTANCE.initialize("NCS8OAISM6A6JWFI", "ZT4MPBGAQUWJAMUJZHQNMPSVEGQXNJLN", "https://api.coolsms.co.kr");
+		DefaultMessageService messageService = NurigoApp.INSTANCE.initialize("NCS8OAISM6A6JWFI", 
+				"ZT4MPBGAQUWJAMUJZHQNMPSVEGQXNJLN", "https://api.coolsms.co.kr");
 		
 	    net.nurigo.sdk.message.model.Message message1 = new net.nurigo.sdk.message.model.Message();
 		message1.setFrom("01022037375");
@@ -558,7 +564,6 @@ public class UserController {
 		message1.setText("인증번호는 " + key + " 입니다.");
 		
 		SingleMessageSentResponse response2 = messageService.sendOne(new SingleMessageSendingRequest(message1));
-		
 		if(response2 != null) { 
 		if (phone.startsWith("02")) {
 	            if (phone.length() == 9) {
@@ -571,16 +576,12 @@ public class UserController {
 	        } else if (phone.length() == 11) {
 	        	phone = phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
 	        }
-		 
 		User user = userService.selectPhone(phone);
 		if(user != null) {
 			return key;
-		} 
-		
+		} 	
 	 }
 		 return "user/findInfo.do";
-	 
-		
 	 }  
 
 
@@ -740,7 +741,7 @@ public class UserController {
 			}
 			loginUser.setNickname(nickname);
 			
-			if(statusMessage != null) {
+			if(statusMessage == null) {
 				mypage.setStatusMessage(statusMessage);	
 			}
 			

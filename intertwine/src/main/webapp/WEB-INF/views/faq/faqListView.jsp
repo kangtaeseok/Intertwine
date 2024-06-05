@@ -71,28 +71,19 @@ hr {
 <c:import url="/WEB-INF/views/qna/qnaFrameView.jsp" />
 <script>
 $(function(){
-	
 	document.getElementById("faqContent").innerHTML = `
-
-
             <!-- 초기 FAQ 내용 -->
             <h1>자주묻는질문(FAQ)</h1>
             <hr>
             <p>자주 묻는 질문 내용입니다.
             <%-- 게시글 쓰기는 로그인한 회원만 가능함 --%>
-			<c:if test="${ !empty sessionScope.loginAdmin }">
-				<div style="align:center;text-align:right;">
-	 			   <button onclick="showWriteForm();" style="background-color: skyblue; width: 100px; height: 50px; font-weight: bold; font-size: 16px;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">글쓰기</button>
-					<!-- <button onclick="showWriteForm();">글쓰기</button> -->
-				</div>
-			</c:if>
+            <c:if test="${ !empty sessionScope.loginAdmin }">
+        	<div style="align:center;text-align:center;">
+        		<button onclick="showWriteForm();">글쓰기</button>
+        	</div>
+        	</c:if>
 			<br>
-
-            
-            </p>
-        
-		   <br>
-
+            </p><br>
 	    	<table align="center" border="1" cellspacing="0" width="700">
 	    		<tr>
 	    			<th>번호</th>
@@ -120,39 +111,9 @@ $(function(){
 	    	<br>
         
     		<%-- 페이징 처리 뷰 포함 처리 --%>
-			<c:import url="/WEB-INF/views/common/pagingView.jsp" />
-
-			
-
-		
-		
- 
-
-`; 
+			<c:import url="/WEB-INF/views/qna/pagingView.jsp" />
+ `; 
 });
-
-/* 
-document.getElementById("faq").addEventListener("click", function() {
-    // 자주묻는질문(FAQ) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-	<c:url var="fl" value="flist.do">
-	 	<c:param name="page" value="${ currentPage }" /> 
-	 </c:url>   
-	location.href='${ fl }'; 
-
-    //location.href="${pageContext.servletContext.contextPath}/flist.do?page=1";
-        
-});
-
-
-
-document.getElementById("qna").addEventListener("click", function() {
-    // 문의하기(Q&A) 클릭 시 오른쪽 창의 내용이 변경됩니다.
-	<c:url var="ql" value="qlist.do">
- 	<c:param name="page" value="${ currentPage }" /> 
- 	</c:url>   
-	location.href='${ ql }'; 
-
-}); */
 
 
 function showWriteForm(){

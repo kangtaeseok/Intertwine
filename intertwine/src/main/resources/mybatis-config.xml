@@ -17,11 +17,86 @@
 
 	<!-- 존재하지 않는 클래스와 매퍼파일을 먼저 등록 설정하면 톰켓 구동 안함 : 에러 발생 -->
 	<!-- Java 클래스에 대한 별칭을 정의, 이를 통해 MyBatis 매퍼에서 사용되는 클래스의 전체 경로명을 간단한 별칭으로 대체 -->
-	<typeAliases>		
-		
+	<typeAliases>
+			<!-- user -->	
+			<typeAlias type="org.edu.intertwine.user.model.vo.User" alias="User" />
+			<typeAlias type="org.edu.intertwine.user.model.vo.SocialLogin" alias="SocialLogin" />
+			<typeAlias type="org.edu.intertwine.user.model.vo.MyPage" alias="MyPage" />
+			<typeAlias type="org.edu.intertwine.user.model.vo.UserStop" alias="UserStop" />
+			<typeAlias type="org.edu.intertwine.admin.model.vo.Admin" alias="Admin" />
+			<typeAlias type="org.edu.intertwine.admin.model.vo.VisitCount" alias="VisitCount" />
+			<typeAlias type="org.edu.intertwine.admin.model.vo.ContentReport" alias="ContentReport" />
+			<typeAlias type="org.edu.intertwine.common.Notification" alias="Notification" />
+			
+			<!-- common -->
+			<typeAlias type="org.edu.intertwine.common.SearchDate" alias="SearchDate"/>
+		    <typeAlias type="org.edu.intertwine.common.Paging" alias="Paging"/>
+		    <typeAlias type="org.edu.intertwine.common.Search" alias="Search"/>
+		    
+		     <!-- faq/qna -->
+		    <typeAlias type="org.edu.intertwine.faq.model.vo.Faq" alias="Faq"/>
+		    <typeAlias type="org.edu.intertwine.qna.model.vo.Qna" alias="Qna"/>
+			
+			<!-- square -->
+			<typeAlias type="org.edu.intertwine.userroom.model.vo.InsertUserRoomParam" alias="InsertUserRoomParam" />
+			<typeAlias type="org.edu.intertwine.userroom.model.vo.UserRoom" alias="UserRoom" />
+            <typeAlias type="org.edu.intertwine.userroom.model.vo.UserRoomResource" alias="UserRoomResource" />
+            <typeAlias type="org.edu.intertwine.usercharacter.model.vo.UserCharacter" alias="UserCharacter" />
+			 <typeAlias type="org.edu.intertwine.guestbook.model.vo.GuestBook" alias="GuestBook" />
+			
+			<!-- friend -->
+			<typeAlias type="org.edu.intertwine.friend.model.vo.Friend" alias="Friend"/>
+			<typeAlias type="org.edu.intertwine.chat.model.vo.Chat" alias="Chat"/>
+		    
+		    <typeAlias type="org.edu.intertwine.map.model.vo.Attraction" alias="Attraction" />
+		    
+		    <!-- post -->
+		     <typeAlias type="org.edu.intertwine.post.model.vo.Post" alias="Post" />
+	         <typeAlias type="org.edu.intertwine.post.model.vo.Image" alias="Image" />
+	         <typeAlias type="org.edu.intertwine.post.model.vo.Tag" alias="Tag" />
+	         <typeAlias type="org.edu.intertwine.post.model.vo.Video" alias="Video" />
+	         <typeAlias type="org.edu.intertwine.bookmark.model.vo.Bookmark" alias="Bookmark" />
+	         <typeAlias type="org.edu.intertwine.post.model.vo.Like" alias="Like" />
+	         <typeAlias type="org.edu.intertwine.comment.model.vo.Comment" alias="Comment" />
+	         <typeAlias type="org.edu.intertwine.post.model.vo.SearchMyPage" alias="SearchMyPage" />
+			
+			 <!-- ai -->
+		    <typeAlias type="org.edu.intertwine.notice.model.vo.Notice" alias="Notice" />
+   	 		<typeAlias type="org.edu.intertwine.ai.model.vo.AiChat" alias="AiChat" />
+    		<typeAlias type="org.edu.intertwine.ai.model.vo.AiEvent" alias="AiEvent" />
+		    
+		    
+			
 	</typeAliases>
 	
 	<mappers> <!-- resouce에 적힌 파일을 MyBatis 매퍼로 등록 -->
+	  <!-- user -->
+	  <mapper resource="mappers/user-mapper.xml" />
+	  <mapper resource="mappers/admin-mapper.xml"/>
+	  
+	  <!-- post -->
+	  <mapper resource="mappers/bookmark-mapper.xml"/>
+	  <mapper resource="mappers/comment-mapper.xml"/>
+	  <mapper resource="mappers/post-mapper.xml"/>
 		
+	  <!-- square -->
+	  <mapper resource="mappers/userroom-mapper.xml"/>
+	  <mapper resource="mappers/guestbook-mapper.xml"/>
+	   <mapper resource="mappers/usercharacter-mapper.xml" />
+	  
+	  <!-- faq/qna -->
+	  <mapper resource="mappers/faq-mapper.xml"/>
+      <mapper resource="mappers/qna-mapper.xml"/>
+      	
+      <!-- ai -->	
+      <mapper resource="mappers/notice-mapper.xml" />
+      <mapper resource="mappers/aichat-mapper.xml" />
+      <mapper resource="mappers/aievent-mapper.xml" />
+      	
+      <!-- friend -->
+      <mapper resource="mappers/friend-mapper.xml" />
+      <mapper resource="mappers/chat-mapper.xml" />
+      	
+	  <mapper resource="mappers/attraction-mapper.xml" />
 	</mappers>
 </configuration>

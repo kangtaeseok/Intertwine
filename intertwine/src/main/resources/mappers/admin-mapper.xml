@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMapper">
+
+<resultMap id="AdminOne" type="Admin">
+		<id property="adminId" column="ADMIN_ID" />
+		<result property="adminPwd" column="ADMIN_PWD" />
+		<result property="adminName" column="ADMIN_NAME" />
+	</resultMap>
+	
+	<resultMap id="visitCount" type="VisitCount">
+		<id property="regDate" column="REG_DATE" />
+		<result property="visitCount" column="VISIT_COUNT" />
+	</resultMap>
+	
+	<resultMap id="RptList" type="ContentReport">
+		<id property="reportId" column="CT_REPORT_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="boardNum" column="CT_REPORT_BOARD" />
+		<result property="reportComment" column="CT_REPORT_COMMENT" />
+		<result property="reportReason" column="CT_REPORT_REASON" />
+		<result property="reportTime" column="CT_REPORT_TIME" />
+		<result property="reportStatus" column="CT_REPORT_STATUS" />
+	</resultMap>
+	<resultMap id="RptAlarmList" type="ContentReport">
+		<result property="reportId" column="CT_REPORT_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="boardNum" column="CT_REPORT_BOARD" />
+		<result property="reportReason" column="CT_REPORT_REASON" />
+	</resultMap>
+
+	
+
+
+	<select id="selectAdmin" parameterType="string" resultMap="AdminOne">
+		select * from tb_admin
+		where ADMIN_ID = #{adminId}
+	</select>
+	
+	<insert id="insertVisitCount">
+		INSERT INTO TB_VISIT
+            (REG_DATE, VISIT_COUNT)
+       	VALUES
+        	 (sysdate, 1)
+    </insert>
+
+    <update id="updateVisitCount">
+       UPDATE
+            TB_VISIT
+        SET
+            VISIT_COUNT = TB_VISIT.VISIT_COUNT + 1
+        WHERE
+           TO_CHAR(REG_DATE, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
+    </update>
+
+    <select id="selectVisitCount" resultType="VisitCount" resultMap="visitCount">
+        SELECT
+            REG_DATE, VISIT_COUNT
+        FROM
+          	 TB_VISIT
+        where
+            TO_CHAR(REG_DATE, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
+    </select>
+    
+    <select id="selectVisitCountMonth" parameterType="string" resultType="_int">
+        SELECT sum(VISIT_COUNT)
+        FROM TB_VISIT
+        where TO_CHAR(REG_DATE, 'MM') = #{string}
+    </select>    
+       
+    <select id="selectVisitCountAll" resultType="_int">
+        SELECT sum(VISIT_COUNT)
+        FROM TB_VISIT
+    </select>
+	
+	<select id="selectVisitCountTime" parameterType="String" resultType="_int">        
+   	 	SELECT
+	  	count(TO_CHAR(REGISTER_TIME, 'HH24')) AS HOUR
+		FROM TB_USERS
+        WHERE TO_CHAR(REGISTER_TIME, 'HH24') between #{startTime} and #{endTime}
+	</select>
+	
+	<select id="selectVisitCountToday" resultType="_int">        
+   	 SELECT
+	  	count(*)
+		 FROM
+          	 TB_USERS
+         where TO_CHAR(REGISTER_TIME, 'YYMM') = TO_CHAR(sysdate, 'YYMM')
+	</select>
+	
+	
+	<!-- 신고페이징 처리 -->
+	<select id="selectRptListCount" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+	</select>
+	
+	<select id="selectRptList" parameterType="Paging" resultMap="RptList">
+		select *
+		from(select rownum rnum, CT_REPORT_ID, USER_ID, CT_REPORT_BOARD, CT_REPORT_COMMENT, CT_REPORT_REASON, CT_REPORT_TIME, CT_REPORT_STATUS
+        	from (select * from TB_CONTENT_REPORT
+                order by CT_REPORT_STATUS desc, CT_REPORT_TIME))
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="selectReportBoardNumCount" parameterType="_int" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+		where CT_REPORT_BOARD = #{boardNum}
+	</select>
+	
+	<select id="selectReportCommentCount" parameterType="_int" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+		where CT_REPORT_COMMENT = #{reportComment}
+	</select>
+	
+	
+	<!-- 검색 페이징처리 -->
+	<select id="selectSeachUserIdCount" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+			where user_id like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSeachBoardNumCount" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+			where CT_REPORT_BOARD like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSeachStatusCount" resultType="_int">
+		select count(*) from TB_CONTENT_REPORT
+			where CT_REPORT_STATUS like '%' || #{keyword} || '%'
+	</select>
+	
+	
+	<!-- 검색처리 -->
+	<select id="selectSearchUserId" parameterType="Search" resultMap="RptList">
+	select *
+		from(select rownum rnum, CT_REPORT_ID, USER_ID, CT_REPORT_BOARD, CT_REPORT_COMMENT, CT_REPORT_REASON, CT_REPORT_TIME, CT_REPORT_STATUS
+        	from (select * from TB_CONTENT_REPORT
+                where USER_ID like '%' || upper(#{keyword}) || '%'
+                order by CT_REPORT_TIME, CT_REPORT_STATUS))
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="selectSeachBoardNum" parameterType="Search" resultMap="RptList">
+	select *
+		from(select rownum rnum, CT_REPORT_ID, USER_ID, CT_REPORT_BOARD, CT_REPORT_COMMENT, CT_REPORT_REASON, CT_REPORT_TIME, CT_REPORT_STATUS
+        	from (select * from TB_CONTENT_REPORT
+                where CT_REPORT_BOARD like '%' || #{keyword} || '%'
+                order by CT_REPORT_TIME, CT_REPORT_STATUS))
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="selectSeachStatus" parameterType="Search" resultMap="RptList">
+	select *
+		from(select rownum rnum, CT_REPORT_ID, USER_ID, CT_REPORT_BOARD, CT_REPORT_COMMENT, CT_REPORT_REASON, CT_REPORT_TIME, CT_REPORT_STATUS
+        	from (select * from TB_CONTENT_REPORT
+                where CT_REPORT_STATUS like '%' || #{keyword} || '%'
+                order by CT_REPORT_TIME, CT_REPORT_STATUS))
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="selectContentReportList" parameterType="Integer" resultMap="RptList">
+		select * from TB_CONTENT_REPORT
+		WHERE CT_REPORT_ID = #{reportId}
+	</select>
+	
+	
+	<!-- 신고업뎃 -->
+	 <insert id="insertRptPost" parameterType="ContentReport">
+       INSERT INTO TB_CONTENT_REPORT VALUES 
+       (SEQ_REPORT.nextval, #{userId}, #{boardNum} ,#{reportComment} , #{reportReason}, SYSDATE, '미확인')
+    </insert>
+	
+	 <insert id="insertRptComment" parameterType="ContentReport">
+      INSERT INTO TB_CONTENT_REPORT VALUES 
+      (SEQ_REPORT.nextval, #{userId}, #{boardNum} ,#{reportComment} , #{reportReason}, SYSDATE, '미확인')
+    </insert>
+    
+    
+    <!-- 처리상태변경 -->
+    <update id="updateRptStatus" parameterType="ContentReport">
+       UPDATE
+            TB_CONTENT_REPORT
+        SET
+            CT_REPORT_STATUS = '처리완료'
+        WHERE CT_REPORT_ID = #{reportId}
+    </update>
+    
+    <update id="updateRptStatusing" parameterType="_int">
+       UPDATE
+            TB_CONTENT_REPORT
+        SET
+            CT_REPORT_STATUS = '처리중'
+        WHERE CT_REPORT_BOARD = #{boardNum}
+        AND CT_REPORT_STATUS != '처리완료'
+    </update>
+    
+    <update id="updateRptCStatusing" parameterType="_int">
+       UPDATE
+            TB_CONTENT_REPORT
+        SET
+            CT_REPORT_STATUS = '처리중'
+        WHERE CT_REPORT_BOARD = #{boardNum}
+        AND CT_REPORT_STATUS != '처리완료'
+    </update>
+    
+    
+    
+    
+	
+	<!-- 신고상세 -->
+	<select id="selectPostNumList" parameterType="_int" resultMap="RptList">
+	select * from TB_CONTENT_REPORT
+	where CT_REPORT_BOARD = #{boardNum}
+	</select>
+	
+	<select id="selectRpt" parameterType="_int" resultMap="RptList">
+		select * from TB_CONTENT_REPORT
+		WHERE CT_REPORT_ID = #{reportId}
+	</select>
+	
+	<select id="selectRptComment" parameterType="_int" resultMap="RptList">
+		select * from TB_CONTENT_REPORT
+		where CT_REPORT_BOARD = #{boardNum}
+		and CT_REPORT_COMMENT = #{reportComment}
+	</select>
+	
+	<select id="selectReportAlarm" resultMap="RptAlarmList">
+		select CT_REPORT_ID, CT_REPORT_BOARD, USER_ID, CT_REPORT_REASON
+		from TB_CONTENT_REPORT
+		where CT_REPORT_STATUS = '미확인'
+		or CT_REPORT_STATUS = '처리중'
+	</select>
+	
+	
+	
+
+</mapper>

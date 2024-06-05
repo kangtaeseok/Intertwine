@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+	
+	<resultMap type="Notice" id="NoticeList">
+		<result property="noticeId" column="NOTICE_ID" />
+		<result property="adminId" column="ADMIN_ID" />
+		<result property="noticeTitle" column="NOTICE_TITLE" />
+		<result property="noticeContent" column="NOTICE_CONTENT" />
+		<result property="noticeTime" column="NOTICE_TIME" />
+		<result property="noticeView" column="NOTICE_VIEW" />
+		<result property="noticeLevel" column="NOTICE_LEVEL" />
+	</resultMap>	
+	
+	<select id="selectList" parameterType="Paging" resultMap="NoticeList">
+		select * from (select rownum rnum, notice_id, admin_id, notice_title, 
+				            notice_content, notice_time, notice_view, notice_level 
+				      from (select * from tb_notice 
+				            order by notice_level desc, notice_time desc, notice_id desc)
+				     ) 
+		where rnum between #{ startRow } and #{ endRow }
+	</select>
+	
+	<select id="getListCount" resultType="_int" >
+		select count(*) from tb_notice
+	</select>
+	
+	<select id="selectNoticeOne" parameterType="_int" resultMap="NoticeList" >
+		select * from tb_notice where notice_id = #{ id }
+	</select>
+	
+	<insert id="insertNotice" parameterType="Notice" >
+		insert into tb_notice
+		values ((select max(notice_id) + 1 from tb_notice), 
+			 	null, #{ noticeTitle }, #{ noticeContent },
+				sysdate, 0, #{ noticeLevel })
+	</insert>
+	
+	<update id="updateNotice" parameterType="Notice" >
+		update tb_notice 
+		set notice_title = #{ noticeTitle },
+			notice_content = #{ noticeContent },
+			notice_level = #{ noticeLevel }
+		where notice_id = #{ noticeId }
+	</update>
+	
+	<delete id="deleteNotice" parameterType="_int">
+		delete from tb_notice where notice_id = #{ noticeId }
+	</delete>
+	
+	<select id="selectSearchTitleCount" parameterType="String" resultType="_int">
+		select count(*) from tb_notice where notice_title like '%' || #{ keyword } || '%'
+	</select>
+	
+	<select id="selectSearchTitle" parameterType="Search" resultMap="NoticeList">
+		select * 
+		from (select rownum rnum, notice_id, admin_id, notice_title, 
+				   notice_content, notice_time, notice_view, notice_level
+		      from (select * from tb_notice 
+		           where notice_title like '%' || #{ keyword } || '%' 
+		           order by notice_level desc, notice_id desc)
+		     ) 
+		where rnum between #{ startRow } and #{ endRow }
+	</select>
+	
+	<update id="updateAddReadCount" parameterType="_int" >
+		update tb_notice 
+		set notice_view = notice_view + 1 
+		where notice_id = #{ id }
+	</update>
+	
+	<select id="selectLast" resultMap="NoticeList">
+		select * from tb_notice
+		where notice_id = (select max(notice_id) from tb_notice)
+	</select>
+	
+</mapper>

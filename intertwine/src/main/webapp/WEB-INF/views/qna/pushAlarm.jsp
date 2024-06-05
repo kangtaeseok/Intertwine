@@ -7,60 +7,34 @@
   <title>Kakao JavaScript SDK</title>
  <!--  <script src="https://t1.kakaocdn.net/kakao_js_sdk/${VERSION}/kakao.min.js"
     integrity="${INTEGRITY_VALUE}" crossorigin="anonymous"></script> -->
-    
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
-     integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
-</head>
-<body>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
   integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
+ 
 <script>
-  Kakao.init('22a79ab4edf01049e6e5ede31d8ab61b'); // 사용하려는 앱의 JavaScript 키 입력
-</script>
+  Kakao.init('22a79ab4edf01049e6e5ede31d8ab61b');
+  
+  ACCESS_TOKEN = "PYdsNX0_FaS11BFARs-1aCrtInvU_1b36g8KKclgAAABjsbLGc2SBpCp5rpDbg"
 
-<a id="kakaotalk-sharing-btn" href="javascript:;">
-  <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-    alt="카카오톡 공유 보내기 버튼" />
-</a>
-
-<script>
-  Kakao.Share.createDefaultButton({
-    container: '#kakaotalk-sharing-btn',
-    objectType: 'feed',
-    content: {
-      title: '딸기 치즈 케익',
-      description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-      imageUrl:
-        'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-      link: {
-        // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
-        mobileWebUrl: 'https://developers.kakao.com',
-        webUrl: 'https://developers.kakao.com',
-      },
-    },
-    social: {
-      likeCount: 286,
-      commentCount: 45,
-      sharedCount: 845,
-    },
-    buttons: [
-      {
-        title: '웹으로 보기',
-        link: {
-          mobileWebUrl: 'https://developers.kakao.com',
-          webUrl: 'https://developers.kakao.com',
-        },
-      },
-      {
-        title: '앱으로 보기',
-        link: {
-          mobileWebUrl: 'https://developers.kakao.com',
-          webUrl: 'https://developers.kakao.com',
-        },
-      },
-    ],
-  });
+  function fetchFriends() {
+    Kakao.API.request({
+      url: '/v1/api/talk/friends',
+      Authorization: Bearer ${ACCESS_TOKEN},      
+    })
+    .then(function(response) {
+      console.log(response);
+      // Handle the response here
+    })
+    .catch(function(error) {
+      console.log(error);
+      // Handle errors here
+    });
+  }
 </script>
+</head>
+<body>
+
+
+<button onclick="fetchFriends()">Fetch Friends</button>
 </body>
 </html>
 

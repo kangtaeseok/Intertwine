@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userCharacterMapper">
+	
+	<resultMap id="UserCharacterResultMap" type="UserCharacter">
+	    <id property="userId" column="USER_ID"/>
+	    <result property="hairStyleId" column="HAIRSTYLE_ID"/>
+	    <result property="hairStyleImageURL" column="HAIRSTYLE_IMAGE_URL"/>
+	    <result property="hatId" column="HAT_ID"/>
+	    <result property="hatImageURL" column="HAT_IMAGE_URL"/>
+	    <result property="topId" column="TOP_ID"/>
+	    <result property="topImageURL" column="TOP_IMAGE_URL"/>
+	    <result property="bottomId" column="BOTTOM_ID"/>
+	    <result property="bottomImageURL" column="BOTTOM_IMAGE_URL"/>
+	</resultMap>
+	
+	<resultMap id="UserCharacterHairMap" type="UserCharacter">
+	    <result property="hairStyleId" column="HAIRSTYLE_ID"/>
+	    <result property="hairStyleImageURL" column="HAIRSTYLE_IMAGE_URL"/>
+	</resultMap>
+	
+	<resultMap id="UserCharacterHatMap" type="UserCharacter">
+	    <result property="hatId" column="HAT_ID"/>
+	    <result property="hatImageURL" column="HAT_IMAGE_URL"/>
+	</resultMap>
+	
+	<resultMap id="UserCharacterTopMap" type="UserCharacter">
+	    <result property="topId" column="TOP_ID"/>
+	    <result property="topImageURL" column="TOP_IMAGE_URL"/>
+	</resultMap>
+	
+	<resultMap id="UserCharacterBottomMap" type="UserCharacter">
+	    <result property="bottomId" column="BOTTOM_ID"/>
+	    <result property="bottomImageURL" column="BOTTOM_IMAGE_URL"/>
+	</resultMap>
+	    
+	<!-- userId로 캐릭터 존재하는지 확인하기 -->
+	<select id="selectUserCharacterFirst" parameterType="string" resultMap="UserCharacterResultMap">
+		SELECT * FROM TB_USER_CHARACTER WHERE USER_ID = #{userId}
+	</select>
+	 
+	<!-- userId로 캐릭터 모든 정보 가져오기 -->
+	<select id="selectUserCharacter" parameterType="string" resultMap="UserCharacterResultMap">
+		SELECT * 
+		FROM TB_USER_CHARACTER uc
+		JOIN TB_CHARACTER_HAIRSTYLE ch1 ON uc.HAIRSTYLE_ID = ch1.HAIRSTYLE_ID
+		JOIN TB_CHARACTER_HAT ch2 ON uc.HAT_ID = ch2.HAT_ID
+		JOIN TB_CHARACTER_TOP ct ON uc.TOP_ID = ct.TOP_ID
+		JOIN TB_CHARACTER_BOTTOM cb ON uc.BOTTOM_ID = cb.BOTTOM_ID
+		WHERE uc.USER_ID = #{userId}
+	</select>
+	
+	<select id="selectUserCharacterHairResource" resultMap="UserCharacterHairMap">
+		select HAIRSTYLE_ID, HAIRSTYLE_IMAGE_URL from TB_CHARACTER_HAIRSTYLE where HAIRSTYLE_ID&lt;10
+	</select>
+	
+	<select id="selectUserCharacterHatResource" resultMap="UserCharacterHatMap">
+		select HAT_ID, HAT_IMAGE_URL from TB_CHARACTER_HAT where HAT_ID&lt;10
+	</select>
+	
+	<select id="selectUserCharacterTopResource" resultMap="UserCharacterTopMap">
+		select TOP_ID, TOP_IMAGE_URL from TB_CHARACTER_TOP where TOP_ID&lt;10
+	</select>
+	
+	<select id="selectUserCharacterBottomResource" resultMap="UserCharacterBottomMap">
+		select BOTTOM_ID, BOTTOM_IMAGE_URL from TB_CHARACTER_BOTTOM where BOTTOM_ID&lt;10
+	</select>
+	
+	
+
+	<!-- userId로 캐릭터 존재 확인했을때 있을 경우, 수정된 리소스들로 수정하기 -->
+	<update id="updateUserCharacter" parameterType="UserCharacter">
+		UPDATE TB_USER_CHARACTER
+		SET HAIRSTYLE_ID = #{hairStyleId}, HAT_ID = #{hatId}, TOP_ID = #{topId}, BOTTOM_ID = #{bottomId}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- userId로 캐릭터 존재 확인했을때 없을 경우, userId만 저장하고 나머지는 default로 DB에 저장하기 -->
+	<insert id="insertUserCharacterFirst" parameterType="string">
+		INSERT INTO TB_USER_CHARACTER VALUES (#{userId}, default, default, default, default)
+	</insert>
+
+	<!-- 캐릭터 리소스 저장하기 -->
+	<insert id="insertUserCharacter" parameterType="UserCharacter">
+		INSERT INTO TB_USER_CHARACTER
+		(USER_ID, HAIRSTYLE_ID, HAT_ID, TOP_ID, BOTTOM_ID) VALUES 
+		(#{userId}, #{hairStyleId}, #{hatId}, #{topId}, #{bottomId})
+	</insert>
+	
+	<!-- userId로 방의 가구 배치 정보 삭제하기 -->
+	<delete id="deleteUserCharacter" parameterType="string">
+		DELETE FROM TB_USER_CHARACTER
+		WHERE USER_ID = #{userId}
+	</delete>
+	
+</mapper>

@@ -1,15 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <title>Intertwine</title>
 <meta charset="UTF-8">
-<script src="https://kit.fontawesome.com/4b2098cb2a.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/4b2098cb2a.js"></script>
 	<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-	<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%> 
+	<c:import url="/WEB-INF/views/common/common.jsp"></c:import> 
 <!-- 폰트어썸 가져오기 -->
 </head>
 <style>
@@ -57,12 +56,10 @@ cursor: pointer;
     }
 
   </style>
-<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
-
 <body>
-<main>
-         <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
 
+<main>
+<c:import url="/WEB-INF/views/common/menubar.jsp"></c:import> 
     <div class="container-write" style="margin: 0 auto;  padding-left: 250px; width: 800px;">
         <form id ="postFrom" action="posting.do" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="${ sessionScope.loginUser.userId }">
@@ -286,7 +283,7 @@ cursor: pointer;
         </form>
     </div>
 
-
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
     </main>
 </body>
 <!-- 임시저장용 자바스크립트 완료 -->
@@ -319,5 +316,4 @@ cursor: pointer;
 
 </script>
 
-</body>
-</html>
+

@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">
-<script type="text/javascript" src="/intertwine/resources/js/jquery-3.7.0.min.js"></script> <%-- jquery 파일 로드 --%>   
+<link rel="stylesheet" href="/intertwine/resources/css/mainpage.css">   
+<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 <meta charset="UTF-8">
 <title>피드</title>
 <style>
@@ -282,13 +282,13 @@ input.text::placeholder {
 
 /* 피드 CSS 종료 ***************************************************/
 </style>
-
-<c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
+
+
     <main>
-       
-         <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+    <c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
+      
         <div id="bottom_right_contents">
 	<div class="frame">
 		<c:forEach items="${feedItems}" var="item">
@@ -506,6 +506,7 @@ input.text::placeholder {
 	</div>
 	<!-- Frame 끝-->
 </div>
+<c:import url="/WEB-INF/views/common/chatbot.jsp"></c:import>
 </main>
 
 <script>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userRoomMapper">
+	
+	<resultMap id="UserRoomDetailResultMap" type="UserRoom">
+		<id property="userId" column="USER_ID" />
+		<result property="roomColor" column="ROOM_COLOR" />
+		<result property="guestBookOpen" column="GUESTBOOK_OPEN" />
+
+		<collection property="rList" ofType="UserRoomResource">
+			<id property="resourceId" column="RESOURCE_ID" />
+			<result property="resourcePositionX" column="RESOURCE_POSITION_X" />
+			<result property="resourcePositionY" column="RESOURCE_POSITION_Y" />
+			<result property="resourceRotation" column="RESOURCE_ROTATION" />
+			<result property="resourceScale" column="RESOURCE_SCALE" />
+			<result property="resourceName" column="RESOURCE_NAME" />
+			<result property="resourceURL" column="RESOURCE_URL" />
+		</collection>
+	</resultMap>
+	
+	<resultMap id="UserRoomResourceMap" type="UserRoomResource">
+	    <result property="resourceId" column="RESOURCE_ID"/>
+	    <result property="resourceURL" column="RESOURCE_URL"/>
+	</resultMap>
+	
+	<!-- userId로 방 존재하는지 확인하기 -->
+	<select id="selectUserRoomFirst" parameterType="string" resultMap="UserRoomDetailResultMap">
+		SELECT * FROM TB_USER_ROOM WHERE USER_ID = #{userId}
+	</select>
+	 
+	 
+	<!-- userId로 방의 모든 정보 가져오기 -->
+	<select id="selectUserRoom" parameterType="string" resultMap="UserRoomDetailResultMap">
+		SELECT *
+		FROM TB_USER_ROOM ur
+		JOIN TB_USER_ROOM_RESOURCE urr ON ur.USER_ID = urr.USER_ID
+		JOIN TB_ROOM_RESOURCE rr ON urr.RESOURCE_ID = rr.RESOURCE_ID
+		WHERE ur.USER_ID = #{userId}
+	</select>
+	
+	<!-- 방 꾸미기 리소스 전부 가져오기 -->
+	<select id="selectAllRoomResource" resultMap="UserRoomResourceMap">
+		SELECT RESOURCE_ID, RESOURCE_URL FROM TB_ROOM_RESOURCE
+	</select>
+	
+	<update id="updateUserRoom" parameterType="UserRoom">
+		UPDATE TB_USER_ROOM
+		SET ROOM_COLOR = #{roomColor}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- userId로 방의 존재 확인했을때 없을 경우, userId만 저장하고 나머지는 default로 DB에 저장하기 -->
+	<insert id="insertUserRoomFirst" parameterType="string">
+		INSERT INTO TB_USER_ROOM VALUES (#{userId}, default, default)
+	</insert>
+
+	<insert id="insertUserRoom">
+	   INSERT INTO TB_USER_ROOM_RESOURCE
+	    (USER_ID, RESOURCE_ID, RESOURCE_POSITION_X, RESOURCE_POSITION_Y, RESOURCE_ROTATION, RESOURCE_SCALE)
+	    VALUES
+	    (#{userId}, #{resourceId}, #{resourcePositionX}, #{resourcePositionY}, default, default)
+	</insert>
+	
+	
+	<!-- userId로 방의 가구 배치 정보 삭제하기 -->
+	<delete id="deleteUserRoom" parameterType="string">
+		DELETE FROM TB_USER_ROOM_RESOURCE
+		WHERE USER_ID = #{userId}
+	</delete>
+	
+</mapper>

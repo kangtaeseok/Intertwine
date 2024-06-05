@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="postMapper">
+		
+	<resultMap id="PostList" type="Post">
+		<result property="postId" column="POST_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="postContent" column="POST_CONTENT" />
+		<result property="postVisible" column="POST_VISIBLE" />
+		<result property="postTime" column="POST_TIME" />
+		<result property="postView" column="POST_VIEW" />
+		<result property="postPin" column="POST_PIN" />
+	</resultMap>
+	
+	<resultMap id="ImageList" type="Image">
+		<result property="imageId" column="IMAGE_ID" />
+		<result property="postId" column="POST_ID" />
+		<result property="imageLon" column="IMAGE_LON" />
+		<result property="imageLat" column="IMAGE_LAT" />
+		<result property="imageURL" column="IMAGE_URL" />
+	</resultMap>
+	
+	<resultMap id="VideoList" type="Video">
+		<result property="videoId" column="VIDEO_ID" />
+		<result property="postId" column="POST_ID" />
+		<result property="videoURL" column="VIDEO_URL" />
+	</resultMap>
+	
+	<resultMap id="TagList" type="Tag">
+		<result property="postId" column="POST_ID" />
+	</resultMap>
+	
+	<!--  SELECT  -->
+	<select id="selectTags" parameterType="_int" resultMap="TagList">
+		SELECT *  
+ 		FROM TB_TAG 
+ 		WHERE POST_ID = #{postId}
+	</select>
+	<select id="selectUserIds" parameterType="string" resultType="string">
+		select user_id
+		from tb_users
+		where user_id != #{userId}
+	</select>
+	
+ 	<select id="selectLatestPostId" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE POST_ID = (SELECT MAX(POST_ID) FROM TB_POST) 
+ 	</select>
+ 	<select id="selectBookmarkedPosts" parameterType="list" resultType="string">
+ 		SELECT B.POST_ID 
+		FROM TB_BOOKMARK B
+		LEFT JOIN TB_POST P ON B.POST_ID = P.POST_ID
+		WHERE B.USER_ID = #{userId} AND P.POST_VISIBLE = '0' 
+ 	</select>
+ 	<select id="selectPostIds" parameterType="list" resultType="_int">
+ 		SELECT TB_POST.POST_ID 
+    	FROM TB_USERS  
+    	JOIN TB_POST ON TB_USERS.USER_ID = TB_POST.USER_ID  
+    	WHERE TB_USERS.USER_ID IN 
+    	<foreach item="userId" collection="list" open="(" separator="," close=")">
+    	#{userId} 
+  		</foreach>
+    	AND TB_POST.POST_VISIBLE = '0'
+    	ORDER BY TB_POST.POST_VIEW DESC
+ 	</select> 
+ 	<select id="selectPostsById" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} 
+ 		ORDER BY 7 DESC, 1 DESC
+ 	</select>
+ 	 	<select id="selectPostsByIdFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE != '2' 
+ 		ORDER BY 7 DESC, 1 DESC
+ 	</select>
+ 	 	<select id="selectPostsByIdNotFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE = '0' 
+ 		ORDER BY 7 DESC, 1 DESC
+ 	</select>
+ 	 <select id="selectPostsByIdOldestToNewest" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} 
+ 		ORDER BY 7 DESC, 1 ASC
+ 	</select>
+ 	 	 <select id="selectPostsByIdOldestToNewestFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE != '2' 
+ 		ORDER BY 7 DESC, 1 ASC
+ 	</select>
+ 	 	 <select id="selectPostsByIdOldestToNewestNotFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE = '0' 
+ 		ORDER BY 7 DESC, 1 ASC
+ 	</select>
+ 	 <select id="selectPostsByIdMostViewsToLeast" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} 
+ 		ORDER BY 7 DESC, 6 DESC
+ 	</select>
+ 	 	 <select id="selectPostsByIdMostViewsToLeastFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE != '2' 
+ 		ORDER BY 7 DESC, 6 DESC
+ 	</select>
+ 	 	 <select id="selectPostsByIdMostViewsToLeastNotFollower" parameterType="string" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE USER_ID = #{userId} AND POST_VISIBLE = '0' 
+ 		ORDER BY 7 DESC, 6 DESC
+ 	</select>
+ 	<!-- <select id="selectPostsBySearchAll" parameterType="SearchMyPage" resultMap="PostList">
+ 		SELECT p.POST_ID, p.USER_ID, p.POST_CONTENT, p.POST_VISIBLE, p.POST_TIME, p.POST_VIEW, p.POST_PIN 
+		FROM TB_POST p 
+		INNER JOIN TB_TAG t ON p.POST_ID = t.POST_ID 
+		WHERE (t.TAG_NAME LIKE '%' || #{keyword} || '%' OR p.POST_CONTENT LIKE '%' || #{keyword} || '%') AND p.USER_ID = #{userId} 
+		ORDER BY p.POST_PIN DESC, p.POST_ID DESC 
+ 	</select> -->
+ 	<select id="selectPostsBySearchTag" parameterType="SearchMyPage" resultMap="PostList">
+	 	SELECT p.POST_ID, p.USER_ID, p.POST_CONTENT, p.POST_VISIBLE, p.POST_TIME, p.POST_VIEW, p.POST_PIN 
+		FROM TB_POST p 
+		INNER JOIN TB_TAG t ON p.POST_ID = t.POST_ID 
+		WHERE t.TAG_NAME LIKE '%' || #{keyword} || '%' AND p.USER_ID = #{userId} 
+		ORDER BY p.POST_PIN DESC, p.POST_ID DESC 
+ 	</select>
+ 	 <select id="selectPostsBySearchTagFollower" parameterType="SearchMyPage" resultMap="PostList">
+	 	SELECT p.POST_ID, p.USER_ID, p.POST_CONTENT, p.POST_VISIBLE, p.POST_TIME, p.POST_VIEW, p.POST_PIN 
+		FROM TB_POST p 
+		INNER JOIN TB_TAG t ON p.POST_ID = t.POST_ID 
+		WHERE t.TAG_NAME LIKE '%' || #{keyword} || '%' AND p.USER_ID = #{userId} AND p.POST_VISIBLE != '2'
+		ORDER BY p.POST_PIN DESC, p.POST_ID DESC 
+ 	</select>
+ 	 	<select id="selectPostsBySearchTagNotFollower" parameterType="SearchMyPage" resultMap="PostList">
+	 	SELECT p.POST_ID, p.USER_ID, p.POST_CONTENT, p.POST_VISIBLE, p.POST_TIME, p.POST_VIEW, p.POST_PIN 
+		FROM TB_POST p 
+		INNER JOIN TB_TAG t ON p.POST_ID = t.POST_ID 
+		WHERE t.TAG_NAME LIKE '%' || #{keyword} || '%' AND p.USER_ID = #{userId} AND p.POST_VISIBLE = '0'
+		ORDER BY p.POST_PIN DESC, p.POST_ID DESC 
+ 	</select>
+ 	<select id="selectPostsBySearchKeyword" parameterType="SearchMyPage" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE POST_CONTENT LIKE '%' || #{keyword} || '%' AND USER_ID = #{userId} 
+ 		ORDER BY 7 DESC, 6 DESC 
+ 	</select>
+ 	 	<select id="selectPostsBySearchKeywordFollower" parameterType="SearchMyPage" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE POST_CONTENT LIKE '%' || #{keyword} || '%' AND USER_ID = #{userId} AND POST_VISIBLE != '2'  
+ 		ORDER BY 7 DESC, 6 DESC 
+ 	</select>
+ 	 <select id="selectPostsBySearchKeywordNotFollower" parameterType="SearchMyPage" resultMap="PostList">
+ 		SELECT * 
+ 		FROM TB_POST 
+ 		WHERE POST_CONTENT LIKE '%' || #{keyword} || '%' AND USER_ID = #{userId} AND POST_VISIBLE = '0' 
+ 		ORDER BY 7 DESC, 6 DESC 
+ 	</select>
+ 	
+ 	<select id="selectImagesByPostId" parameterType="_int" resultMap="ImageList">
+ 		SELECT * 
+ 		FROM TB_IMAGE 
+ 		WHERE POST_ID = #{postId} 
+ 	</select>
+ 	
+ 	<select id="selectIsPinned" parameterType="Post" resultType="_int">
+ 		SELECT POST_PIN 
+		FROM TB_POST 
+		WHERE USER_ID = #{userId} AND POST_ID = #{postId} 
+ 	</select>
+ 	
+ 	<select id="selectPostIdsforZero" resultType="_int">
+ 		SELECT TB_POST.POST_ID 
+    	FROM TB_USERS  
+    	JOIN TB_POST ON TB_USERS.USER_ID = TB_POST.USER_ID 
+    	WHERE TB_USERS.USER_STOP = 'N' OR TB_USERS.ACCOUNTSTATUS = 'Y' OR TB_POST.POST_VISIBLE = '0'
+ 	</select>
+ 	
+ 	<select id="selectFindUserId" parameterType="_int" resultType="string">
+ 		SELECT USER_ID 
+		FROM TB_POST 
+		WHERE POST_ID = #{postId} 
+ 	</select>
+ 	
+ 	<select id="selectOnePost" parameterType="_int" resultMap="PostList">
+		SELECT * 
+		FROM TB_POST 
+		WHERE POST_ID = #{postId} 
+ 	</select>
+ 	
+ 	<select id="selectOneImage" parameterType="_int" resultMap="ImageList">
+	 	SELECT * FROM (  
+		SELECT IMAGE_ID, POST_ID, IMAGE_LON, IMAGE_LAT, IMAGE_URL  
+		FROM TB_IMAGE  
+		WHERE POST_ID = #{postId}  
+		ORDER BY IMAGE_ID ASC)  
+		WHERE ROWNUM = 1 
+ 	</select>
+ 	<select id="selectOneVideo" parameterType="_int" resultMap="VideoList">
+ 		SELECT * 
+		FROM TB_VIDEO 
+		WHERE POST_ID = #{postId} 
+ 	</select>
+
+	<select id="selectLikeCounts" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM TB_LIKE
+		WHERE POST_ID = #{postId}
+	</select>
+	
+	<select id="selectIsLiked" parameterType="Like" resultType="_int">
+		SELECT COUNT(*)   
+ 		FROM TB_LIKE 
+ 		WHERE USER_ID = #{userId} AND POST_ID = #{postId} 
+	</select>
+	<select id="selectWhatIsLiked" parameterType="Like" resultType="string">
+		SELECT LIKE_TYPE  
+ 		FROM TB_LIKE 
+ 		WHERE USER_ID = #{userId} AND POST_ID = #{postId} 
+	</select>
+	<!-- INSERT -->
+	
+	<insert id="insertPost" parameterType="Post">
+		INSERT INTO TB_POST VALUES (SEQ_POST.NEXTVAL, #{userId}, #{postContent}, #{postVisible}, SYSDATE, DEFAULT, DEFAULT) 
+	</insert>
+	
+	<insert id="insertImage1" parameterType="Image">
+		INSERT INTO TB_IMAGE VALUES (SEQ_IMAGE.NEXTVAL, #{postId}, #{imageLon}, #{imageLat}, #{imageURL})
+	</insert>
+	
+	<insert id="insertImage2" parameterType="Image">
+		INSERT INTO TB_IMAGE (IMAGE_ID, POST_ID, IMAGE_URL) VALUES (SEQ_IMAGE.NEXTVAL, #{postId}, #{imageURL})
+	</insert>
+	
+	<insert id="insertVideo" parameterType="Video">
+		INSERT INTO TB_VIDEO VALUES (SEQ_VIDEO.NEXTVAL, #{postId}, #{videoURL})
+	</insert>
+	
+	<insert id="insertTag" parameterType="Tag">
+		INSERT INTO TB_TAG VALUES (#{postId}, #{tagName})
+	</insert>
+	<insert id="insertLikeType" parameterType="Like">
+		INSERT INTO TB_LIKE VALUES (#{userId}, #{postId}, #{likeType}, SYSDATE) 
+	</insert>
+	<!--  UPDATE -->
+	
+	<update id="updatePin1" parameterType="Post">
+		UPDATE TB_POST  
+		SET  POST_PIN = '1'  
+		WHERE POST_ID = #{ postId } AND USER_ID = #{ userId } 
+	</update>
+	
+	<update id="updatePin2" parameterType="Post">
+		UPDATE TB_POST  
+		SET  POST_PIN = '0'  
+		WHERE POST_ID = #{ postId } AND USER_ID = #{ userId } 
+	</update>
+	
+	<update id="updateLikeType" parameterType="Like">
+		UPDATE TB_LIKE 
+		SET LIKE_TYPE = #{likeType} 
+		WHERE USER_ID = #{userId} AND POST_ID = #{postId}  
+	</update>
+	<update id="updateBatchPublic" parameterType="list">
+		UPDATE TB_POST 
+		SET POST_VISIBLE = '0' 
+		WHERE POST_ID IN 
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach>
+	</update>
+	<update id="updateBatchFollowing" parameterType="list">
+		UPDATE TB_POST 
+		SET POST_VISIBLE = '1' 
+		WHERE POST_ID IN 
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach>
+	</update>
+	<update id="updateBatchPrivate" parameterType="list">
+		UPDATE TB_POST 
+		SET POST_VISIBLE = '2'
+		WHERE POST_ID IN 
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach> 
+	</update>
+		<update id="updateBatchPinOn" parameterType="list">
+		UPDATE TB_POST 
+		SET POST_PIN = '1' 
+		WHERE POST_ID IN 
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach>
+	</update>
+		<update id="updateBatchPinOff" parameterType="list">
+		UPDATE TB_POST 
+		SET POST_PIN = '0' 
+		WHERE POST_ID IN 
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach>
+	</update>
+	<update id="updatePostViews" parameterType="Post">
+		UPDATE TB_POST
+		SET POST_VIEW = POST_VIEW + 1
+		WHERE POST_ID = #{postId}
+	</update>
+	
+	<!--  DELETE  -->
+	<delete id="deleteBatchDelete" parameterType="list">
+		DELETE FROM TB_POST 
+		WHERE POST_ID IN
+		<foreach item="postId" collection="list" open="(" separator="," close=")">
+    	#{postId} 
+  		</foreach>
+	</delete>
+	<delete id="deleteLikeType" parameterType="Like">
+		DELETE FROM TB_LIKE
+		WHERE USER_ID = #{userId} AND POST_ID = #{postId} 
+	</delete>
+	<delete id="deletePost" parameterType="Post">
+		DELETE FROM TB_POST 
+		WHERE POST_ID = #{postId} AND USER_ID = #{userId}
+	</delete>
+</mapper>

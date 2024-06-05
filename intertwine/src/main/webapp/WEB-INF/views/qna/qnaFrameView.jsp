@@ -137,34 +137,9 @@ function moveLoginPage(){
 	//location 내장객체의 href 속성을 사용함
 	location.href = "login.do";
 }
-
-
-
 </script>
-
- 
-
-
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <div class="container">
 	<header>
@@ -188,10 +163,6 @@ function moveLoginPage(){
 
         <div></div>
         <!-- 검색창 중앙배치를 위한 dummy div 영역을 잡아주는 것, justify-content: space-around; 배치이기 때문에 얘가 없으면 검색창이 중앙에 안 옴 -->
- 
-	
-	
-	
 	<div id="header_logo">
 		<!-- <img src="/intertwine/resources/images/faq/intertwinelogo.png" width="100px" height="40px" onclick="moveMainPage()"> -->
 		<!-- <a href="${ pageContext.servletContext.contextPath }/main.do">Home</a> -->
@@ -208,9 +179,8 @@ function moveLoginPage(){
     <%-- <c:import url="/WEB-INF/views/qna/menubar.jsp" /> --%>
 
     <main>
-    
-    
-            <div>
+           <div>
+           <c:if test="${ !empty loginUser and empty loginAdmin}">
             <aside class="side-bar">
                 <ul>
                     <li id="a">
@@ -241,8 +211,51 @@ function moveLoginPage(){
 
                 </ul>
             </aside>
+            </c:if>
  
-    
+              <c:if test="${ !empty loginAdmin }"> 
+              	<aside class="side-bar">
+            <ul>
+                <li id="square">
+                    <li><a href="${ pageContext.servletContext.contextPath }/rptlist.do"><i class="fa-solid fa-clipboard"></i> 콘텐츠 관리</a></li>
+      
+                <li id="mypage">
+                    
+             
+                <li id="friend">
+                    
+                
+                <li id="chatting">
+                    <li><a href="${ pageContext.servletContext.contextPath }/adnlist.do"><i class="fa-solid fa-gear"></i> 서비스 관리</a></li>
+                
+                <li id="alarm">
+                    <li><a href="${ pageContext.servletContext.contextPath }/flist.do"><i class="fa-solid fa-q"></i> 고객센터</a></li>
+                
+            </ul>
+        </aside>
+        <div id="submenubars">
+            <div id="dummy_sub_menu" class="sub_menu">
+                더미 서브메뉴
+            </div>
+            <div id="mypage_sub_menu" class="sub_menu">
+                마이페이지 서브메뉴
+            </div>
+            <div id="chatting_sub_menu" class="sub_menu">
+                채팅 서브메뉴
+            </div>
+            <div id="alarm_sub_menu" class="sub_menu">
+                알림 서브메뉴
+            </div>
+            <div id="settings_sub_menu" class="sub_menu">
+                설정 서브메뉴
+            </div>
+
+        </div>
+ 
+              
+              
+              
+              </c:if>
             
             
         </div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aiChatMapper">
+	
+	<resultMap type="AiChat" id="AiChatList">
+		<result property="aiChatId" column="AICHAT_ID" />
+		<result property="adminId" column="ADMIN_ID" />
+		<result property="aiChatTitle" column="AICHAT_TITLE" />
+		<result property="aiChatContent" column="AICHAT_CONTENT" />
+	</resultMap>
+	
+	<select id="selectAiChatByKeyword" parameterType="String" resultMap="AiChatList">
+	     select aichat_content from tb_aichat 
+	           where aichat_title like '%' || #{ keyword } || '%'
+	</select>
+	
+</mapper>

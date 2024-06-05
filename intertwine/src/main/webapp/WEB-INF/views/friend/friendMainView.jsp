@@ -21,13 +21,12 @@
 <c:import url="/WEB-INF/views/common/common.jsp"></c:import>
 </head>
 <body>
-<c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
-
 
 <main>
+<c:import url="/WEB-INF/views/common/menubar.jsp"></c:import>
 		<div class="content">
 			<!-- 팔로잉, 팔로워 리스트를 담는 부모 div -->
-
+ 
 
 			<div class="followingList">
 				<!-- 팔로잉 리스트  -->

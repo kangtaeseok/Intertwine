@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="friendMapper">
+
+	
+	<resultMap id="resultList" type="Friend">
+		<result property="userId" column="USER_ID" />
+		<result property="friendId" column="FRIEND_ID" />
+		<result property="status" column="STATUS" />
+		<result property="notificationStatus" column="NOTIFICATION_STATUS" />
+		
+	</resultMap>
+	
+	<!-- 팔로잉 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 완료-->
+    <insert id="insertFollowing" parameterType="Friend">
+        INSERT INTO tb_friend (user_Id, friend_Id, status)
+        VALUES (#{userId}, #{friendId}, 'accepted')
+    </insert>
+	
+	
+	<!-- 언팔로우 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 완료-->
+    <delete id="deleteFollowing" parameterType="Friend">
+        DELETE FROM tb_friend WHERE user_Id = #{userId} AND friend_Id = #{friendId}
+    </delete>
+	
+	<!-- 팔로우 차단 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	<update id="blockFollowing" parameterType="Friend">
+        UPDATE tb_friend SET status = 'blocked' WHERE user_Id = #{userId} AND friend_Id = #{friendId}
+    </update>
+    
+    
+
+	<!-- 팔로워 차단 pending ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+<update id="blockFollower" parameterType="Friend">
+    UPDATE tb_friend
+    SET status = 'blocked'
+    WHERE friend_Id = #{userId} AND user_Id = #{friendId}
+</update>
+
+<!-- 팔로우 차단해제 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+    <update id="unblockFollowing" parameterType="Friend">
+        UPDATE tb_friend SET status = 'accepted' WHERE user_Id = #{userId} AND friend_Id = #{friendId}
+    </update>
+    
+    <!-- 팔로워 차단해제 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+<update id="unblockFollower" parameterType="Friend">
+    UPDATE tb_friend
+    SET status = 'accepted'
+    WHERE user_Id = #{friendId} AND friend_Id = #{userId} AND status = 'blocked'
+</update>
+
+
+<!-- 팔로우 목록조회
+    <select id="followingList" parameterType="String" resultType="resultList">
+        SELECT * FROM tb_friend WHERE user_Id = #{userId} AND status = 'accepted'
+    </select> -->
+    <!-- 팔로잉 목록 조회(프사까지) ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+    <!-- <select id="followingList" parameterType="String" resultMap="resultList">
+    SELECT f.user_Id, f.friend_Id, p.PROFILE
+    FROM tb_friend f
+    JOIN TB_MYPAGE p ON f.friend_Id = p.user_Id
+    WHERE f.user_Id = #{userId} AND f.status = 'accepted'
+</select> -->
+
+ <!-- 팔로잉 목록 조회(프사까지) ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 프사x완료 -->
+    <select id="selectFollowingList" parameterType="String" resultMap="resultList">
+    SELECT user_Id, friend_Id
+    FROM tb_friend
+    WHERE user_Id = #{userId} AND status = 'accepted'
+</select>
+
+<!-- 팔로워 목록 조회(프사까지) ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ프사x완료 -->
+ <select id="selectFollowerList" parameterType="String" resultMap="resultList">
+    SELECT user_Id, friend_Id FROM tb_friend WHERE friend_Id = #{userId} AND status = 'accepted'
+</select>
+    
+<!--     팔로우 차단 목록 조회 (사진포함)
+<select id="blockedFollowingList" parameterType="String" resultMap="resultList">
+   SELECT f.user_Id, f.friend_Id, p.PROFILE
+FROM tb_friend f
+JOIN TB_MYPAGE p ON f.friend_Id = p.user_Id
+WHERE f.user_Id = #{userId} AND f.status = 'blocked'
+</select>
+
+
+팔로워 차단 목록 조회
+<select id="blockedFollowerList" parameterType="String" resultMap="resultList">
+   SELECT f.user_Id, f.friend_Id, p.PROFILE
+FROM tb_friend f
+JOIN TB_MYPAGE p ON f.friend_Id = p.user_Id
+WHERE f.friend_Id = #{userId} AND f.status = 'blocked'
+</select> -->
+
+<!-- 팔로우 계정 검색 -->
+<select id="selectSearchFollowing" parameterType="Friend" resultMap="resultList">
+   SELECT friend_Id FROM tb_Friend
+    WHERE user_Id = #{userId}
+   <!-- AND friend_Id LIKE '%' || #{keyword} || '%' and status = 'accepted' -->
+  AND friend_Id LIKE '%' || #{keyword} || '%' and status = 'accepted'
+</select>
+
+
+
+<!-- 팔로워 계정 검색 -->
+<select id="selectSearchFollower" parameterType="Friend" resultMap="resultList">
+   SELECT user_Id FROM tb_Friend
+    WHERE friend_Id = #{userId}
+   <!--  AND friend_Id LIKE '%' || #{keyword} || '%' and status = 'accepted' -->
+    AND user_Id LIKE '%' || #{keyword} || '%' and status = 'accepted'
+</select>
+
+<!-- 팔로우 계정 중 차단계정 검색 -->
+<select id="searchBlockedFollowing" parameterType="Friend" resultMap="resultList">
+   SELECT * FROM tb_Friend
+    WHERE user_Id = #{userId}
+    AND friend_Id LIKE '%' || #{keyword} || '%' and status = 'blocked'
+</select>
+
+<!-- 팔로워 계정 중 차단계정 검색 -->
+<select id="searchBlockedFollower" parameterType="Friend" resultMap="resultList">
+   SELECT * FROM tb_Friend
+    WHERE friend_Id = #{userId}
+    AND friend_Id LIKE '%' || #{keyword} || '%' and status = 'blocked'
+</select>  
+
+<!-- 팔로잉 수 조회 -->
+<select id="selectCountFollowing" parameterType="Friend" resultType="int">
+    select count(*)
+    from tb_friend
+    where user_Id = #{userId} and status = 'accepted'
+</select>
+
+<!-- 팔로워 수 조회 -->
+<select id="selectCountFollowers" parameterType="Friend" resultType="int">
+    select count(*)
+    from tb_friend
+    where friend_Id = #{userId} and status = 'accepted'
+</select>  
+
+
+    
+<!--  팔로잉 수 및 팔로워 수 조회 
+    <select id="countFollowingAndFollowers" parameterType="String" resultType="resultList">
+        SELECT
+            (SELECT COUNT(*) FROM tb_friend WHERE user_Id = #{userId} AND status = 'accepted') AS followingCount,
+            (SELECT COUNT(*) FROM tb_friend WHERE friend_Id = #{userId} AND status = 'accepted') AS followerCount
+        FROM dual
+    </select> -->
+    
+    <!-- 차단 수 카운트 -->
+ <select id="countBlocks" parameterType="String" resultType="int">
+   select count(*)
+    from tb_friend
+    where user_Id = #{userId} and status = 'blocked' or 
+     friend_Id = #{userId} and status = 'blocked'
+</select>   
+    
+<!-- 내가 차단한 모든 유저 목록 보기 -->
+<select id="blockedList" parameterType="String" resultMap="resultList">
+   SELECT DISTINCT 
+    CASE
+        WHEN user_id = #{userId} THEN friend_id
+        ELSE user_id
+    END AS friend_id
+FROM tb_friend
+WHERE (#{userId} = user_id OR #{userId} = friend_id)
+      AND status = 'blocked'
+
+</select>
+
+<!-- 팔로잉 유저의 아이디(숫자) -->
+<select id="selectFollowing" parameterType="Friend" resultType="int">
+select count(*)
+from tb_friend
+where user_id = #{userId} and friend_id = #{friendId} and status =  'accepted'
+</select>
+
+<!-- 팔로워 유저의 아이디(숫자) -->
+<select id="selectFollower" parameterType="Friend" resultType="int">
+select count(*)
+from tb_friend
+where friend_id = #{userId} and user_id = #{friendId} and status =  'accepted'
+</select>
+
+<!-- 팔로잉 유저의 아이디 -->
+<select id="selectFollowingId" parameterType="Friend" resultType="String">
+select friend_id
+from tb_friend
+where user_id = #{userId} and friend_id = #{friendId} and status =  'accepted'
+</select>
+
+<!-- 팔로워 유저의 아이디 -->
+<select id="selectFollowerId" parameterType="Friend" resultType="String">
+select user_id
+from tb_friend
+where friend_id = #{userId} and user_id = #{friendId} and status =  'accepted'
+</select>
+
+
+
+
+</mapper>
+    
+    
+	
+
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,102 +3,98 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- 1. DataSource 등록 
-	
-		import org.apache.commons.dbcp.BasicDataSource;
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 		
-		BasicDataSource realDataSource = new BasicDataSource();
 		
-		try{
-			드라이브 등록, db 연결 설정
-		}catch(Exception e){ 예외처리 }
-		finally {
-			realDataSource.close();
-		}
-	 -->		
-	 
-	 <!-- BasicDataSource를 사용하여 데이터베이스 연결을 설정. Oracle 데이터베이스에 대한 드라이버 클래스, URL, 사용자 이름 및 암호를 설정함  -->
-	<bean class="org.apache.commons.dbcp.BasicDataSource" id="realDataSource" destroy-method="close"> <!-- destroy-method 속성을 사용하여 빈이 소멸되기 전에 호출할 메서드를 지정 -->
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="c##testweb" />
-		<property name="password" value="testweb" />	
-	</bean>
-	
-	<!-- 
-		2. 실행할 쿼리문에 전달되는 값과 ? 에 적용을 확인하기 위한 로그와 
-		select 쿼리문 실행의 결과인 ResultSet 과 dml 구문의 실행결과 등을 로그로 출력할 수 있음
-		이 설정을 하려면 바로 위에서 선언한 DataSource 에 로그를 연결 설정해야 함
-		pom.xml 에 log4jdbc-remix 라이브러리 클래스 dependency 설정하면 됨
-		
-		import net.sf.log4jdbc.Log4jdbcProxyDataSource;
-		
-		Log4jdbcProxyDataSource datasource = new Log4jdbcProxyDataSource(realDataSource);
-	 -->
-	 <!-- Log4jdbcProxyDataSource를 사용하여 데이터베이스 액세스에 대한 로그를 출력합니다. Log4jdbcCustomFormatter를 사용하여 출력되는 로그의 형식을 지정함 -->
-	<bean id="datasource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-		<constructor-arg ref="realDataSource" />
-		<property name="logFormatter">
-			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
-				<property name="loggingType" value="MULTI_LINE" />
-				<property name="sqlPrefix" value="[SQL] " />
-			</bean>
-		</property>
-	</bean>
-	
-	<!-- 3. 바로 위의 설정인 datasource 를 spring 과 mybatis 와 연결 설정 -->	
-	<!-- SqlSessionFactoryBean을 사용하여 MyBatis와 Spring 간의 통합을 설정합니다. mybatis-config.xml 파일의 위치와 데이터 소스를 설정 -->
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSession">
-		<!-- 클래스패스는 프로젝트 내의 리소스를 찾는 경로임. 보통은 프로젝트의 리소스 디렉토리(src/main/resources가 클래스패스에 포함됨. -->
-		<property name="configLocation" value="classpath:mybatis-config.xml" /> 
-		<property name="dataSource" ref="datasource" />
-	</bean>
-	
-	<!-- 4. dao 에서 사용할 mybatis 객체 생성 설정 -->	
-	<!-- SqlSessionTemplate을 사용하여 MyBatis의 SQL 세션을 스프링 빈으로 등록 -->
-	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSessionTemplate">
-		<constructor-arg ref="sqlSession" index="0" />
-	</bean>
-	
-	<!-- 5. 트랜잭션 관리 설정 : AOP -->
-	<!-- 5-1. 트랜잭션 관리 클래스 등록 설정 : spring-jdbc -->	
-	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
-		<property name="dataSource" ref="datasource" />
-	</bean>
-	
-	<!-- 5-2. dao 클래스에서 필요한 실행시점에서 commit 또는 rollback 이 구동되게 aop 설정 -->	
-	<!-- DataSourceTransactionManager를 사용하여 트랜잭션 관리를 설정. 이 설정은 스프링 AOP를 사용하여 실행 시점에 트랜잭션을 시작하고 커밋 또는 롤백 -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="select*" read-only="true" 	rollback-for="Exception" />
-			<tx:method name="insert*" rollback-for="Exception" />
-			<tx:method name="update*" rollback-for="Exception" />
-			<tx:method name="delete*" rollback-for="Exception" />
-		</tx:attributes>
-	</tx:advice>	
-	
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	<!--  위의 설정을 사용하려면 @Transaction을 표기하면 됨, @Service가 이를 상속받음 -->
-	<!-- aop:config 요소를 사용하여 AOP 설정을 지정합니다. execution 포인트컷을 사용하여 트랜잭션을 적용할 서비스 클래스의 메서드를 지정하고, 해당 메서드에 트랜잭션 어드바이스를 적용 -->
-	
-	<aop:config proxy-target-class="true">
-		<aop:pointcut expression="execution(* org.myweb.first..*Impl.*(..))" id="serviceMethod" />
-		<aop:advisor advice-ref="txAdvice" id="transactionAdvisor" pointcut-ref="serviceMethod" />
-	</aop:config>
-	
+   
+   <!-- Root Context: defines shared resources visible to all other web components -->
+   <!-- 1. DataSource 등록 
+   
+      import org.apache.commons.dbcp.BasicDataSource;
+      
+      BasicDataSource realDataSource = new BasicDataSource();
+      
+      try{
+         드라이브 등록, db 연결 설정
+      }catch(Exception e){ 예외처리 }
+      finally {
+         realDataSource.close();
+      }
+    -->      
+    
+    <!-- BasicDataSource를 사용하여 데이터베이스 연결을 설정. Oracle 데이터베이스에 대한 드라이버 클래스, URL, 사용자 이름 및 암호를 설정함  -->
+   <bean class="org.apache.commons.dbcp.BasicDataSource" id="realDataSource" destroy-method="close"> <!-- destroy-method 속성을 사용하여 빈이 소멸되기 전에 호출할 메서드를 지정 -->
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+      <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+      <property name="username" value="c##intertwine" />
+      <property name="password" value="intertwine" />   
+   </bean>
+   
+   <!-- 
+      2. 실행할 쿼리문에 전달되는 값과 ? 에 적용을 확인하기 위한 로그와 
+      select 쿼리문 실행의 결과인 ResultSet 과 dml 구문의 실행결과 등을 로그로 출력할 수 있음
+      이 설정을 하려면 바로 위에서 선언한 DataSource 에 로그를 연결 설정해야 함
+      pom.xml 에 log4jdbc-remix 라이브러리 클래스 dependency 설정하면 됨
+      
+      import net.sf.log4jdbc.Log4jdbcProxyDataSource;
+      
+      Log4jdbcProxyDataSource datasource = new Log4jdbcProxyDataSource(realDataSource);
+    -->
+    <!-- Log4jdbcProxyDataSource를 사용하여 데이터베이스 액세스에 대한 로그를 출력합니다. Log4jdbcCustomFormatter를 사용하여 출력되는 로그의 형식을 지정함 -->
+   <bean id="datasource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+      <constructor-arg ref="realDataSource" />
+      <property name="logFormatter">
+         <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+            <property name="loggingType" value="MULTI_LINE" />
+            <property name="sqlPrefix" value="[SQL] " />
+         </bean>
+      </property>
+   </bean>
+   
+   <!-- 3. 바로 위의 설정인 datasource 를 spring 과 mybatis 와 연결 설정 -->   
+   <!-- SqlSessionFactoryBean을 사용하여 MyBatis와 Spring 간의 통합을 설정합니다. mybatis-config.xml 파일의 위치와 데이터 소스를 설정 -->
+   <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSession">
+      <!-- 클래스패스는 프로젝트 내의 리소스를 찾는 경로임. 보통은 프로젝트의 리소스 디렉토리(src/main/resources가 클래스패스에 포함됨. -->
+      <property name="configLocation" value="classpath:mybatis-config.xml" /> 
+      <property name="dataSource" ref="datasource" />
+   </bean>
+   
+   <!-- 4. dao 에서 사용할 mybatis 객체 생성 설정 -->   
+   <!-- SqlSessionTemplate을 사용하여 MyBatis의 SQL 세션을 스프링 빈으로 등록 -->
+   <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSessionTemplate">
+      <constructor-arg ref="sqlSession" index="0" />
+   </bean>
+   
+   <!-- 5. 트랜잭션 관리 설정 : AOP -->
+   <!-- 5-1. 트랜잭션 관리 클래스 등록 설정 : spring-jdbc -->   
+   <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+      <property name="dataSource" ref="datasource" />
+   </bean>
+   
+   <!-- 5-2. dao 클래스에서 필요한 실행시점에서 commit 또는 rollback 이 구동되게 aop 설정 -->   
+   <!-- DataSourceTransactionManager를 사용하여 트랜잭션 관리를 설정. 이 설정은 스프링 AOP를 사용하여 실행 시점에 트랜잭션을 시작하고 커밋 또는 롤백 -->
+   <tx:advice id="txAdvice" transaction-manager="transactionManager">
+      <tx:attributes>
+         <tx:method name="select*" read-only="true"    rollback-for="Exception" />
+         <tx:method name="insert*" rollback-for="Exception" />
+         <tx:method name="update*" rollback-for="Exception" />
+         <tx:method name="delete*" rollback-for="Exception" />
+      </tx:attributes>
+   </tx:advice>   
+   
+   <tx:annotation-driven transaction-manager="transactionManager" />
+   <!--  위의 설정을 사용하려면 @Transaction을 표기하면 됨, @Service가 이를 상속받음 -->
+   <!-- aop:config 요소를 사용하여 AOP 설정을 지정합니다. execution 포인트컷을 사용하여 트랜잭션을 적용할 서비스 클래스의 메서드를 지정하고, 해당 메서드에 트랜잭션 어드바이스를 적용 -->
+   
+   <aop:config proxy-target-class="true">
+      <aop:pointcut expression="execution(* org.edu.intertwine..*Impl.*(..))" id="serviceMethod" />
+      <aop:advisor advice-ref="txAdvice" id="transactionAdvisor" pointcut-ref="serviceMethod" />
+   </aop:config>
+   
+   
 </beans>
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="guestBookMapper">
+	
+	<resultMap id="GuestBooktMap" type="GuestBook">
+		<id property="guestBookId" column="GUESTBOOK_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="writer" column="WRITER" />
+		<result property="guestbookContent" column="GUESTBOOK_CONTENT" />
+		<result property="backgroundColor" column="BACKGROUND_COLOR" />
+	</resultMap>
+	
+	<!-- userId로 방명록 가져오기 -->
+	<select id="selectGuestBook" parameterType="string" resultMap="GuestBooktMap">
+		SELECT *
+		FROM TB_GUESTBOOK
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 방명록 작성하기 -->
+	<insert id="insertGuestBook" parameterType="GuestBook">
+	    INSERT INTO TB_GUESTBOOK
+	    (GUESTBOOK_ID, USER_ID, WRITER, GUESTBOOK_CONTENT, BACKGROUND_COLOR)
+	    VALUES
+	    (SEQ_GUESTBOOK.NEXTVAL, #{userId}, #{writer}, #{guestbookContent}, #{backgroundColor})
+	</insert>
+		
+</mapper>
